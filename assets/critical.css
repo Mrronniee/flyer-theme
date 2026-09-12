@@ -890,4 +890,16 @@ main > .shopify-section + .shopify-section {
     grid-column: span 2;
     grid-row: span 2;
   }
+  /* The big card is as tall as two rows: let its image take the extra height
+     instead of leaving a gap between title and buttons. */
+  .fl-product-grid--editorial > :first-child .fl-card__media {
+    flex: 1 1 auto;
+    aspect-ratio: auto;
+    min-height: 0;
+  }
+  .fl-product-grid--editorial > :first-child .fl-card__media img,
+  .fl-product-grid--editorial > :first-child .fl-card__media svg {
+    height: 100%;
+    object-fit: cover;
+  }
 }
