@@ -1,0 +1,329 @@
+{% comment %}
+  FAQ.
+  Hairline list of questions built on native <details>/<summary>. The shared
+  `name` attribute lets the browser close the other rows when one opens, so
+  the accordion works without JavaScript. Split layout keeps the heading
+  sticky on the left on desktop. Emits FAQPage structured data.
+{% endcomment %}
+
+{%- liquid
+  assign split = false
+  if section.settings.layout == 'split'
+    assign split = true
+  endif
+
+  assign row_tag = 'h3'
+  if section.settings.heading == blank
+    assign row_tag = 'h2'
+  endif
+
+  assign faq_rows = 0
+  for block in section.blocks
+    if block.settings.question != blank and block.settings.answer != blank
+      assign faq_rows = faq_rows | plus: 1
+    endif
+  endfor
+-%}
+
+<section
+  class="fl-faq full-width color-{{ section.settings.color_scheme }}"
+  {% render 'reveal' %}
+  style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
+>
+  <div class="fl-faq__inner{% if split %} fl-faq__inner--split{% endif %}">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+      <div class="fl-faq__head">
+        <div class="fl-section-head fl-faq__section-head">
+          {%- if section.settings.eyebrow != blank -%}
+            <span class="fl-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="fl-faq__heading">{{ section.settings.heading | escape }}</h2>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="fl-faq__list">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.question != blank or block.settings.answer != blank -%}
+          <details
+            class="fl-faq__item"
+            name="faq-{{ section.id }}"
+            {% if section.settings.open_first and forloop.first %}
+              open
+            {% endif %}
+            {{ block.shopify_attributes }}
+          >
+            <summary class="fl-faq__summary" id="FaqSummary-{{ section.id }}-{{ block.id }}">
+              <{{ row_tag }} class="fl-faq__question">{{ block.settings.question | escape }}</{{ row_tag }}>
+              <span class="fl-faq__chevron" aria-hidden="true"></span>
+            </summary>
+            <div
+              class="fl-faq__answer fl-rte"
+              role="region"
+              aria-labelledby="FaqSummary-{{ section.id }}-{{ block.id }}"
+            >
+              {{ block.settings.answer }}
+            </div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- if faq_rows > 0 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- assign emitted = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.question != blank and block.settings.answer != blank -%}
+            {%- if emitted > 0 %},{% endif -%}
+            {%- assign emitted = emitted | plus: 1 -%}
+            {
+              "@type": "Question",
+              "name": {{ block.settings.question | strip_html | strip | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ block.settings.answer | strip_html | strip | json }}
+              }
+            }
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{% stylesheet %}
+  .fl-faq__inner {
+    width: min(820px, var(--content-width));
+    margin-inline: auto;
+  }
+
+  .fl-faq__inner--split {
+    width: var(--content-width);
+  }
+
+  .fl-faq__heading {
+    min-width: 0;
+  }
+
+  .fl-faq__list {
+    min-width: 0;
+    border-block-start: 1px solid var(--color-line);
+  }
+
+  .fl-faq__item {
+    border-block-end: 1px solid var(--color-line);
+  }
+
+  .fl-faq__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 18px;
+    min-height: 44px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .fl-faq__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .fl-faq__summary:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .fl-faq__question {
+    min-width: 0;
+    font-size: 1.0625em;
+    font-weight: 500;
+  }
+
+  /* Chevron drawn from two borders, rotated as the row opens. */
+  .fl-faq__chevron {
+    flex: 0 0 auto;
+    width: 10px;
+    height: 10px;
+    margin-inline-end: 4px;
+    border-inline-end: 1.5px solid currentcolor;
+    border-block-end: 1.5px solid currentcolor;
+    transform: translateY(-3px) rotate(45deg);
+    transition: transform 0.25s ease;
+  }
+
+  .fl-faq__item[open] .fl-faq__chevron {
+    transform: translateY(3px) rotate(225deg);
+  }
+
+  .fl-faq__answer {
+    padding-block: 0 22px;
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 990px) {
+    .fl-faq__inner--split {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 64px;
+      align-items: start;
+    }
+
+    .fl-faq__inner--split .fl-faq__head {
+      position: sticky;
+      top: 24px;
+    }
+
+    .fl-faq__inner--split .fl-faq__section-head {
+      margin-bottom: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fl-faq__chevron {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "FAQ",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Questions"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently asked questions"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "list",
+          "label": "List"
+        },
+        {
+          "value": "split",
+          "label": "Heading beside questions"
+        }
+      ],
+      "default": "list"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open first question by default",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How long does shipping take?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Orders ship within 1–2 business days. Standard delivery takes 3–5 business days; express delivery arrives in 1–2.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Orders ship within 1–2 business days. Standard delivery takes 3–5 business days; express delivery arrives in 1–2. You’ll receive a tracking link by email as soon as your parcel leaves us.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>You have 30 days from delivery to return any unworn item in its original packaging. Start a return from your account page and we’ll email you a prepaid label. Refunds are issued within 5 days of receiving the parcel.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How do I choose the right size?",
+            "answer": "<p>Every product page has a size guide with measurements in centimetres and inches. Our pieces fit true to size; if you are between two sizes, we recommend taking the larger one.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Which payment methods do you accept?",
+            "answer": "<p>We accept Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay and Shop Pay. All payments are encrypted and processed securely at checkout.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How can I contact you?",
+            "answer": "<p>Write to us through the contact page or reply to any of our emails. We answer every message within one business day, Monday to Friday.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

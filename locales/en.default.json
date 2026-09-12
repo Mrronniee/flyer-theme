@@ -83,7 +83,8 @@
       "choose_options": "Choose options",
       "placeholder_title": "Example product",
       "regular_price": "Regular price",
-      "sale_price": "Sale price"
+      "sale_price": "Sale price",
+      "quick_view": "Quick view"
     },
     "product": {
       "add_to_cart": "Add to cart",
@@ -108,6 +109,9 @@
     "quick_order": {
       "add_all": "Add all to cart",
       "empty_selection": "Enter a quantity to add items to your cart."
+    },
+    "quick_view": {
+      "title": "Quick view"
     }
   },
   "collections": {
@@ -324,6 +328,37 @@
       "shipping_address": "Shipping address",
       "payment_status": "Payment status",
       "fulfillment_status": "Fulfillment status"
+    }
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "empty": "Your wishlist is empty.",
+    "clear": "Clear list",
+    "add": "Add to wishlist",
+    "remove": "Remove from wishlist",
+    "needs_js": "Your wishlist needs JavaScript to display.",
+    "count_label": "{{ count }} items in wishlist"
+  },
+  "sections": {
+    "testimonials": {
+      "rating_label": "{{ rating }} out of 5 stars"
+    },
+    "countdown": {
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "seconds": "Seconds",
+      "ends_on": "Offer ends {{ date }}"
+    },
+    "size_guide": {
+      "size": "Size",
+      "unit_label": "Units"
+    },
+    "comparison": {
+      "caption": "Comparison",
+      "feature": "Feature",
+      "yes": "Yes",
+      "no": "No"
     }
   }
 }

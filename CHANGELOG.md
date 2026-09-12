@@ -1,5 +1,38 @@
 # Changelog
 
+## 1.5.0 — 2026-09-12
+
+Merchant features, structured data and finishing — no apps required.
+
+### Added
+- **Wishlist**: heart on product cards and the product title, header icon with
+  a live count, `page.wishlist` template that loads saved products through the
+  Section Rendering API. Stored in the browser (`localStorage`), no account
+  needed. Theme settings › Wishlist & quick view.
+- **Quick view**: "Quick view" on product cards opens a dialog with the first
+  image, price, variant select, quantity and add-to-cart (goes through the cart
+  drawer). Falls back to the product page if the request fails.
+- **Six sections**: FAQ (native `details`, one open at a time, FAQPage
+  JSON-LD), Testimonials (grid or snap carousel, ratings), Trust badges (ten
+  line icons), Countdown (local time, hides or shows a message when expired),
+  Size guide (cm / in toggle), Comparison table (highlighted column, sticky
+  first column on mobile).
+- **Country / language selector in the header** (Shopify Markets), sharing one
+  `localization-form` snippet with the footer.
+- **Structured data**: Organization and WebSite + SearchAction on the home
+  page, BreadcrumbList on collection, product, blog, article and page,
+  CollectionPage + ItemList (first 12 products) on collections.
+
+### Changed
+- Product card hover: the "Image zoom" option is replaced by **"Show second
+  image"** (default) — the next product photo appears flat on hover, no fade.
+  Cards with one image do not move.
+- Solid buttons sink one pixel on press.
+- Default home template: trust badges, testimonials and FAQ replace the
+  three-column placeholder block.
+- The heading font is preloaded (the h1 is usually the largest paint); stores
+  without a favicon no longer trigger a `/favicon.ico` 404 on every page.
+
 ## 1.4.2 — 2026-08-25
 
 27 fixes from a full audit of 1.4.1 (52 reviewing agents, every finding

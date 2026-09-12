@@ -12,11 +12,29 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
       {{ settings.type_body_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
     {% endunless %}
+    {%- comment -%}
+      Headings are usually the largest contentful paint; without this preload
+      the h1 waits for the heading face after the stylesheet has been parsed.
+    {%- endcomment -%}
+    {% unless settings.type_heading_font.system? or settings.type_heading_font == settings.type_body_font %}
+      {{ settings.type_heading_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
+    {% endunless %}
 
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
 
+    {% if settings.wishlist_enabled %}
+      <script src="{{ 'wishlist.js' | asset_url }}" defer></script>
+    {% endif %}
+    {% if settings.quick_view_enabled %}
+      <script src="{{ 'quick-view.js' | asset_url }}" defer></script>
+    {% endif %}
+
     {% if settings.favicon %}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {% else %}
+      {%- comment -%} Stops browsers requesting /favicon.ico (a 404 on every page). {%- endcomment -%}
+      {%- assign empty_icon = 'data:,' -%}
+      <link rel="icon" href="{{ empty_icon }}">
     {% endif %}
 
     {% render 'meta-tags' %}
@@ -37,6 +55,10 @@
 
     {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
       {% section 'cart-drawer' %}
+    {% endif %}
+
+    {% if settings.quick_view_enabled %}
+      {% render 'quick-view-dialog' %}
     {% endif %}
   </body>
 </html>

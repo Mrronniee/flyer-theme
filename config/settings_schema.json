@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "FLYER",
-    "theme_version": "1.4.2",
+    "theme_version": "1.5.0",
     "theme_author": "KIOSK",
     "theme_documentation_url": "https://kioskthemes.com/docs/flyer/",
     "theme_support_url": "https://kioskthemes.com/support/"
@@ -240,7 +240,7 @@
         "type": "select",
         "id": "animations_hover_elements",
         "label": "Hover effect",
-        "info": "Applies to cards and media.",
+        "info": "Second image: product cards reveal the next product photo on hover.",
         "options": [
           {
             "value": "default",
@@ -251,11 +251,11 @@
             "label": "Vertical lift"
           },
           {
-            "value": "zoom",
-            "label": "Image zoom"
+            "value": "second-image",
+            "label": "Show second image"
           }
         ],
-        "default": "zoom"
+        "default": "second-image"
       }
     ]
   },
@@ -1416,6 +1416,31 @@
         "id": "cart_drawer_collection",
         "label": "Collection shown in an empty cart",
         "info": "Only visible when the cart drawer is empty."
+      }
+    ]
+  },
+  {
+    "name": "Wishlist & quick view",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "wishlist_enabled",
+        "label": "Enable wishlist",
+        "default": true,
+        "info": "Saved in the visitor’s browser, no app needed. Adds a heart to product cards, product pages and the header."
+      },
+      {
+        "type": "url",
+        "id": "wishlist_page",
+        "label": "Wishlist page",
+        "info": "Create a page using the page.wishlist template and pick it here."
+      },
+      {
+        "type": "checkbox",
+        "id": "quick_view_enabled",
+        "label": "Enable quick view",
+        "default": true,
+        "info": "Adds a “Quick view” button to product cards that opens the product in a dialog."
       }
     ]
   }

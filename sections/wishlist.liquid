@@ -1,0 +1,225 @@
+{% comment %}
+  Wishlist page (templates/page.wishlist.json).
+  The list lives in localStorage (key fl:wishlist, JSON array of handles):
+  the grid is filled client-side, one card per handle, through the Section
+  Rendering API (/products/<handle>?section_id=wishlist-item).
+{% endcomment %}
+
+<fl-wishlist
+  class="fl-wishlist full-width color-{{ section.settings.color_scheme }}"
+  {% render 'reveal' %}
+  style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
+>
+  <div class="fl-wishlist__inner">
+    <div class="fl-wishlist__head">
+      <div class="fl-section-head">
+        <h1>{{ 'wishlist.title' | t }}</h1>
+      </div>
+      <button type="button" class="fl-btn fl-btn--secondary fl-wishlist__clear" data-wishlist-clear hidden>
+        {{ 'wishlist.clear' | t }}
+      </button>
+    </div>
+
+    <div class="fl-wishlist__empty" data-wishlist-empty hidden>
+      <p>{{ 'wishlist.empty' | t }}</p>
+      <a class="fl-wishlist__continue" href="{{ routes.all_products_collection_url }}">
+        {{- '404.back_to_shopping' | t -}}
+      </a>
+    </div>
+
+    <div
+      class="fl-product-grid fl-wishlist__grid"
+      data-wishlist-grid
+      style="--grid-cols: {{ section.settings.cols_desktop }}"
+      aria-live="polite"
+    ></div>
+
+    <noscript>
+      <p class="fl-wishlist__noscript">{{ 'wishlist.needs_js' | t }}</p>
+    </noscript>
+  </div>
+</fl-wishlist>
+
+{% stylesheet %}
+  .fl-wishlist__inner {
+    width: var(--content-width);
+    margin-inline: auto;
+  }
+
+  .fl-wishlist__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .fl-wishlist__empty {
+    padding-block: 32px;
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted);
+  }
+
+  .fl-wishlist__continue {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 8px;
+    color: var(--color-ink);
+  }
+
+  .fl-wishlist__noscript {
+    color: var(--color-muted);
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  class FlWishlistPage extends HTMLElement {
+    connectedCallback() {
+      this.grid = this.querySelector('[data-wishlist-grid]');
+      this.empty = this.querySelector('[data-wishlist-empty]');
+      this.clearBtn = this.querySelector('[data-wishlist-clear]');
+      this.root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+
+      this._onChange = () => this.prune();
+      document.addEventListener('fl:wishlist:change', this._onChange);
+      if (this.clearBtn) {
+        this._onClear = () => this.clear();
+        this.clearBtn.addEventListener('click', this._onClear);
+      }
+      this.load();
+    }
+
+    disconnectedCallback() {
+      document.removeEventListener('fl:wishlist:change', this._onChange);
+      if (this.clearBtn) this.clearBtn.removeEventListener('click', this._onClear);
+    }
+
+    read() {
+      if (window.flWishlist) return window.flWishlist.read();
+      try {
+        const list = JSON.parse(localStorage.getItem('fl:wishlist') || '[]');
+        return Array.isArray(list) ? list : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    clear() {
+      if (window.flWishlist) {
+        window.flWishlist.write([]);
+      } else {
+        try {
+          localStorage.removeItem('fl:wishlist');
+        } catch (e) {
+          /* storage unavailable */
+        }
+      }
+      this.grid.innerHTML = '';
+      this.refreshState();
+    }
+
+    refreshState() {
+      const count = this.grid.children.length;
+      this.empty.hidden = count > 0;
+      if (this.clearBtn) this.clearBtn.hidden = count === 0;
+    }
+
+    async load() {
+      const handles = this.read();
+      this.grid.setAttribute('aria-busy', 'true');
+      const results = await Promise.all(handles.map((handle) => this.fetchCard(handle)));
+      results.forEach((card, i) => {
+        if (!card) return;
+        const item = document.createElement('div');
+        item.className = 'fl-wishlist__item';
+        item.setAttribute('data-handle', handles[i]);
+        item.appendChild(card);
+        this.grid.appendChild(item);
+      });
+      this.grid.removeAttribute('aria-busy');
+      this.refreshState();
+      // Buttons injected after wishlist.js ran: sync their pressed state.
+      if (window.flWishlist) window.flWishlist.sync();
+    }
+
+    async fetchCard(handle) {
+      try {
+        const url = this.root + 'products/' + encodeURIComponent(handle) + '?section_id=wishlist-item';
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.querySelector('.fl-card');
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // A heart unticked on this page (or in the header count) removes its card.
+    prune() {
+      const handles = this.read();
+      this.grid.querySelectorAll('[data-handle]').forEach((item) => {
+        if (!handles.includes(item.getAttribute('data-handle'))) item.remove();
+      });
+      this.refreshState();
+    }
+  }
+
+  if (!customElements.get('fl-wishlist')) customElements.define('fl-wishlist', FlWishlistPage);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Wishlist",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "cols_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Columns on desktop",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wishlist"
+    }
+  ]
+}
+{% endschema %}

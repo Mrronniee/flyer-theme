@@ -151,50 +151,11 @@
           {%- if show_country or show_language -%}
             <div class="fl-footer__localization">
               {%- if show_country -%}
-                {%- form 'localization', id: 'Footer-country-form', class: 'fl-footer__loc-form' -%}
-                  <fl-localization>
-                    <label class="visually-hidden" for="Footer-country">{{ 'general.localization.country_label' | t }}</label>
-                    <select id="Footer-country" class="fl-select fl-footer__loc-select" name="country_code">
-                      {%- for country in localization.available_countries -%}
-                        <option
-                          value="{{ country.iso_code }}"
-                          {% if country.iso_code == localization.country.iso_code %}
-                            selected
-                          {% endif %}
-                        >
-                          {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
-                        </option>
-                      {%- endfor -%}
-                    </select>
-                    <button type="submit" class="fl-btn fl-btn--secondary fl-footer__loc-submit" data-loc-submit>
-                      {{ 'general.localization.update' | t }}
-                    </button>
-                  </fl-localization>
-                {%- endform -%}
+                {% render 'localization-form', kind: 'country', id_prefix: 'Footer', class_prefix: 'fl-footer__loc' %}
               {%- endif -%}
 
               {%- if show_language -%}
-                {%- form 'localization', id: 'Footer-language-form', class: 'fl-footer__loc-form' -%}
-                  <fl-localization>
-                    <label class="visually-hidden" for="Footer-language">{{ 'general.localization.language_label' | t }}</label>
-                    <select id="Footer-language" class="fl-select fl-footer__loc-select" name="locale_code">
-                      {%- for language in localization.available_languages -%}
-                        <option
-                          value="{{ language.iso_code }}"
-                          lang="{{ language.iso_code }}"
-                          {% if language.iso_code == localization.language.iso_code %}
-                            selected
-                          {% endif %}
-                        >
-                          {{ language.endonym_name | capitalize }}
-                        </option>
-                      {%- endfor -%}
-                    </select>
-                    <button type="submit" class="fl-btn fl-btn--secondary fl-footer__loc-submit" data-loc-submit>
-                      {{ 'general.localization.update' | t }}
-                    </button>
-                  </fl-localization>
-                {%- endform -%}
+                {% render 'localization-form', kind: 'language', id_prefix: 'Footer', class_prefix: 'fl-footer__loc' %}
               {%- endif -%}
             </div>
           {%- endif -%}

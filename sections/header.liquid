@@ -180,6 +180,49 @@
         </a>
       {%- endif -%}
 
+      {%- liquid
+        assign header_country = false
+        if section.settings.show_country_selector and localization.available_countries.size > 1
+          assign header_country = true
+        endif
+        assign header_language = false
+        if section.settings.show_language_selector and localization.available_languages.size > 1
+          assign header_language = true
+        endif
+      -%}
+      {%- if header_country or header_language -%}
+        {%- comment -%} Native <details>: opens without JS; forms post without JS. {%- endcomment -%}
+        <details class="fl-header__loc">
+          <summary class="fl-header__icon-btn fl-header__loc-toggle" aria-label="{{ 'general.localization.country_label' | t }}">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+              <circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M2.75 10h14.5M10 2.75c2.2 2.2 2.2 12.3 0 14.5M10 2.75c-2.2 2.2-2.2 12.3 0 14.5" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            {%- if header_country -%}
+              <span class="fl-header__loc-code" aria-hidden="true">{{ localization.country.iso_code }}</span>
+            {%- endif -%}
+          </summary>
+          <div class="fl-header__loc-panel fl-box">
+            {%- if header_country -%}
+              {% render 'localization-form', kind: 'country', id_prefix: 'Header', class_prefix: 'fl-header__loc' %}
+            {%- endif -%}
+            {%- if header_language -%}
+              {% render 'localization-form', kind: 'language', id_prefix: 'Header', class_prefix: 'fl-header__loc' %}
+            {%- endif -%}
+          </div>
+        </details>
+      {%- endif -%}
+
+      {%- if settings.wishlist_enabled -%}
+        <a class="fl-header__icon-btn fl-header__wishlist" href="{{ settings.wishlist_page | default: '/pages/wishlist' }}">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+            <path d="M10 17s-6.5-4.1-6.5-8.6A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.5 2.1C16.5 12.9 10 17 10 17Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+          <span class="visually-hidden">{{ 'wishlist.title' | t }}</span>
+          <span class="fl-wishlist-count" data-wishlist-count aria-hidden="true" hidden>0</span>
+        </a>
+      {%- endif -%}
+
       {%- if shop.customer_accounts_enabled -%}
         <a class="fl-header__icon-btn fl-header__account" href="{{ routes.account_login_url }}">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
@@ -691,6 +734,42 @@
       min-height: 56px;
     }
   }
+
+  /* Country / language selector (Shopify Markets) */
+  .fl-header__loc {
+    position: relative;
+  }
+  .fl-header__loc-toggle {
+    list-style: none;
+    cursor: pointer;
+    gap: 4px;
+  }
+  .fl-header__loc-toggle::-webkit-details-marker {
+    display: none;
+  }
+  .fl-header__loc-code {
+    font-size: 0.6875em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .fl-header__loc-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 30;
+    display: grid;
+    gap: 12px;
+    width: min(280px, calc(100vw - var(--page-margin) * 2));
+    padding: 16px;
+    background: var(--color-bg);
+  }
+  .fl-header__loc-form {
+    display: grid;
+    gap: 8px;
+  }
+  .fl-header__loc-select {
+    width: 100%;
+  }
 {% endstylesheet %}
 
 {% javascript %}
@@ -807,10 +886,30 @@
       "id": "show_search",
       "label": "Show search",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Country and language"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "label": "Show country/region selector",
+      "info": "Shown when the store sells in more than one country (Shopify Markets).",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language_selector",
+      "label": "Show language selector",
+      "info": "Shown when the store has more than one published language.",
+      "default": false
     }
   ],
   "enabled_on": {
-    "groups": ["header"]
+    "groups": [
+      "header"
+    ]
   }
 }
 {% endschema %}

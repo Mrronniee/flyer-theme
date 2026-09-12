@@ -48,8 +48,10 @@
   case settings.animations_hover_elements
     when 'vertical-lift'
       assign card_classes = card_classes | append: ' fl-card--lift'
-    when 'zoom'
-      assign card_classes = card_classes | append: ' fl-card--zoom'
+    when 'second-image'
+      if product.media.size > 1
+        assign card_classes = card_classes | append: ' fl-card--flip'
+      endif
   endcase
 
   # Theme setting: Badges > Position on cards. "top left" is the base rule.
@@ -83,6 +85,14 @@
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag: 'fl-card__placeholder' }}
     {%- endif -%}
+    {%- if settings.animations_hover_elements == 'second-image' and product.media.size > 1 -%}
+      {%- comment -%} Second view, shown flat on hover (no fade). {%- endcomment -%}
+      {{
+        product.media[1].preview_image
+        | image_url: width: 900
+        | image_tag: widths: img_widths, sizes: img_sizes, alt: '', loading: 'lazy', class: 'fl-card__img--alt', aria-hidden: 'true'
+      }}
+    {%- endif -%}
     {%- if product.available == false or on_sale -%}
       <div class="{{ badge_classes }}">
         {%- if product.available == false -%}
@@ -95,6 +105,9 @@
           </span>
         {%- endif -%}
       </div>
+    {%- endif -%}
+    {%- if settings.wishlist_enabled -%}
+      {% render 'wishlist-button', product: product, class: 'fl-wishlist-btn--card' %}
     {%- endif -%}
   </div>
 
@@ -110,6 +123,19 @@
     {%- if quick and product.available -%}
       <div class="fl-card__quick">
         {% render 'quick-add', product: product %}
+        {%- if settings.quick_view_enabled -%}
+          <button type="button" class="fl-btn fl-btn--secondary" data-quick-view-open data-handle="{{ product.handle }}">
+            {{ 'products.card.quick_view' | t }}
+            <span class="visually-hidden">— {{ product.title | escape }}</span>
+          </button>
+        {%- endif -%}
+      </div>
+    {%- elsif settings.quick_view_enabled and product.available -%}
+      <div class="fl-card__quick">
+        <button type="button" class="fl-btn fl-btn--secondary" data-quick-view-open data-handle="{{ product.handle }}">
+          {{ 'products.card.quick_view' | t }}
+          <span class="visually-hidden">— {{ product.title | escape }}</span>
+        </button>
       </div>
     {%- endif -%}
   </div>

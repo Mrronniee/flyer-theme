@@ -1,0 +1,58 @@
+{% doc %}
+  Country or language selector (Shopify Markets). Native form: works without
+  JS; <fl-localization> (defined in sections/footer.liquid) submits on change
+  and hides the button.
+
+  @param {string} kind - 'country' or 'language'
+  @param {string} id_prefix - unique id prefix, e.g. 'Footer' or 'Header'
+  @param {string} class_prefix - BEM prefix for form/select/submit classes, e.g. 'fl-footer__loc'
+
+  @example
+  {% render 'localization-form', kind: 'country', id_prefix: 'Footer', class_prefix: 'fl-footer__loc' %}
+{% enddoc %}
+
+{%- liquid
+  assign field_id = id_prefix | append: '-' | append: kind
+  assign form_dom_id = field_id | append: '-form'
+  assign form_class = class_prefix | append: '-form'
+  assign select_class = 'fl-select ' | append: class_prefix | append: '-select'
+  assign submit_class = 'fl-btn fl-btn--secondary ' | append: class_prefix | append: '-submit'
+-%}
+
+{%- form 'localization', id: form_dom_id, class: form_class -%}
+  <fl-localization>
+    {%- if kind == 'country' -%}
+      <label class="visually-hidden" for="{{ field_id }}">{{ 'general.localization.country_label' | t }}</label>
+      <select id="{{ field_id }}" class="{{ select_class }}" name="country_code">
+        {%- for country in localization.available_countries -%}
+          <option
+            value="{{ country.iso_code }}"
+            {% if country.iso_code == localization.country.iso_code %}
+              selected
+            {% endif %}
+          >
+            {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+          </option>
+        {%- endfor -%}
+      </select>
+    {%- else -%}
+      <label class="visually-hidden" for="{{ field_id }}">{{ 'general.localization.language_label' | t }}</label>
+      <select id="{{ field_id }}" class="{{ select_class }}" name="locale_code">
+        {%- for language in localization.available_languages -%}
+          <option
+            value="{{ language.iso_code }}"
+            lang="{{ language.iso_code }}"
+            {% if language.iso_code == localization.language.iso_code %}
+              selected
+            {% endif %}
+          >
+            {{ language.endonym_name | capitalize }}
+          </option>
+        {%- endfor -%}
+      </select>
+    {%- endif -%}
+    <button type="submit" class="{{ submit_class }}" data-loc-submit>
+      {{ 'general.localization.update' | t }}
+    </button>
+  </fl-localization>
+{%- endform -%}

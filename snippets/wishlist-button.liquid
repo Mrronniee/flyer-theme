@@ -1,0 +1,30 @@
+{% doc %}
+  Heart toggle for the wishlist (localStorage, no app).
+  Styles live in assets/critical.css (.fl-wishlist-btn); state is driven by
+  assets/wishlist.js which syncs every [data-wishlist-toggle] on load.
+
+  @param {object} product - product object
+  @param {string} [class] - extra class (e.g. fl-wishlist-btn--card)
+
+  @example
+  {% render 'wishlist-button', product: product %}
+  {% render 'wishlist-button', product: product, class: 'fl-wishlist-btn--card' %}
+{% enddoc %}
+
+{%- if product -%}
+  <button
+    type="button"
+    class="fl-wishlist-btn{% if class != blank %} {{ class }}{% endif %}"
+    data-wishlist-toggle
+    data-handle="{{ product.handle }}"
+    data-product-id="{{ product.id }}"
+    data-label-add="{{ 'wishlist.add' | t }}"
+    data-label-remove="{{ 'wishlist.remove' | t }}"
+    aria-pressed="false"
+    aria-label="{{ 'wishlist.add' | t }}"
+  >
+    <svg class="fl-wishlist-btn__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+      <path d="M10 17s-6.5-4.1-6.5-8.6A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.5 2.1C16.5 12.9 10 17 10 17Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+  </button>
+{%- endif -%}

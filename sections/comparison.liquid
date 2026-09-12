@@ -1,0 +1,408 @@
+{% comment %}
+  Comparison table.
+  Criteria typed one per line, up to four column blocks (title, subtitle,
+  price, button) with their values typed one per line in the same order:
+  “yes” renders a check, “no” a muted dash, anything else prints as text.
+  The highlighted column carries an accent rule on top and an eyebrow label,
+  nothing more. Fully static, no JavaScript.
+{% endcomment %}
+
+{%- liquid
+  assign feature_lines = section.settings.feature_labels | escape | newline_to_br | split: '<br />'
+  assign features = ''
+  assign feature_count = 0
+  for line in feature_lines
+    assign clean = line | strip
+    if clean == blank
+      continue
+    endif
+    if feature_count >= 8
+      break
+    endif
+    if feature_count > 0
+      assign features = features | append: '||'
+    endif
+    assign features = features | append: clean
+    assign feature_count = feature_count | plus: 1
+  endfor
+  assign features = features | split: '||'
+-%}
+
+<section
+  class="fl-comparison full-width color-{{ section.settings.color_scheme }}"
+  {% render 'reveal' %}
+  style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
+>
+  <div class="fl-comparison__inner">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+      <div class="fl-section-head">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="fl-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="fl-comparison__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="fl-comparison__scroll">
+        <table class="fl-comparison__table">
+          {%- liquid
+            assign caption = section.settings.heading
+            if caption == blank
+              assign caption = 'sections.comparison.caption' | t
+            endif
+          -%}
+          <caption class="visually-hidden">{{ caption | escape }}</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="fl-comparison__corner">
+                <span class="visually-hidden">{{ 'sections.comparison.feature' | t }}</span>
+              </th>
+              {%- for block in section.blocks -%}
+                <th
+                  scope="col"
+                  class="fl-comparison__col{% if block.settings.highlight %} fl-comparison__col--highlight{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+                  {%- if block.settings.highlight and section.settings.highlight_label != blank -%}
+                    <span class="fl-eyebrow fl-comparison__flag">{{ section.settings.highlight_label | escape }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.title != blank -%}
+                    <span class="fl-comparison__title">{{ block.settings.title | escape }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.subtitle != blank -%}
+                    <span class="fl-comparison__subtitle">{{ block.settings.subtitle | escape }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.price != blank -%}
+                    <span class="fl-comparison__price">{{ block.settings.price | escape }}</span>
+                  {%- endif -%}
+                </th>
+              {%- endfor -%}
+            </tr>
+          </thead>
+          <tbody>
+            {%- for feature in features -%}
+              {%- assign row_index = forloop.index0 -%}
+              <tr>
+                <th scope="row" class="fl-comparison__feature">{{ feature }}</th>
+                {%- for block in section.blocks -%}
+                  {%- liquid
+                    assign value_lines = block.settings.values | escape | newline_to_br | split: '<br />'
+                    assign value = value_lines[row_index] | default: '' | strip
+                    assign value_key = value | downcase
+                  -%}
+                  <td class="fl-comparison__cell{% if block.settings.highlight %} fl-comparison__cell--highlight{% endif %}">
+                    {%- if value_key == 'yes' -%}
+                      <svg class="fl-comparison__check" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+                        <path d="M2.5 8.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span class="visually-hidden">{{ 'sections.comparison.yes' | t }}</span>
+                    {%- elsif value_key == 'no' -%}
+                      <span class="fl-comparison__dash" aria-hidden="true">&ndash;</span>
+                      <span class="visually-hidden">{{ 'sections.comparison.no' | t }}</span>
+                    {%- else -%}
+                      {{ value }}
+                    {%- endif -%}
+                  </td>
+                {%- endfor -%}
+              </tr>
+            {%- endfor -%}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="fl-comparison__corner"></td>
+              {%- for block in section.blocks -%}
+                <td class="fl-comparison__cell fl-comparison__cell--action{% if block.settings.highlight %} fl-comparison__cell--highlight{% endif %}">
+                  {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
+                    <a
+                      class="fl-btn{% unless block.settings.highlight %} fl-btn--secondary{% endunless %} fl-comparison__btn"
+                      href="{{ block.settings.button_link }}"
+                    >
+                      {{- block.settings.button_label | escape -}}
+                    </a>
+                  {%- endif -%}
+                </td>
+              {%- endfor -%}
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .fl-comparison__inner {
+    width: var(--content-width);
+    margin-inline: auto;
+  }
+
+  .fl-comparison__heading {
+    margin: 0;
+  }
+
+  .fl-comparison__scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .fl-comparison__table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    min-width: 640px;
+  }
+
+  .fl-comparison__table th,
+  .fl-comparison__table td {
+    padding: 16px 20px;
+    text-align: start;
+    vertical-align: top;
+    border-block-end: 1px solid var(--color-line);
+  }
+
+  .fl-comparison__table thead th {
+    vertical-align: bottom;
+    padding-block-start: 12px;
+  }
+
+  .fl-comparison__corner,
+  .fl-comparison__feature {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--color-bg);
+    padding-inline-start: 0;
+    width: 28%;
+  }
+
+  .fl-comparison__feature {
+    font-weight: 500;
+  }
+
+  .fl-comparison__col {
+    border-block-start: 2px solid transparent;
+  }
+
+  .fl-comparison__col--highlight {
+    border-block-start-color: var(--color-accent);
+  }
+
+  .fl-comparison__flag {
+    margin-bottom: 8px;
+  }
+
+  .fl-comparison__title {
+    display: block;
+    font-family: var(--font-heading-family);
+    font-weight: var(--font-heading-weight);
+    font-size: calc(var(--font-size-base) * var(--heading-scale));
+    line-height: 1.2;
+  }
+
+  .fl-comparison__subtitle {
+    display: block;
+    margin-block-start: 4px;
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+
+  .fl-comparison__price {
+    display: block;
+    margin-block-start: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fl-comparison__cell {
+    color: var(--color-ink);
+  }
+
+  .fl-comparison__check {
+    display: block;
+    color: var(--color-accent);
+  }
+
+  .fl-comparison__dash {
+    color: var(--color-muted);
+  }
+
+  .fl-comparison__table tfoot td {
+    border-block-end: 0;
+    padding-block-start: 24px;
+  }
+
+  .fl-comparison__btn {
+    width: 100%;
+  }
+
+  @media (max-width: 749px) {
+    .fl-comparison__table th,
+    .fl-comparison__table td {
+      padding: 14px 16px;
+    }
+
+    .fl-comparison__corner,
+    .fl-comparison__feature {
+      width: 40%;
+      min-width: 140px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Comparison table",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Plans"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Compare"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_labels",
+      "label": "Criteria",
+      "default": "Free shipping\nReturns window\nGift wrapping\nPriority support\nEarly access to drops",
+      "info": "One criterion per line, up to 8."
+    },
+    {
+      "type": "text",
+      "id": "highlight_label",
+      "label": "Highlight label",
+      "default": "Most popular"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Standard"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "For regular customers"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$9 per month"
+        },
+        {
+          "type": "checkbox",
+          "id": "highlight",
+          "label": "Highlight this column",
+          "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "values",
+          "label": "Values",
+          "default": "yes\n30 days\nyes\nno\nyes",
+          "info": "One line per criterion, in the same order. Type yes for a check, no for a dash, or any text."
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Choose plan"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison table",
+      "blocks": [
+        {
+          "type": "column",
+          "settings": {
+            "title": "Essential",
+            "subtitle": "For occasional orders",
+            "price": "Free",
+            "highlight": false,
+            "values": "Over $75\n14 days\nno\nno\nno",
+            "button_label": "Choose plan"
+          }
+        },
+        {
+          "type": "column",
+          "settings": {
+            "title": "Standard",
+            "subtitle": "For regular customers",
+            "price": "$9 per month",
+            "highlight": true,
+            "values": "yes\n30 days\nyes\nno\nyes",
+            "button_label": "Choose plan"
+          }
+        },
+        {
+          "type": "column",
+          "settings": {
+            "title": "Premium",
+            "subtitle": "For collectors",
+            "price": "$19 per month",
+            "highlight": false,
+            "values": "yes\n60 days\nyes\nyes\nyes",
+            "button_label": "Choose plan"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

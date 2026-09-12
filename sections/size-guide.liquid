@@ -1,0 +1,390 @@
+{% comment %}
+  Size guide.
+  A sober measurement table: one row block per size, column headings typed
+  as a comma-separated list, cells in the same order. Each cell may hold two
+  units written as “84 / 33”; with the unit toggle on, native radios (cm / in)
+  show one half at a time. Without JavaScript both halves stay visible side
+  by side and the radios are not rendered.
+{% endcomment %}
+
+{%- liquid
+  assign cols = section.settings.col_headings | split: ','
+  assign unit_toggle = section.settings.unit_toggle
+  assign unit_a = section.settings.unit_a | strip
+  assign unit_b = section.settings.unit_b | strip
+  if unit_a == blank
+    assign unit_a = 'cm'
+  endif
+  if unit_b == blank
+    assign unit_b = 'in'
+  endif
+
+  assign caption = section.settings.heading
+  if caption == blank
+    assign caption = 'sections.size_guide.size' | t
+  endif
+-%}
+
+<section
+  class="fl-size-guide full-width color-{{ section.settings.color_scheme }}"
+  {% render 'reveal' %}
+  style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
+>
+  <div class="fl-size-guide__inner">
+    {%- if section.settings.heading != blank or section.settings.intro != blank -%}
+      <div class="fl-section-head fl-size-guide__head">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="fl-size-guide__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.intro != blank -%}
+          <div class="fl-size-guide__intro fl-rte">{{ section.settings.intro }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <fl-size-guide class="fl-size-guide__body">
+      {%- if unit_toggle -%}
+        <fieldset class="fl-size-guide__units" data-units hidden>
+          <legend class="visually-hidden">{{ 'sections.size_guide.unit_label' | t }}</legend>
+          <label class="fl-size-guide__unit">
+            <input type="radio" name="fl-size-guide-unit-{{ section.id }}" value="a" checked>
+            <span>{{ unit_a | escape }}</span>
+          </label>
+          <label class="fl-size-guide__unit">
+            <input type="radio" name="fl-size-guide-unit-{{ section.id }}" value="b">
+            <span>{{ unit_b | escape }}</span>
+          </label>
+        </fieldset>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="fl-size-guide__scroll">
+          <table class="fl-size-guide__table">
+            <caption class="visually-hidden">{{ caption | escape }}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{{ 'sections.size_guide.size' | t }}</th>
+                {%- for col in cols -%}
+                  <th scope="col">{{ col | strip | escape }}</th>
+                {%- endfor -%}
+              </tr>
+            </thead>
+            <tbody>
+              {%- for block in section.blocks -%}
+                {%- assign vals = block.settings.values | split: ',' -%}
+                <tr {{ block.shopify_attributes }}>
+                  <th scope="row">{{ block.settings.label | escape }}</th>
+                  {%- for col in cols -%}
+                    {%- liquid
+                      assign cell = vals[forloop.index0] | default: '' | strip
+                      assign parts = cell | split: '/'
+                    -%}
+                    <td class="fl-size-guide__cell">
+                      {%- if unit_toggle and parts.size > 1 -%}
+                        <span data-unit="a">{{ parts[0] | strip | escape }}</span>
+                        <span class="fl-size-guide__sep" aria-hidden="true">/</span>
+                        <span data-unit="b">{{ parts[1] | strip | escape }}</span>
+                      {%- else -%}
+                        {{ cell | escape }}
+                      {%- endif -%}
+                    </td>
+                  {%- endfor -%}
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.note != blank -%}
+        <p class="fl-size-guide__note">{{ section.settings.note | escape }}</p>
+      {%- endif -%}
+    </fl-size-guide>
+  </div>
+</section>
+
+{% stylesheet %}
+  .fl-size-guide__inner {
+    width: min(920px, var(--content-width));
+    margin-inline: auto;
+  }
+
+  .fl-size-guide__heading {
+    margin: 0;
+  }
+
+  .fl-size-guide__intro {
+    margin-block-start: 12px;
+    color: var(--color-muted);
+    max-width: 60ch;
+  }
+
+  .fl-size-guide__body {
+    display: block;
+  }
+
+  .fl-size-guide__units {
+    display: flex;
+    gap: 4px;
+    margin: 0 0 16px;
+    padding: 0;
+    border: 0;
+  }
+
+  .fl-size-guide__unit {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    cursor: pointer;
+  }
+
+  .fl-size-guide__unit input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .fl-size-guide__unit span {
+    padding: 4px 12px;
+    border-block-end: 1px solid transparent;
+    color: var(--color-muted);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .fl-size-guide__unit input:checked + span {
+    color: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+
+  .fl-size-guide__unit input:focus-visible + span {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  .fl-size-guide__scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .fl-size-guide__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fl-size-guide__table th,
+  .fl-size-guide__table td {
+    padding: 14px 16px;
+    text-align: start;
+    white-space: nowrap;
+    border-block-end: 1px solid var(--color-line);
+  }
+
+  .fl-size-guide__table th:first-child,
+  .fl-size-guide__table td:first-child {
+    padding-inline-start: 0;
+  }
+
+  .fl-size-guide__table thead th {
+    font-size: 0.75em;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .fl-size-guide__table tbody th {
+    font-weight: 500;
+  }
+
+  .fl-size-guide__sep {
+    color: var(--color-muted);
+    margin-inline: 4px;
+  }
+
+  .fl-size-guide__note {
+    margin: 16px 0 0;
+    font-size: 0.875em;
+    color: var(--color-muted);
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  class FlSizeGuide extends HTMLElement {
+    connectedCallback() {
+      this.units = this.querySelector('[data-units]');
+      if (!this.units) return;
+      this.units.hidden = false;
+      this.querySelectorAll('.fl-size-guide__sep').forEach((el) => {
+        el.hidden = true;
+      });
+      this.units.addEventListener('change', () => this.apply());
+      this.apply();
+    }
+
+    apply() {
+      const checked = this.units.querySelector('input:checked');
+      const unit = checked ? checked.value : 'a';
+      this.querySelectorAll('[data-unit]').forEach((el) => {
+        el.hidden = el.dataset.unit !== unit;
+      });
+    }
+  }
+
+  if (!customElements.get('fl-size-guide')) customElements.define('fl-size-guide', FlSizeGuide);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Size guide",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Size guide"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro",
+      "default": "<p>Measurements are taken flat across the garment. If you sit between two sizes, choose the larger one.</p>"
+    },
+    {
+      "type": "text",
+      "id": "col_headings",
+      "label": "Column headings",
+      "default": "Chest,Waist,Hips,Length",
+      "info": "Separate with commas."
+    },
+    {
+      "type": "header",
+      "content": "Units"
+    },
+    {
+      "type": "checkbox",
+      "id": "unit_toggle",
+      "label": "Show a unit toggle",
+      "default": true,
+      "info": "Type both values in each cell, separated by a slash: 84 / 33."
+    },
+    {
+      "type": "text",
+      "id": "unit_a",
+      "label": "First unit",
+      "default": "cm"
+    },
+    {
+      "type": "text",
+      "id": "unit_b",
+      "label": "Second unit",
+      "default": "in"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note",
+      "default": "Measurements may vary by up to 1 cm."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Size row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Size",
+          "default": "M"
+        },
+        {
+          "type": "text",
+          "id": "values",
+          "label": "Values",
+          "default": "88 / 34.5,70 / 27.5,94 / 37,64 / 25",
+          "info": "One value per column heading, separated by commas, in the same order."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size guide",
+      "blocks": [
+        {
+          "type": "row",
+          "settings": {
+            "label": "XS",
+            "values": "80 / 31.5,62 / 24.5,86 / 34,60 / 23.5"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "S",
+            "values": "84 / 33,66 / 26,90 / 35.5,62 / 24.5"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "M",
+            "values": "88 / 34.5,70 / 27.5,94 / 37,64 / 25"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "L",
+            "values": "94 / 37,76 / 30,100 / 39.5,66 / 26"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "XL",
+            "values": "100 / 39.5,82 / 32.5,106 / 41.5,68 / 27"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

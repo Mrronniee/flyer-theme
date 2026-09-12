@@ -56,6 +56,13 @@ Ready-made classes in `critical.css` apply those families: `.fl-media`, `.fl-box
 - `{% render 'price', product: product %}` — never render prices by hand.
 - `{% render 'quick-add', product: product %}` — posts `/cart/add`, works without JS.
 - `{% render 'image', image: ..., url: ..., width: ... %}` — generic responsive image.
+- `{% render 'wishlist-button', product: product, class: '...' %}` — heart toggle; only renders when `settings.wishlist_enabled`. JS in `assets/wishlist.js`, storage key `fl:wishlist`.
+- `{% render 'localization-form', kind: 'country'|'language', id_prefix: 'Header', class_prefix: 'fl-header__loc' %}` — Markets selector, native form (`<fl-localization>` defined in footer.liquid auto-submits).
+- Quick view: put `data-quick-view-open data-handle="{{ product.handle }}"` on any button; `assets/quick-view.js` fetches `/products/<handle>?section_id=quick-view` into the `<dialog data-quick-view>` rendered once by `snippets/quick-view-dialog.liquid`.
+
+## Motion (bibliothèque d'animations de KIOSK)
+
+Card hover = **S6 feuilletage** (second image shown flat, no fade); buttons = **R1 pression d'encre** (`translateY(1px)` on `:active`); links keep the hairline underline. Forbidden: `scale()` zoom on hover, fades in cascade, blur, bounce, pulse, parallax.
 
 ## Section authoring rules
 

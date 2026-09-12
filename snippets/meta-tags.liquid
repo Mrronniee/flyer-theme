@@ -74,3 +74,131 @@
     {{ article | structured_data }}
   </script>
 {%- endif -%}
+
+{%- comment -%}
+  Site-level and navigational structured data. Product and article bodies come
+  from Shopify's structured_data filter above; this adds what it does not
+  emit: the organisation, the site search action, breadcrumbs and the list of
+  products shown on a collection page.
+{%- endcomment -%}
+{%- if request.page_type == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "url": {{ request.origin | json }}
+      {%- if settings.logo -%}
+        , "logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }}
+      {%- endif -%}
+      {%- assign social_urls = '' -%}
+      {%- assign social_handles = 'instagram,tiktok,facebook,x,pinterest,youtube,linkedin' | split: ',' -%}
+      {%- for handle in social_handles -%}
+        {%- assign key = 'social_' | append: handle -%}
+        {%- if settings[key] != blank -%}
+          {%- assign social_urls = social_urls | append: settings[key] | append: '|' -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if social_urls != blank -%}
+        , "sameAs": {{ social_urls | split: '|' | json }}
+      {%- endif -%}
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "url": {{ request.origin | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          {%- assign search_placeholder = '{' | append: 'search_term_string' | append: '}' -%}
+          "urlTemplate": {{ request.origin | append: routes.search_url | append: '?q=' | append: search_placeholder | json }}
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+{%- endif -%}
+
+{%- liquid
+  # Breadcrumb trail: Home, then the collection or blog the page belongs to.
+  assign crumbs_names = ''
+  assign crumbs_urls = ''
+  case request.page_type
+    when 'product'
+      if collection
+        assign crumbs_names = collection.title
+        assign crumbs_urls = collection.url
+      endif
+      assign crumbs_names = crumbs_names | append: '|' | append: product.title
+      assign crumbs_urls = crumbs_urls | append: '|' | append: product.url
+    when 'collection'
+      assign crumbs_names = collection.title
+      assign crumbs_urls = collection.url
+    when 'article'
+      assign crumbs_names = blog.title | append: '|' | append: article.title
+      assign crumbs_urls = blog.url | append: '|' | append: article.url
+    when 'blog'
+      assign crumbs_names = blog.title
+      assign crumbs_urls = blog.url
+    when 'page'
+      assign crumbs_names = page.title
+      assign crumbs_urls = page.url
+  endcase
+-%}
+{%- if crumbs_names != blank -%}
+  {%- assign crumb_names = crumbs_names | split: '|' -%}
+  {%- assign crumb_urls = crumbs_urls | split: '|' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": {{ 'general.breadcrumbs.home' | t | json }},
+          "item": {{ request.origin | json }}
+        }
+        {%- for name in crumb_names -%}
+          {%- if name == blank -%}{%- continue -%}{%- endif -%}
+          , {
+            "@type": "ListItem",
+            "position": {{ forloop.index | plus: 1 }},
+            "name": {{ name | json }},
+            "item": {{ request.origin | append: crumb_urls[forloop.index0] | json }}
+          }
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{%- if request.page_type == 'collection' and collection.products_count > 0 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": {{ collection.title | json }},
+      "url": {{ request.origin | append: collection.url | json }},
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": {{ collection.products_count }},
+        "itemListElement": [
+          {%- for item in collection.products limit: 12 -%}
+            {%- unless forloop.first -%},{%- endunless -%}
+            {
+              "@type": "ListItem",
+              "position": {{ forloop.index }},
+              "url": {{ request.origin | append: item.url | json }},
+              "name": {{ item.title | json }}
+            }
+          {%- endfor -%}
+        ]
+      }
+    }
+  </script>
+{%- endif -%}

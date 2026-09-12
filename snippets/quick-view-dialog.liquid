@@ -1,0 +1,22 @@
+{% doc %}
+  Empty quick view dialog, printed once from layout/theme.liquid (before
+  </body>) when Wishlist & quick view > Enable quick view is on. Filled by
+  assets/quick-view.js with the .fl-qv block of sections/quick-view.liquid.
+
+  @example
+  {% render 'quick-view-dialog' %}
+{% enddoc %}
+
+<fl-quick-view>
+  <dialog class="fl-popup fl-qv-dialog" data-quick-view scroll-lock aria-label="{{ 'products.quick_view.title' | t }}">
+    <button type="button" class="fl-qv-dialog__close" data-quick-view-close>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+        <path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+    </button>
+    <div class="fl-qv-dialog__body" data-quick-view-content>
+      <p class="fl-qv-dialog__loading" data-quick-view-loading hidden>{{ 'accessibility.loading' | t }}</p>
+    </div>
+  </dialog>
+</fl-quick-view>

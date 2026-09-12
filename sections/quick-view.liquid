@@ -1,0 +1,96 @@
+{% comment %}
+  Utility section, never added to a template. Rendered through the Section
+  Rendering API on a product URL (/products/<handle>?section_id=quick-view);
+  assets/quick-view.js lifts .fl-qv out of the response and drops it into the
+  <dialog data-quick-view> printed by snippets/quick-view-dialog.liquid.
+  Layout lives in assets/critical.css (.fl-qv). Without JS the form posts to
+  /cart/add natively.
+{% endcomment %}
+
+{%- if product -%}
+  {%- liquid
+    assign current_variant = product.selected_or_first_available_variant
+    assign qv_id = 'FlQv-' | append: product.id
+  -%}
+  <div class="fl-qv" data-qv>
+    <div class="fl-qv__media fl-media">
+      {%- if product.featured_media -%}
+        {{
+          product.featured_media
+          | image_url: width: 900
+          | image_tag: widths: '450, 700, 900', sizes: '(max-width: 749px) 100vw, 440px', alt: product.featured_media.alt, loading: 'eager'
+        }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'fl-qv__placeholder' }}
+      {%- endif -%}
+    </div>
+
+    <div class="fl-qv__info">
+      {%- if product.vendor != blank -%}
+        <p class="fl-qv__vendor">{{ product.vendor | escape }}</p>
+      {%- endif -%}
+
+      <h2 class="fl-qv__title" tabindex="-1" data-qv-title>
+        <a href="{{ product.url }}">{{ product.title | escape }}</a>
+      </h2>
+
+      <div class="fl-qv__price" data-qv-price aria-live="polite">
+        {% render 'price', product: product, variant: current_variant, show_from: false %}
+      </div>
+
+      {%- if product.description != blank -%}
+        <p class="fl-qv__desc">{{ product.description | strip_html | truncatewords: 40 }}</p>
+      {%- endif -%}
+
+      <form
+        action="{{ routes.cart_add_url }}"
+        method="post"
+        enctype="multipart/form-data"
+        class="fl-qv__form"
+        data-quick-add
+      >
+        {%- if product.variants.size > 1 -%}
+          <div class="fl-field">
+            <label class="fl-label" for="{{ qv_id }}-variant">{{ 'products.product.choose_variant' | t }}</label>
+            <select id="{{ qv_id }}-variant" name="id" class="fl-select" data-qv-variant>
+              {%- for variant in product.variants -%}
+                <option
+                  value="{{ variant.id }}"
+                  data-price="{{ variant.price | money }}"
+                  {% if variant.id == current_variant.id %}selected{% endif %}
+                  {% unless variant.available %}disabled{% endunless %}
+                >
+                  {{ variant.title | escape }}
+                  {%- unless variant.available %} — {{ 'products.product.sold_out' | t }}{% endunless -%}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {%- endif -%}
+
+        <div class="fl-field">
+          <label class="fl-label" for="{{ qv_id }}-qty">{{ 'products.product.quantity' | t }}</label>
+          <input id="{{ qv_id }}-qty" type="number" name="quantity" min="1" value="1" class="fl-input fl-qv__qty">
+        </div>
+
+        <button type="submit" class="fl-btn fl-qv__submit"{% unless product.available %} disabled{% endunless %}>
+          {%- if product.available -%}
+            {{ 'products.product.add_to_cart' | t }}
+          {%- else -%}
+            {{ 'products.product.sold_out' | t }}
+          {%- endif -%}
+        </button>
+      </form>
+
+      <a class="fl-qv__details" href="{{ product.url }}">{{ 'products.product.view_details' | t }}</a>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Quick view"
+}
+{% endschema %}

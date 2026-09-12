@@ -191,6 +191,11 @@ a {
   cursor: pointer;
   transition: opacity 0.15s ease;
 }
+/* Press feedback: sinks one pixel the instant it is pressed. */
+.fl-btn:active {
+  transition: none;
+  transform: translateY(1px);
+}
 .fl-btn:hover {
   opacity: 0.85;
 }
@@ -489,9 +494,18 @@ h6 {
   fill: var(--color-muted);
   opacity: 0.35;
 }
-/* Theme setting: Animations > Hover effect (image zoom) */
-.fl-card--zoom:hover .fl-card__media img {
-  transform: scale(1.03);
+/* Theme setting: Animations > Hover effect (second image). The alternate view
+   sits over the first and appears flat, without a fade, like turning a page. */
+.fl-card__media .fl-card__img--alt {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  opacity: 0;
+  transition: none;
+}
+.fl-card--flip:hover .fl-card__img--alt,
+.fl-card--flip:focus-within .fl-card__img--alt {
+  opacity: 1;
 }
 /* Corner comes from the Badges theme setting; the four rules below are toggled
    by the position class written on the card. */
@@ -629,4 +643,190 @@ main > .shopify-section + .shopify-section {
 .fl-overlay.is-open {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* --- Wishlist (markup in snippets/wishlist-button.liquid, JS in assets/wishlist.js) --- */
+.fl-wishlist-btn {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-btn);
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.fl-wishlist-btn:hover {
+  background: var(--color-surface);
+}
+.fl-wishlist-btn__icon path {
+  fill: none;
+  transition: fill 0.15s ease;
+}
+.fl-wishlist-btn[aria-pressed='true'] .fl-wishlist-btn__icon path {
+  fill: currentColor;
+}
+/* On cards: top-right corner of the image, above the card's stretched link. */
+.fl-wishlist-btn--card {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--color-bg);
+  border-radius: 999px;
+}
+.fl-wishlist-btn--card:hover {
+  background: var(--color-bg);
+  opacity: 0.85;
+}
+/* On the product page: heart beside the h1. */
+.fl-wishlist-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.fl-wishlist-row > .fl-product__title {
+  min-width: 0;
+}
+.fl-wishlist-btn--title {
+  flex: 0 0 auto;
+}
+/* Header badge (mirrors the cart count; hidden attribute when 0). */
+.fl-wishlist-count {
+  position: absolute;
+  top: 4px;
+  right: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 999px;
+}
+.fl-wishlist-count[hidden] {
+  display: none;
+}
+
+/* --- Quick view (dialog in snippets/quick-view-dialog.liquid, content in sections/quick-view.liquid) --- */
+.fl-qv-dialog {
+  width: min(880px, calc(100vw - 32px));
+  max-width: min(880px, calc(100vw - 32px));
+  max-height: 90vh;
+  padding: 0;
+  overflow: auto;
+  color: var(--color-ink);
+}
+.fl-qv-dialog::backdrop {
+  background: rgb(0 0 0 / 40%);
+}
+.fl-qv-dialog__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-btn);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.fl-qv-dialog__close:hover {
+  background: var(--color-surface);
+}
+.fl-qv-dialog__body {
+  min-height: 160px;
+}
+.fl-qv-dialog__loading {
+  padding: 48px 24px;
+  color: var(--color-muted);
+}
+.fl-qv {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  padding: 24px;
+}
+.fl-qv__media {
+  min-width: 0;
+  align-self: start;
+}
+.fl-qv__media img,
+.fl-qv__placeholder {
+  width: 100%;
+  aspect-ratio: var(--card-ratio);
+  object-fit: cover;
+}
+.fl-qv__placeholder {
+  fill: var(--color-muted);
+  opacity: 0.35;
+}
+.fl-qv__info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  padding-right: 40px;
+}
+.fl-qv__vendor {
+  font-size: 0.8125em;
+  color: var(--color-muted);
+}
+.fl-qv__title {
+  font-size: calc(var(--font-size-base) * var(--heading-scale));
+}
+.fl-qv__title a {
+  text-decoration: none;
+}
+.fl-qv__title a:hover {
+  text-decoration: underline;
+}
+.fl-qv__desc {
+  color: var(--color-muted);
+}
+.fl-qv__form {
+  padding-top: 16px;
+  border-top: 1px solid var(--color-line);
+}
+.fl-qv__form .fl-field {
+  margin-bottom: 14px;
+}
+.fl-qv__qty {
+  width: 96px;
+}
+.fl-qv__submit {
+  width: 100%;
+}
+.fl-qv__details {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+@media (max-width: 749px) {
+  .fl-qv {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding: 16px;
+  }
+  .fl-qv__info {
+    padding-right: 0;
+  }
 }

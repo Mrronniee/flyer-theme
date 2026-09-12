@@ -114,7 +114,14 @@
                   {{- product.vendor | escape -}}
                 </p>
               {%- endif -%}
-              <h1 class="fl-product__title">{{ product.title | escape }}</h1>
+              {%- if settings.wishlist_enabled -%}
+                <div class="fl-wishlist-row">
+                  <h1 class="fl-product__title">{{ product.title | escape }}</h1>
+                  {% render 'wishlist-button', product: product, class: 'fl-wishlist-btn--title' %}
+                </div>
+              {%- else -%}
+                <h1 class="fl-product__title">{{ product.title | escape }}</h1>
+              {%- endif -%}
             </div>
 
           {%- when 'price' -%}

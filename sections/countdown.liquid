@@ -1,0 +1,383 @@
+{% comment %}
+  Countdown.
+  Text on one side, four tabular counters (days, hours, minutes, seconds)
+  on the other, separated by hairlines. The end date is read as the
+  visitor’s local time. Without JavaScript the counters stay empty and a
+  <noscript> line prints the formatted end date instead. Once expired the
+  counters give way to the expiry text, or the whole section hides.
+{% endcomment %}
+
+{%- liquid
+  assign end_date = section.settings.end_date | strip
+  assign end_time = section.settings.end_time | strip
+  if end_time == blank
+    assign end_time = '23:59'
+  endif
+  assign end_iso = end_date | append: 'T' | append: end_time | append: ':00'
+
+  assign has_button = false
+  if section.settings.button_label != blank and section.settings.button_link != blank
+    assign has_button = true
+  endif
+-%}
+
+<section
+  class="fl-countdown full-width color-{{ section.settings.color_scheme }}"
+  {% render 'reveal' %}
+  style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
+>
+  <div class="fl-countdown__inner">
+    <div class="fl-countdown__copy">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="fl-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="fl-countdown__heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="fl-countdown__text fl-rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if has_button -%}
+        <a class="fl-btn fl-countdown__btn" href="{{ section.settings.button_link }}">
+          {{- section.settings.button_label | escape -}}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <fl-countdown
+      class="fl-countdown__clock{% unless section.settings.show_labels %} fl-countdown__clock--no-labels{% endunless %}"
+      data-end="{{ end_iso | escape }}"
+      data-labels="{{ 'sections.countdown.days' | t | escape }}|{{ 'sections.countdown.hours' | t | escape }}|{{ 'sections.countdown.minutes' | t | escape }}|{{ 'sections.countdown.seconds' | t | escape }}"
+      {% if section.settings.hide_when_expired %}data-hide-expired{% endif %}
+    >
+      <div class="fl-countdown__timer" role="timer" data-timer>
+        <div class="fl-countdown__unit">
+          <span class="fl-countdown__value" aria-live="off" data-unit="days"></span>
+          <span class="fl-countdown__label">{{ 'sections.countdown.days' | t }}</span>
+        </div>
+        <div class="fl-countdown__unit">
+          <span class="fl-countdown__value" aria-live="off" data-unit="hours"></span>
+          <span class="fl-countdown__label">{{ 'sections.countdown.hours' | t }}</span>
+        </div>
+        <div class="fl-countdown__unit">
+          <span class="fl-countdown__value" aria-live="off" data-unit="minutes"></span>
+          <span class="fl-countdown__label">{{ 'sections.countdown.minutes' | t }}</span>
+        </div>
+        <div class="fl-countdown__unit">
+          <span class="fl-countdown__value" aria-live="off" data-unit="seconds"></span>
+          <span class="fl-countdown__label">{{ 'sections.countdown.seconds' | t }}</span>
+        </div>
+      </div>
+
+      <p class="fl-countdown__expired" data-expired hidden>
+        {{- section.settings.expired_text | escape -}}
+      </p>
+
+      {%- if end_date != blank -%}
+        <noscript>
+          <p class="fl-countdown__noscript">
+            {%- assign end_label = end_date | date: format: 'month_day_year' -%}
+            {{ 'sections.countdown.ends_on' | t: date: end_label }}
+          </p>
+        </noscript>
+      {%- endif -%}
+    </fl-countdown>
+  </div>
+</section>
+
+{% stylesheet %}
+  .fl-countdown__inner {
+    width: var(--content-width);
+    margin-inline: auto;
+    display: grid;
+    gap: 32px;
+    padding-block-start: 32px;
+    border-block-start: 1px solid var(--color-line);
+  }
+
+  .fl-countdown__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .fl-countdown__heading {
+    margin: 0;
+  }
+
+  .fl-countdown__text {
+    color: var(--color-muted);
+    max-width: 48ch;
+  }
+
+  .fl-countdown__copy > .fl-countdown__btn {
+    margin-block-start: 8px;
+  }
+
+  .fl-countdown__clock {
+    display: block;
+    min-width: 0;
+  }
+
+  .fl-countdown__timer {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .fl-countdown__unit {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-inline: 16px;
+    min-width: 0;
+  }
+
+  .fl-countdown__unit:first-child {
+    padding-inline-start: 0;
+  }
+
+  .fl-countdown__unit + .fl-countdown__unit {
+    border-inline-start: 1px solid var(--color-line);
+  }
+
+  .fl-countdown__value {
+    display: block;
+    min-height: 1.2em;
+    font-family: var(--font-heading-family);
+    font-weight: var(--font-heading-weight);
+    font-size: calc(var(--font-size-base) * var(--heading-scale) * var(--heading-scale) * var(--heading-scale));
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fl-countdown__label {
+    font-size: 0.75em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .fl-countdown__clock--no-labels .fl-countdown__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .fl-countdown__expired,
+  .fl-countdown__noscript {
+    margin: 0;
+    font-size: 1.0625em;
+  }
+
+  @media (min-width: 750px) {
+    .fl-countdown__inner {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: center;
+      gap: 48px;
+    }
+
+    .fl-countdown__unit {
+      padding-inline: 24px;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .fl-countdown__value {
+      font-size: calc(var(--font-size-base) * var(--heading-scale) * var(--heading-scale));
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  class FlCountdown extends HTMLElement {
+    connectedCallback() {
+      this.end = new Date(this.dataset.end || '');
+      this.timer = this.querySelector('[data-timer]');
+      this.expired = this.querySelector('[data-expired]');
+      this.values = {};
+      this.querySelectorAll('[data-unit]').forEach((el) => {
+        this.values[el.dataset.unit] = el;
+      });
+      this.labels = (this.dataset.labels || '').split('|');
+      this.lastMinute = null;
+
+      if (!this.timer || isNaN(this.end.getTime())) {
+        if (this.timer) this.timer.hidden = true;
+        return;
+      }
+
+      this.tick();
+      this.interval = window.setInterval(() => this.tick(), 1000);
+    }
+
+    disconnectedCallback() {
+      if (this.interval) window.clearInterval(this.interval);
+      this.interval = null;
+    }
+
+    tick() {
+      const diff = this.end.getTime() - Date.now();
+      if (diff <= 0) {
+        this.finish();
+        return;
+      }
+
+      const total = Math.floor(diff / 1000);
+      const parts = {
+        days: Math.floor(total / 86400),
+        hours: Math.floor((total % 86400) / 3600),
+        minutes: Math.floor((total % 3600) / 60),
+        seconds: total % 60,
+      };
+
+      Object.keys(parts).forEach((key) => {
+        const el = this.values[key];
+        if (!el) return;
+        const text = key === 'days' ? String(parts[key]) : String(parts[key]).padStart(2, '0');
+        if (el.textContent !== text) el.textContent = text;
+      });
+
+      const minuteKey = parts.days + ':' + parts.hours + ':' + parts.minutes;
+      if (minuteKey !== this.lastMinute) {
+        this.lastMinute = minuteKey;
+        this.timer.setAttribute(
+          'aria-label',
+          parts.days + ' ' + (this.labels[0] || '') + ', ' +
+            parts.hours + ' ' + (this.labels[1] || '') + ', ' +
+            parts.minutes + ' ' + (this.labels[2] || '')
+        );
+      }
+    }
+
+    finish() {
+      this.disconnectedCallback();
+      if (this.hasAttribute('data-hide-expired')) {
+        const root = this.closest('.fl-countdown');
+        if (root) root.hidden = true;
+        return;
+      }
+      this.timer.hidden = true;
+      if (this.expired) this.expired.hidden = false;
+    }
+  }
+
+  if (!customElements.get('fl-countdown')) customElements.define('fl-countdown', FlCountdown);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Countdown",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Limited time"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sale ends soon"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Up to 30% off the whole collection. Prices go back up when the clock hits zero.</p>"
+    },
+    {
+      "type": "header",
+      "content": "End of the offer"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End date",
+      "default": "2026-12-31",
+      "info": "Format YYYY-MM-DD, e.g. 2026-12-31. Read in each visitor’s local time zone."
+    },
+    {
+      "type": "text",
+      "id": "end_time",
+      "label": "End time",
+      "default": "23:59",
+      "info": "24-hour format HH:MM, in the visitor’s local time."
+    },
+    {
+      "type": "text",
+      "id": "expired_text",
+      "label": "Text once expired",
+      "default": "This offer has ended."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_when_expired",
+      "label": "Hide section once expired",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_labels",
+      "label": "Show unit labels",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop the sale"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Countdown"
+    }
+  ]
+}
+{% endschema %}
