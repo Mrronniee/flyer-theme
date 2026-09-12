@@ -113,7 +113,7 @@
                       <path d="m2 3.5 3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </summary>
-                  <ul class="fl-header__panel">
+                  <ul class="fl-header__panel{% if link.links.size > 6 %} fl-header__panel--wide{% endif %}">
                     {%- for child in link.links -%}
                       <li>
                         <a
@@ -472,18 +472,26 @@
     top: 100%;
     left: -20px;
     z-index: 5;
-    min-width: 220px;
+    min-width: 240px;
     /* A single unbreakable submenu word (min-content > 220px) would otherwise
        push the panel past the viewport edge and scroll the whole page. */
     max-width: min(320px, calc(100vw - var(--page-margin) * 2));
     overflow-wrap: anywhere;
     margin: 0;
-    padding: 8px 0;
+    padding: 14px 0;
     list-style: none;
     background: var(--color-bg);
     border: 1px solid var(--color-line);
-    border-radius: var(--radius-card);
-    box-shadow: 0 8px 40px rgb(0 0 0 / 12%);
+    border-radius: 0;
+    box-shadow: 0 18px 50px rgb(0 0 0 / 8%);
+  }
+
+  /* Long submenus read as a column of links; past six they go two-up. */
+  .fl-header__panel--wide {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+    column-gap: 8px;
+    min-width: 380px;
   }
 
   .fl-header__dropdown[open] .fl-header__panel {
@@ -498,6 +506,7 @@
   }
 
   .fl-header__sublink {
+    position: relative;
     display: flex;
     align-items: center;
     min-height: 44px;
@@ -505,12 +514,24 @@
     color: var(--color-ink);
     font-size: 0.9375em;
     text-decoration: none;
-    transition: background 0.15s ease;
   }
 
-  .fl-header__sublink:hover,
-  .fl-header__sublink:focus-visible {
-    background: var(--color-surface);
+  /* Same rule that underlines the top-level links, inset to the panel padding:
+     a grey fill block was the one un-editorial thing left in the header. */
+  .fl-header__sublink::after {
+    content: '';
+    position: absolute;
+    inset: auto 20px 9px 20px;
+    height: 1px;
+    background: var(--color-ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+
+  .fl-header__sublink:hover::after,
+  .fl-header__sublink:focus-visible::after {
+    transform: scaleX(1);
   }
 
   .fl-header__sublink.is-active {
@@ -658,10 +679,25 @@
     justify-content: space-between;
     gap: 12px;
     width: 100%;
-    min-height: 48px;
-    padding: 10px var(--page-margin);
+    min-height: 56px;
+    padding: 12px var(--page-margin);
     color: var(--color-ink);
+    font-family: var(--font-heading-family);
+    font-size: 1.0625em;
+    letter-spacing: -0.01em;
     text-decoration: none;
+  }
+
+  /* Hairlines between top-level entries; nested lists keep the body font. */
+  .fl-header__drawer-menu > li + li {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .fl-header__drawer-sub .fl-header__drawer-link {
+    min-height: 44px;
+    font-family: inherit;
+    font-size: 0.9375em;
+    color: var(--color-muted);
   }
 
   .fl-header__drawer-summary {

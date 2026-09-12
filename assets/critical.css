@@ -560,8 +560,47 @@ h6 {
   z-index: 1;
   /* Pushed to the bottom of the card so buttons line up across a row. */
   margin-top: auto;
-  padding-top: 8px;
-  align-self: flex-start;
+  padding-top: 10px;
+  /* One column, full width: the quick-add markup is a <form> for single-variant
+     products and an <a> for multi-variant ones. Left inline, the first stacked
+     and the second sat beside Quick view, so two cards in the same row ended
+     with different button layouts and baselines. */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  align-self: stretch;
+}
+.fl-card__quick > .fl-quick,
+.fl-card__quick .fl-btn {
+  width: 100%;
+}
+.fl-card__quick .fl-btn {
+  padding-inline: 12px;
+  font-size: 0.9375em;
+}
+
+/* Quick view is a secondary affordance: a text control under the buy button,
+   not a second box of the same weight. Target stays 44px high. */
+.fl-card__qv {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  min-height: 44px;
+  padding: 4px 6px;
+  font: inherit;
+  font-size: 0.8125em;
+  color: var(--color-muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 0.2s ease;
+}
+.fl-card__qv:hover {
+  color: var(--color-ink);
 }
 
 /* --- Price (markup in snippets/price.liquid) --- */

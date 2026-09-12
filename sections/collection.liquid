@@ -35,7 +35,6 @@
     {%- if section.settings.show_description and collection.description != blank -%}
       <div class="fl-collection__desc">{{ collection.description }}</div>
     {%- endif -%}
-    <p class="fl-collection__count">{{ 'collections.general.product_count' | t: count: collection.products_count }}</p>
   </header>
 
   <fl-collection-filters class="fl-collection__toolbar">
@@ -307,11 +306,6 @@
     color: var(--color-muted);
   }
 
-  .fl-collection__count {
-    margin-block-start: 10px;
-    font-size: 0.875em;
-    color: var(--color-muted);
-  }
 
   fl-collection-filters {
     display: block;
@@ -515,11 +509,27 @@
     white-space: nowrap;
   }
 
+  /* A boxed <select> sized by its longest option ("Date, from oldest to
+     newest") took 387px of the toolbar. Ruled control, capped width. */
   .fl-toolbar__sort .fl-select {
     width: auto;
-    max-width: 100%;
+    max-width: min(22ch, 100%);
     min-width: 0;
-    padding-block: 8px;
+    padding: 8px 4px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--color-line);
+    border-radius: 0;
+    box-shadow: none;
+    text-overflow: ellipsis;
+  }
+
+  .fl-toolbar__sort .fl-select:hover {
+    border-bottom-color: var(--color-ink);
+  }
+
+  .fl-toolbar__sort .fl-select:focus-visible {
+    border-bottom-color: var(--color-ink);
   }
 
   /* Desktop with JS: drawer forced open, facets as a horizontal row of dropdowns */

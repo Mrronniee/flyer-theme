@@ -179,11 +179,12 @@
         "type": "range",
         "id": "max_page_width",
         "min": 1000,
-        "max": 1600,
+        "max": 1800,
         "step": 20,
         "unit": "px",
         "label": "Page width",
-        "default": 1280
+        "default": 1280,
+        "info": "Up to 1800px for very large screens."
       },
       {
         "type": "range",

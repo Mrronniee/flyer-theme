@@ -124,7 +124,7 @@
       <div class="fl-card__quick">
         {% render 'quick-add', product: product %}
         {%- if settings.quick_view_enabled -%}
-          <button type="button" class="fl-btn fl-btn--secondary" data-quick-view-open data-handle="{{ product.handle }}">
+          <button type="button" class="fl-card__qv" data-quick-view-open data-handle="{{ product.handle }}">
             {{ 'products.card.quick_view' | t }}
             <span class="visually-hidden">— {{ product.title | escape }}</span>
           </button>
@@ -132,7 +132,7 @@
       </div>
     {%- elsif settings.quick_view_enabled and product.available -%}
       <div class="fl-card__quick">
-        <button type="button" class="fl-btn fl-btn--secondary" data-quick-view-open data-handle="{{ product.handle }}">
+        <button type="button" class="fl-card__qv" data-quick-view-open data-handle="{{ product.handle }}">
           {{ 'products.card.quick_view' | t }}
           <span class="visually-hidden">— {{ product.title | escape }}</span>
         </button>
