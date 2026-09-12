@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.6.1 - 2026-09-12
+
+### Fixed
+- **Product cards in a row no longer disagree.** Quick add renders a `<form>`
+  for single-variant products and an `<a>` for multi-variant ones; left inline,
+  one stacked its buttons and the other put them side by side, so two cards in
+  the same row ended at different heights (53 px to 137 px measured). The
+  action block is now a single full-width column - 102 px on every card.
+- **Sort control.** Its longest option ("Date, from oldest to newest") stretched
+  the select to 387 px, half the toolbar. It is now a ruled control capped at
+  22 characters (219 px measured).
+- The product count no longer appears twice on a collection page.
+
+### Changed
+- **Menu.** Square dropdown panel with a lighter shadow, hover underline
+  instead of a grey fill block, two columns past six entries. Mobile drawer in
+  the heading typeface, 56 px per entry, hairlines between them.
+- **Small screens.** The hero image is capped at 48svh, so the buttons sit above
+  the fold on a 390 x 844 phone (measured: button bottom at 832 px).
+- **Large screens.** Page width can now be set up to 1800 px (default 1280
+  unchanged).
+
+Checked at 320, 360, 390, 414, 768, 834, 1024, 1180, 1280, 1440, 1680, 1920 and
+2560 px on home, collection and product: no horizontal overflow anywhere.
+
 ## 1.6.0 — 2026-09-12
 
 The editorial layer: FLYER stops looking like a default and starts looking

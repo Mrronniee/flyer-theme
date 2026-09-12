@@ -9,7 +9,7 @@ contact — running this exact theme. No signup, nothing to install.
 
 **[kioskthemes.com](https://kioskthemes.com)** · [All themes](https://kioskthemes.com/themes/) · [Setup guide](https://kioskthemes.com/docs/flyer/) · [Support](https://kioskthemes.com/support/)
 
-- **Version**: 1.6.0
+- **Version**: 1.6.1
 - **Author**: KIOSK
 - **License**: see [LICENSE.md](LICENSE.md)
 
