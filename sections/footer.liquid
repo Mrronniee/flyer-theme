@@ -165,6 +165,9 @@
       <div class="fl-footer__meta">
         <div class="fl-footer__copyright">
           <span>&copy; {{ 'now' | date: '%Y' }}, {{ shop.name }}</span>
+          {%- if section.settings.show_kiosk_credit -%}
+            <a class="fl-footer__credit" href="https://kioskthemes.com/?utm_source=flyer&utm_medium=theme-credit" rel="noopener">{{ 'general.footer.theme_credit' | t }}</a>
+          {%- endif -%}
           {%- if section.settings.legal_menu != blank -%}
             <ul class="fl-footer__legal-menu" role="list">
               {%- for link in section.settings.legal_menu.links -%}
@@ -322,6 +325,17 @@
     gap: 8px 24px;
   }
 
+  .fl-footer__credit {
+    color: var(--color-muted);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .fl-footer__credit:hover {
+    color: var(--color-ink);
+  }
+
   .fl-footer__copyright {
     display: flex;
     flex-wrap: wrap;
@@ -411,6 +425,13 @@
     {
       "type": "header",
       "content": "Bottom bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_kiosk_credit",
+      "label": "Show \"Theme by KIOSK\" credit",
+      "info": "A small link next to the copyright line. Feel free to turn it off.",
+      "default": true
     },
     {
       "type": "checkbox",

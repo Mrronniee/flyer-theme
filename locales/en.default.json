@@ -37,7 +37,8 @@
       "label": "Announcement"
     },
     "footer": {
-      "navigation": "Footer navigation"
+      "navigation": "Footer navigation",
+      "theme_credit": "Theme by KIOSK"
     },
     "localization": {
       "country_label": "Country/region",

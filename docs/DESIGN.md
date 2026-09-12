@@ -93,3 +93,12 @@ node scripts/validate.mjs --theme-path ~/Desktop/Claude.code/flyer-theme --files
 ```
 
 Zero offenses required. theme-check does not catch everything (nested `{% stylesheet %}`, schema name > 25 chars, empty-string defaults) — respect the rules above regardless.
+
+## Editorial layer (1.6) — what makes FLYER feel designed
+
+- **Section numbering**: theme setting Layout > *Number section headings* puts `fl-numbered` on `<body>`; `critical.css` runs one CSS counter over `main` and prints `01`, `02`… before every `.fl-section-head` (or inside its `.fl-eyebrow`) and `.fl-featured__head`. New sections get it for free by using `.fl-section-head`. Do not hand-write numbers in eyebrows.
+- **Signature animations** (see the *bibliothèque d'animations* skill — one recipe per role, never the same twice): E4 *ligne à ligne* on the Hero split title (the theme's signature), E5 *tampon* on section numbers, S6 *feuilletage* on product cards (second image, no fade), S3 *plaque* on lookbook images, R1 *pression d'encre* on solid buttons. Zoom on hover is banned. Reveal-on-scroll exists for Dawn parity but ships **off**.
+- **Hero split** (`sections/hero-split.liquid`): image 3fr / text 2fr, title from a multi-line textarea (each line is masked separately), no section padding. **Lookbook** (`sections/lookbook.liquid`): varied ratios and offset rhythm, product links with price.
+- **Featured collection** has a `layout: editorial` option (first card spans 2×2 on desktop).
+- **Footer credit**: `show_kiosk_credit` (default on) prints “Theme by KIOSK” next to the copyright — the free theme's only nudge towards the paid ones. Merchants can switch it off.
+- Type: heading scale default 135 %, headings `letter-spacing: -0.02em`, `line-height: 1.15`.

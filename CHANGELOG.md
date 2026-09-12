@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.6.0 — 2026-09-12
+
+The editorial layer: FLYER stops looking like a default and starts looking
+designed — still white, still airy, now composed.
+
+### Added
+- **Hero split** section: image 3/5, text 2/5, full-height option, a title
+  written line by line that rises behind a mask on load (the theme's
+  signature move). Works without JavaScript.
+- **Lookbook** section: up to six images at varied ratios with an offset
+  rhythm, captions, and product links with live prices; horizontal
+  scroll-snap on mobile.
+- **Section numbering** (Layout > Number section headings, on by default):
+  01, 02, 03… in page order, in front of every section heading.
+- **Editorial layout** for Featured collection: the first product spans two
+  columns and two rows.
+- Footer credit "Theme by KIOSK", a small link next to the copyright line —
+  one checkbox to remove it.
+
+### Changed
+- Headings: scale 135 %, tighter tracking and line-height.
+- Reveal-on-scroll now ships off (everything visible at rest); the setting
+  stays for merchants who want it.
+- Focus ring on inputs and selects: 1 px inside the border instead of a thick
+  frame.
+- New default home page: hero split, editorial collection, trust badges,
+  lookbook, image with text, testimonials, FAQ (first open), newsletter.
+
 ## 1.5.0 — 2026-09-12
 
 Merchant features, structured data and finishing — no apps required.

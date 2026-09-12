@@ -1,0 +1,326 @@
+{%- liquid
+  assign heading_lines = section.settings.heading | escape | newline_to_br | split: '<br />'
+  assign btn_1_href = section.settings.button_link | default: routes.all_products_collection_url
+  assign btn_2_href = section.settings.button_link_2 | default: routes.all_products_collection_url
+-%}
+
+<fl-hero
+  class="fl-hero fl-hero--{{ section.settings.height }} fl-hero--img-{{ section.settings.image_position }} full-width color-{{ section.settings.color_scheme }}"
+>
+  <div class="fl-hero__media fl-media">
+    {%- if section.settings.image -%}
+      {{
+        section.settings.image
+        | image_url: width: 2400
+        | image_tag:
+          widths: '600, 900, 1200, 1600, 2000, 2400',
+          sizes: '(max-width: 989px) 100vw, 60vw',
+          class: 'fl-hero__img',
+          alt: section.settings.image.alt,
+          loading: 'eager',
+          fetchpriority: 'high'
+      }}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'fl-hero__img fl-hero__img--placeholder' }}
+    {%- endif -%}
+  </div>
+
+  <div class="fl-hero__body">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="fl-eyebrow fl-hero__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      <span class="fl-hero__rule" aria-hidden="true"></span>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h1 class="fl-hero__title">
+        {%- for line in heading_lines -%}
+          {%- assign line_text = line | strip -%}
+          {%- if line_text != blank -%}
+            <span class="fl-hero__ln"><span>{{ line_text }}</span></span>
+          {%- endif -%}
+        {%- endfor -%}
+      </h1>
+    {%- endif -%}
+
+    {%- if section.settings.text != blank -%}
+      <div class="fl-hero__text">{{ section.settings.text }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank or section.settings.button_label_2 != blank -%}
+      <div class="fl-hero__btns">
+        {%- if section.settings.button_label != blank -%}
+          <a class="fl-btn" href="{{ btn_1_href }}">{{ section.settings.button_label | escape }}</a>
+        {%- endif -%}
+        {%- if section.settings.button_label_2 != blank -%}
+          <a class="fl-btn fl-btn--secondary" href="{{ btn_2_href }}">{{ section.settings.button_label_2 | escape }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</fl-hero>
+
+{% stylesheet %}
+  .fl-hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+
+  .fl-hero__media {
+    position: relative;
+    min-width: 0;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: 0;
+  }
+
+  .fl-hero__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .fl-hero__img--placeholder {
+    background: var(--color-surface);
+  }
+
+  .fl-hero__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-width: 0;
+    padding: clamp(32px, 6vw, 96px);
+    background: var(--color-bg);
+  }
+
+  .fl-hero__eyebrow {
+    margin-bottom: 16px;
+  }
+
+  .fl-hero__rule {
+    display: block;
+    width: 64px;
+    height: 1px;
+    margin-bottom: 28px;
+    background: var(--color-line);
+  }
+
+  .fl-hero__title {
+    margin: 0 0 24px;
+    max-width: 12ch;
+    font-size: clamp(2.5rem, 6.5vw, 6rem);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+
+  /* E4 « ligne à ligne » : chaque ligne monte depuis son propre masque. */
+  .fl-hero__ln {
+    display: block;
+    overflow: hidden;
+  }
+
+  .fl-hero__ln > span {
+    display: block;
+  }
+
+  .fl-hero.is-vue .fl-hero__ln > span {
+    animation: fl-hero-monte 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .fl-hero.is-vue .fl-hero__ln:nth-child(2) > span {
+    animation-delay: 0.09s;
+  }
+
+  .fl-hero.is-vue .fl-hero__ln:nth-child(3) > span {
+    animation-delay: 0.18s;
+  }
+
+  @keyframes fl-hero-monte {
+    from {
+      transform: translateY(108%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fl-hero.is-vue .fl-hero__ln > span {
+      animation: none;
+    }
+  }
+
+  .fl-hero__text {
+    max-width: 44ch;
+    color: var(--color-muted);
+  }
+
+  .fl-hero__text > :last-child {
+    margin-bottom: 0;
+  }
+
+  .fl-hero__btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  @media (min-width: 990px) {
+    .fl-hero {
+      grid-template-columns: 3fr 2fr;
+    }
+
+    .fl-hero--viewport {
+      min-height: min(calc(100vh - var(--sticky-offset, 88px)), 900px);
+      min-height: min(calc(100svh - var(--sticky-offset, 88px)), 900px);
+    }
+
+    .fl-hero--large {
+      min-height: 720px;
+    }
+
+    .fl-hero--medium {
+      min-height: 560px;
+    }
+
+    .fl-hero__media {
+      height: 100%;
+      aspect-ratio: auto;
+    }
+
+    .fl-hero__img {
+      position: absolute;
+      inset: 0;
+    }
+
+    .fl-hero--img-right {
+      grid-template-columns: 2fr 3fr;
+    }
+
+    .fl-hero--img-right .fl-hero__media {
+      order: 2;
+    }
+
+    .fl-hero--img-right .fl-hero__body {
+      order: 1;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('fl-hero')) {
+    customElements.define(
+      'fl-hero',
+      class extends HTMLElement {
+        connectedCallback() {
+          var el = this;
+          requestAnimationFrame(function () {
+            el.classList.add('is-vue');
+          });
+        }
+      }
+    );
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Hero split",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        {
+          "value": "viewport",
+          "label": "Full screen"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        }
+      ],
+      "default": "viewport"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "No. 01 — New season"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Each line of this field becomes one line of the title.",
+      "default": "Clean lines,\nmade to last."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Wardrobe staples cut with care, in fabrics that hold their shape season after season.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "First button label",
+      "default": "Shop the collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "First button link"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Second button label",
+      "default": "Our story"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Second button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero split"
+    }
+  ]
+}
+{% endschema %}

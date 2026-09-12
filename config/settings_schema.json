@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "FLYER",
-    "theme_version": "1.5.0",
+    "theme_version": "1.6.0",
     "theme_author": "KIOSK",
     "theme_documentation_url": "https://kioskthemes.com/docs/flyer/",
     "theme_support_url": "https://kioskthemes.com/support/"
@@ -122,7 +122,7 @@
         "step": 5,
         "unit": "%",
         "label": "Heading scale",
-        "default": 125
+        "default": 135
       },
       {
         "type": "select",
@@ -224,6 +224,13 @@
         "unit": "px",
         "label": "Vertical grid spacing",
         "default": 28
+      },
+      {
+        "type": "checkbox",
+        "id": "section_numbering",
+        "label": "Number section headings",
+        "info": "Adds 01, 02, 03… in front of section headings, in page order.",
+        "default": true
       }
     ]
   },
@@ -234,7 +241,7 @@
         "type": "checkbox",
         "id": "animations_reveal_on_scroll",
         "label": "Reveal sections on scroll",
-        "default": true
+        "default": false
       },
       {
         "type": "select",

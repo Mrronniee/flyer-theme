@@ -55,7 +55,7 @@
 
     {%- if col.products.size > 0 -%}
       <div
-        class="fl-product-grid"
+        class="fl-product-grid{% if section.settings.layout == 'editorial' %} fl-product-grid--editorial{% endif %}"
         style="--grid-cols: {{ cols }}; --grid-cols-tablet: 3; --grid-cols-mobile: 2"
       >
         {%- for product in col.products limit: limit -%}
@@ -161,6 +161,22 @@
       "step": 1,
       "label": "Products to show",
       "default": 8
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Uniform grid"
+        },
+        {
+          "value": "editorial",
+          "label": "Editorial (first product large)"
+        }
+      ],
+      "default": "grid"
     },
     {
       "type": "select",

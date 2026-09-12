@@ -42,7 +42,7 @@
     {{ content_for_header }}
   </head>
 
-  <body>
+  <body{% if settings.section_numbering %} class="fl-numbered"{% endif %}>
     <a href="#MainContent" class="skip-link">{{ 'accessibility.skip_to_content' | t }}</a>
 
     {% sections 'header-group' %}

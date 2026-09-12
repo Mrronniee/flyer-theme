@@ -1,0 +1,393 @@
+{% comment %}
+  Lookbook.
+  An editorial strip of images with a varied rhythm: up to 6 looks in a row,
+  every second one nudged down on desktop, a snap-scrolling strip on mobile.
+  Each look carries a caption and, optionally, a product (title + price) or a
+  plain link. Hover = S3 "plaque qui se soulève": the image slides up-left and
+  reveals a hairline frame that stays put behind it.
+{% endcomment %}
+
+{%- liquid
+  assign count = section.blocks.size
+  assign img_sizes = '(max-width: 749px) 78vw, (max-width: 989px) 50vw, 25vw'
+-%}
+
+<section
+  class="fl-lookbook full-width color-{{ section.settings.color_scheme }} fl-lookbook--{{ section.settings.rhythm }}"
+  {% render 'reveal' %}
+  style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
+>
+  {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+    <div class="fl-lookbook__inner">
+      <div class="fl-section-head fl-lookbook__head">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="fl-eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2>{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="fl-lookbook__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if count > 0 -%}
+    <div class="fl-lookbook__track" style="--cols: {{ count }}">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign product = block.settings.product
+          assign href = blank
+          if product != blank
+            assign href = product.url
+          elsif block.settings.link != blank
+            assign href = block.settings.link
+          endif
+          assign ph = 'collection-1'
+          if forloop.index0 == 0 or forloop.index0 == 2 or forloop.index0 == 4
+            assign ph = 'lifestyle-2'
+          endif
+        -%}
+        <div class="fl-lookbook__item" {{ block.shopify_attributes }}>
+          <div class="fl-lookbook__media" style="--ratio: {{ block.settings.ratio }}">
+            {%- if href != blank -%}
+              <a class="fl-lookbook__media-link" href="{{ href }}" tabindex="-1" aria-hidden="true">
+            {%- endif -%}
+            {%- if block.settings.image -%}
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  widths: '360, 540, 720, 900, 1200',
+                  sizes: img_sizes,
+                  alt: block.settings.image.alt,
+                  loading: 'lazy',
+                  class: 'fl-lookbook__img'
+              }}
+            {%- else -%}
+              {{ ph | placeholder_svg_tag: 'fl-lookbook__img fl-lookbook__ph' }}
+            {%- endif -%}
+            {%- if href != blank -%}
+              </a>
+            {%- endif -%}
+          </div>
+
+          {%- if block.settings.caption != blank -%}
+            <p class="fl-lookbook__caption">{{ block.settings.caption | escape }}</p>
+          {%- endif -%}
+
+          {%- if product != blank -%}
+            <a class="fl-lookbook__link" href="{{ product.url }}">
+              {{ section.settings.shop_label | escape }} — {{ product.title | escape }}
+            </a>
+            <div class="fl-lookbook__price">{% render 'price', product: product %}</div>
+          {%- elsif block.settings.link != blank and block.settings.link_label != blank -%}
+            <a class="fl-lookbook__link" href="{{ block.settings.link }}">
+              {{- block.settings.link_label | escape -}}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .fl-lookbook__inner,
+  .fl-lookbook__track {
+    width: var(--content-width);
+    margin-inline: auto;
+  }
+
+  .fl-lookbook__head {
+    max-width: 40em;
+  }
+
+  .fl-lookbook__text {
+    margin-block-start: 12px;
+    color: var(--color-muted);
+  }
+
+  .fl-lookbook__track {
+    display: grid;
+    grid-template-columns: repeat(min(var(--cols, 4), 4), minmax(0, 1fr));
+    gap: 24px 24px;
+    align-items: start;
+  }
+
+  .fl-lookbook__item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .fl-lookbook--offset .fl-lookbook__item:nth-child(even) {
+    margin-top: 48px;
+  }
+
+  /* S3 — plaque qui se soulève : the frame stays, the image lifts off it. */
+  .fl-lookbook__media {
+    position: relative;
+    margin-bottom: 4px;
+  }
+
+  .fl-lookbook__media::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-ink);
+  }
+
+  .fl-lookbook__media-link {
+    display: block;
+  }
+
+  .fl-lookbook__img {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio, 4 / 5);
+    object-fit: cover;
+    background: var(--color-surface);
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .fl-lookbook__ph {
+    fill: var(--color-muted);
+  }
+
+  .fl-lookbook__item:hover .fl-lookbook__img,
+  .fl-lookbook__item:focus-within .fl-lookbook__img {
+    transform: translate(-6px, -6px);
+  }
+
+  .fl-lookbook__caption {
+    margin: 0;
+    font-size: 0.8125em;
+    letter-spacing: 0.02em;
+    color: var(--color-muted);
+  }
+
+  .fl-lookbook__link {
+    align-self: flex-start;
+    font-size: 0.9375em;
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .fl-lookbook__price {
+    font-size: 0.9375em;
+  }
+
+  @media (max-width: 749px) {
+    .fl-lookbook__track {
+      display: flex;
+      width: 100%;
+      padding-inline: var(--page-margin);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--page-margin);
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .fl-lookbook__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .fl-lookbook__item {
+      flex: 0 0 78%;
+      scroll-snap-align: start;
+    }
+
+    .fl-lookbook--offset .fl-lookbook__item:nth-child(even) {
+      margin-top: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fl-lookbook__img {
+      transition: none;
+    }
+
+    .fl-lookbook__item:hover .fl-lookbook__img,
+    .fl-lookbook__item:focus-within .fl-lookbook__img {
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Lookbook"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Worn, not staged"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "info": "Optional short intro under the heading."
+    },
+    {
+      "type": "select",
+      "id": "rhythm",
+      "label": "Rhythm",
+      "options": [
+        {
+          "value": "offset",
+          "label": "Offset (every second look sits lower)"
+        },
+        {
+          "value": "even",
+          "label": "Even"
+        }
+      ],
+      "default": "offset",
+      "info": "Desktop only. Mobile always scrolls sideways."
+    },
+    {
+      "type": "text",
+      "id": "shop_label",
+      "label": "Product link prefix",
+      "default": "Shop",
+      "info": "Shown as “Shop — Product title” under a look with a product."
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "look",
+      "name": "Look",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "ratio",
+          "label": "Image ratio",
+          "options": [
+            {
+              "value": "4/5",
+              "label": "Portrait 4:5"
+            },
+            {
+              "value": "3/4",
+              "label": "Portrait 3:4"
+            },
+            {
+              "value": "1/1",
+              "label": "Square 1:1"
+            }
+          ],
+          "default": "4/5"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption",
+          "default": "Overshirt, worn open"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "Adds a “Shop — title” link with the price. Overrides the link below."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook",
+      "blocks": [
+        {
+          "type": "look",
+          "settings": {
+            "ratio": "4/5",
+            "caption": "Overshirt, worn open"
+          }
+        },
+        {
+          "type": "look",
+          "settings": {
+            "ratio": "3/4",
+            "caption": "The tote, every day"
+          }
+        },
+        {
+          "type": "look",
+          "settings": {
+            "ratio": "4/5",
+            "caption": "Boxy tee, tucked"
+          }
+        },
+        {
+          "type": "look",
+          "settings": {
+            "ratio": "1/1",
+            "caption": "Straight jeans, cuffed"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -91,8 +91,8 @@ h6 {
   font-family: var(--font-heading-family);
   font-style: var(--font-heading-style);
   font-weight: var(--font-heading-weight);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 h1 {
@@ -234,6 +234,7 @@ a {
 .fl-input:focus-visible,
 .fl-select:focus-visible,
 .fl-textarea:focus-visible {
+  outline-width: 1px;
   outline-offset: 0;
   border-color: var(--color-ink);
 }
@@ -828,5 +829,65 @@ main > .shopify-section + .shopify-section {
   }
   .fl-qv__info {
     padding-right: 0;
+  }
+}
+
+/* --- Section numbering (theme setting Layout > Number section headings) ---
+   One counter per page, in DOM order; E5 stamp on load. */
+.fl-numbered main {
+  counter-reset: fl-section;
+}
+.fl-numbered main .fl-section-head,
+.fl-numbered main .fl-featured__head {
+  counter-increment: fl-section;
+}
+.fl-numbered main .fl-section-head:not(:has(.fl-eyebrow))::before,
+.fl-numbered main .fl-featured__head::before,
+.fl-numbered main .fl-section-head .fl-eyebrow::before {
+  content: counter(fl-section, decimal-leading-zero);
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.75em;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+  animation: fl-stamp 0.26s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.fl-numbered main .fl-section-head .fl-eyebrow::before {
+  display: inline;
+  margin: 0 0.75em 0 0;
+  font-size: 1em;
+}
+.fl-numbered main .fl-section-head .fl-eyebrow::before {
+  content: counter(fl-section, decimal-leading-zero) " \2014";
+}
+.fl-numbered main .fl-featured__head::before {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+@keyframes fl-stamp {
+  from {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fl-numbered main .fl-section-head::before,
+  .fl-numbered main .fl-featured__head::before,
+  .fl-numbered main .fl-section-head .fl-eyebrow::before {
+    animation: none;
+  }
+}
+
+/* --- Editorial product grid: first card spans 2 x 2 (desktop only) --- */
+@media (min-width: 750px) {
+  .fl-product-grid--editorial > :first-child {
+    grid-column: span 2;
+    grid-row: span 2;
   }
 }

@@ -1,48 +1,13 @@
 {
   "sections": {
-    "banner": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "New season, clean lines",
-            "heading_tag": "h1",
-            "heading_size": "large"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "Everyday pieces made to last."
-          }
-        },
-        "buttons": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text",
-        "buttons"
-      ],
-      "settings": {
-        "height": "medium",
-        "overlay_opacity": 20,
-        "content_position": "middle-center"
-      }
-    },
     "featured": {
       "type": "featured-collection",
       "settings": {
         "heading": "Featured collection",
         "products_to_show": 8,
         "cols_desktop": "4",
-        "show_view_all": true
+        "show_view_all": true,
+        "layout": "editorial"
       }
     },
     "image-with-text": {
@@ -216,12 +181,75 @@
       "settings": {
         "open_first": true
       }
+    },
+    "hero": {
+      "type": "hero-split",
+      "settings": {
+        "image_position": "left",
+        "height": "viewport",
+        "eyebrow": "No. 01 — New season",
+        "heading": "Clean lines,\nmade to last.",
+        "text": "<p>Everyday pieces cut from honest fabrics, made in small batches.</p>",
+        "button_label": "Shop the collection",
+        "button_link": "shopify://collections/all",
+        "button_label_2": "Our story",
+        "button_link_2": "shopify://pages/about",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "lookbook": {
+      "type": "lookbook",
+      "blocks": {
+        "look-1": {
+          "type": "look",
+          "settings": {
+            "ratio": "4/5",
+            "caption": "Overshirt, worn open"
+          }
+        },
+        "look-2": {
+          "type": "look",
+          "settings": {
+            "ratio": "3/4",
+            "caption": "The tote, every day"
+          }
+        },
+        "look-3": {
+          "type": "look",
+          "settings": {
+            "ratio": "4/5",
+            "caption": "Boxy tee, tucked"
+          }
+        },
+        "look-4": {
+          "type": "look",
+          "settings": {
+            "ratio": "1/1",
+            "caption": "Straight jeans, cuffed"
+          }
+        }
+      },
+      "block_order": [
+        "look-1",
+        "look-2",
+        "look-3",
+        "look-4"
+      ],
+      "settings": {
+        "eyebrow": "Lookbook",
+        "heading": "Worn, not staged",
+        "rhythm": "offset",
+        "color_scheme": "scheme-1",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
-    "banner",
+    "hero",
     "featured",
     "trust",
+    "lookbook",
     "image-with-text",
     "testimonials",
     "faq",
