@@ -357,6 +357,14 @@
     z-index: 50;
   }
 
+  /* A 65px bar is 36% of a 180px-tall viewport (400% zoom): it stops being a
+     convenience and starts eating the page. */
+  @media (max-height: 480px) {
+    .fl-header-section:has([data-sticky]) {
+      position: static;
+    }
+  }
+
   /* Sticky columns elsewhere read this so they don't slide under the header.
      88px fits the 64px wordmark bar; when an image logo makes the bar taller,
      the style block at the top of this section overrides it with the value
@@ -382,6 +390,7 @@
   }
 
   .fl-header__logo {
+    min-width: 0;
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -560,6 +569,9 @@
 
   .fl-header__icon-btn {
     position: relative;
+    /* Never let the flex row shrink a tap target: at 280px wide, or at 200%
+       text zoom, the growing logo squashed the burger to 20px and then to 0. */
+    flex: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;

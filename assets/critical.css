@@ -764,9 +764,29 @@ main > .shopify-section + .shopify-section {
   width: min(880px, calc(100vw - 32px));
   max-width: min(880px, calc(100vw - 32px));
   max-height: 90vh;
+  max-height: 90dvh;
+  /* The global `* { margin: 0 }` reset beat the UA's `margin: auto`, so the
+     dialog sat in the top-left corner instead of the middle of the screen. */
+  margin: auto;
   padding: 0;
-  overflow: auto;
+  overflow: hidden;
   color: var(--color-ink);
+}
+/* The dialog itself must not scroll: the close button is absolutely positioned
+   inside it, so when the dialog was the scroll container the button scrolled
+   out of sight — off screen from the very first paint on a landscape phone.
+   The body scrolls instead, and the button stays pinned.
+   `display` is set on [open] only: a bare `display: flex` would defeat the UA
+   rule that hides a closed dialog. */
+.fl-qv-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+.fl-qv-dialog__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .fl-qv-dialog::backdrop {
   background: rgb(0 0 0 / 40%);

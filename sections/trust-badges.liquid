@@ -124,6 +124,7 @@
   }
 
   .fl-trust__badge {
+    overflow-wrap: anywhere;
     display: flex;
     align-items: flex-start;
     gap: 14px;
@@ -179,7 +180,9 @@
     }
 
     .fl-trust__item {
-      flex: 1 1 0;
+      /* A zero flex-basis meant four badges never wrapped, so at 175% text
+         zoom the last one's text ran off the page. */
+      flex: 1 1 180px;
       padding-inline: 32px;
     }
 

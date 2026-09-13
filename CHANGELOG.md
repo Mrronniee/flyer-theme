@@ -1,5 +1,40 @@
 # Changelog
 
+## 1.6.2 - 2026-09-13
+
+Exotic screens: landscape phones, foldables, browser zoom to 400%, text-only
+zoom to 200%, tablets in both orientations, 21:9 and 4K. 173 viewport x page
+pairs measured, every finding put to three independent sceptics.
+
+### Fixed
+- **Checkout was unreachable in the cart drawer at 300-400% browser zoom.** The
+  footer does not shrink and nothing scrolled, so the button sat below the fold
+  with no way to get to it. The whole panel scrolls on very short viewports.
+- **The menu button collapsed to 0px wide at 280px** (a folded Galaxy Fold) and
+  to 20px at 200% text zoom: the header row was shrinking a tap target. Icon
+  buttons no longer shrink - 44 x 44 at every width measured.
+- **Quick view: the close button scrolled out of sight**, off screen from the
+  first paint on a landscape phone, because the dialog was both the scroll
+  container and the button's positioning context, and the script scrolled the
+  dialog to the heading. The body scrolls, the button stays put, focus no
+  longer scrolls the box.
+- **Quick view was pinned to the top-left corner** instead of the middle of the
+  screen - the global margin reset beat the dialog's own centring. Obvious on a
+  21:9 display.
+- **The hero ran to 1.5 screens on a landscape phone**, title and buttons both
+  below the fold. Side by side, centred and tightened on short viewports: the
+  call to action is on screen at 667x375, 740x360, 844x390 and 932x430.
+- **Trust badges and the wishlist header overflowed** the page at 175-200% text
+  zoom. Both wrap now.
+- The sticky header stops sticking below 480px of viewport height, where a 64px
+  bar was eating a third of the page.
+- The editorial layout's large card was asking for a 540px file to fill a 606px
+  slot; it now gets 900px.
+
+### Known limits
+- No right-to-left support: drawers are anchored with physical properties.
+- No print stylesheet.
+
 ## 1.6.1 - 2026-09-12
 
 ### Fixed

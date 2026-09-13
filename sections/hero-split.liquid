@@ -73,6 +73,18 @@
     width: 100%;
     aspect-ratio: 3 / 4;
     max-height: 48svh;
+  }
+
+  /* Narrow and short at once (a folded Surface Duo): give the image less room
+     so the buttons clear the fold. */
+  @media (max-height: 780px) and (max-width: 559px) {
+    .fl-hero__media {
+      max-height: 36svh;
+    }
+
+    .fl-hero__body {
+      padding: clamp(20px, 5vw, 40px);
+    }
     border-radius: 0;
   }
 
@@ -206,6 +218,88 @@
 
     .fl-hero--img-right .fl-hero__body {
       order: 1;
+    }
+  }
+
+  /* Short viewports — landscape phones, a zoomed desktop window. Stacked, the
+     hero ran to ~1.5 screens and both the title and the buttons started below
+     the fold. Side by side, they are on screen at first paint. */
+  @media (max-height: 620px) and (min-width: 560px) {
+    .fl-hero {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .fl-hero__media {
+      height: 100%;
+      max-height: none;
+      aspect-ratio: auto;
+    }
+
+    /* Taken out of the flow, the picture follows the text column's height
+       instead of setting its own from the file's proportions. */
+    .fl-hero__img {
+      position: absolute;
+      inset: 0;
+    }
+
+    .fl-hero__body {
+      /* Bottom-aligned, the copy sat against the fold and pushed the buttons
+         past it; centred and trimmed, the whole block is on screen. */
+      justify-content: center;
+      padding: clamp(16px, 3vw, 32px);
+    }
+
+    .fl-hero__title {
+      font-size: clamp(1.75rem, 4.2vw, 3rem);
+    }
+
+    .fl-hero__text {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+
+  /* Landscape phones: two lines of title and the buttons, nothing else. */
+  @media (max-height: 460px) and (min-width: 560px) {
+    .fl-hero__body {
+      gap: 8px;
+      padding: 12px clamp(16px, 3vw, 28px);
+    }
+
+    .fl-hero__title {
+      font-size: clamp(1.375rem, 3.2vw, 2rem);
+    }
+
+    .fl-hero__text {
+      -webkit-line-clamp: 1;
+      margin-block: 4px;
+    }
+
+    /* Desktop rhythm — 16 to 28px between every block, two stacked buttons —
+       spent 108px of a 360px-tall screen and pushed the call to action past
+       the fold. Tighter, and the buttons side by side. */
+    .fl-hero__eyebrow {
+      margin-bottom: 8px;
+    }
+
+    .fl-hero__rule {
+      margin-bottom: 12px;
+    }
+
+    .fl-hero__title {
+      margin-bottom: 12px;
+    }
+
+    .fl-hero__btns {
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .fl-hero__btns .fl-btn {
+      width: auto;
     }
   }
 {% endstylesheet %}

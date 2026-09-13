@@ -329,6 +329,20 @@
     overflow-y: auto;
   }
 
+  /* Very short viewports (300-400% browser zoom, landscape phones): the footer
+     does not shrink, so Checkout was pushed below the fold with nothing to
+     scroll. The whole panel scrolls here instead of just the item list. */
+  @media (max-height: 520px) {
+    .fl-cart__inner {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .fl-cart__body {
+      overflow: visible;
+    }
+  }
+
   .fl-cart__empty {
     display: flex;
     flex-direction: column;

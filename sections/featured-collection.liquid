@@ -59,7 +59,16 @@
         style="--grid-cols: {{ cols }}; --grid-cols-tablet: 3; --grid-cols-mobile: 2"
       >
         {%- for product in col.products limit: limit -%}
-          {% render 'product-card', product: product, sizes: card_sizes %}
+          {%- comment -%}
+            The editorial layout gives the first card two columns and two rows,
+            so the uniform `sizes` made the browser pick a 540px file for a
+            606px slot.
+          {%- endcomment -%}
+          {%- assign this_sizes = card_sizes -%}
+          {%- if section.settings.layout == 'editorial' and forloop.first -%}
+            {%- assign this_sizes = '(max-width: 749px) 100vw, (max-width: 989px) 66vw, 50vw' -%}
+          {%- endif -%}
+          {% render 'product-card', product: product, sizes: this_sizes %}
         {%- endfor -%}
       </div>
     {%- else -%}

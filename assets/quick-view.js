@@ -85,7 +85,10 @@ class FlQuickView extends HTMLElement {
       if (!block) throw new Error('no-content');
       this.content.appendChild(block);
       const title = block.querySelector('[data-qv-title]');
-      if (title) title.focus();
+      // preventScroll: without it the browser scrolls the dialog down to the
+      // heading, dragging the close button out of view before the shopper
+      // touches anything.
+      if (title) title.focus({ preventScroll: true });
     } catch (e) {
       // Fall back to the product page rather than an empty box.
       this.close();
