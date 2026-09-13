@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.7.2 - 2026-09-13
+
+### Fixed
+- **Lookbook, offset rhythm.** Every second look sits 48px lower, but with mixed
+  image ratios the bottoms stopped following: a square fourth look started lower
+  than the first and ended higher. Offset now gives every look the first look's
+  ratio, so tops and bottoms zigzag together. Choose Even to mix ratios.
+- **Featured collection heading with section numbering.** The number became a
+  third item in the heading row - alone at the far left, pushing the title to
+  the middle. It now sits on its own line above the title, like every other
+  section.
+
 ## 1.7.1 - 2026-09-13
 
 ### Fixed

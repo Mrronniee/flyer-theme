@@ -50,7 +50,17 @@
           endif
         -%}
         <div class="fl-lookbook__item" {{ block.shopify_attributes }}>
-          <div class="fl-lookbook__media" style="--ratio: {{ block.settings.ratio }}">
+          {%- liquid
+            # Offset staggers every second look by 48px. With mixed ratios the
+            # bottoms stopped following the stagger (a square fourth look started
+            # lower than the first and ended higher), which read as a mistake.
+            # Offset therefore uses the first look's ratio for every look.
+            assign look_ratio = block.settings.ratio
+            if section.settings.rhythm == 'offset'
+              assign look_ratio = section.blocks.first.settings.ratio
+            endif
+          -%}
+          <div class="fl-lookbook__media" style="--ratio: {{ look_ratio }}">
             {%- if href != blank -%}
               <a class="fl-lookbook__media-link" href="{{ href }}" tabindex="-1" aria-hidden="true">
             {%- endif -%}
@@ -265,7 +275,7 @@
         }
       ],
       "default": "offset",
-      "info": "Desktop only. Mobile always scrolls sideways."
+      "info": "Offset gives every look the first look’s image ratio, so the stagger stays regular. Use Even to mix ratios."
     },
     {
       "type": "text",
