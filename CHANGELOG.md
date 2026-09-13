@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.7.0 - 2026-09-13
+
+### Added
+- **French.** Every word a shopper sees now ships in French as well as English:
+  product cards and pages, cart and cart drawer, filters and sorting, search,
+  wishlist, quick view, blog and comments, contact form, customer accounts,
+  addresses and orders, gift card, password page, 404, and the accessibility
+  labels read by screen readers - 263 strings, the full set. Shopify picks the
+  language from the store, so a French store gets French with nothing to set.
+  French typography throughout: non-breaking spaces before : ? ! and inside
+  guillemets, typographic apostrophes, day-month-year dates.
+
+### Not translated
+- Theme editor labels (section and setting names in the Shopify admin) are
+  still English.
+- Default section copy (hero heading, FAQ questions, testimonials, trust badge
+  text) is merchant content: it is written in English and meant to be replaced.
+
 ## 1.6.2 - 2026-09-13
 
 Exotic screens: landscape phones, foldables, browser zoom to 400%, text-only
