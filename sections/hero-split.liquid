@@ -1,5 +1,24 @@
 {%- liquid
   assign heading_lines = section.settings.heading | escape | newline_to_br | split: '<br />'
+
+  # The title is set very large for short lines. A longer line (another
+  # language, a merchant's own heading) wrapped into two or three rows each and
+  # pushed the buttons below the fold, so the size steps down with the longest
+  # line of the heading.
+  assign hero_longest = 0
+  assign raw_lines = section.settings.heading | newline_to_br | split: '<br />'
+  for raw_line in raw_lines
+    assign raw_len = raw_line | strip | size
+    if raw_len > hero_longest
+      assign hero_longest = raw_len
+    endif
+  endfor
+  assign title_size_class = ''
+  if hero_longest > 22
+    assign title_size_class = ' fl-hero__title--xlong'
+  elsif hero_longest > 13
+    assign title_size_class = ' fl-hero__title--long'
+  endif
   assign btn_1_href = section.settings.button_link | default: routes.all_products_collection_url
   assign btn_2_href = section.settings.button_link_2 | default: routes.all_products_collection_url
 -%}
@@ -32,7 +51,7 @@
     {%- endif -%}
 
     {%- if section.settings.heading != blank -%}
-      <h1 class="fl-hero__title">
+      <h1 class="fl-hero__title{{ title_size_class }}">
         {%- for line in heading_lines -%}
           {%- assign line_text = line | strip -%}
           {%- if line_text != blank -%}
@@ -81,6 +100,13 @@
     .fl-hero__media {
       max-height: 36svh;
     }
+  }
+
+  /* Small phone held short (320 x 700 and below): a little less picture still. */
+  @media (max-height: 720px) and (max-width: 559px) {
+    .fl-hero__media {
+      max-height: 32svh;
+    }
 
     .fl-hero__body {
       padding: clamp(20px, 5vw, 40px);
@@ -122,11 +148,21 @@
 
   .fl-hero__title {
     margin: 0 0 24px;
-    max-width: 12ch;
+    /* 12ch fitted the English sample and nothing else: an 18-character line was
+       capped at 178px in a 326px column and broke in two for no reason. */
+    max-width: 18ch;
     font-size: clamp(2.5rem, 6.5vw, 6rem);
     font-weight: var(--font-heading-weight);
     line-height: 0.95;
     letter-spacing: -0.03em;
+  }
+
+  .fl-hero__title--long {
+    font-size: clamp(2rem, 5.4vw, 5rem);
+  }
+
+  .fl-hero__title--xlong {
+    font-size: clamp(1.75rem, 4vw, 3.75rem);
   }
 
   /* E4 « ligne à ligne » : chaque ligne monte depuis son propre masque. */
@@ -300,6 +336,8 @@
 
     .fl-hero__btns .fl-btn {
       width: auto;
+      padding-inline: 16px;
+      font-size: 0.875em;
     }
   }
 {% endstylesheet %}

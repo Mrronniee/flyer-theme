@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.7.1 - 2026-09-13
+
+### Fixed
+- **Hero split with a longer heading.** The title was sized for short lines and
+  capped at 12 characters wide. A heading with longer lines - in French, or any
+  merchant's own words - broke each line into two or three rows and pushed the
+  buttons below the fold: 6 rows instead of 4 at 1440 px, and an 18-character
+  line capped at 178 px inside a 326 px column at 740 x 360. The cap is now 18
+  characters, and the title steps down in size when its longest line passes 13
+  or 22 characters. Short headings keep the full size.
+  Measured with a French heading: buttons above the fold at 320x700, 390x844,
+  667x375, 740x360, 844x390, 768x1024, 1024x768, 1440x900 and 1920x1080.
+- Hero on a small phone held short (320 x 700): a little less picture, so the
+  buttons clear the fold.
+
+### Known limits
+- On a 320 x 568 screen (first-generation iPhone SE) the hero buttons stay below
+  the fold.
+
 ## 1.7.0 - 2026-09-13
 
 ### Added
