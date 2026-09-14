@@ -7,7 +7,7 @@
         "products_to_show": 8,
         "cols_desktop": "4",
         "show_view_all": true,
-        "layout": "editorial"
+        "layout": "grid"
       }
     },
     "image-with-text": {
@@ -210,7 +210,7 @@
         "look-2": {
           "type": "look",
           "settings": {
-            "ratio": "3/4",
+            "ratio": "4/5",
             "caption": "The tote, every day"
           }
         },
@@ -224,7 +224,7 @@
         "look-4": {
           "type": "look",
           "settings": {
-            "ratio": "1/1",
+            "ratio": "4/5",
             "caption": "Straight jeans, cuffed"
           }
         }
@@ -238,7 +238,7 @@
       "settings": {
         "eyebrow": "Lookbook",
         "heading": "Worn, not staged",
-        "rhythm": "offset",
+        "rhythm": "even",
         "color_scheme": "scheme-1",
         "padding_top": 64,
         "padding_bottom": 64

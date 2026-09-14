@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.7.3 - 2026-09-14
+
+### Changed
+- **Even blocks by default.** The home page's featured collection is back to a
+  uniform grid, and the lookbook shows every look at the same height (4:5, no
+  stagger). Both editorial options stay one setting away: Featured collection >
+  Layout > Editorial, and Lookbook > Rhythm > Offset. A new Lookbook section also
+  starts even.
+
 ## 1.7.2 - 2026-09-13
 
 ### Fixed
