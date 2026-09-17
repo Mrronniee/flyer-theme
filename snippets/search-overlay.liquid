@@ -40,15 +40,15 @@
     data-predictive-url="{{ routes.predictive_search_url }}"
     data-currency="{{ cart.currency.iso_code }}"
     data-money-format="{{ money_format | escape }}"
-    data-label-loading="{{ 'accessibility.loading' | t | escape }}"
-    data-label-empty="{{ 'search.no_results_html' | t: terms: '%TERMS%' | escape }}"
-    data-label-results-one="{{ 'search.results_for_html' | t: count: 1, terms: '%TERMS%' | replace: '1', '%COUNT%' | escape }}"
-    data-label-results="{{ 'search.results_for_html' | t: count: 2, terms: '%TERMS%' | replace: '2', '%COUNT%' | escape }}"
-    data-label-from="{{ 'products.card.from' | t | escape }}"
-    data-label-suggestions="{{ 'search.suggestions' | t | escape }}"
-    data-label-products="{{ 'search.products' | t | escape }}"
-    data-label-pages="{{ 'search.pages' | t | escape }}"
-    data-label-articles="{{ 'search.articles' | t | escape }}"
+    data-label-loading="{{ 'accessibility.loading' | t }}"
+    data-label-empty="{{ 'search.no_results_html' | t: terms: '%TERMS%' }}"
+    data-label-results-one="{{ 'search.results_for_html' | t: count: 1, terms: '%TERMS%' | replace: '1', '%COUNT%' }}"
+    data-label-results="{{ 'search.results_for_html' | t: count: 2, terms: '%TERMS%' | replace: '2', '%COUNT%' }}"
+    data-label-from="{{ 'products.card.from' | t }}"
+    data-label-suggestions="{{ 'search.suggestions' | t }}"
+    data-label-products="{{ 'search.products' | t }}"
+    data-label-pages="{{ 'search.pages' | t }}"
+    data-label-articles="{{ 'search.articles' | t }}"
     {% if settings.predictive_search_show_vendor %}
       data-show-vendor="true"
     {% endif %}
@@ -62,7 +62,7 @@
     id="FlSearchOverlay"
     role="dialog"
     aria-modal="true"
-    aria-label="{{ 'search.title' | t | escape }}"
+    aria-label="{{ 'search.title' | t }}"
     data-search-overlay
     hidden
   >
@@ -84,8 +84,8 @@
               type="search"
               name="q"
               data-search-input
-              placeholder="{{ 'search.placeholder' | t | escape }}"
-              aria-label="{{ 'search.title' | t | escape }}"
+              placeholder="{{ 'search.placeholder' | t }}"
+              aria-label="{{ 'search.title' | t }}"
               {% if predictive %}
                 aria-controls="FlSearchResults"
               {% endif %}

@@ -37,8 +37,8 @@
     Both plural forms are exposed because a pluralised key cannot be rendered
     with a placeholder count — passing '%COUNT%' always resolves to "other".
   {%- endcomment -%}
-  data-cart-label-one="{{ 'accessibility.cart_count' | t: count: 1 | replace: '1', '%COUNT%' | escape }}"
-  data-cart-label-other="{{ 'accessibility.cart_count' | t: count: 2 | replace: '2', '%COUNT%' | escape }}"
+  data-cart-label-one="{{ 'accessibility.cart_count' | t: count: 1 | replace: '1', '%COUNT%' }}"
+  data-cart-label-other="{{ 'accessibility.cart_count' | t: count: 2 | replace: '2', '%COUNT%' }}"
 >
   <div class="fl-header__bar">
     <button

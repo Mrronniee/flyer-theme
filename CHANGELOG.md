@@ -19,6 +19,10 @@
   stays visible until the next cart action succeeds.
 - **Hero split heading.** Screen readers no longer run the heading's lines
   together into one word; each line is read with a space between them.
+- **Apostrophes in translated text.** A few labels showed their apostrophe
+  literally, as `&#39;` - on the slideshow and announcement bar controls, in
+  the cart drawer, the search overlay and the product form. Those texts now
+  read correctly in both English and French.
 
 ## 1.7.3 - 2026-09-14
 

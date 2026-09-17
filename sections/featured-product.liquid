@@ -37,12 +37,12 @@
   class="fl-featprod full-width color-{{ section.settings.color_scheme }}"
   {% render 'reveal' %}
   style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
-  data-text-add="{{ 'products.product.add_to_cart' | t | escape }}"
-  data-text-adding="{{ 'products.product.adding' | t | escape }}"
-  data-text-added="{{ 'products.product.added_to_cart' | t | escape }}"
-  data-text-soldout="{{ 'products.product.sold_out' | t | escape }}"
-  data-text-unavailable="{{ 'products.product.unavailable' | t | escape }}"
-  data-text-regular="{{ 'products.card.regular_price' | t | escape }}"
+  data-text-add="{{ 'products.product.add_to_cart' | t }}"
+  data-text-adding="{{ 'products.product.adding' | t }}"
+  data-text-added="{{ 'products.product.added_to_cart' | t }}"
+  data-text-soldout="{{ 'products.product.sold_out' | t }}"
+  data-text-unavailable="{{ 'products.product.unavailable' | t }}"
+  data-text-regular="{{ 'products.card.regular_price' | t }}"
 >
   <div class="fl-featprod__inner">
     {%- if feat_product == blank -%}
@@ -242,7 +242,7 @@
                       type="button"
                       class="fl-featprod__qty-btn"
                       data-qty-minus
-                      aria-label="{{ 'products.product.decrease_quantity' | t: title: feat_product.title | escape }}"
+                      aria-label="{{ 'products.product.decrease_quantity' | t: title: feat_product.title }}"
                     >
                       &minus;
                     </button>
@@ -262,7 +262,7 @@
                       type="button"
                       class="fl-featprod__qty-btn"
                       data-qty-plus
-                      aria-label="{{ 'products.product.increase_quantity' | t: title: feat_product.title | escape }}"
+                      aria-label="{{ 'products.product.increase_quantity' | t: title: feat_product.title }}"
                     >
                       +
                     </button>

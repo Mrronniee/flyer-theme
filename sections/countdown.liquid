@@ -47,7 +47,7 @@
     <fl-countdown
       class="fl-countdown__clock{% unless section.settings.show_labels %} fl-countdown__clock--no-labels{% endunless %}"
       data-end="{{ end_iso | escape }}"
-      data-labels="{{ 'sections.countdown.days' | t | escape }}|{{ 'sections.countdown.hours' | t | escape }}|{{ 'sections.countdown.minutes' | t | escape }}|{{ 'sections.countdown.seconds' | t | escape }}"
+      data-labels="{{ 'sections.countdown.days' | t }}|{{ 'sections.countdown.hours' | t }}|{{ 'sections.countdown.minutes' | t }}|{{ 'sections.countdown.seconds' | t }}"
       {% if section.settings.hide_when_expired %}data-hide-expired{% endif %}
     >
       <div class="fl-countdown__timer" role="timer" data-timer>

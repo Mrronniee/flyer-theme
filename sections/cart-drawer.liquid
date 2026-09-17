@@ -27,9 +27,9 @@
   data-update-url="{{ routes.cart_update_url }}"
   data-cart-url="{{ routes.cart_url }}"
   data-root-url="{{ routes.root_url }}"
-  data-error-text="{{ 'cart.item_error' | t | escape }}"
-  data-adding-text="{{ 'products.product.adding' | t | escape }}"
-  data-added-text="{{ 'products.product.added_to_cart' | t | escape }}"
+  data-error-text="{{ 'cart.item_error' | t }}"
+  data-adding-text="{{ 'products.product.adding' | t }}"
+  data-added-text="{{ 'products.product.added_to_cart' | t }}"
 >
   <div class="fl-overlay" data-cart-close aria-hidden="true"></div>
 
@@ -48,7 +48,7 @@
       a French storefront.
     {% endcomment %}
     aria-labelledby="FlCartDrawerHeading"
-    aria-label="{{ 'cart.drawer_title' | t | escape }}"
+    aria-label="{{ 'cart.drawer_title' | t }}"
     tabindex="-1"
     data-cart-panel
   >

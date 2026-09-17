@@ -47,7 +47,7 @@
             <form
               method="post"
               action="{{ routes.account_addresses_url }}/{{ address.id }}"
-              data-confirm="{{ 'customer.addresses.delete_confirm' | t | escape }}"
+              data-confirm="{{ 'customer.addresses.delete_confirm' | t }}"
             >
               <input type="hidden" name="_method" value="delete">
               <button type="submit" class="fl-account__link">{{ 'customer.addresses.delete' | t }}</button>
