@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.7.4 - 2026-09-17
+
+### Fixed
+- **Cart drawer with the keyboard.** Opening the cart - by click, by pressing
+  Enter on the cart link, or automatically after adding a product - now puts
+  focus on the first button inside the drawer. Tab and Shift+Tab stay inside
+  the drawer until it is closed, even after a quantity change, after a line is
+  removed, or when a cookie banner or app tries to take focus. Escape always
+  closes it and returns focus to where the shopper was.
+- **Cart drawer with a screen reader.** The drawer is announced simply as
+  "Your cart" (it used to read the item count twice), in the store's language.
+  "Added to cart" is now read out after every add, including when the same
+  product is added twice in a row, and disappears after a few seconds.
+- **Cart errors are easier to spot.** An error message in the drawer now has a
+  thicker border and heavier text, so it stands apart from a confirmation
+  without relying on colour, and stays readable on every colour scheme. It
+  stays visible until the next cart action succeeds.
+- **Hero split heading.** Screen readers no longer run the heading's lines
+  together into one word; each line is read with a space between them.
+
 ## 1.7.3 - 2026-09-14
 
 ### Changed

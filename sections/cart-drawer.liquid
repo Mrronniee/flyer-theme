@@ -37,14 +37,25 @@
     class="fl-cart__panel fl-drawer color-{{ settings.cart_color_scheme }}"
     role="dialog"
     aria-modal="true"
+    {% comment %}
+      aria-labelledby points at the title TEXT only, not at the whole <h2>: the
+      heading also carries the item count twice (visible badge + spoken count),
+      which made the dialog announce itself as "Your cart 4 4 items".
+      aria-label is the fallback for the frame in which the Section Rendering
+      API has just replaced [data-cart-inner] and the referenced node does not
+      exist yet; aria-labelledby wins over it again as soon as it is back. Both
+      resolve through the same translation key, so the name is never English on
+      a French storefront.
+    {% endcomment %}
     aria-labelledby="FlCartDrawerHeading"
+    aria-label="{{ 'cart.drawer_title' | t | escape }}"
     tabindex="-1"
     data-cart-panel
   >
     <div class="fl-cart__inner" data-cart-inner>
       <header class="fl-cart__head">
-        <h2 class="fl-cart__title" id="FlCartDrawerHeading">
-          {{ 'cart.drawer_title' | t }}
+        <h2 class="fl-cart__title">
+          <span id="FlCartDrawerHeading">{{ 'cart.drawer_title' | t }}</span>
           <span class="fl-cart__count" aria-hidden="true">{{ cart.item_count }}</span>
           <span class="visually-hidden">{{ 'cart.item_count' | t: count: cart.item_count }}</span>
         </h2>
@@ -569,6 +580,16 @@
     display: none;
   }
 
+  /* Errors keep the same neutral surface as the confirmation — the wording
+     carries the meaning — but sit on the scheme's ink rather than the muted
+     border, so the two states are still distinguishable without colour alone.
+     Both use --color-ink on --color-surface, which every shipped scheme keeps
+     above 4.5:1. */
+  .fl-cart__status--error {
+    border-width: 2px;
+    font-weight: 500;
+  }
+
   .fl-cart.is-busy .fl-cart__body,
   .fl-cart.is-busy .fl-cart__foot {
     opacity: 0.6;
@@ -597,10 +618,20 @@
       this.onDocSubmit = this.handleDocSubmit.bind(this);
       this.onKeydown = this.handleKeydown.bind(this);
       this.onFieldChange = this.handleFieldChange.bind(this);
+      this.onFocusIn = this.handleFocusIn.bind(this);
 
       document.addEventListener('click', this.onDocClick);
       document.addEventListener('submit', this.onDocSubmit);
-      this.addEventListener('keydown', this.onKeydown);
+      // Last line of defence for the focus trap: whatever moves focus out of an
+      // open drawer — a Tab the page swallowed, a script, the cookie-consent
+      // banner Shopify injects at the top of <body> — it comes straight back.
+      document.addEventListener('focusin', this.onFocusIn, true);
+      // Escape / Tab are bound on the document, not on the element: after a
+      // re-render the browser can park focus on <body>, and a listener scoped
+      // to the drawer would then never see the key.
+      // Capture phase: a third-party widget (consent banner, app embed) that
+      // stops propagation on keydown must not be able to disarm the trap.
+      document.addEventListener('keydown', this.onKeydown, true);
       this.addEventListener('change', this.onFieldChange);
 
       if (window.Shopify && window.Shopify.designMode) {
@@ -618,11 +649,15 @@
     disconnectedCallback() {
       document.removeEventListener('click', this.onDocClick);
       document.removeEventListener('submit', this.onDocSubmit);
+      document.removeEventListener('keydown', this.onKeydown, true);
+      document.removeEventListener('focusin', this.onFocusIn, true);
       if (this.onSectionSelect) {
         document.removeEventListener('shopify:section:select', this.onSectionSelect);
         document.removeEventListener('shopify:section:deselect', this.onSectionDeselect);
       }
       document.documentElement.removeAttribute('data-fl-cart-lock');
+      if (this.focusTimer) window.clearTimeout(this.focusTimer);
+      if (this.statusTimer) window.clearTimeout(this.statusTimer);
     }
 
     handleDocClick(event) {
@@ -672,9 +707,10 @@
     }
 
     handleKeydown(event) {
-      if (!this.classList.contains('is-open')) return;
-      if (event.key === 'Escape') {
+      if (!this.classList.contains('is-open') || !this.panel) return;
+      if (event.key === 'Escape' || event.key === 'Esc') {
         event.preventDefault();
+        event.stopPropagation();
         this.close();
         return;
       }
@@ -682,43 +718,137 @@
       const focusable = this.getFocusable();
       if (focusable.length === 0) {
         event.preventDefault();
+        this.panel.focus();
         return;
       }
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       const active = document.activeElement;
+      // Anything that is not one of the panel's own focusable controls — the
+      // bare panel (tabindex="-1"), the scrim, <body> after a re-render, or an
+      // element the page moved focus to — is treated as "outside": the next Tab
+      // is redirected to an end of the ring instead of walking the document.
+      const index = focusable.indexOf(active);
+      if (index === -1) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+        return;
+      }
       if (event.shiftKey) {
-        if (active === first || active === this.panel) {
+        if (index === 0) {
           event.preventDefault();
           last.focus();
         }
-      } else if (active === last) {
+        return;
+      }
+      if (index === focusable.length - 1) {
         event.preventDefault();
         first.focus();
       }
     }
 
+    handleFocusIn(event) {
+      if (!this.classList.contains('is-open')) return;
+      if (this.isRestoringFocus) return;
+      if (!this.panel) return;
+      const target = event.target;
+      if (target === this.panel || this.panel.contains(target)) return;
+      this.isRestoringFocus = true;
+      const focusable = this.getFocusable();
+      const fallback = focusable[0] || this.panel;
+      if (fallback) fallback.focus();
+      this.isRestoringFocus = false;
+    }
+
     getFocusable() {
       const selector =
         'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), summary, [tabindex]:not([tabindex="-1"])';
-      const nodes = this.panel.querySelectorAll(selector);
-      return Array.prototype.filter.call(nodes, (el) => {
+      const nodes = Array.prototype.slice.call(this.panel.querySelectorAll(selector));
+      const candidates = nodes.filter((el) => {
+        if (el.hasAttribute('aria-hidden') || el.closest('[aria-hidden="true"], [hidden]')) return false;
+        return true;
+      });
+      const visible = candidates.filter((el) => {
         return el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement;
       });
+      // While the panel is still sliding in, offset sizes can read 0 for every
+      // control. Falling back to the unmeasured list keeps the trap armed on
+      // the very first Tab instead of collapsing to "no focusable element".
+      return visible.length > 0 ? visible : candidates;
+    }
+
+    focusPanel() {
+      // Move focus to the first control the shopper can actually act on —
+      // never the scrim, never the bare panel — on EVERY opening path (click,
+      // Enter on the cart link, automatic open after an add to cart).
+      // The panel is visibility:hidden until the open class has been painted,
+      // and a freshly re-rendered panel can take a frame more, so the attempt
+      // is repeated across frames AND timers until focus really landed inside.
+      if (this.focusTimer) {
+        window.clearTimeout(this.focusTimer);
+        this.focusTimer = null;
+      }
+      const delays = [0, 0, 16, 50, 120, 250, 400];
+      let step = 0;
+      // Focus resting on the bare panel does NOT count as done: that is exactly
+      // the state where the first Tab used to walk out of the drawer.
+      const landed = () => {
+        const active = document.activeElement;
+        return !!active && active !== this.panel && this.panel.contains(active);
+      };
+      const attempt = () => {
+        this.focusTimer = null;
+        if (!this.classList.contains('is-open') || !this.panel) return;
+        if (landed()) return;
+        const focusable = this.getFocusable();
+        const target = focusable[0] || this.panel;
+        try {
+          target.focus({ preventScroll: true });
+        } catch (error) {
+          target.focus();
+        }
+        if (landed() || target === this.panel) return;
+        if (step < delays.length) {
+          const delay = delays[step];
+          step += 1;
+          if (delay === 0) {
+            window.requestAnimationFrame(attempt);
+          } else {
+            this.focusTimer = window.setTimeout(attempt, delay);
+          }
+        }
+      };
+      attempt();
     }
 
     open(trigger) {
-      if (this.classList.contains('is-open')) return;
-      this.openerEl = trigger || document.activeElement;
-      this.classList.add('is-open');
-      document.documentElement.setAttribute('data-fl-cart-lock', '');
-      window.requestAnimationFrame(() => {
-        if (this.panel) this.panel.focus();
-      });
+      // Re-entrant on purpose: an add to cart re-renders the panel while it is
+      // already open, and focus must be (re)placed inside it on every path —
+      // click, keyboard, cart link, automatic open after an add.
+      if (trigger) this.openerEl = trigger;
+      const wasOpen = this.classList.contains('is-open');
+      // Already open with focus on one of its controls (quantity change, note
+      // field): leave the caret where the shopper put it. Focus resting on the
+      // bare panel is NOT "inside" for this purpose — it has to be moved on to
+      // a real control, otherwise the first Tab walks out of the drawer.
+      const active = document.activeElement;
+      const focusHeld =
+        wasOpen && this.panel && active && active !== this.panel && this.panel.contains(active);
+      if (focusHeld) return;
+      if (!wasOpen) {
+        if (!this.openerEl) this.openerEl = document.activeElement;
+        this.classList.add('is-open');
+        document.documentElement.setAttribute('data-fl-cart-lock', '');
+      }
+      this.focusPanel();
     }
 
     close() {
       if (!this.classList.contains('is-open')) return;
+      if (this.focusTimer) {
+        window.clearTimeout(this.focusTimer);
+        this.focusTimer = null;
+      }
       this.classList.remove('is-open');
       document.documentElement.removeAttribute('data-fl-cart-lock');
       if (this.openerEl && document.contains(this.openerEl) && typeof this.openerEl.focus === 'function') {
@@ -823,6 +953,11 @@
         await this.refresh();
         added = true;
         this.open(button);
+        // Announced AFTER refresh(): renderContents() replaces the drawer's
+        // contents and can move focus, and an announcement written before that
+        // was swallowed. The wording comes from products.product.added_to_cart
+        // through data-added-text, so it follows the storefront locale.
+        this.announce(this.dataset.addedText, false);
       } catch (error) {
         this.showError(this.dataset.errorText);
         this.open(button);
@@ -915,21 +1050,64 @@
       if (focusSelector) target = this.querySelector(focusSelector);
       if (target) {
         target.focus();
-      } else if (this.panel) {
-        this.panel.focus();
+        return;
       }
+      // The control that had focus is gone (line removed, cart emptied):
+      // re-arm the trap on the first focusable control rather than leaving
+      // focus on <body>, where the next Tab would walk out of the drawer.
+      this.focusPanel();
+    }
+
+    // The live region is re-read on every use instead of being trusted from
+    // connectedCallback: it sits outside [data-cart-inner] today, but a stale
+    // reference is exactly how an announcement ends up written to a detached
+    // node and the region stays empty for the screen reader.
+    liveRegion() {
+      if (!this.statusEl || !this.contains(this.statusEl)) {
+        this.statusEl = this.querySelector('[data-cart-status]');
+      }
+      return this.statusEl;
+    }
+
+    // Clear-then-set: assistive technology only announces a CHANGE inside a
+    // live region, so writing the same wording twice in a row (two adds of the
+    // same product) is silent unless the region is emptied first.
+    announce(message, isError) {
+      const region = this.liveRegion();
+      if (!region || !message) return;
+      window.clearTimeout(this.statusTimer);
+      region.textContent = '';
+      region.classList.toggle('fl-cart__status--error', isError === true);
+      // Written from BOTH a frame callback and a timer, whichever lands first:
+      // requestAnimationFrame alone is throttled to a standstill in a hidden or
+      // backgrounded tab, which left the region measurably empty for a full
+      // second after an add — long enough for the shopper to hear nothing.
+      const write = () => {
+        if (region.textContent === message) return;
+        region.textContent = message;
+        // An error stays on screen until the next cart action resolves it; a
+        // confirmation is transient and takes itself back down.
+        if (isError) return;
+        window.clearTimeout(this.statusTimer);
+        this.statusTimer = window.setTimeout(() => {
+          if (region.textContent === message) region.textContent = '';
+        }, 5000);
+      };
+      window.requestAnimationFrame(write);
+      window.setTimeout(write, 50);
     }
 
     showError(message) {
-      if (!this.statusEl) return;
-      this.statusEl.textContent = '';
-      window.requestAnimationFrame(() => {
-        this.statusEl.textContent = message || this.dataset.errorText;
-      });
+      this.announce(message || this.dataset.errorText, true);
     }
 
     clearError() {
-      if (this.statusEl) this.statusEl.textContent = '';
+      const region = this.liveRegion();
+      if (!region) return;
+      if (!region.classList.contains('fl-cart__status--error')) return;
+      window.clearTimeout(this.statusTimer);
+      region.classList.remove('fl-cart__status--error');
+      region.textContent = '';
     }
   }
 

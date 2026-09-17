@@ -102,3 +102,9 @@ Zero offenses required. theme-check does not catch everything (nested `{% styles
 - **Featured collection** has a `layout: editorial` option (first card spans 2×2 on desktop).
 - **Footer credit**: `show_kiosk_credit` (default on) prints “Theme by KIOSK” next to the copyright — the free theme's only nudge towards the paid ones. Merchants can switch it off.
 - Type: heading scale default 135 %, headings `letter-spacing: -0.02em`, `line-height: 1.15`.
+
+## Languages: storefront bilingual, editor English-only (deliberate)
+
+- **Storefront** ships bilingual: `locales/en.default.json` and `locales/fr.json` are kept at strict key parity. Every visible string goes through `| t` — no hardcoded copy in `.liquid` markup.
+- **Theme editor** is English-only, on purpose. FLYER ships **no** `locales/*.schema.json` and uses **no** `t:` keys in section schemas or `config/settings_schema.json`; the ~950 `label` / `info` / `name` / `content` / `placeholder` strings are written in English directly in the schemas. A French merchant therefore sees English setting labels in the admin.
+- This is a deliberate trade-off, not an oversight: schema locale files double the surface to keep in sync for every new setting, and the target buyers read English admin copy. If that ever changes, the migration is mechanical — move every schema string to `en.default.schema.json` / `fr.schema.json` and replace it with a `t:` key — but it must be done in one pass, for all sections at once, or the editor ends up half-translated.

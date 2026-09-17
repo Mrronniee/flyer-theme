@@ -55,7 +55,12 @@
         {%- for line in heading_lines -%}
           {%- assign line_text = line | strip -%}
           {%- if line_text != blank -%}
-            <span class="fl-hero__ln"><span>{{ line_text }}</span></span>
+            {%- comment -%}
+              The trailing space is load-bearing: each line is its own block
+              span and, without a separating text node, the accessible name of
+              the H1 reads the lines glued together ("lines,made to last").
+            {%- endcomment -%}
+            <span class="fl-hero__ln"><span>{{ line_text }}</span></span>{{ ' ' }}
           {%- endif -%}
         {%- endfor -%}
       </h1>
