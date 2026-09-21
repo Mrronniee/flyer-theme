@@ -157,6 +157,7 @@
     "subtotal": "Sous-total",
     "discount": "Réduction",
     "taxes_note": "Taxes et frais de livraison calculés au moment du paiement.",
+    "taxes_included_note": "Taxes incluses. Frais de livraison calculés au moment du paiement.",
     "item_error": "Un problème est survenu. Veuillez réessayer.",
     "drawer_title": "Votre panier",
     "item_count": {

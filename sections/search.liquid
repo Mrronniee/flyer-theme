@@ -227,7 +227,10 @@
     list-style: none;
   }
 
+  /* The title link covers the whole row (same pattern as the product card):
+     alone, a one-line title was a 19px-high target, under the 24px minimum. */
   .fl-searchpage__row {
+    position: relative;
     padding-block: 24px;
     border-top: 1px solid var(--color-line);
   }
@@ -247,6 +250,12 @@
 
   .fl-searchpage__row-link {
     text-decoration: none;
+  }
+
+  .fl-searchpage__row-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
   }
 
   .fl-searchpage__row-link:hover {

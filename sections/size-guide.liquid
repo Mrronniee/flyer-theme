@@ -46,12 +46,12 @@
       {%- if unit_toggle -%}
         <fieldset class="fl-size-guide__units" data-units hidden>
           <legend class="visually-hidden">{{ 'sections.size_guide.unit_label' | t }}</legend>
-          <label class="fl-size-guide__unit">
-            <input type="radio" name="fl-size-guide-unit-{{ section.id }}" value="a" checked>
+          <label class="fl-size-guide__unit" for="FlSizeGuideUnitA-{{ section.id }}">
+            <input id="FlSizeGuideUnitA-{{ section.id }}" type="radio" name="fl-size-guide-unit-{{ section.id }}" value="a" checked>
             <span>{{ unit_a | escape }}</span>
           </label>
-          <label class="fl-size-guide__unit">
-            <input type="radio" name="fl-size-guide-unit-{{ section.id }}" value="b">
+          <label class="fl-size-guide__unit" for="FlSizeGuideUnitB-{{ section.id }}">
+            <input id="FlSizeGuideUnitB-{{ section.id }}" type="radio" name="fl-size-guide-unit-{{ section.id }}" value="b">
             <span>{{ unit_b | escape }}</span>
           </label>
         </fieldset>

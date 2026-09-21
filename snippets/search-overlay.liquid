@@ -79,13 +79,14 @@
               <circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.5"/>
               <path d="m13.5 13.5 3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
+            <label class="visually-hidden" for="FlSearchOverlayInput">{{ 'search.title' | t }}</label>
             <input
+              id="FlSearchOverlayInput"
               class="fl-search__input"
               type="search"
               name="q"
               data-search-input
               placeholder="{{ 'search.placeholder' | t }}"
-              aria-label="{{ 'search.title' | t }}"
               {% if predictive %}
                 aria-controls="FlSearchResults"
               {% endif %}
@@ -428,8 +429,10 @@
       this.showVendor = this.dataset.showVendor === 'true';
       this.showPrice = this.dataset.showPrice === 'true';
 
-      this.predictiveUrl = this.dataset.predictiveUrl || '/search/suggest';
-      this.searchUrl = this.dataset.searchUrl || '/search';
+      // Both come from the routes object (locale- and market-aware); the
+      // predictive one is only written, and only read, when predictive is on.
+      this.predictiveUrl = this.dataset.predictiveUrl;
+      this.searchUrl = this.dataset.searchUrl;
       this.currency = this.dataset.currency || 'USD';
       this.moneyFormat = this.dataset.moneyFormat || '';
       this.labels = {

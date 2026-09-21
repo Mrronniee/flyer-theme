@@ -20,6 +20,13 @@
   endif
 -%}
 
+{%- capture account_icon -%}
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+    <circle cx="10" cy="6.5" r="3.25" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M3.75 17c.9-3 3.3-4.75 6.25-4.75S15.35 14 16.25 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+{%- endcapture -%}
+
 {%- if sticky_offset > 88 -%}
   {% style %}
     :root:has(.fl-header-section [data-sticky]) {
@@ -60,17 +67,21 @@
       JS it is an inert control and the mobile drawer can never open. Hide it
       and show the inline nav instead — its dropdowns are native <details>,
       which work without JS. Same pattern as the <noscript> players/buttons
-      in video.liquid and collection.liquid.
+      in video.liquid and collection.liquid. <shopify-account> is a script
+      too: it is hidden and a plain account link stands in (see the icons).
     {%- endcomment -%}
     <noscript>
       <style>
+        shopify-account.fl-header__account {
+          display: none;
+        }
+
         @media (max-width: 989px) {
           .fl-header__burger {
             display: none;
           }
 
-          .fl-header__nav,
-          .fl-header__account {
+          .fl-header__nav {
             display: flex;
           }
         }
@@ -214,7 +225,15 @@
       {%- endif -%}
 
       {%- if settings.wishlist_enabled -%}
-        <a class="fl-header__icon-btn fl-header__wishlist" href="{{ settings.wishlist_page | default: '/pages/wishlist' }}">
+        {%- liquid
+          # routes.root_url is "/" or a locale/market prefix ("/en"): the
+          # fallback page must follow it, like every other storefront URL.
+          assign wishlist_url = settings.wishlist_page
+          if wishlist_url == blank
+            assign wishlist_url = routes.root_url | append: '/pages/wishlist' | replace: '//', '/'
+          endif
+        -%}
+        <a class="fl-header__icon-btn fl-header__wishlist" href="{{ wishlist_url }}">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
             <path d="M10 17s-6.5-4.1-6.5-8.6A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.5 2.1C16.5 12.9 10 17 10 17Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
           </svg>
@@ -224,13 +243,32 @@
       {%- endif -%}
 
       {%- if shop.customer_accounts_enabled -%}
-        <a class="fl-header__icon-btn fl-header__account" href="{{ routes.account_login_url }}">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
-            <circle cx="10" cy="6.5" r="3.25" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M3.75 17c.9-3 3.3-4.75 6.25-4.75S15.35 14 16.25 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-          <span class="visually-hidden">{{ 'customer.account.title' | t }}</span>
-        </a>
+        {%- comment -%}
+          Shopify's account component, in the bar at every width (Theme Store
+          requirement since 30/07/2026): an avatar button that opens the
+          account sheet — sign-in for guests, the account menu once signed in.
+          Legacy customer accounts go to the sign-in page instead. Shopify
+          loads and updates the element itself; the theme passes the menu and
+          styles it through its CSS properties and the signed-out-avatar part.
+        {%- endcomment -%}
+        {%- assign account_menu = section.settings.customer_account_menu -%}
+        <shopify-account
+          class="fl-header__account"
+          {% if account_menu != blank %}
+            menu="{{ account_menu.handle }}"
+          {% endif %}
+        >
+          <span slot="signed-out-avatar" class="fl-header__account-icon">
+            {{- account_icon -}}
+            <span class="visually-hidden">{{ 'customer.account.title' | t }}</span>
+          </span>
+        </shopify-account>
+        <noscript>
+          <a class="fl-header__icon-btn" href="{{ routes.account_login_url }}">
+            {{- account_icon -}}
+            <span class="visually-hidden">{{ 'customer.account.title' | t }}</span>
+          </a>
+        </noscript>
       {%- endif -%}
 
       <a
@@ -334,10 +372,7 @@
       {%- if shop.customer_accounts_enabled -%}
         <div class="fl-header__drawer-foot">
           <a class="fl-header__drawer-account" href="{{ routes.account_login_url }}">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
-              <circle cx="10" cy="6.5" r="3.25" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M3.75 17c.9-3 3.3-4.75 6.25-4.75S15.35 14 16.25 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
+            {{- account_icon }}
             {{ 'customer.account.title' | t }}
           </a>
         </div>
@@ -575,7 +610,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
+    /* Narrower on small phones only (see the 419px query), never under 36px
+       wide nor under 44px high: well above the 24 x 24px target minimum. */
+    width: var(--fl-header-icon-width, 44px);
     height: 44px;
     padding: 0;
     border: 0;
@@ -611,6 +648,65 @@
 
   .fl-header__cart-count.is-empty {
     display: none;
+  }
+
+  /* Shopify's account component. The custom properties map its button and
+     its account sheet onto the theme's tokens (colours, fonts, corners);
+     Shopify styles everything else and may restyle it without a theme
+     update. Before the script upgrades the element it keeps the footprint of
+     an icon button, so the row does not shift when the avatar appears. */
+  .fl-header__account {
+    --shopify-account-avatar-size: var(--fl-header-icon-width, 44px);
+    --shopify-account-signed-in-avatar-size: 28px;
+    --shopify-account-signed-in-avatar-color-background: var(--color-accent);
+    --shopify-account-signed-in-avatar-color-text: var(--color-on-accent);
+    --shopify-account-color-background: var(--color-bg);
+    --shopify-account-color-text: var(--color-ink);
+    --shopify-account-color-accent: var(--color-accent);
+    --shopify-account-color-accent-text: var(--color-on-accent);
+    --shopify-account-font-body: var(--font-body-family);
+    --shopify-account-font-body-weight: var(--font-body-weight);
+    --shopify-account-font-heading: var(--font-heading-family);
+    --shopify-account-font-heading-weight: var(--font-heading-weight);
+    --shopify-account-font-heading-transform: var(--heading-case, none);
+    --shopify-account-radius-base: var(--popup-radius, 8px);
+    --shopify-account-radius-button: var(--radius-btn);
+    --shopify-account-radius-button-small: var(--radius-btn);
+    --shopify-account-radius-input: var(--radius-input);
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--fl-header-icon-width, 44px);
+    height: 44px;
+    color: var(--color-ink);
+  }
+
+  .fl-header__account::part(signed-out-avatar) {
+    width: var(--fl-header-icon-width, 44px);
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-btn);
+    background: none;
+    color: var(--color-ink);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .fl-header__account::part(signed-out-avatar):hover {
+    background: var(--color-surface);
+  }
+
+  .fl-header__account::part(signed-out-avatar):focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  .fl-header__account-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .fl-header__burger {
@@ -768,8 +864,7 @@
   }
 
   @media (max-width: 989px) {
-    .fl-header__nav,
-    .fl-header__account {
+    .fl-header__nav {
       display: none;
     }
 
@@ -780,6 +875,28 @@
     .fl-header__bar {
       gap: 12px;
       min-height: 56px;
+    }
+  }
+
+  /* Small phones: the account icon stays in the bar next to search, wishlist
+     and cart, so the icons give up some width (never height) to leave the
+     shop name about as much room as before, and a name that still does not
+     fit ends with an ellipsis instead of running under the icons. */
+  @media (max-width: 419px) {
+    .fl-header__bar {
+      --fl-header-icon-width: 40px;
+      gap: 8px;
+    }
+
+    .fl-header__wordmark {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .fl-header__bar {
+      --fl-header-icon-width: 36px;
     }
   }
 
@@ -871,11 +988,24 @@
 
       this._onCartChange = (event) => this.updateCartCount(event);
       document.addEventListener('fl:cart:change', this._onCartChange);
+
+      // The account sheet takes its top edge from a CSS property. Measured at
+      // the moment it opens, because the announcement bar above a sticky
+      // header may have scrolled away: the sheet starts right under the bar.
+      this.account = this.querySelector('shopify-account');
+      if (this.account) {
+        this._onAccountOpen = () => {
+          const bottom = Math.max(0, Math.round(this.getBoundingClientRect().bottom));
+          this.account.style.setProperty('--shopify-account-dialog-position-top', bottom + 'px');
+        };
+        this.account.addEventListener('open', this._onAccountOpen, true);
+      }
     }
 
     disconnectedCallback() {
       document.removeEventListener('click', this._onDocClick);
       document.removeEventListener('fl:cart:change', this._onCartChange);
+      if (this.account) this.account.removeEventListener('open', this._onAccountOpen, true);
     }
 
     openDrawer() {
@@ -934,6 +1064,17 @@
       "id": "show_search",
       "label": "Show search",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Customer account"
+    },
+    {
+      "type": "link_list",
+      "id": "customer_account_menu",
+      "label": "Account menu",
+      "info": "Links in the sheet that opens from the account icon. Shown when customer accounts are turned on.",
+      "default": "customer-account-main-menu"
     },
     {
       "type": "header",

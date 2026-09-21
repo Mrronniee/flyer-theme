@@ -45,8 +45,13 @@
     color: var(--color-muted);
   }
 
+  /* Standalone links and text buttons on the account pages stay at least
+     24px high: at their small size the bare line box fell under the minimum
+     target size (inline links inside a sentence are exempt and untouched). */
   .fl-account__back {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
     margin-bottom: 20px;
     font-size: 0.875em;
     color: var(--color-muted);
@@ -69,6 +74,9 @@
   }
 
   .fl-account__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
     padding: 0;
     font: inherit;
     font-size: 0.9375em;
@@ -155,6 +163,12 @@
 
   .fl-account__cell {
     min-width: 0;
+  }
+
+  .fl-account__cell > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
   }
 
   .fl-account__cell-label {

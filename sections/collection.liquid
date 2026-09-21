@@ -136,9 +136,14 @@
                   <div class="fl-facet__panel">
                     <ul class="fl-facet__list" role="list">
                       {%- for value in filter.values -%}
+                        {%- assign value_id = form_id | append: '-' | append: filter.param_name | handleize | append: '-' | append: forloop.index -%}
                         <li class="fl-facet__item">
-                          <label class="fl-facet__option{% if value.count == 0 and value.active == false %} fl-facet__option--empty{% endif %}">
+                          <label
+                            class="fl-facet__option{% if value.count == 0 and value.active == false %} fl-facet__option--empty{% endif %}"
+                            for="{{ value_id }}"
+                          >
                             <input
+                              id="{{ value_id }}"
                               type="checkbox"
                               class="fl-facet__checkbox"
                               name="{{ value.param_name }}"

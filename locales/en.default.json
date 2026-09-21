@@ -157,6 +157,7 @@
     "subtotal": "Subtotal",
     "discount": "Discount",
     "taxes_note": "Taxes and shipping calculated at checkout.",
+    "taxes_included_note": "Taxes included. Shipping calculated at checkout.",
     "item_error": "Something went wrong. Please try again.",
     "drawer_title": "Your cart",
     "item_count": {

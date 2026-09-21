@@ -111,7 +111,8 @@
         <p class="fl-gift__code">{{ gift_card.code | format_code }}</p>
 
         {%- if gift_card.pass_url -%}
-          <a class="fl-gift__wallet" href="{{ gift_card.pass_url }}">
+          {%- comment -%} pass_url is served from *.myshopify.com: Shopify-domain links carry nofollow. {%- endcomment -%}
+          <a class="fl-gift__wallet" href="{{ gift_card.pass_url }}" rel="nofollow">
             <img
               src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
               alt="{{ 'gift_card.add_to_apple_wallet' | t }}"

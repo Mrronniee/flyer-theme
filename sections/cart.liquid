@@ -132,7 +132,11 @@
                       <path d="M2.5 7h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
                   </button>
+                  <label class="visually-hidden" for="FlCartQty-{{ section.id }}-{{ forloop.index }}">
+                    {{- 'cart.quantity' | t }} — {{ item_title -}}
+                  </label>
                   <input
+                    id="FlCartQty-{{ section.id }}-{{ forloop.index }}"
                     class="fl-cart-page__qty-input"
                     type="number"
                     inputmode="numeric"
@@ -140,7 +144,6 @@
                     name="updates[]"
                     value="{{ item.quantity }}"
                     data-qty-input
-                    aria-label="{{ 'cart.quantity' | t }} — {{ item_title }}"
                   >
                   <button
                     type="button"
@@ -217,7 +220,13 @@
           <span>{{ cart_total }}</span>
         </div>
 
-        <p class="fl-cart-page__taxes">{{ 'cart.taxes_note' | t }}</p>
+        <p class="fl-cart-page__taxes">
+          {%- if cart.taxes_included -%}
+            {{ 'cart.taxes_included_note' | t }}
+          {%- else -%}
+            {{ 'cart.taxes_note' | t }}
+          {%- endif -%}
+        </p>
 
         <button type="submit" name="update" class="fl-btn fl-btn--secondary fl-cart-page__update">
           {{ 'cart.update' | t }}

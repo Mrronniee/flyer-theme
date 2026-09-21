@@ -325,7 +325,12 @@
     gap: 8px 24px;
   }
 
+  /* 24px high at least: at the copyright's small size the bare line box
+     measured 20.8px, under the minimum target size. */
   .fl-footer__credit {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
     color: var(--color-muted);
     text-decoration: underline;
     text-decoration-thickness: 1px;
