@@ -894,9 +894,13 @@
     }
   }
 
+  /* The bar's own inline padding shrinks too: the icon buttons carry 8px of
+     inner space around their glyph, so the burger and cart glyphs still line
+     up with the 24px page margin, and "My Store" fits in full at 320px. */
   @media (max-width: 359px) {
     .fl-header__bar {
       --fl-header-icon-width: 36px;
+      padding-inline: min(var(--page-margin), 16px);
     }
   }
 
