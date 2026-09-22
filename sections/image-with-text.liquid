@@ -18,7 +18,7 @@
               loading: 'lazy'
           }}
         {%- else -%}
-          {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-imgtext__img fl-imgtext__img--placeholder' }}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-imgtext__img fl-imgtext__img--placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
         {%- endif -%}
       </div>
 

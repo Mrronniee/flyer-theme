@@ -21,7 +21,7 @@
           | image_tag: widths: '450, 700, 900', sizes: '(max-width: 749px) 100vw, 440px', alt: product.featured_media.alt, loading: 'eager'
         }}
       {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'fl-qv__placeholder' }}
+        {{ 'product-1' | placeholder_svg_tag: 'fl-qv__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
       {%- endif -%}
     </div>
 

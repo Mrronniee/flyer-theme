@@ -76,7 +76,7 @@
                   class: 'fl-lookbook__img'
               }}
             {%- else -%}
-              {{ ph | placeholder_svg_tag: 'fl-lookbook__img fl-lookbook__ph' }}
+              {{ ph | placeholder_svg_tag: 'fl-lookbook__img fl-lookbook__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
             {%- endif -%}
             {%- if href != blank -%}
               </a>

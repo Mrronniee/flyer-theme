@@ -45,7 +45,7 @@
                   | image_tag: widths: '300, 450, 600, 900', sizes: '(max-width: 749px) 50vw, 33vw', alt: collection.title, loading: 'lazy'
                 }}
               {%- else -%}
-                {{ 'collection-1' | placeholder_svg_tag: 'fl-collections__placeholder' }}
+                {{ 'collection-1' | placeholder_svg_tag: 'fl-collections__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
               {%- endif -%}
             </span>
 

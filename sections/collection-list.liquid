@@ -96,7 +96,7 @@
                           class: 'fl-collist__img'
                       }}
                     {%- else -%}
-                      {{ placeholder_name | placeholder_svg_tag: 'fl-collist__ph' }}
+                      {{ placeholder_name | placeholder_svg_tag: 'fl-collist__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
                     {%- endif -%}
                   </span>
                   <span class="fl-collist__info">
@@ -111,7 +111,7 @@
               {%- else -%}
                 <span class="fl-collist__link">
                   <span class="fl-collist__media">
-                    {{ placeholder_name | placeholder_svg_tag: 'fl-collist__ph' }}
+                    {{ placeholder_name | placeholder_svg_tag: 'fl-collist__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
                   </span>
                   <span class="fl-collist__info">
                     <span class="fl-collist__name">
@@ -130,7 +130,7 @@
             <div class="fl-collist__card{% if boxed %} fl-collist__card--boxed color-{{ settings.collection_card_color_scheme }}{% endif %}">
               <span class="fl-collist__link">
                 <span class="fl-collist__media">
-                  {{ placeholder_name | placeholder_svg_tag: 'fl-collist__ph' }}
+                  {{ placeholder_name | placeholder_svg_tag: 'fl-collist__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
                 </span>
                 <span class="fl-collist__info">
                   <span class="fl-collist__name">{{ 'collections.general.placeholder_title' | t }}</span>

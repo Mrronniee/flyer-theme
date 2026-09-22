@@ -84,7 +84,7 @@
           {%- assign placeholder_name = 'product-' | append: i -%}
           <article class="fl-card">
             <div class="fl-card__media">
-              {{ placeholder_name | placeholder_svg_tag: 'fl-featured__ph' }}
+              {{ placeholder_name | placeholder_svg_tag: 'fl-featured__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
             </div>
             <div class="fl-card__info">
               <h3 class="fl-card__title">{{ 'products.card.placeholder_title' | t }}</h3>

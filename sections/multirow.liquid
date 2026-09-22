@@ -73,7 +73,7 @@
                 class: 'fl-multirow__img'
             }}
           {%- else -%}
-            {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-multirow__ph' }}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-multirow__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
           {%- endif -%}
         </div>
 

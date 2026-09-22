@@ -63,7 +63,7 @@
                       class: 'fl-multicol__img'
                   }}
                 {%- else -%}
-                  {{ 'collection-1' | placeholder_svg_tag: 'fl-multicol__ph' }}
+                  {{ 'collection-1' | placeholder_svg_tag: 'fl-multicol__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
                 {%- endif -%}
               </div>
             {%- endif -%}

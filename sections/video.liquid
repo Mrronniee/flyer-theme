@@ -83,7 +83,7 @@
                 loading: 'lazy'
             }}
           {%- else -%}
-            {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-video__ph' }}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-video__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
           {%- endif -%}
           <span class="fl-video__play" aria-hidden="true">
             <svg class="fl-video__icon" viewBox="0 0 24 24" focusable="false">
@@ -146,7 +146,7 @@
               loading: 'lazy'
           }}
         {%- else -%}
-          {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-video__ph' }}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-video__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
         {%- endif -%}
       {%- endif -%}
     </div>

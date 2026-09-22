@@ -83,7 +83,7 @@
         }}
       {%- endif -%}
     {%- else -%}
-      {{ 'product-1' | placeholder_svg_tag: 'fl-card__placeholder' }}
+      {{ 'product-1' | placeholder_svg_tag: 'fl-card__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
     {%- endif -%}
     {%- if settings.animations_hover_elements == 'second-image' and product.media.size > 1 -%}
       {%- comment -%} Second view, shown flat on hover (no fade). {%- endcomment -%}

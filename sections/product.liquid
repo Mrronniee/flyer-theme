@@ -70,7 +70,7 @@
           {%- endfor -%}
         {%- else -%}
           <div class="fl-gallery__media" data-media-item>
-            {{ 'product-1' | placeholder_svg_tag: 'fl-gallery__placeholder' }}
+            {{ 'product-1' | placeholder_svg_tag: 'fl-gallery__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
           </div>
         {%- endif -%}
       </div>

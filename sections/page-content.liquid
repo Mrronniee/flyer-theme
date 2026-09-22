@@ -37,7 +37,7 @@
         a page with content is selected.
       {%- endcomment -%}
       <div class="fl-pagecontent__empty fl-media">
-        {{ 'page' | placeholder_svg_tag: 'fl-pagecontent__ph' }}
+        {{ 'page' | placeholder_svg_tag: 'fl-pagecontent__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
       </div>
     {%- endif -%}
   </div>

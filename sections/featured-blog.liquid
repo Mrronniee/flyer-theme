@@ -107,7 +107,7 @@
                         class: 'fl-featblog__img'
                     }}
                   {%- else -%}
-                    {{ 'image' | placeholder_svg_tag: 'fl-featblog__ph' }}
+                    {{ 'image' | placeholder_svg_tag: 'fl-featblog__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
                   {%- endif -%}
                 </div>
               {%- endif -%}
@@ -152,7 +152,7 @@
             >
               {%- if section.settings.show_image -%}
                 <div class="fl-featblog__media">
-                  {{ 'image' | placeholder_svg_tag: 'fl-featblog__ph' }}
+                  {{ 'image' | placeholder_svg_tag: 'fl-featblog__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
                 </div>
               {%- endif -%}
               <div class="fl-featblog__body">

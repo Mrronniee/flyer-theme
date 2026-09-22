@@ -96,7 +96,7 @@
                                     class: 'fl-qol__img'
                                 }}
                               {%- else -%}
-                                {{ 'product-1' | placeholder_svg_tag: 'fl-qol__ph' }}
+                                {{ 'product-1' | placeholder_svg_tag: 'fl-qol__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
                               {%- endif -%}
                             </div>
                           {%- endif -%}

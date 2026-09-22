@@ -47,7 +47,7 @@
                     loading: img_loading
                 }}
               {%- else -%}
-                {{ 'image' | placeholder_svg_tag: 'fl-blog__placeholder' }}
+                {{ 'image' | placeholder_svg_tag: 'fl-blog__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
               {%- endif -%}
             </div>
 
