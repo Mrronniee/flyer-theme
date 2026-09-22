@@ -1,5 +1,45 @@
 # Changelog
 
+## 1.8.0 - 2026-09-22
+
+### Added
+- **Shopify account button in the header, on desktop and mobile.** The account
+  icon is now Shopify's own account component. Shoppers sign in without a
+  password, with Shop or with a social account, and reach their orders and
+  profile in a panel that opens under the header, without leaving the page.
+  Stores still on legacy customer accounts send them to the sign-in page, as
+  before. The panel follows the theme's colours, fonts and corner radius; its
+  links come from Header > Customer account > Account menu (default: Shopify's
+  customer account menu, `customer-account-main-menu`). The Shopify Theme Store
+  has required this component in theme headers since July 30, 2026. Without
+  JavaScript, a plain account link takes its place.
+
+### Changed
+- **Header on small phones.** Below 420px the header icons are 40px wide, and
+  36px wide below 360px - always 44px tall - so the account icon fits beside
+  search, wishlist and cart, and a short shop name still shows in full at
+  320px. A longer name ends with an ellipsis instead of running under the
+  icons.
+
+### Fixed
+- **Taxes line in the cart.** The cart page and the cart drawer always said
+  "Taxes and shipping calculated at checkout", even when your prices include
+  tax. They now say "Taxes included. Shipping calculated at checkout." in that
+  case, like the product page.
+- **Every form field has its own label.** The quantity fields of the cart page
+  and the cart drawer, the drawer's order note, the search field, the
+  collection filter checkboxes and the size guide's unit switch are now tied to
+  a label, so screen readers and voice control name them reliably.
+- **Small tap targets.** Page and article results on the search page are
+  clickable on the whole row, and the footer's theme credit, the "Back to blog"
+  link, comment and order pagination and the account page links are at least
+  24px tall (44px for pagination).
+- **Wishlist link on a translated storefront.** When no wishlist page is picked
+  in the theme settings, the header heart now keeps the shopper's language
+  (/en/pages/wishlist on the English storefront).
+- The "Add to Apple Wallet" link on the gift card page is marked
+  rel="nofollow", as Shopify asks for links to its own domains.
+
 ## 1.7.4 - 2026-09-17
 
 ### Fixed
