@@ -20,7 +20,15 @@
     assign title_size_class = ' fl-hero__title--long'
   endif
   assign btn_1_href = section.settings.button_link | default: routes.all_products_collection_url
-  assign btn_2_href = section.settings.button_link_2 | default: routes.all_products_collection_url
+  # The second button is a secondary destination (a page, a lookbook), so it
+  # only shows once it has a link. Falling back to the catalogue sent "Our
+  # story" to the product list on a fresh install, and shipping a demo page
+  # link in the template would have sent it to a 404 on most stores.
+  assign btn_2_href = section.settings.button_link_2
+  assign has_btn_2 = false
+  if section.settings.button_label_2 != blank and btn_2_href != blank
+    assign has_btn_2 = true
+  endif
 -%}
 
 <fl-hero
@@ -70,12 +78,12 @@
       <div class="fl-hero__text">{{ section.settings.text }}</div>
     {%- endif -%}
 
-    {%- if section.settings.button_label != blank or section.settings.button_label_2 != blank -%}
+    {%- if section.settings.button_label != blank or has_btn_2 -%}
       <div class="fl-hero__btns">
         {%- if section.settings.button_label != blank -%}
           <a class="fl-btn" href="{{ btn_1_href }}">{{ section.settings.button_label | escape }}</a>
         {%- endif -%}
-        {%- if section.settings.button_label_2 != blank -%}
+        {%- if has_btn_2 -%}
           <a class="fl-btn fl-btn--secondary" href="{{ btn_2_href }}">{{ section.settings.button_label_2 | escape }}</a>
         {%- endif -%}
       </div>
@@ -453,7 +461,8 @@
     {
       "type": "url",
       "id": "button_link_2",
-      "label": "Second button link"
+      "label": "Second button link",
+      "info": "The second button only shows once it has a link."
     }
   ],
   "presets": [
