@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.1 - 2026-09-22
+
+### Fixed
+- **Placeholder drawings are hidden from screen readers.** Until you pick an
+  image, sections show Shopify's placeholder drawing. Screen readers could
+  announce each one as an unnamed "image" - ten times on the home page of a
+  fresh install. The drawings are now hidden from assistive technology in the
+  20 sections that can show one and in product cards without a photo. Your
+  own images and their alt text are not affected.
+
 ## 1.8.0 - 2026-09-22
 
 ### Added
