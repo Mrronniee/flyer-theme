@@ -1,3 +1,20 @@
+{%- liquid
+  # Policies menu next to the copyright. Its default is the store's footer
+  # menu (Theme Store rule for every link_list of the footer), so it is
+  # skipped when a Menu block above already shows that same menu: the links
+  # would otherwise appear twice on a fresh install.
+  assign legal_menu = section.settings.legal_menu
+  assign show_legal = false
+  if legal_menu != blank
+    assign show_legal = true
+    for block in section.blocks
+      if block.type == 'menu' and block.settings.menu.handle == legal_menu.handle
+        assign show_legal = false
+      endif
+    endfor
+  endif
+-%}
+
 <footer
   class="fl-footer full-width"
   style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;{% if section.settings.background == 'surface' %} background-color: var(--color-surface);{% endif %}"
@@ -168,9 +185,9 @@
           {%- if section.settings.show_kiosk_credit -%}
             <a class="fl-footer__credit" href="https://kioskthemes.com/?utm_source=flyer&utm_medium=theme-credit" rel="noopener">{{ 'general.footer.theme_credit' | t }}</a>
           {%- endif -%}
-          {%- if section.settings.legal_menu != blank -%}
+          {%- if show_legal -%}
             <ul class="fl-footer__legal-menu" role="list">
-              {%- for link in section.settings.legal_menu.links -%}
+              {%- for link in legal_menu.links -%}
                 <li>
                   <a class="fl-footer__link fl-footer__link--legal" href="{{ link.url }}">{{ link.title | escape }}</a>
                 </li>
@@ -462,7 +479,8 @@
       "type": "link_list",
       "id": "legal_menu",
       "label": "Policies menu",
-      "info": "Shown next to the copyright."
+      "info": "Shown next to the copyright. Hidden when a Menu block above already shows the same menu.",
+      "default": "footer"
     },
     {
       "type": "header",
