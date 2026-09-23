@@ -217,6 +217,43 @@ a {
   background: var(--color-surface);
 }
 
+/* Shopify's dynamic checkout button ("Buy it now", unbranded) ships white on
+   Shopify blue: 3.59:1, under WCAG AA. Dressed as the secondary button so it
+   follows the colour scheme and stays above 4.5:1. Two classes beat the
+   single-class rules Shopify injects at runtime. Branded wallets (Shop Pay,
+   PayPal…) keep their own colours, as Shopify requires. */
+.shopify-payment-button .shopify-payment-button__button--unbranded {
+  min-height: 44px;
+  padding: 12px 24px;
+  font: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--color-outline-label, var(--color-ink));
+  background-color: transparent;
+  border: var(--btn-border-width, 1px) solid
+    rgba(var(--color-outline-label-rgb, var(--color-ink-rgb)), var(--btn-border-opacity, 1));
+  border-radius: var(--radius-btn);
+  box-shadow: var(--btn-shadow);
+  transition: background-color 0.15s ease;
+}
+.shopify-payment-button .shopify-payment-button__button--unbranded:hover:not([disabled]),
+.shopify-payment-button .shopify-payment-button__button--unbranded:focus-visible {
+  color: var(--color-outline-label, var(--color-ink));
+  background-color: var(--color-surface);
+}
+.shopify-payment-button .shopify-payment-button__more-options {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 4px;
+  padding: 0;
+  color: var(--color-ink);
+  font: inherit;
+  font-size: 0.875em;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 /* --- Forms --- */
 .fl-input,
 .fl-select,
