@@ -51,12 +51,13 @@ chooses a scheme. Change a scheme and everything using it updates at once.
 
 ## 5. Build your pages
 
-Click **Add section** on any template. FLYER ships 22 sections: slideshow, image
-banner, image with text, multicolumn, collage, multirow, rich text, featured
-collection, collection list, featured product, featured blog, collapsible
-content (FAQ), video, email signup banner, newsletter, contact form, page
-content, quick order list, country and language selectors, custom Liquid, and an
-app container.
+Click **Add section** on any template. FLYER ships 32 sections: slideshow, hero
+split, image banner, image with text, multicolumn, collage, multirow, rich text,
+lookbook, featured collection, collection list, featured product, related
+products, featured blog, collapsible content, FAQ, comparison table,
+testimonials, trust badges, countdown, video, email signup banner, newsletter,
+contact form, page content, quick order list, size guide, wishlist, announcement
+bar, country and language selectors, custom Liquid, and an app container.
 
 ## 6. Publish
 
