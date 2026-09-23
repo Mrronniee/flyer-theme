@@ -533,7 +533,11 @@ h6 {
   opacity: 0.35;
 }
 /* Theme setting: Animations > Hover effect (second image). The alternate view
-   sits over the first and appears flat, without a fade, like turning a page. */
+   sits over the first and appears flat, without a fade, like turning a page.
+   Its <picture> wrapper generates no box of its own, so it adds no height. */
+.fl-card__media picture {
+  display: contents;
+}
 .fl-card__media .fl-card__img--alt {
   position: absolute;
   inset: 0;

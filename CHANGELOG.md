@@ -10,6 +10,12 @@
   shows the same menu; pick a dedicated policies menu and it appears. Footers
   you have already set up are unchanged.
 
+### Changed
+- **Lighter collection pages on phones.** With the "second image on hover"
+  effect, every product card also downloaded its second photo on touch
+  screens, where nothing can hover. Phones and tablets now skip it; laptops and
+  desktops keep the effect exactly as before.
+
 ## 1.8.2 - 2026-09-23
 
 ### Fixed

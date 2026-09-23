@@ -86,12 +86,20 @@
       {{ 'product-1' | placeholder_svg_tag: 'fl-card__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
     {%- endif -%}
     {%- if settings.animations_hover_elements == 'second-image' and product.media.size > 1 -%}
-      {%- comment -%} Second view, shown flat on hover (no fade). {%- endcomment -%}
-      {{
-        product.media[1].preview_image
-        | image_url: width: 900
-        | image_tag: widths: img_widths, sizes: img_sizes, alt: '', loading: 'lazy', class: 'fl-card__img--alt', aria-hidden: 'true'
-      }}
+      {%- comment -%}
+        Second view, shown flat on hover (no fade). A touch screen has no
+        hover, so the <source> for (hover: none) hands it a 1 x 1 transparent
+        GIF and the real photo is only downloaded where a pointer can hover: a
+        phone no longer fetches a second image per card on collection pages.
+      {%- endcomment -%}
+      <picture>
+        <source media="(hover: none)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+        {{-
+          product.media[1].preview_image
+          | image_url: width: 900
+          | image_tag: widths: img_widths, sizes: img_sizes, alt: '', loading: 'lazy', class: 'fl-card__img--alt', aria-hidden: 'true'
+        -}}
+      </picture>
     {%- endif -%}
     {%- if product.available == false or on_sale -%}
       <div class="{{ badge_classes }}">
