@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.3 - 2026-09-23
+
+### Fixed
+- **Policies menu in the footer has a default.** The menu shown next to the
+  copyright now defaults to the store's footer menu (handle `footer`), as the
+  Shopify Theme Store requires for every menu setting of the footer. To avoid
+  the same links twice, that row stays hidden while a Menu block above already
+  shows the same menu; pick a dedicated policies menu and it appears. Footers
+  you have already set up are unchanged.
+
 ## 1.8.2 - 2026-09-23
 
 ### Fixed
