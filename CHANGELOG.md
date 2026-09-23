@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.8.2 - 2026-09-23
+
+### Fixed
+- **"Buy it now" button readable in every colour scheme.** Shopify's dynamic
+  checkout button, when it shows as a plain button rather than a wallet (Shop
+  Pay, PayPal...), was white on Shopify blue: 3.6:1, under the WCAG AA contrast
+  threshold. It now looks like the theme's secondary button and follows your
+  colour scheme. The "More payment options" link gets the text colour and a
+  44px tap target. Branded wallets keep their own colours.
+- **No dead link on a fresh install.** The home page template sent the hero's
+  second button ("Our story") to a page that only exists on the demo store,
+  which is a 404 on most stores. The template no longer sets that link, and the
+  hero shows its second button only once you give it a link, instead of sending
+  it to the product list.
+- **Footer menu block has a default menu.** A "Menu" block added to the footer
+  now shows the store's footer menu (handle `footer`) until you pick another
+  one, as the Shopify Theme Store requires. Existing footers are unchanged.
+
+### Changed
+- The installation guide lists all 32 sections the theme ships (it said 22).
+
 ## 1.8.1 - 2026-09-22
 
 ### Fixed
