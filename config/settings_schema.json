@@ -50,7 +50,7 @@
             "type": "color_background",
             "id": "background_gradient",
             "label": "Background gradient",
-            "info": "Replaces the background colour where supported."
+            "info": "Replaces the background color where supported."
           },
           {
             "type": "color",
@@ -127,7 +127,7 @@
       {
         "type": "select",
         "id": "type_heading_case",
-        "label": "Heading capitalisation",
+        "label": "Heading capitalization",
         "options": [
           {
             "value": "none",
@@ -552,7 +552,7 @@
           },
           {
             "value": "center",
-            "label": "Centre"
+            "label": "Center"
           },
           {
             "value": "right",
@@ -564,7 +564,7 @@
       {
         "type": "color_scheme",
         "id": "card_color_scheme",
-        "label": "Colour scheme",
+        "label": "Color scheme",
         "default": "scheme-1"
       },
       {
@@ -695,7 +695,7 @@
           },
           {
             "value": "center",
-            "label": "Centre"
+            "label": "Center"
           },
           {
             "value": "right",
@@ -707,7 +707,7 @@
       {
         "type": "color_scheme",
         "id": "collection_card_color_scheme",
-        "label": "Colour scheme",
+        "label": "Color scheme",
         "default": "scheme-1"
       },
       {
@@ -822,7 +822,7 @@
           },
           {
             "value": "center",
-            "label": "Centre"
+            "label": "Center"
           },
           {
             "value": "right",
@@ -834,7 +834,7 @@
       {
         "type": "color_scheme",
         "id": "blog_card_color_scheme",
-        "label": "Colour scheme",
+        "label": "Color scheme",
         "default": "scheme-1"
       },
       {
@@ -1239,13 +1239,13 @@
       {
         "type": "color_scheme",
         "id": "sale_badge_color_scheme",
-        "label": "Sale badge colour scheme",
+        "label": "Sale badge color scheme",
         "default": "scheme-3"
       },
       {
         "type": "color_scheme",
         "id": "sold_out_badge_color_scheme",
-        "label": "Sold out badge colour scheme",
+        "label": "Sold out badge color scheme",
         "default": "scheme-2"
       },
       {
@@ -1404,7 +1404,7 @@
       {
         "type": "color_scheme",
         "id": "cart_color_scheme",
-        "label": "Colour scheme",
+        "label": "Color scheme",
         "default": "scheme-1"
       },
       {
@@ -1428,7 +1428,7 @@
     ]
   },
   {
-    "name": "Wishlist & quick view",
+    "name": "Wishlist and quick view",
     "settings": [
       {
         "type": "checkbox",
