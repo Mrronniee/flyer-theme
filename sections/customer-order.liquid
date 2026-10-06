@@ -69,7 +69,7 @@
               <span class="fl-order__meta">{{ line_item.variant.title }}</span>
             {%- endunless -%}
             {%- if line_item.sku != blank -%}
-              <span class="fl-order__meta">{{ 'customer.order.sku' | t }}: {{ line_item.sku }}</span>
+              <span class="fl-order__meta">{{ 'customer.order.sku' | t }}{{ 'general.colon' | t }} {{ line_item.sku }}</span>
             {%- endif -%}
             {%- if line_item.fulfillment -%}
               {%- assign fulfilled_date = line_item.fulfillment.created_at | date: format: 'month_day_year' -%}

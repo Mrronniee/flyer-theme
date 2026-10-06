@@ -110,7 +110,7 @@
             <div class="fl-product__block" {{ block.shopify_attributes }}>
               {%- if block.settings.show_vendor and product.vendor != blank -%}
                 <p class="fl-product__vendor">
-                  <span class="visually-hidden">{{ 'products.product.vendor' | t }}: </span>
+                  <span class="visually-hidden">{{ 'products.product.vendor' | t }}{{ 'general.colon' | t }} </span>
                   {{- product.vendor | escape -}}
                 </p>
               {%- endif -%}
@@ -141,7 +141,7 @@
                   {%- assign option_loop_index = forloop.index -%}
                   <fieldset class="fl-product__option" data-option-fieldset>
                     <legend class="fl-product__legend">
-                      {{ option.name | escape }}:
+                      {{ option.name | escape }}{{ 'general.colon' | t }}
                       <span class="fl-product__legend-value" data-option-value>{{ option.selected_value | escape }}</span>
                     </legend>
                     <div class="fl-product__values">

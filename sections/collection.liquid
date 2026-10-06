@@ -209,7 +209,7 @@
               {%- for value in filter.active_values -%}
                 <li>
                   <a class="fl-active-filters__pill" href="{{ value.url_to_remove }}">
-                    <span>{{ filter.label | escape }}: {{ value.label | escape }}</span>
+                    <span>{{ filter.label | escape }}{{ 'general.colon' | t }} {{ value.label | escape }}</span>
                     <span class="visually-hidden">{{ 'collections.filters.remove_filter' | t: name: value.label }}</span>
                     <svg aria-hidden="true" focusable="false" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                   </a>

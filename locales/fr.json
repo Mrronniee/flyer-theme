@@ -69,7 +69,8 @@
     },
     "breadcrumbs": {
       "home": "Accueil"
-    }
+    },
+    "colon": " :"
   },
   "404": {
     "title": "Page introuvable",

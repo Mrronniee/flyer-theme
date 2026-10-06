@@ -69,7 +69,8 @@
     },
     "breadcrumbs": {
       "home": "Home"
-    }
+    },
+    "colon": ":"
   },
   "404": {
     "title": "Page not found",
