@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.8.4 - 2026-10-07
+
+### Fixed
+- **Password page in its own layout.** Since the templates were rewritten in
+  July, the password page (shown while your store is closed) opened inside the
+  regular layout, with the header, the footer and the cart drawer. It is back
+  on its own minimal layout.
+- **French punctuation.** In French a colon takes a non-breaking space before
+  it. Ten labels printed "Taille:" (variant options on the product page and in
+  the cart, active filters, vendor, discounts, SKU). A French storefront now
+  reads "Taille :". English is unchanged.
+- **Countdown without a built-in end date.** The Countdown section shipped with
+  31 December 2026 as its end date: from 1 January 2027, a newly added
+  Countdown would have read "This offer has ended." at once. It now has no
+  default date. The timer stays hidden until you set one, and the setting says
+  so.
+
+### Changed
+- **Theme editor labels in American English**, like the rest of the Shopify
+  admin: "Color scheme", "Center", "Heading capitalization". The "Wishlist &
+  quick view" settings are now "Wishlist and quick view". Only the labels
+  changed: your settings are kept.
+
 ## 1.8.3 - 2026-09-23
 
 ### Fixed
