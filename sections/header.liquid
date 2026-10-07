@@ -408,6 +408,15 @@
     --sticky-offset: 88px;
   }
 
+  /* Keyboard focus and in-page jumps (skip link, #lookbook) scroll far enough
+     to clear the sticky bar, so a focused control is never hidden under it
+     (WCAG 2.4.11). Short viewports drop the sticky bar, and the padding. */
+  @media (min-height: 481px) {
+    :root:has(.fl-header-section [data-sticky]) {
+      scroll-padding-top: var(--sticky-offset);
+    }
+  }
+
   .fl-header {
     display: block;
     background: var(--color-bg);
