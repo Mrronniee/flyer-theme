@@ -16,6 +16,29 @@
   Countdown would have read "This offer has ended." at once. It now has no
   default date. The timer stays hidden until you set one, and the setting says
   so.
+- **Cart page updates without reloading.** Pressing + or −, typing a quantity
+  or removing a line used to reload the whole page and drop keyboard focus.
+  The cart page now updates in place, like the cart drawer: every line and the
+  totals refresh, focus stays on the control you used, the header reads out
+  the new item count, and errors are announced. Below 360px the quantity
+  selector and "Remove" sit under the product image, so the page no longer
+  scrolls sideways on the smallest phones.
+- **Visible keyboard focus on quantity selectors.** On the product page and
+  the featured product section, the focus ring of the − and + buttons was cut
+  off. It is now drawn in full, and the selector's border is easier to see.
+- **Focused controls never hide under the sticky header.** Tabbing to a
+  wishlist heart near the top of the window could leave it entirely under the
+  header. The page now scrolls to keep focus in view.
+- **Search field outline.** The field on the search page had no visible border
+  until it was focused. It now has one, like the theme's other fields.
+- **Current page in pagination.** The current page number did not show as
+  current in collection, search, blog and quick order pagination, and was
+  hidden from screen readers. It is now marked and announced as the current
+  page.
+- **Wishlist hearts tell products apart.** Every heart was announced as "Add to
+  wishlist", and its name changed when pressed. Each heart now names its
+  product ("Add Overshirt to wishlist") and keeps that name; screen readers
+  say whether it is pressed.
 
 ### Changed
 - **Theme editor labels in American English**, like the rest of the Shopify
