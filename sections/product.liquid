@@ -533,7 +533,7 @@
     display: inline-flex;
     align-items: stretch;
     overflow: hidden;
-    border: 1px solid var(--color-line);
+    border: 1px solid var(--color-control-border);
     border-radius: var(--radius-input);
   }
 
@@ -553,6 +553,14 @@
 
   .fl-qty__btn:hover {
     background: var(--color-surface);
+  }
+
+  /* The stepper clips its children to its rounded border (overflow: hidden),
+     which also clipped the 2px focus ring of the buttons and the field: the
+     ring is drawn inside instead. */
+  .fl-qty__btn:focus-visible,
+  .fl-qty__input:focus-visible {
+    outline-offset: -2px;
   }
 
   .fl-qty__input {
