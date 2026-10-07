@@ -13,10 +13,14 @@
     endif
   endfor
 
+  # Phones: the grid sits inside the page margins, columns 12px apart
+  # (critical.css), so a card is narrower than its share of the screen.
   if section.settings.cols_mobile == '1'
-    assign sizes_mobile = '100vw'
+    assign mobile_inset = settings.min_page_margin | times: 2
+    assign sizes_mobile = 'calc(100vw - ' | append: mobile_inset | append: 'px)'
   else
-    assign sizes_mobile = '50vw'
+    assign mobile_inset = settings.min_page_margin | plus: 6
+    assign sizes_mobile = 'calc(50vw - ' | append: mobile_inset | append: 'px)'
   endif
   if section.settings.cols_desktop == '3'
     assign sizes_desktop = '33vw'

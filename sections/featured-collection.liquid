@@ -25,7 +25,9 @@
   else
     assign sizes_desktop = '25vw'
   endif
-  assign card_sizes = '(max-width: 749px) 50vw, (max-width: 989px) 33vw, ' | append: sizes_desktop
+  # Phones: two columns inside the page margins, 12px apart (critical.css).
+  assign mobile_inset = settings.min_page_margin | plus: 6
+  assign card_sizes = '(max-width: 749px) calc(50vw - ' | append: mobile_inset | append: 'px), (max-width: 989px) 33vw, ' | append: sizes_desktop
 -%}
 
 {%- comment -%}

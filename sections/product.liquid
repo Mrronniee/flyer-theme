@@ -53,15 +53,19 @@
               {%- if media.media_type == 'image' -%}
                 {%- liquid
                   assign media_alt = media.alt | default: product.title | escape
+                  # The first image is the one on screen at load, and the
+                  # largest paint of the page: fetch it before the others.
                   assign load = 'lazy'
+                  assign priority = 'auto'
                   if forloop.first
                     assign load = 'eager'
+                    assign priority = 'high'
                   endif
                 -%}
                 {{
                   media.preview_image
                   | image_url: width: 1600
-                  | image_tag: widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(max-width: 989px) 100vw, 55vw', alt: media_alt, loading: load
+                  | image_tag: widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(max-width: 989px) 100vw, 55vw', alt: media_alt, loading: load, fetchpriority: priority
                 }}
               {%- else -%}
                 {{ media | media_tag: image_size: '1200x' }}

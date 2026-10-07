@@ -61,6 +61,11 @@
   in the cart drawer.
 
 ### Changed
+- **Lighter product grids on phones.** Product cards on phones asked for
+  images sized for half the screen, while a card is narrower (two columns
+  inside the page margins). They now ask for their real width, so phones
+  download smaller images. On product pages, the first image is fetched before
+  the others, so it shows sooner.
 - **Theme editor labels in American English**, like the rest of the Shopify
   admin: "Color scheme", "Center", "Heading capitalization". The "Wishlist &
   quick view" settings are now "Wishlist and quick view". Only the labels

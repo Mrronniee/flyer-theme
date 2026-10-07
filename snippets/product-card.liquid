@@ -23,7 +23,11 @@
   if show_quick_add != nil
     assign quick = show_quick_add
   endif
-  assign img_sizes = sizes | default: '(max-width: 749px) 50vw, (max-width: 989px) 33vw, 25vw'
+  # Phones: two columns inside the page margins, 12px apart (critical.css,
+  # .fl-product-grid), so a card is half the screen minus margin + 6px.
+  assign mobile_inset = settings.min_page_margin | plus: 6
+  assign default_sizes = '(max-width: 749px) calc(50vw - ' | append: mobile_inset | append: 'px), (max-width: 989px) 33vw, 25vw'
+  assign img_sizes = sizes | default: default_sizes
   assign img_widths = '360, 540, 720, 900'
 
   # Caller-controlled priority. Lazy everywhere by default, but the first row of
