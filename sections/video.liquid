@@ -39,9 +39,9 @@
     assign poster_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: inner_px | append: 'px, 100vw'
   endif
 
-  assign frame_title = description
+  assign frame_title = description | escape
   if frame_title == blank
-    assign frame_title = section.settings.heading
+    assign frame_title = section.settings.heading | escape
   endif
   if frame_title == blank
     assign frame_title = 'accessibility.play_video' | t
@@ -50,7 +50,7 @@
 
 {%- capture play_label -%}
   {{- 'accessibility.play_video' | t -}}
-  {%- if description != blank -%}: {{ description }}{%- endif -%}
+  {%- if description != blank -%}{{ 'general.colon' | t }} {{ description | escape }}{%- endif -%}
 {%- endcapture -%}
 
 <div
@@ -70,7 +70,7 @@
   >
     <div class="fl-video__stage" data-stage style="--fl-video-ratio: {{ ratio }};">
       {%- if has_video -%}
-        <button type="button" class="fl-video__poster" data-play aria-label="{{ play_label | escape }}">
+        <button type="button" class="fl-video__poster" data-play aria-label="{{ play_label }}">
           {%- if poster != blank -%}
             {{
               poster
@@ -101,14 +101,14 @@
           {%- elsif video_url.type == 'youtube' -%}
             <iframe
               src="https://www.youtube.com/embed/{{ video_url.id }}?autoplay=1&amp;playsinline=1"
-              title="{{ frame_title | escape }}"
+              title="{{ frame_title }}"
               allow="autoplay; encrypted-media; picture-in-picture"
               allowfullscreen
             ></iframe>
           {%- else -%}
             <iframe
               src="https://player.vimeo.com/video/{{ video_url.id }}?autoplay=1"
-              title="{{ frame_title | escape }}"
+              title="{{ frame_title }}"
               allow="autoplay; encrypted-media; picture-in-picture"
               allowfullscreen
             ></iframe>
@@ -121,14 +121,14 @@
           {%- elsif video_url.type == 'youtube' -%}
             <iframe
               src="https://www.youtube.com/embed/{{ video_url.id }}"
-              title="{{ frame_title | escape }}"
+              title="{{ frame_title }}"
               allow="encrypted-media; picture-in-picture"
               allowfullscreen
             ></iframe>
           {%- else -%}
             <iframe
               src="https://player.vimeo.com/video/{{ video_url.id }}"
-              title="{{ frame_title | escape }}"
+              title="{{ frame_title }}"
               allow="encrypted-media; picture-in-picture"
               allowfullscreen
             ></iframe>

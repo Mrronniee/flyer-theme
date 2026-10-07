@@ -19,7 +19,7 @@
     assign unit_b = 'in'
   endif
 
-  assign caption = section.settings.heading
+  assign caption = section.settings.heading | escape
   if caption == blank
     assign caption = 'sections.size_guide.size' | t
   endif
@@ -60,7 +60,7 @@
       {%- if section.blocks.size > 0 -%}
         <div class="fl-size-guide__scroll">
           <table class="fl-size-guide__table">
-            <caption class="visually-hidden">{{ caption | escape }}</caption>
+            <caption class="visually-hidden">{{ caption }}</caption>
             <thead>
               <tr>
                 <th scope="col">{{ 'sections.size_guide.size' | t }}</th>

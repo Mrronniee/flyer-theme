@@ -11,9 +11,9 @@
 {%- liquid
   assign heading_tag = section.settings.heading_tag | default: 'h2'
 
-  assign heading = section.settings.heading
+  assign heading = section.settings.heading | escape
   if heading == blank
-    assign heading = page.title
+    assign heading = page.title | escape
   endif
   if heading == blank
     assign heading = 'contact.form.title' | t
@@ -27,7 +27,7 @@
 >
   <div class="fl-contact__inner">
     <div class="fl-contact__head">
-      <{{ heading_tag }} class="fl-contact__title">{{ heading | escape }}</{{ heading_tag }}>
+      <{{ heading_tag }} class="fl-contact__title">{{ heading }}</{{ heading_tag }}>
 
       {%- if section.settings.intro != blank -%}
         <div class="fl-contact__intro fl-rte">{{ section.settings.intro }}</div>

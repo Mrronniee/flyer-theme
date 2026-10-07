@@ -85,7 +85,7 @@
                 <span class="fl-testimonials__mark" aria-hidden="true">&ldquo;</span>
 
                 {%- if section.settings.show_rating -%}
-                  <div class="fl-testimonials__stars" role="img" aria-label="{{ rating_label | escape }}">
+                  <div class="fl-testimonials__stars" role="img" aria-label="{{ rating_label }}">
                     {%- for i in (1..5) -%}
                       <svg
                         class="fl-testimonials__star{% if i > rating %} fl-testimonials__star--empty{% endif %}"

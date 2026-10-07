@@ -49,12 +49,12 @@
       <div class="fl-comparison__scroll">
         <table class="fl-comparison__table">
           {%- liquid
-            assign caption = section.settings.heading
+            assign caption = section.settings.heading | escape
             if caption == blank
               assign caption = 'sections.comparison.caption' | t
             endif
           -%}
-          <caption class="visually-hidden">{{ caption | escape }}</caption>
+          <caption class="visually-hidden">{{ caption }}</caption>
           <thead>
             <tr>
               <th scope="col" class="fl-comparison__corner">

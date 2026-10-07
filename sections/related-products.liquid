@@ -7,7 +7,7 @@
 {% endcomment %}
 
 {%- liquid
-  assign heading = section.settings.heading
+  assign heading = section.settings.heading | escape
   if heading == blank
     assign heading = 'products.related.heading' | t
   endif
@@ -25,7 +25,7 @@
       style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
     >
       <div class="fl-section-head">
-        <h2>{{ heading | escape }}</h2>
+        <h2>{{ heading }}</h2>
       </div>
       <div class="fl-product-grid" style="--grid-cols: 4; --grid-cols-tablet: 3; --grid-cols-mobile: 2">
         {%- for rec in recommendations.products -%}

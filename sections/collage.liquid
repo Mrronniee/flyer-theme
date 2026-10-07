@@ -217,7 +217,7 @@
                 <fl-video-tile
                   class="fl-collage__tile{% if boxed %} fl-collage__tile--card color-{{ settings.card_color_scheme }}{% endif %}"
                   data-video-src="{{ video_src }}"
-                  data-video-title="{{ video_label | escape }}"
+                  data-video-title="{{ video_label }}"
                 >
                   <div class="fl-collage__media{% unless boxed %} fl-media{% endunless %}" data-video-holder>
                     {%- if block.settings.cover_image -%}

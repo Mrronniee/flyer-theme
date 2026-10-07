@@ -9,7 +9,8 @@
   on its own minimal layout.
 - **French punctuation.** In French a colon takes a non-breaking space before
   it. Ten labels printed "Taille:" (variant options on the product page and in
-  the cart, active filters, vendor, discounts, SKU). A French storefront now
+  the cart, active filters, vendor, discounts, SKU), and screen readers heard
+  the same in the label of the video play button. A French storefront now
   reads "Taille :". English is unchanged.
 - **Countdown without a built-in end date.** The Countdown section shipped with
   31 December 2026 as its end date: from 1 January 2027, a newly added
@@ -46,6 +47,13 @@
 - **Cart count after the Back button.** Adding to cart, then going back,
   could show the old count and an outdated cart drawer. The cart is read
   again when a page comes back from the browser's cache.
+- **Edited texts keep their apostrophes.** If you change the theme's default
+  texts (Online Store > Themes > Edit default theme content) and type an
+  apostrophe or an ampersand, some places showed "&#39;" or "&amp;" instead:
+  the related products heading, the contact form title, the screen reader
+  captions of the comparison and size guide tables, the testimonial star
+  ratings and the video titles of the Video and Collage sections. Each text is
+  now escaped once.
 - **Lookbook menu links.** The Lookbook section now has an anchor named after
   its place in the template (#lookbook on the home page), so a menu link to
   /#lookbook scrolls to it.
