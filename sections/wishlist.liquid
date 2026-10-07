@@ -20,7 +20,7 @@
       </button>
     </div>
 
-    <div class="fl-wishlist__empty" data-wishlist-empty hidden>
+    <div class="fl-wishlist__empty" data-wishlist-empty tabindex="-1" hidden>
       <p>{{ 'wishlist.empty' | t }}</p>
       <a class="fl-wishlist__continue" href="{{ routes.all_products_collection_url }}">
         {{- '404.back_to_shopping' | t -}}
@@ -31,8 +31,13 @@
       class="fl-product-grid fl-wishlist__grid"
       data-wishlist-grid
       style="--grid-cols: {{ section.settings.cols_desktop }}"
-      aria-live="polite"
     ></div>
+    <p
+      class="visually-hidden"
+      role="status"
+      data-wishlist-status
+      data-removed-text="{{ 'wishlist.removed' | t: title: '%TITLE%' }}"
+    ></p>
 
     <noscript>
       <p class="fl-wishlist__noscript">{{ 'wishlist.needs_js' | t }}</p>
@@ -79,6 +84,7 @@
       this.grid = this.querySelector('[data-wishlist-grid]');
       this.empty = this.querySelector('[data-wishlist-empty]');
       this.clearBtn = this.querySelector('[data-wishlist-clear]');
+      this.status = this.querySelector('[data-wishlist-status]');
       this.root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
 
       this._onChange = () => this.prune();
@@ -117,6 +123,8 @@
       }
       this.grid.innerHTML = '';
       this.refreshState();
+      // The Clear button hides itself: focus the empty state instead.
+      this.empty.focus();
     }
 
     refreshState() {
@@ -157,12 +165,33 @@
     }
 
     // A heart unticked on this page (or in the header count) removes its card.
+    // Focus moves on to the next card's heart, or to the empty state, and the
+    // removal is announced by name.
     prune() {
       const handles = this.read();
-      this.grid.querySelectorAll('[data-handle]').forEach((item) => {
-        if (!handles.includes(item.getAttribute('data-handle'))) item.remove();
+      const items = Array.from(this.grid.querySelectorAll('[data-handle]'));
+      const gone = items.filter((item) => !handles.includes(item.getAttribute('data-handle')));
+      const kept = items.filter((item) => !gone.includes(item));
+      const focused = gone.find((item) => item.contains(document.activeElement));
+      let next = null;
+      if (focused) {
+        const index = items.indexOf(focused);
+        next = kept.find((item) => items.indexOf(item) > index) || kept[kept.length - 1] || null;
+      }
+      const titles = gone.map((item) => {
+        const title = item.querySelector('.fl-card__title');
+        return title ? title.textContent.trim() : '';
       });
+      gone.forEach((item) => item.remove());
       this.refreshState();
+      if (focused) {
+        const heart = next ? next.querySelector('[data-wishlist-toggle]') : null;
+        if (heart) heart.focus();
+        else this.empty.focus();
+      }
+      if (this.status && gone.length === 1 && titles[0]) {
+        this.status.textContent = this.status.getAttribute('data-removed-text').replace('%TITLE%', titles[0]);
+      }
     }
   }
 

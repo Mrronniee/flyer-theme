@@ -188,9 +188,14 @@
     color: var(--color-ink);
   }
 
+  /* Empty stars are outlines in the control border colour: a light filled
+     star read at 1.27:1, and the eye lost the "out of 5". */
   .fl-testimonials__star--empty {
-    fill: transparent;
-    color: var(--color-line);
+    color: var(--color-control-border);
+  }
+
+  .fl-testimonials__star--empty path {
+    fill: none;
   }
 
   .fl-testimonials__quote {

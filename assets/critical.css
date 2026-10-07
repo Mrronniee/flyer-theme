@@ -268,6 +268,12 @@ a {
   border-radius: var(--radius-input);
   box-shadow: var(--input-shadow);
 }
+/* Placeholders in the muted text colour: the browsers' own grey (#757575)
+   falls under 4.5:1 on a tinted field, such as the search page's. */
+::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
 .fl-input:focus-visible,
 .fl-select:focus-visible,
 .fl-textarea:focus-visible {
@@ -764,6 +770,11 @@ main > .shopify-section + .shopify-section {
 .fl-wishlist-btn--card:hover {
   background: var(--color-bg);
   opacity: 0.85;
+}
+/* On a photo the dark focus ring alone can vanish (dark pictures): a halo in
+   the background colour on both sides of it keeps it readable on any image. */
+.fl-wishlist-btn--card:focus-visible {
+  box-shadow: 0 0 0 6px var(--color-bg);
 }
 /* On the product page: heart beside the h1. */
 .fl-wishlist-row {

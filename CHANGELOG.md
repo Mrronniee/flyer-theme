@@ -32,11 +32,25 @@
   wishlist heart near the top of the window could leave it entirely under the
   header. The page now scrolls to keep focus in view.
 - **Search field outline.** The field on the search page had no visible border
-  until it was focused. It now has one, like the theme's other fields.
+  until it was focused. It now has one, like the theme's other fields, and
+  its hint text ("Search products") is dark enough to read on the field's
+  tinted background.
 - **Current page in pagination.** The current page number did not show as
   current in collection, search, blog and quick order pagination, and was
-  hidden from screen readers. It is now marked and announced as the current
-  page.
+  hidden from screen readers. It is now framed, marked and announced as the
+  current page in all four.
+- **Focus on wishlist hearts over photos.** On a dark product photo, the dark
+  focus ring of a card's heart could not be seen. It now has a light halo on
+  both sides and shows on any picture.
+- **Removing a favourite on the wishlist page.** Unticking a heart on the
+  wishlist page dropped keyboard focus to the top of the page. Focus now moves
+  to the next heart (or to the empty list message), and screen readers hear
+  which product was removed.
+- **Lookbook on phones.** Tabbing to a look's link could leave the look half
+  out of view in the sideways scroller. The whole look now scrolls into view.
+- **Sort menu and rating stars easier to see.** The line under the collection
+  sort menu and the empty stars of testimonial ratings were too faint to make
+  out. Both now use the theme's control border color.
 - **Wishlist hearts tell products apart.** Every heart was announced as "Add to
   wishlist", and its name changed when pressed. Each heart now names its
   product ("Add Overshirt to wishlist") and keeps that name; screen readers

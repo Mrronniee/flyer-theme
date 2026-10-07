@@ -339,6 +339,7 @@
     "empty": "Your wishlist is empty.",
     "clear": "Clear list",
     "add": "Add {{ title }} to wishlist",
+    "removed": "Removed from wishlist: {{ title }}",
     "needs_js": "Your wishlist needs JavaScript to display.",
     "count_label": "{{ count }} items in wishlist"
   },

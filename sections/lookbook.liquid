@@ -204,6 +204,9 @@
       display: flex;
       width: 100%;
       padding-inline: var(--page-margin);
+      /* Room under the looks for a link's focus ring, which the scroller
+         would otherwise clip. */
+      padding-block-end: 6px;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scroll-padding-inline: var(--page-margin);
@@ -236,6 +239,17 @@
     }
   }
 {% endstylesheet %}
+
+{% javascript %}
+  // Phones: the looks scroll sideways and snap. Tabbing to a look's link
+  // scrolled just enough to show the link, and the snap could pull the look
+  // back half out of view: bring the whole look in instead.
+  document.addEventListener('focusin', (event) => {
+    const item = event.target.closest ? event.target.closest('.fl-lookbook__item') : null;
+    if (!item || !window.matchMedia('(max-width: 749px)').matches) return;
+    item.scrollIntoView({ block: 'nearest', inline: 'start' });
+  });
+{% endjavascript %}
 
 {% schema %}
 {
