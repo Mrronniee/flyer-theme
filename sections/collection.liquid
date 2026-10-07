@@ -272,6 +272,7 @@
             </a>
           {%- endif -%}
           {%- for part in paginate.parts -%}
+            {%- assign part_str = part.title | append: '' -%}
             {%- if part.is_link -%}
               <a
                 class="fl-pagination__item"
@@ -280,7 +281,7 @@
               >
                 {{- part.title -}}
               </a>
-            {%- elsif part.title == current_page_str -%}
+            {%- elsif part_str == current_page_str -%}
               <span class="fl-pagination__item fl-pagination__item--current" aria-current="page">
                 <span class="visually-hidden">{{ 'general.pagination.current_page' | t: number: part.title }}</span>
                 <span aria-hidden="true">{{ part.title }}</span>
