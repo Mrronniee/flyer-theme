@@ -644,6 +644,15 @@
       // stops propagation on keydown must not be able to disarm the trap.
       document.addEventListener('keydown', this.onKeydown, true);
       this.addEventListener('change', this.onFieldChange);
+      // Back/forward: the page can come from the browser's cache, with the
+      // cart as it was when it was left. Re-read it so the count and the
+      // drawer show the real cart.
+      this.onPageShow = (event) => {
+        if (event.persisted) this.refresh().catch(() => {});
+      };
+      window.addEventListener('pageshow', this.onPageShow);
+      const nav = window.performance && performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+      if (nav && nav.type === 'back_forward') this.refresh().catch(() => {});
 
       if (window.Shopify && window.Shopify.designMode) {
         this.onSectionSelect = (event) => {
@@ -662,6 +671,7 @@
       document.removeEventListener('submit', this.onDocSubmit);
       document.removeEventListener('keydown', this.onKeydown, true);
       document.removeEventListener('focusin', this.onFocusIn, true);
+      window.removeEventListener('pageshow', this.onPageShow);
       if (this.onSectionSelect) {
         document.removeEventListener('shopify:section:select', this.onSectionSelect);
         document.removeEventListener('shopify:section:deselect', this.onSectionDeselect);

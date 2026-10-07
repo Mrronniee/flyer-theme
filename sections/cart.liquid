@@ -605,6 +605,13 @@
       this.addEventListener('change', this.onChange);
       // submit bubbles: one listener on the element survives every re-render.
       this.addEventListener('submit', this.onSubmit);
+      // Back/forward from the browser's cache: re-read the cart.
+      this.onPageShow = (event) => {
+        if (event.persisted) this.resync();
+      };
+      window.addEventListener('pageshow', this.onPageShow);
+      const nav = window.performance && performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+      if (nav && nav.type === 'back_forward') this.resync();
     }
 
     disconnectedCallback() {
@@ -612,6 +619,16 @@
       this.removeEventListener('click', this.onClick);
       this.removeEventListener('change', this.onChange);
       this.removeEventListener('submit', this.onSubmit);
+      window.removeEventListener('pageshow', this.onPageShow);
+    }
+
+    async resync() {
+      try {
+        const fresh = await fetch(this.dataset.cartUrl + '?section_id=' + encodeURIComponent(this.dataset.sectionId));
+        if (fresh.ok) this.render(await fresh.text(), null, null);
+      } catch (e) {
+        // the page keeps what it shows
+      }
     }
 
     lineKey(el) {

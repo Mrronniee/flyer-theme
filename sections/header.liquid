@@ -44,6 +44,7 @@
     Both plural forms are exposed because a pluralised key cannot be rendered
     with a placeholder count — passing '%COUNT%' always resolves to "other".
   {%- endcomment -%}
+  data-cart-url="{{ routes.cart_url }}"
   data-cart-label-one="{{ 'accessibility.cart_count' | t: count: 1 | replace: '1', '%COUNT%' }}"
   data-cart-label-other="{{ 'accessibility.cart_count' | t: count: 2 | replace: '2', '%COUNT%' }}"
 >
@@ -1002,6 +1003,16 @@
       this._onCartChange = (event) => this.updateCartCount(event);
       document.addEventListener('fl:cart:change', this._onCartChange);
 
+      // Back/forward from the browser's cache shows the count as it was. The
+      // cart drawer re-reads the cart itself; without it (cart page setting,
+      // or on the cart page), the header asks for the count.
+      this._onPageShow = (event) => {
+        if (event.persisted) this.resyncCount();
+      };
+      window.addEventListener('pageshow', this._onPageShow);
+      const nav = window.performance && performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+      if (nav && nav.type === 'back_forward') this.resyncCount();
+
       // The account sheet takes its top edge from a CSS property. Measured at
       // the moment it opens, because the announcement bar above a sticky
       // header may have scrolled away: the sheet starts right under the bar.
@@ -1018,7 +1029,20 @@
     disconnectedCallback() {
       document.removeEventListener('click', this._onDocClick);
       document.removeEventListener('fl:cart:change', this._onCartChange);
+      window.removeEventListener('pageshow', this._onPageShow);
       if (this.account) this.account.removeEventListener('open', this._onAccountOpen, true);
+    }
+
+    resyncCount() {
+      if (document.querySelector('fl-cart-drawer') || !this.dataset.cartUrl || !window.fetch) return;
+      fetch(this.dataset.cartUrl + '.js', { headers: { Accept: 'application/json' } })
+        .then((response) => response.json())
+        .then((cart) => {
+          if (cart && typeof cart.item_count === 'number') {
+            document.dispatchEvent(new CustomEvent('fl:cart:change', { bubbles: true, detail: { itemCount: cart.item_count } }));
+          }
+        })
+        .catch(() => {});
     }
 
     openDrawer() {
