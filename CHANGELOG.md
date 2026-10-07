@@ -39,6 +39,18 @@
   wishlist", and its name changed when pressed. Each heart now names its
   product ("Add Overshirt to wishlist") and keeps that name; screen readers
   say whether it is pressed.
+- **Sale and sold out badges in the storefront language.** The badges read
+  "Sale" and "Sold out" even on a French storefront. Left empty, the two badge
+  settings now show the theme's translated label ("Promo" and "Épuisé" in
+  French); a label you typed yourself still wins.
+- **Cart count after the Back button.** Adding to cart, then going back,
+  could show the old count and an outdated cart drawer. The cart is read
+  again when a page comes back from the browser's cache.
+- **Lookbook menu links.** The Lookbook section now has an anchor named after
+  its place in the template (#lookbook on the home page), so a menu link to
+  /#lookbook scrolls to it.
+- **Order note on the cart page** is saved as soon as you leave the field, as
+  in the cart drawer.
 
 ### Changed
 - **Theme editor labels in American English**, like the rest of the Shopify
