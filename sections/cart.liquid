@@ -659,6 +659,15 @@
     }
 
     handleChange(event) {
+      // The order note is saved when the field is left, as in the cart drawer.
+      if (event.target.matches('[name="note"]')) {
+        fetch(this.dataset.updateUrl + '.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ note: event.target.value })
+        }).catch(() => {});
+        return;
+      }
       const input = event.target.closest('[data-qty-input]');
       if (!input) return;
       const key = this.lineKey(input);
