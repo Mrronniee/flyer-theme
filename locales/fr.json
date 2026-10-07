@@ -81,6 +81,7 @@
     "card": {
       "from": "À partir de",
       "sold_out": "Épuisé",
+      "sale": "Promo",
       "quick_add": "Ajouter au panier",
       "choose_options": "Choisir les options",
       "placeholder_title": "Exemple de produit",

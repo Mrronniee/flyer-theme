@@ -1252,13 +1252,13 @@
         "type": "text",
         "id": "badge_sale_label",
         "label": "Sale badge label",
-        "default": "Sale"
+        "info": "Leave empty to show the translated label in each storefront language."
       },
       {
         "type": "text",
         "id": "badge_soldout_label",
         "label": "Sold out badge label",
-        "default": "Sold out"
+        "info": "Leave empty to show the translated label in each storefront language."
       }
     ]
   },

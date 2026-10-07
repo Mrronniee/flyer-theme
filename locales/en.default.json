@@ -81,6 +81,7 @@
     "card": {
       "from": "From",
       "sold_out": "Sold out",
+      "sale": "Sale",
       "quick_add": "Add to cart",
       "choose_options": "Choose options",
       "placeholder_title": "Example product",

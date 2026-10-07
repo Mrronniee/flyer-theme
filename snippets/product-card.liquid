@@ -105,11 +105,11 @@
       <div class="{{ badge_classes }}">
         {%- if product.available == false -%}
           <span class="fl-badge fl-badge--soldout color-{{ settings.sold_out_badge_color_scheme }}">
-            {{- settings.badge_soldout_label | default: 'Sold out' -}}
+            {%- if settings.badge_soldout_label != blank -%}{{ settings.badge_soldout_label | escape }}{%- else -%}{{ 'products.card.sold_out' | t }}{%- endif -%}
           </span>
         {%- elsif on_sale -%}
           <span class="fl-badge color-{{ settings.sale_badge_color_scheme }}">
-            {{- settings.badge_sale_label | default: 'Sale' -}}
+            {%- if settings.badge_sale_label != blank -%}{{ settings.badge_sale_label | escape }}{%- else -%}{{ 'products.card.sale' | t }}{%- endif -%}
           </span>
         {%- endif -%}
       </div>
