@@ -12,7 +12,13 @@
   assign img_sizes = '(max-width: 749px) 78vw, (max-width: 989px) 50vw, 25vw'
 -%}
 
+{%- comment -%}
+  The section's key in its template is its anchor (#lookbook on the home
+  page), so a menu link to /#lookbook scrolls here; keys are unique per
+  template, and the sticky header's scroll-padding keeps the heading clear.
+{%- endcomment -%}
 <section
+  id="{{ section.id | split: '__' | last }}"
   class="fl-lookbook full-width color-{{ section.settings.color_scheme }} fl-lookbook--{{ section.settings.rhythm }}"
   {% render 'reveal' %}
   style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
