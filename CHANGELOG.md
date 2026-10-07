@@ -84,7 +84,8 @@
   stamp animation, and the page could scroll sideways for a moment. The
   number now takes only its own width.
 - **One free shipping threshold.** The default announcement offered free
-  shipping over $50 and the default trust badge over $80. Both now say $50.
+  shipping over $50 and the default trust badge over $80 (also in a Trust
+  badges section newly added in the editor). All now say $50.
 - **Order note on the cart page** is saved as soon as you leave the field, as
   in the cart drawer.
 
