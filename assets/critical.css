@@ -954,6 +954,13 @@ main > .shopify-section + .shopify-section {
   color: var(--color-muted);
   animation: fl-stamp 0.26s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
+.fl-numbered main .fl-section-head:not(:has(.fl-eyebrow))::before {
+  /* On a line of its own (the head's children are blocks) but only as wide as
+     the number: a full-width block grew by 18% with the stamp below and
+     pushed the page 7px wider while it played. text-align still places it. */
+  display: inline-block;
+  vertical-align: top;
+}
 .fl-numbered main .fl-section-head .fl-eyebrow::before {
   display: inline;
   margin: 0 0.75em 0 0;
@@ -963,11 +970,17 @@ main > .shopify-section + .shopify-section {
   content: counter(fl-section, decimal-leading-zero) " \2014";
 }
 .fl-numbered main .fl-featured__head::before {
-  /* The head is a wrapping flex row (title | View all). Without a full basis
-     the number became a third item: alone at the far left, pushing the title
-     to the middle of the row. */
+  /* The head is a wrapping flex row (title | View all). The number goes first
+     and the empty ::after below fills the rest of its line, so the title
+     starts the next one. A full-width number would grow past the page with
+     its stamp; this one stays as wide as its digits. */
+  order: -2;
+  margin-bottom: 2px;
+}
+.fl-numbered main .fl-featured__head::after {
+  content: '';
+  order: -1;
   flex-basis: 100%;
-  margin-bottom: 6px;
 }
 @keyframes fl-stamp {
   from {

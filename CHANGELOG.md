@@ -21,7 +21,8 @@
   or removing a line used to reload the whole page and drop keyboard focus.
   The cart page now updates in place, like the cart drawer: every line and the
   totals refresh, focus stays on the control you used, the header reads out
-  the new item count, and errors are announced. Below 360px the quantity
+  the new item count, and errors are announced. Enter in a quantity field
+  applies it in place too; only Checkout leaves the page. Below 360px the quantity
   selector and "Remove" sit under the product image, so the page no longer
   scrolls sideways on the smallest phones.
 - **Visible keyboard focus on quantity selectors.** On the product page and
@@ -45,8 +46,15 @@
   settings now show the theme's translated label ("Promo" and "Épuisé" in
   French); a label you typed yourself still wins.
 - **Cart count after the Back button.** Adding to cart, then going back,
-  could show the old count and an outdated cart drawer. The cart is read
-  again when a page comes back from the browser's cache.
+  could show the old count and an outdated cart drawer. When a page comes
+  back with the Back button, the count, the cart drawer and the cart page are
+  read again from the store, never from the browser's cache.
+- **Focus after adding from the quick view.** Closing the cart drawer that
+  opened after an add from the quick view left keyboard focus nowhere. It now
+  returns to the card's "Quick view" button.
+- **Mobile menu and links to the same page.** On the home page, a menu link
+  to one of its sections (/#lookbook) scrolled the page behind the open mobile
+  menu, which stayed in front. The menu now closes so the section shows.
 - **Edited texts keep their apostrophes.** If you change the theme's default
   texts (Online Store > Themes > Edit default theme content) and type an
   apostrophe or an ampersand, some places showed "&#39;" or "&amp;" instead:
@@ -54,9 +62,15 @@
   captions of the comparison and size guide tables, the testimonial star
   ratings and the video titles of the Video and Collage sections. Each text is
   now escaped once.
-- **Lookbook menu links.** The Lookbook section now has an anchor named after
-  its place in the template (#lookbook on the home page), so a menu link to
-  /#lookbook scrolls to it.
+- **Lookbook and FAQ menu links.** The Lookbook and FAQ sections now have an
+  anchor named after their place in the template (#lookbook and #faq on the
+  home page), so a menu link to /#lookbook or /#faq scrolls to them.
+- **No sideways jolt with numbered headings.** With "Number section headings"
+  on, the number of a heading grew past the edge of the page during its
+  stamp animation, and the page could scroll sideways for a moment. The
+  number now takes only its own width.
+- **One free shipping threshold.** The default announcement offered free
+  shipping over $50 and the default trust badge over $80. Both now say $50.
 - **Order note on the cart page** is saved as soon as you leave the field, as
   in the cart drawer.
 

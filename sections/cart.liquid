@@ -624,7 +624,10 @@
 
     async resync() {
       try {
-        const fresh = await fetch(this.dataset.cartUrl + '?section_id=' + encodeURIComponent(this.dataset.sectionId));
+        // no-store: after Back, the HTTP cache still holds the old cart.
+        const fresh = await fetch(this.dataset.cartUrl + '?section_id=' + encodeURIComponent(this.dataset.sectionId), {
+          cache: 'no-store'
+        });
         if (fresh.ok) this.render(await fresh.text(), null, null);
       } catch (e) {
         // the page keeps what it shows
@@ -675,9 +678,24 @@
       this.queue(key, Math.max(0, parseInt(input.value, 10) || 0), false);
     }
 
-    handleSubmit() {
+    handleSubmit(event) {
+      // Checkout leaves natively, with the quantities on screen. So does any
+      // submit in a browser that cannot tell which button sent it.
+      const submitter = event.submitter;
+      if (submitter === undefined || (submitter && submitter.name === 'checkout')) {
+        window.clearTimeout(this.timer);
+        this.classList.add('is-busy');
+        return;
+      }
+      // Enter in a quantity field submits through the form's first button,
+      // Update: apply the quantities in place instead of reloading the page.
+      event.preventDefault();
+      this.querySelectorAll('[data-qty-input]').forEach((input) => {
+        const key = this.lineKey(input);
+        if (key) this.pending[key] = Math.max(0, parseInt(input.value, 10) || 0);
+      });
       window.clearTimeout(this.timer);
-      this.classList.add('is-busy');
+      this.flush();
     }
 
     queue(key, quantity, now) {
@@ -731,7 +749,9 @@
         if (!html) {
           // Error, or no rendered section in the answer: re-read the cart so
           // the quantities on screen are the real ones.
-          const fresh = await fetch(this.dataset.cartUrl + '?section_id=' + encodeURIComponent(this.dataset.sectionId));
+          const fresh = await fetch(this.dataset.cartUrl + '?section_id=' + encodeURIComponent(this.dataset.sectionId), {
+            cache: 'no-store'
+          });
           if (fresh.ok) html = await fresh.text();
         }
       } catch (e) {

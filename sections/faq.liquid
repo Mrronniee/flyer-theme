@@ -25,7 +25,12 @@
   endfor
 -%}
 
+{%- comment -%}
+  The section's key in its template is its anchor (#faq on the home page), as
+  for the Lookbook: a menu link to /#faq scrolls here.
+{%- endcomment -%}
 <section
+  id="{{ section.id | split: '__' | last }}"
   class="fl-faq full-width color-{{ section.settings.color_scheme }}"
   {% render 'reveal' %}
   style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"

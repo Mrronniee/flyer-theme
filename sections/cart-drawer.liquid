@@ -846,6 +846,10 @@
       // Re-entrant on purpose: an add to cart re-renders the panel while it is
       // already open, and focus must be (re)placed inside it on every path —
       // click, keyboard, cart link, automatic open after an add.
+      // An add from the quick view: the dialog closes and takes its button
+      // with it, so focus goes back to the card's quick view button instead.
+      const quickView = trigger && trigger.closest ? trigger.closest('fl-quick-view') : null;
+      if (quickView && quickView.opener) trigger = quickView.opener;
       if (trigger) this.openerEl = trigger;
       const wasOpen = this.classList.contains('is-open');
       // Already open with focus on one of its controls (quantity change, note
@@ -874,6 +878,11 @@
       document.documentElement.removeAttribute('data-fl-cart-lock');
       if (this.openerEl && document.contains(this.openerEl) && typeof this.openerEl.focus === 'function') {
         this.openerEl.focus();
+      } else {
+        // The control that opened the drawer is gone: never leave focus on
+        // the page itself, hand it to the header's cart button.
+        const cartButton = document.querySelector('[data-cart-open]');
+        if (cartButton) cartButton.focus();
       }
       this.openerEl = null;
     }
@@ -1035,8 +1044,12 @@
       const sectionUrl = this.dataset.rootUrl + '?sections=' + this.sectionId;
       const cartUrl = this.dataset.cartUrl + '.js';
       const results = await Promise.all([
-        fetch(sectionUrl).then((response) => response.json()),
-        fetch(cartUrl, { headers: { Accept: 'application/json' } }).then((response) => response.json())
+        // no-store: after Back, Chrome would otherwise answer both from its
+        // HTTP cache with the cart as it was when the page was left.
+        fetch(sectionUrl, { cache: 'no-store' }).then((response) => response.json()),
+        fetch(cartUrl, { cache: 'no-store', headers: { Accept: 'application/json' } }).then((response) =>
+          response.json()
+        )
       ]);
       const sections = results[0];
       const cart = results[1];

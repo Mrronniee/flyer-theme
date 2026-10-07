@@ -963,7 +963,21 @@
       if (this.burger && this.drawer) {
         this.burger.addEventListener('click', () => this.openDrawer());
         this.drawer.addEventListener('click', (event) => {
-          if (event.target === this.drawer) this.drawer.close();
+          if (event.target === this.drawer) {
+            this.drawer.close();
+            return;
+          }
+          // A link to a section of this same page (/#lookbook on the home
+          // page) loads nothing new: close the menu so the section shows.
+          const link = event.target.closest('a[href]');
+          if (
+            link &&
+            link.hash &&
+            link.pathname === window.location.pathname &&
+            link.search === window.location.search
+          ) {
+            this.drawer.close();
+          }
         });
         this.drawer.addEventListener('close', () => {
           this.burger.setAttribute('aria-expanded', 'false');
@@ -1035,7 +1049,7 @@
 
     resyncCount() {
       if (document.querySelector('fl-cart-drawer') || !this.dataset.cartUrl || !window.fetch) return;
-      fetch(this.dataset.cartUrl + '.js', { headers: { Accept: 'application/json' } })
+      fetch(this.dataset.cartUrl + '.js', { cache: 'no-store', headers: { Accept: 'application/json' } })
         .then((response) => response.json())
         .then((cart) => {
           if (cart && typeof cart.item_count === 'number') {
