@@ -1,8 +1,8 @@
 {% comment %}
   FLYER — Cart page (/cart template).
   Native {% form 'cart' %}: quantity inputs (updates[]) + Update button work
-  with zero JS. The <fl-cart-page> element enhances the page with +/- stepper
-  buttons that adjust the input and submit the form (full reload, no AJAX).
+  with zero JS. The <fl-cart-page> element adds +/- stepper buttons and updates
+  the cart in place (Ajax Cart API + Section Rendering API), keeping focus.
   Line-level and cart-level discounts are displayed when present.
 {% endcomment %}
 
@@ -19,10 +19,20 @@
 
 <fl-cart-page
   class="fl-cart-page"
-  data-loading-text="{{ 'accessibility.loading' | t }}"
+  data-section-id="{{ section.id }}"
+  data-update-url="{{ routes.cart_update_url }}"
+  data-cart-url="{{ routes.cart_url }}"
+  data-error-text="{{ 'cart.item_error' | t }}"
 >
+  {%- comment -%}
+    With JS, a quantity change updates the cart in place: this wrapper is
+    re-rendered through the Section Rendering API and focus returns to the
+    same control. The live region below stays outside it, so it is never
+    replaced while it speaks.
+  {%- endcomment -%}
+  <div class="fl-cart-page__inner" data-cart-page-inner>
   <header class="fl-cart-page__head">
-    <h1 class="fl-cart-page__title">{{ 'cart.title' | t }}</h1>
+    <h1 class="fl-cart-page__title" tabindex="-1">{{ 'cart.title' | t }}</h1>
     {%- if cart.item_count > 0 -%}
       <p class="fl-cart-page__count">{{ 'cart.item_count' | t: count: cart.item_count }}</p>
     {%- endif -%}
@@ -56,7 +66,7 @@
                 assign line_price = item.final_line_price | money
               endif
             -%}
-            <li class="fl-cart-page__item">
+            <li class="fl-cart-page__item" data-line-key="{{ item.key }}">
               <a class="fl-cart-page__thumb" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
                 {%- if item.image -%}
                   {{
@@ -160,6 +170,7 @@
                 <a
                   class="fl-cart-page__remove"
                   href="{{ item.url_to_remove }}"
+                  data-qty-remove
                   aria-label="{{ 'cart.remove_title' | t: title: item_title }}"
                 >
                   {{- 'cart.remove' | t -}}
@@ -240,10 +251,12 @@
           {{ 'cart.continue_shopping' | t }}
         </a>
 
-        <p class="fl-cart-page__status" role="status" aria-live="polite" data-cart-page-status></p>
+        <p class="fl-cart-page__status" data-cart-page-status></p>
       </aside>
     {% endform %}
   {%- endif -%}
+  </div>
+  <p class="visually-hidden" role="status" aria-live="polite" data-cart-page-live></p>
 </fl-cart-page>
 
 {% stylesheet %}
@@ -375,7 +388,7 @@
   .fl-cart-page__qty {
     display: inline-flex;
     align-items: center;
-    border: 1px solid var(--color-line);
+    border: 1px solid var(--color-control-border);
     border-radius: var(--radius-btn);
   }
 
@@ -533,6 +546,16 @@
     transition: opacity 0.15s ease;
   }
 
+  /* Below 360px the stepper and Remove no longer fit beside the thumbnail
+     (the page scrolled sideways at 320px): they take the full width under it. */
+  @media (max-width: 359px) {
+    .fl-cart-page__item {
+      grid-template-areas:
+        'thumb info price'
+        'controls controls controls';
+    }
+  }
+
   @media (min-width: 990px) {
     .fl-cart-page__form {
       grid-template-columns: minmax(0, 1fr) 360px;
@@ -562,67 +585,181 @@
 {% endstylesheet %}
 
 {% javascript %}
+  // Quantity changes update the cart in place (Ajax Cart API + Section
+  // Rendering API): no page reload, focus stays on the same control, every
+  // line and the totals are re-rendered, and the header's live region reads
+  // the new count. Checkout, and the Update button without JS, still submit
+  // the form natively.
   class FlCartPage extends HTMLElement {
     connectedCallback() {
-      this.form = this.querySelector('form');
-      this.status = this.querySelector('[data-cart-page-status]');
-      this.submitTimer = null;
-      if (!this.form) return;
+      this.pending = {};
+      this.timer = null;
+      this.busy = false;
+      this.again = false;
+      if (!this.querySelector('form') || !this.dataset.sectionId || !window.fetch) return;
       this.classList.add('is-enhanced');
       this.onClick = this.handleClick.bind(this);
       this.onChange = this.handleChange.bind(this);
       this.onSubmit = this.handleSubmit.bind(this);
       this.addEventListener('click', this.onClick);
       this.addEventListener('change', this.onChange);
-      this.form.addEventListener('submit', this.onSubmit);
+      // submit bubbles: one listener on the element survives every re-render.
+      this.addEventListener('submit', this.onSubmit);
     }
 
     disconnectedCallback() {
-      window.clearTimeout(this.submitTimer);
+      window.clearTimeout(this.timer);
       this.removeEventListener('click', this.onClick);
       this.removeEventListener('change', this.onChange);
-      if (this.form) this.form.removeEventListener('submit', this.onSubmit);
+      this.removeEventListener('submit', this.onSubmit);
+    }
+
+    lineKey(el) {
+      const line = el.closest('[data-line-key]');
+      return line ? line.getAttribute('data-line-key') : null;
     }
 
     handleClick(event) {
+      const remove = event.target.closest('[data-qty-remove]');
+      if (remove) {
+        const key = this.lineKey(remove);
+        if (!key) return;
+        event.preventDefault();
+        this.queue(key, 0, true);
+        return;
+      }
       const button = event.target.closest('[data-qty-minus], [data-qty-plus]');
       if (!button) return;
       const wrap = button.closest('[data-qty-wrap]');
-      if (!wrap) return;
-      const input = wrap.querySelector('[data-qty-input]');
-      if (!input) return;
+      const input = wrap && wrap.querySelector('[data-qty-input]');
+      const key = this.lineKey(button);
+      if (!input || !key) return;
       let value = parseInt(input.value, 10);
       if (Number.isNaN(value)) value = 0;
-      if (button.hasAttribute('data-qty-minus')) {
-        value = Math.max(0, value - 1);
-      } else {
-        value = value + 1;
-      }
+      value = button.hasAttribute('data-qty-minus') ? Math.max(0, value - 1) : value + 1;
       input.value = value;
-      this.queueSubmit();
+      this.queue(key, value, false);
     }
 
     handleChange(event) {
-      if (!event.target.closest('[data-qty-input]')) return;
-      this.queueSubmit();
+      const input = event.target.closest('[data-qty-input]');
+      if (!input) return;
+      const key = this.lineKey(input);
+      if (!key) return;
+      this.queue(key, Math.max(0, parseInt(input.value, 10) || 0), false);
     }
 
     handleSubmit() {
-      window.clearTimeout(this.submitTimer);
+      window.clearTimeout(this.timer);
       this.classList.add('is-busy');
-      if (this.status) this.status.textContent = this.dataset.loadingText || '';
     }
 
-    queueSubmit() {
-      window.clearTimeout(this.submitTimer);
-      this.submitTimer = window.setTimeout(() => {
-        if (!this.form) return;
-        if (typeof this.form.requestSubmit === 'function') {
-          this.form.requestSubmit();
+    queue(key, quantity, now) {
+      this.pending[key] = quantity;
+      window.clearTimeout(this.timer);
+      this.timer = window.setTimeout(() => this.flush(), now ? 0 : 400);
+    }
+
+    // Which control had focus, so it can be found again in the new markup.
+    focusTarget() {
+      const active = document.activeElement;
+      if (!active || !this.contains(active)) return null;
+      const key = this.lineKey(active);
+      const kind = ['data-qty-minus', 'data-qty-plus', 'data-qty-input', 'data-qty-remove'].find((k) =>
+        active.hasAttribute(k)
+      );
+      if (!key || !kind) return null;
+      const keys = Array.from(this.querySelectorAll('[data-line-key]')).map((l) => l.getAttribute('data-line-key'));
+      return { key, kind, index: keys.indexOf(key) };
+    }
+
+    async flush() {
+      if (this.busy) {
+        this.again = true;
+        return;
+      }
+      const updates = this.pending;
+      this.pending = {};
+      if (!Object.keys(updates).length) return;
+      this.busy = true;
+      this.classList.add('is-busy');
+      const focus = this.focusTarget();
+      const note = this.querySelector('[name="note"]');
+      const noteValue = note ? note.value : null;
+      let html = null;
+      let error = null;
+      let cart = null;
+      try {
+        const response = await fetch(this.dataset.updateUrl + '.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ updates, sections: this.dataset.sectionId, sections_url: window.location.pathname })
+        });
+        const data = await response.json().catch(() => null);
+        if (response.ok && data) {
+          cart = data;
+          html = data.sections ? data.sections[this.dataset.sectionId] : null;
         } else {
-          this.form.submit();
+          error = (data && data.description) || this.dataset.errorText;
         }
-      }, 400);
+        if (!html) {
+          // Error, or no rendered section in the answer: re-read the cart so
+          // the quantities on screen are the real ones.
+          const fresh = await fetch(this.dataset.cartUrl + '?section_id=' + encodeURIComponent(this.dataset.sectionId));
+          if (fresh.ok) html = await fresh.text();
+        }
+      } catch (e) {
+        error = this.dataset.errorText;
+      }
+      if (html) this.render(html, focus, noteValue);
+      if (cart && typeof cart.item_count === 'number') {
+        document.dispatchEvent(new CustomEvent('fl:cart:change', { bubbles: true, detail: { itemCount: cart.item_count } }));
+      }
+      this.showError(error);
+      this.classList.remove('is-busy');
+      this.busy = false;
+      if (this.again || Object.keys(this.pending).length) {
+        this.again = false;
+        this.flush();
+      }
+    }
+
+    render(html, focus, noteValue) {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const fresh = doc.querySelector('[data-cart-page-inner]');
+      const current = this.querySelector('[data-cart-page-inner]');
+      if (!fresh || !current) return;
+      current.innerHTML = fresh.innerHTML;
+      // A note being typed is not saved by a quantity change: keep it.
+      const note = this.querySelector('[name="note"]');
+      if (note && noteValue !== null) note.value = noteValue;
+      if (!focus) return;
+      let target = null;
+      const line = this.querySelector('[data-line-key="' + CSS.escape(focus.key) + '"]');
+      if (line) target = line.querySelector('[' + focus.kind + ']');
+      if (!target) {
+        // The line is gone: the next one takes focus, or the empty state.
+        const lines = this.querySelectorAll('[data-line-key]');
+        const next = lines[Math.min(Math.max(focus.index, 0), lines.length - 1)];
+        if (next) target = next.querySelector('[data-qty-input]');
+      }
+      if (!target) target = this.querySelector('.fl-cart-page__empty a') || this.querySelector('.fl-cart-page__title');
+      if (target) target.focus();
+    }
+
+    // Errors are shown in the summary and read by the live region, which
+    // stays outside the re-rendered markup.
+    showError(message) {
+      const status = this.querySelector('[data-cart-page-status]');
+      const live = this.querySelector('[data-cart-page-live]');
+      if (status) status.textContent = message || '';
+      if (!live) return;
+      live.textContent = '';
+      if (message) {
+        window.setTimeout(() => {
+          live.textContent = message;
+        }, 60);
+      }
     }
   }
 
