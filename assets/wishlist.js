@@ -35,9 +35,8 @@
     const handles = list || read();
     document.querySelectorAll('[data-wishlist-toggle]').forEach((btn) => {
       const active = handles.includes(btn.getAttribute('data-handle'));
+      // The name never changes: the pressed state alone tells the shopper.
       btn.setAttribute('aria-pressed', active ? 'true' : 'false');
-      const label = active ? btn.getAttribute('data-label-remove') : btn.getAttribute('data-label-add');
-      if (label) btn.setAttribute('aria-label', label);
     });
     document.querySelectorAll('[data-wishlist-count]').forEach((el) => {
       el.textContent = handles.length;

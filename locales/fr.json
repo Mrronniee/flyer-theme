@@ -337,8 +337,7 @@
     "title": "Liste d’envies",
     "empty": "Votre liste d’envies est vide.",
     "clear": "Vider la liste",
-    "add": "Ajouter à la liste d’envies",
-    "remove": "Retirer de la liste d’envies",
+    "add": "Ajouter {{ title }} à la liste d’envies",
     "needs_js": "Votre liste d’envies a besoin de JavaScript pour s’afficher.",
     "count_label": "{{ count }} articles dans la liste d’envies"
   },
