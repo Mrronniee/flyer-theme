@@ -10,7 +10,7 @@
     "version": "1.8.4",
     "date": "2026-10-08",
     "verdict": "passé",
-    "resume": "Partie statique seulement (cloud) : 266 clés EN et 266 FR, 0 clé orpheline sur 247, 0 reste anglais, typographie française OK : 0 BLOQUANT ; libellés d'éditeur toujours en dur (pas de fichiers schema), comme en 1.8.3. Passe sur la démo à faire.",
+    "resume": "Statique : 266 clés EN et 266 FR, 0 orpheline sur 247, 0 reste anglais. Démo : 15 pages × 2 langues, 0 BLOQUANT, 0 mot de la mauvaise langue venu des locales ; ALERTE sur le contenu de démo (réglages des gabarits en anglais sur la racine FR, produits partagés) ; préfixe « Shop » du Lookbook corrigé en e583dbf ; compte client non testé (comptes hébergés par Shopify, bloqués par le proxy).",
     "commit": "a0aa1dc"
   },
   "theme-editeur-checker": {
