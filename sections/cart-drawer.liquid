@@ -975,6 +975,14 @@
           } catch (error) {
             // keep the generic fallback message
           }
+          // Over the stock, Shopify adds what it has before refusing the rest:
+          // re-read the cart so the drawer and the count show what is really
+          // in it. The reason is shown after, as refresh() replaces the region.
+          try {
+            await this.refresh();
+          } catch (error) {
+            // the message below still explains the refusal
+          }
           this.showError(message);
           this.open(button);
           return;
@@ -1007,19 +1015,22 @@
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({ id: key, quantity: quantity })
         });
+        let message = null;
         if (response.ok) {
           this.clearError();
         } else {
-          let message = this.dataset.errorText;
+          message = this.dataset.errorText;
           try {
             const data = await response.json();
             if (data && data.description) message = data.description;
           } catch (error) {
             // keep the generic fallback message
           }
-          this.showError(message);
         }
         await this.refresh();
+        // After refresh(): renderContents() replaces the status region, and a
+        // message written before it was lost.
+        if (message) this.showError(message);
       } catch (error) {
         this.showError(this.dataset.errorText);
       } finally {

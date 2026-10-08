@@ -21,6 +21,7 @@
   class="fl-cart-page"
   data-section-id="{{ section.id }}"
   data-update-url="{{ routes.cart_update_url }}"
+  data-change-url="{{ routes.cart_change_url }}"
   data-cart-url="{{ routes.cart_url }}"
   data-error-text="{{ 'cart.item_error' | t }}"
 >
@@ -692,7 +693,9 @@
       event.preventDefault();
       this.querySelectorAll('[data-qty-input]').forEach((input) => {
         const key = this.lineKey(input);
-        if (key) this.pending[key] = Math.max(0, parseInt(input.value, 10) || 0);
+        if (key && input.value !== input.defaultValue) {
+          this.pending[key] = Math.max(0, parseInt(input.value, 10) || 0);
+        }
       });
       window.clearTimeout(this.timer);
       this.flush();
@@ -734,17 +737,23 @@
       let error = null;
       let cart = null;
       try {
-        const response = await fetch(this.dataset.updateUrl + '.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ updates, sections: this.dataset.sectionId, sections_url: window.location.pathname })
-        });
-        const data = await response.json().catch(() => null);
-        if (response.ok && data) {
-          cart = data;
-          html = data.sections ? data.sections[this.dataset.sectionId] : null;
-        } else {
-          error = (data && data.description) || this.dataset.errorText;
+        // One /cart/change.js per line, as in the cart drawer: unlike
+        // /cart/update.js, it refuses a quantity over the stock, with
+        // Shopify's reason.
+        for (const [key, quantity] of Object.entries(updates)) {
+          const response = await fetch(this.dataset.changeUrl + '.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ id: key, quantity, sections: this.dataset.sectionId, sections_url: window.location.pathname })
+          });
+          const data = await response.json().catch(() => null);
+          if (response.ok && data) {
+            cart = data;
+            html = data.sections ? data.sections[this.dataset.sectionId] : null;
+          } else {
+            if (!error) error = (data && data.description) || this.dataset.errorText;
+            html = null;
+          }
         }
         if (!html) {
           // Error, or no rendered section in the answer: re-read the cart so

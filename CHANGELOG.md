@@ -66,9 +66,17 @@
 - **Focus after adding from the quick view.** Closing the cart drawer that
   opened after an add from the quick view left keyboard focus nowhere. It now
   returns to the card's "Quick view" button.
-- **Mobile menu and links to the same page.** On the home page, a menu link
-  to one of its sections (/#lookbook) scrolled the page behind the open mobile
-  menu, which stayed in front. The menu now closes so the section shows.
+- **Menus and links to the same page.** On the home page, a menu link to one
+  of its sections (/#lookbook) scrolled the page behind the open mobile menu,
+  or behind the open "Shop" panel on a computer, which stayed in front. Both
+  now close so the section shows.
+- **Asking for more than the stock.** When a product page asked for more than
+  the stock, Shopify added what it had and said so, but the cart drawer showed
+  the cart as it was before (empty, count 0). It now shows the real cart with
+  Shopify's message. The cart page, which accepted any quantity until
+  checkout, now checks each change with the store like the drawer: the line
+  keeps what is available and the reason is announced. In the drawer too,
+  that reason replaces the generic "Something went wrong" message.
 - **Edited texts keep their apostrophes.** If you change the theme's default
   texts (Online Store > Themes > Edit default theme content) and type an
   apostrophe or an ampersand, some places showed "&#39;" or "&amp;" instead:

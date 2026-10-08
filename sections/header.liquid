@@ -999,6 +999,11 @@
           if (!dropdown.open) return;
           if (event.relatedTarget && !dropdown.contains(event.relatedTarget)) dropdown.open = false;
         });
+        // A link to a section of the page under the panel (/#lookbook on the
+        // home page) loads nothing new: close the panel so the section shows.
+        dropdown.addEventListener('click', (event) => {
+          if (event.target.closest('a[href]')) dropdown.open = false;
+        });
         dropdown.addEventListener('keydown', (event) => {
           if (event.key === 'Escape' && dropdown.open) {
             event.preventDefault();
