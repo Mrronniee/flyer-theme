@@ -344,6 +344,9 @@
     "count_label": "{{ count }} articles dans la liste d’envies"
   },
   "sections": {
+    "lookbook": {
+      "shop_label": "Acheter"
+    },
     "testimonials": {
       "rating_label": "{{ rating }} sur 5 étoiles"
     },

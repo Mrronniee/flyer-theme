@@ -344,6 +344,9 @@
     "count_label": "{{ count }} items in wishlist"
   },
   "sections": {
+    "lookbook": {
+      "shop_label": "Shop"
+    },
     "testimonials": {
       "rating_label": "{{ rating }} out of 5 stars"
     },

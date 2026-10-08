@@ -58,6 +58,10 @@
   wishlist", and its name changed when pressed. Each heart now names its
   product ("Add Overshirt to wishlist") and keeps that name; screen readers
   say whether it is pressed.
+- **Lookbook product links in the storefront language.** The prefix before a
+  look's product ("Shop — Overshirt") read "Shop" on a French storefront too.
+  Left empty, it now follows the storefront language ("Acheter — Surchemise");
+  a prefix you typed yourself is kept.
 - **Sale and sold out badges in the storefront language.** The badges read
   "Sale" and "Sold out" even on a French storefront. Left empty, the two badge
   settings now show the theme's translated label ("Promo" and "Épuisé" in

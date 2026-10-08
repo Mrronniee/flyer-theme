@@ -8,6 +8,7 @@
 {% endcomment %}
 
 {%- liquid
+  assign shop_label_fallback = 'sections.lookbook.shop_label' | t
   assign count = section.blocks.size
   # Phones: each look is 78% of the scroller, which sits inside the page
   # margins, so it is narrower than 78vw.
@@ -98,7 +99,7 @@
 
           {%- if product != blank -%}
             <a class="fl-lookbook__link" href="{{ product.url }}">
-              {{ section.settings.shop_label | escape }} — {{ product.title | escape }}
+              {{ section.settings.shop_label | default: shop_label_fallback | escape }} — {{ product.title | escape }}
             </a>
             <div class="fl-lookbook__price">{% render 'price', product: product %}</div>
           {%- elsif block.settings.link != blank and block.settings.link_label != blank -%}
@@ -304,8 +305,7 @@
       "type": "text",
       "id": "shop_label",
       "label": "Product link prefix",
-      "default": "Shop",
-      "info": "Shown as “Shop — Product title” under a look with a product."
+      "info": "Shown as “Shop — Product title” under a look with a product. Leave empty to use the storefront language (Shop, Acheter)."
     },
     {
       "type": "header",
