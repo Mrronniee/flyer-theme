@@ -1,0 +1,23 @@
+{
+  "liquid-validator": {
+    "version": "1.8.4",
+    "date": "2026-10-08",
+    "verdict": "passé",
+    "resume": "12 contrôles OK sur 12 ; Theme Check sur 70 fichiers .liquid (cart, cart-drawer, contact compris) : 0 ERROR, 0 WARNING, 0 INFO.",
+    "commit": "a0aa1dc"
+  },
+  "theme-bilingue-checker": {
+    "version": "1.8.4",
+    "date": "2026-10-08",
+    "verdict": "passé",
+    "resume": "Partie statique seulement (cloud) : 266 clés EN et 266 FR, 0 clé orpheline sur 247, 0 reste anglais, typographie française OK : 0 BLOQUANT ; libellés d'éditeur toujours en dur (pas de fichiers schema), comme en 1.8.3. Passe sur la démo à faire.",
+    "commit": "a0aa1dc"
+  },
+  "theme-editeur-checker": {
+    "version": "1.8.4",
+    "date": "2026-10-08",
+    "verdict": "passé",
+    "resume": "54 schémas valides, 0 réglage mort, 0 default vide, gabarits et groupes valides : 0 BLOQUANT, 2 ALERTE (701 libellés d'éditeur en dur, connue ; « Search & Discovery » = nom de l'app, gardé) ; layout password et Countdown sans date confirmés.",
+    "commit": "a0aa1dc"
+  }
+}
