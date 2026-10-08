@@ -59,7 +59,7 @@
           type="text"
           id="FlContactName-{{ section.id }}"
           name="contact[name]"
-          value="{{ form.name }}"
+          value="{{ form.name | escape_once }}"
           autocomplete="name"
         >
       </div>
@@ -71,7 +71,7 @@
           type="email"
           id="FlContactEmail-{{ section.id }}"
           name="contact[email]"
-          value="{{ form.email }}"
+          value="{{ form.email | escape_once }}"
           autocomplete="email"
           autocapitalize="off"
           required
@@ -85,7 +85,7 @@
           type="tel"
           id="FlContactPhone-{{ section.id }}"
           name="contact[phone]"
-          value="{{ form.phone }}"
+          value="{{ form.phone | escape_once }}"
           autocomplete="tel"
         >
       </div>
@@ -99,7 +99,7 @@
           rows="6"
           required
         >
-          {{- form.body -}}
+          {{- form.body | escape_once -}}
         </textarea>
       </div>
 

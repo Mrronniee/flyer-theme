@@ -11,9 +11,11 @@ jobs:
   theme-check:
     name: Theme Check
     runs-on: ubuntu-latest
+    # Actions pinned to a full commit SHA (the tag in the comment): a tag can
+    # be moved, a commit cannot.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Theme Check
-        uses: shopify/theme-check-action@v2
+        uses: shopify/theme-check-action@58fd69afdfc30110f997ba9e212b302671e00d3b # v2.2.0
         with:
           token: ${{ github.token }}

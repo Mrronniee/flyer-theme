@@ -94,6 +94,9 @@
 - **One free shipping threshold.** The default announcement offered free
   shipping over $50 and the default trust badge over $80 (also in a Trust
   badges section newly added in the editor). All now say $50.
+- **Contact form values are escaped.** When the contact form came back with
+  an error, the name, email, phone and message typed in it were written back
+  into the page as they were. They are now escaped, once.
 - **Order note on the cart page** is saved as soon as you leave the field, as
   in the cart drawer.
 

@@ -87,9 +87,7 @@ Card hover = **S6 feuilletage** (second image shown flat, no fade); buttons = **
 ## Validation (mandatory before reporting done)
 
 ```bash
-export OPT_OUT_INSTRUMENTATION=true
-cd ~/Desktop/Claude.code/liquid-tools/validator
-node scripts/validate.mjs --theme-path ~/Desktop/Claude.code/flyer-theme --files "sections/<file>.liquid"
+shopify theme check
 ```
 
 Zero offenses required. theme-check does not catch everything (nested `{% stylesheet %}`, schema name > 25 chars, empty-string defaults) — respect the rules above regardless.
