@@ -101,8 +101,14 @@
 - **Lighter product grids on phones.** Product cards on phones asked for
   images sized for half the screen, while a card is narrower (two columns
   inside the page margins). They now ask for their real width, so phones
-  download smaller images. On product pages, the first image is fetched before
-  the others, so it shows sooner.
+  download smaller images, and so do the Lookbook's looks. On product pages,
+  the first image is fetched before the others, so it shows sooner.
+- **Steadier product pages.** "You may also like" is fetched about a screen
+  before it comes into view, so a quick scroll no longer sees it push the
+  footer down.
+- **One connection less on every page.** The theme no longer opens a
+  connection to fonts.shopifycdn.com: Shopify serves the theme's fonts from
+  your store's own domain.
 - **Theme editor labels in American English**, like the rest of the Shopify
   admin: "Color scheme", "Center", "Heading capitalization". The "Wishlist &
   quick view" settings are now "Wishlist and quick view". Only the labels

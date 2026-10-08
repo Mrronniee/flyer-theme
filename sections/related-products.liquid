@@ -78,7 +78,10 @@
                   }
                 });
               },
-              { rootMargin: '400px 0px' }
+              // Fetched about a screen ahead: content arriving while the
+              // section is already in view pushed the footer down (layout
+              // shift) on a quick scroll.
+              { rootMargin: '1000px 0px' }
             );
             this.observer.observe(this);
           } else {

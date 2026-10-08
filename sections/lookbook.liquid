@@ -9,7 +9,10 @@
 
 {%- liquid
   assign count = section.blocks.size
-  assign img_sizes = '(max-width: 749px) 78vw, (max-width: 989px) 50vw, 25vw'
+  # Phones: each look is 78% of the scroller, which sits inside the page
+  # margins, so it is narrower than 78vw.
+  assign look_inset = settings.min_page_margin | times: 2
+  assign img_sizes = '(max-width: 749px) calc((100vw - ' | append: look_inset | append: 'px) * 0.78), (max-width: 989px) 50vw, 25vw'
 -%}
 
 {%- comment -%}

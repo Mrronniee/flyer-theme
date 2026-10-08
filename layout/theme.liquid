@@ -8,8 +8,12 @@
 
     {% render 'css-variables' %}
 
+    {%- comment -%}
+      No preconnect: font_url serves the fonts from the store's own domain
+      (/cdn/fonts/), and a hint to fonts.shopifycdn.com opened a connection
+      that nothing used.
+    {%- endcomment -%}
     {% unless settings.type_body_font.system? %}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
       {{ settings.type_body_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
     {% endunless %}
     {%- comment -%}
