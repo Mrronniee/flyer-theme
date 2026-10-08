@@ -972,6 +972,7 @@
           try {
             const data = await response.json();
             if (data && data.description) message = data.description;
+            else if (data && typeof data.errors === 'string') message = data.errors;
           } catch (error) {
             // keep the generic fallback message
           }
@@ -1010,7 +1011,9 @@
       this.isBusy = true;
       this.classList.add('is-busy');
       try {
-        const response = await fetch(this.dataset.changeUrl, {
+        // .js: the plain endpoint answers a refusal as { errors }, without the
+        // description that says why (stock); the .js one has it.
+        const response = await fetch(this.dataset.changeUrl + '.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({ id: key, quantity: quantity })
@@ -1023,6 +1026,7 @@
           try {
             const data = await response.json();
             if (data && data.description) message = data.description;
+            else if (data && typeof data.errors === 'string') message = data.errors;
           } catch (error) {
             // keep the generic fallback message
           }

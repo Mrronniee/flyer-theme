@@ -111,6 +111,12 @@ a {
   text-underline-offset: 0.2em;
 }
 
+/* The hidden attribute always wins: a component class that sets display
+   (.fl-btn is inline-flex) must never bring a hidden element back. */
+[hidden] {
+  display: none !important;
+}
+
 :focus-visible {
   outline: 2px solid var(--color-ink);
   outline-offset: 2px;

@@ -42,6 +42,9 @@
 - **Focus on wishlist hearts over photos.** On a dark product photo, the dark
   focus ring of a card's heart could not be seen. It now has a light halo on
   both sides and shows on any picture.
+- **Clear list on an empty wishlist.** The "Clear list" button stayed on
+  screen, and in the keyboard order, once the wishlist was empty. Anything the
+  theme hides is now always hidden, whatever its style.
 - **Removing a favourite on the wishlist page.** Unticking a heart on the
   wishlist page dropped keyboard focus to the top of the page. Focus now moves
   to the next heart (or to the empty list message), and screen readers hear

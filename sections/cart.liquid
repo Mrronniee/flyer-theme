@@ -767,6 +767,19 @@
         error = this.dataset.errorText;
       }
       if (html) this.render(html, focus, noteValue);
+      if (error) {
+        // A refusal can still change the cart (Shopify trims a line to the
+        // stock): read the real count for the header.
+        try {
+          const response = await fetch(this.dataset.cartUrl + '.js', {
+            cache: 'no-store',
+            headers: { Accept: 'application/json' }
+          });
+          if (response.ok) cart = await response.json();
+        } catch (e) {
+          // the header keeps its count
+        }
+      }
       if (cart && typeof cart.item_count === 'number') {
         document.dispatchEvent(new CustomEvent('fl:cart:change', { bubbles: true, detail: { itemCount: cart.item_count } }));
       }
