@@ -169,7 +169,9 @@
     // removal is announced by name.
     prune() {
       const handles = this.read();
-      const items = Array.from(this.grid.querySelectorAll('[data-handle]'));
+      // The cards' wrappers only: the heart and the quick view button inside
+      // a card carry data-handle too.
+      const items = Array.from(this.grid.querySelectorAll(':scope > .fl-wishlist__item'));
       const gone = items.filter((item) => !handles.includes(item.getAttribute('data-handle')));
       const kept = items.filter((item) => !gone.includes(item));
       const focused = gone.find((item) => item.contains(document.activeElement));

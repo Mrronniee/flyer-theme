@@ -970,10 +970,11 @@
           // A link to a section of this same page (/#lookbook on the home
           // page) loads nothing new: close the menu so the section shows.
           const link = event.target.closest('a[href]');
+          const path = (value) => value.replace(/\/$/, '');
           if (
             link &&
             link.hash &&
-            link.pathname === window.location.pathname &&
+            path(link.pathname) === path(window.location.pathname) &&
             link.search === window.location.search
           ) {
             this.drawer.close();
