@@ -26,5 +26,12 @@
     "verdict": "passé",
     "resume": "6 pages à 1440 et 390 (en-tête, panier et tiroir aussi à 360 et 320), 1 000 contrastes de texte + 526 bordures/icônes/états sans échec, 731 arrêts de Tab, axe 0 violation, tiroir panier conforme : 0 BLOQUANT, 3 ALERTE (refus annoncé « Added to cart », double repère banner, message de stock hors écran en mobile) corrigées ensuite, à revérifier sur la démo.",
     "commit": "a0aa1dc"
+  },
+  "theme-parcours-tester": {
+    "version": "1.8.4",
+    "date": "2026-10-09",
+    "verdict": "passé",
+    "resume": "4 couples (EN/FR, 1440/390) × 46 étapes : 166 OK, 0 ÉCHEC, 18 non testées (contact et newsletter valides bloqués par hCaptcha dans le cloud, pas de barre de livraison ni de sélecteurs de langue sur la démo) ; les 4 défauts 1.8.3 corrigés, page panier sans rechargement et refus de stock OK ; 0 erreur JS du thème.",
+    "commit": "a0aa1dc"
   }
 }
