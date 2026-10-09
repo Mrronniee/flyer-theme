@@ -33,5 +33,12 @@
     "verdict": "passé",
     "resume": "4 couples (EN/FR, 1440/390) × 46 étapes : 166 OK, 0 ÉCHEC, 18 non testées (contact et newsletter valides bloqués par hCaptcha dans le cloud, pas de barre de livraison ni de sélecteurs de langue sur la démo) ; les 4 défauts 1.8.3 corrigés, page panier sans rechargement et refus de stock OK ; 0 erreur JS du thème.",
     "commit": "a0aa1dc"
+  },
+  "theme-perf-auditor": {
+    "version": "1.8.4",
+    "date": "2026-10-09",
+    "verdict": "passé",
+    "resume": "Lighthouse 12.8.2, 3 passes × accueil, collection, produit × mobile et bureau (médianes) : performance moyenne mobile 71, bureau 99 ; accessibilité 97 partout ; CLS ≤ 0,008 ; LCP collection mobile = bandeau cookies de Shopify ; TBT venu des scripts Shopify ; benchmarkIndex 1803 à 2226 (machine cloud).",
+    "commit": "a0aa1dc"
   }
 }
