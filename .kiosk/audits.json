@@ -1,44 +1,44 @@
 {
   "liquid-validator": {
     "version": "1.8.4",
-    "date": "2026-10-08",
+    "date": "2026-10-09",
     "verdict": "passé",
-    "resume": "12 contrôles OK sur 12 ; Theme Check sur 70 fichiers .liquid (cart, cart-drawer, contact compris) : 0 ERROR, 0 WARNING, 0 INFO.",
-    "commit": "a0aa1dc"
+    "resume": "12 contrôles OK sur 12 ; Theme Check sur 70 fichiers .liquid (cart, cart-drawer, product, featured-product, lookbook compris) : 0 ERROR, 0 WARNING, 0 INFO.",
+    "commit": "acb365a"
   },
   "theme-bilingue-checker": {
     "version": "1.8.4",
-    "date": "2026-10-08",
+    "date": "2026-10-09",
     "verdict": "passé",
-    "resume": "Statique : 266 clés EN et 266 FR, 0 orpheline sur 247, 0 reste anglais. Démo : 15 pages × 2 langues, 0 BLOQUANT, 0 mot de la mauvaise langue venu des locales ; ALERTE sur le contenu de démo (réglages des gabarits en anglais sur la racine FR, produits partagés) ; préfixe « Shop » du Lookbook corrigé en e583dbf ; compte client non testé (comptes hébergés par Shopify, bloqués par le proxy).",
-    "commit": "a0aa1dc"
+    "resume": "Statique : 267 clés EN et 267 FR, 0 orpheline, 0 reste anglais, 17 insécables et 0 espace ordinaire avant : ; ! ?, clé sections.lookbook.shop_label présente dans les deux langues : 0 BLOQUANT, 0 ALERTE ; éditeur en anglais (INFO). Démo, passe ciblée : 8 pages ou états × EN et FR (Lookbook, panier vide et rempli, tiroir, collection, produit, refus simulé) : 0 mot de la mauvaise langue venu du thème, « Shop — » / « Acheter — » 4 liens sur 4 ; restes anglais en FR = contenu de démo saisi dans les réglages et menus (ALERTE hors thème).",
+    "commit": "acb365a"
   },
   "theme-editeur-checker": {
     "version": "1.8.4",
-    "date": "2026-10-08",
-    "verdict": "passé",
-    "resume": "54 schémas valides, 0 réglage mort, 0 default vide, gabarits et groupes valides : 0 BLOQUANT, 2 ALERTE (701 libellés d'éditeur en dur, connue ; « Search & Discovery » = nom de l'app, gardé) ; layout password et Countdown sans date confirmés.",
-    "commit": "a0aa1dc"
-  },
-  "theme-a11y-auditor": {
-    "version": "1.8.4",
     "date": "2026-10-09",
     "verdict": "passé",
-    "resume": "6 pages à 1440 et 390 (en-tête, panier et tiroir aussi à 360 et 320), 1 000 contrastes de texte + 526 bordures/icônes/états sans échec, 731 arrêts de Tab, axe 0 violation, tiroir panier conforme : 0 BLOQUANT, 3 ALERTE (refus annoncé « Added to cart », double repère banner, message de stock hors écran en mobile) corrigées ensuite, à revérifier sur la démo.",
-    "commit": "a0aa1dc"
+    "resume": "54 schémas valides, 21 gabarits et 2 groupes sans écart, 0 réglage mort, 0 default vide, shop_label du Lookbook sans default et sans gabarit cassé : 0 BLOQUANT, 2 ALERTE (566 libellés d'éditeur en dur, connue ; contrôle des defaults non exhaustif).",
+    "commit": "acb365a"
   },
   "theme-parcours-tester": {
     "version": "1.8.4",
     "date": "2026-10-09",
     "verdict": "passé",
-    "resume": "4 couples (EN/FR, 1440/390) × 46 étapes : 166 OK, 0 ÉCHEC, 18 non testées (contact et newsletter valides bloqués par hCaptcha dans le cloud, pas de barre de livraison ni de sélecteurs de langue sur la démo) ; les 4 défauts 1.8.3 corrigés, page panier sans rechargement et refus de stock OK ; 0 erreur JS du thème.",
-    "commit": "a0aa1dc"
+    "resume": "Passe ciblée (tiroir, page panier, Lookbook), 4 couples EN/FR × 1440/390 × 16 étapes : 63 OK, 0 ÉCHEC, 1 non refaite (Commander en FR 1440) ; refus de stock réels sous la ligne et compteurs égaux à /cart.js, plus de « Added to cart » après un refus, « Shop — » / « Acheter — » 4 liens sur 4 ; 0 erreur JS du thème.",
+    "commit": "acb365a"
+  },
+  "theme-a11y-auditor": {
+    "version": "1.8.4",
+    "date": "2026-10-09",
+    "verdict": "passé",
+    "resume": "Passe ciblée : les 3 corrections de 91481e9 vérifiées (ajout refusé sans « Added to cart » à 1440 et 390, un seul repère banner, message de stock sous la ligne et à l'écran à 390, 360 et 320 sur 12 passages) ; tiroir à 1440 et 390 : 48 Tab sans fuite, 28 contrastes sans échec (min 6,39:1), axe 0 violation : 0 BLOQUANT, 1 ALERTE (axe region sur le lien d'évitement, bonne pratique).",
+    "commit": "acb365a"
   },
   "theme-perf-auditor": {
     "version": "1.8.4",
     "date": "2026-10-09",
     "verdict": "passé",
-    "resume": "Lighthouse 12.8.2, 3 passes × accueil, collection, produit × mobile et bureau (médianes) : performance moyenne mobile 71, bureau 99 ; accessibilité 97 partout ; CLS ≤ 0,008 ; LCP collection mobile = bandeau cookies de Shopify ; TBT venu des scripts Shopify ; benchmarkIndex 1803 à 2226 (machine cloud).",
-    "commit": "a0aa1dc"
+    "resume": "Lighthouse, accueil, 1 passe par appareil : mobile perf 63, a11y 97, LCP 3,0 s (image du héros), TBT 3 210 ms venu des scripts Shopify et de la barre d'aperçu, CLS 0 ; bureau perf 99, a11y 97, LCP 0,7 s, CLS 0 ; benchmarkIndex 1360,5 (mobile) et 1663,5 (bureau), machine cloud.",
+    "commit": "acb365a"
   }
 }
