@@ -58,6 +58,16 @@
   wishlist", and its name changed when pressed. Each heart now names its
   product ("Add Overshirt to wishlist") and keeps that name; screen readers
   say whether it is pressed.
+- **A refused add no longer says "Added to cart".** When Shopify refused an
+  add (not enough stock), the product page button and its screen reader
+  message still read "Added to cart" for two seconds while the cart drawer
+  explained the refusal. The button now goes straight back to its label and
+  only the reason is announced. Same in the featured product section.
+- **Stock messages next to the line on the cart page.** On a phone, the reason
+  Shopify gives for refusing a quantity appeared below Checkout, out of view.
+  It now shows under the line you changed.
+- **One page header for screen readers.** The cart drawer's title bar was read
+  as a second page banner while the drawer was open. It is now a plain block.
 - **Lookbook product links in the storefront language.** The prefix before a
   look's product ("Shop — Overshirt") read "Shop" on a French storefront too.
   Left empty, it now follows the storefront language ("Acheter — Surchemise");

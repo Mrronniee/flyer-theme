@@ -3,7 +3,8 @@
   Rendered statically from theme.liquid when settings.cart_type == 'drawer'.
   - Intercepts submits of [data-quick-add] and [data-product-form] forms.
   - Re-renders itself through the Section Rendering API (?sections=cart-drawer).
-  - Dispatches document event 'fl:cart:change' with detail: { itemCount }.
+  - Dispatches document event 'fl:cart:change' with detail: { itemCount, failed }
+    (failed: the cart was re-read after Shopify refused an add or a change).
   - [data-cart-open] elements open it; everything degrades to /cart without JS.
   Theme settings: Cart > Colour scheme, Show vendor, Enable order note,
   Collection shown in an empty cart. Drawer border/shadow come from the
@@ -53,7 +54,7 @@
     data-cart-panel
   >
     <div class="fl-cart__inner" data-cart-inner>
-      <header class="fl-cart__head">
+      <div class="fl-cart__head">
         <h2 class="fl-cart__title">
           <span id="FlCartDrawerHeading">{{ 'cart.drawer_title' | t }}</span>
           <span class="fl-cart__count" aria-hidden="true">{{ cart.item_count }}</span>
@@ -69,7 +70,7 @@
             <path d="M3 3l12 12M15 3 3 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </button>
-      </header>
+      </div>
 
       <div class="fl-cart__body">
         {%- if cart.item_count == 0 -%}
@@ -980,7 +981,7 @@
           // re-read the cart so the drawer and the count show what is really
           // in it. The reason is shown after, as refresh() replaces the region.
           try {
-            await this.refresh();
+            await this.refresh({ failed: true });
           } catch (error) {
             // the message below still explains the refusal
           }
@@ -1031,7 +1032,7 @@
             // keep the generic fallback message
           }
         }
-        await this.refresh();
+        await this.refresh({ failed: Boolean(message) });
         // After refresh(): renderContents() replaces the status region, and a
         // message written before it was lost.
         if (message) this.showError(message);
@@ -1055,7 +1056,8 @@
       }
     }
 
-    async refresh() {
+    async refresh(options) {
+      const failed = Boolean(options && options.failed);
       const sectionUrl = this.dataset.rootUrl + '?sections=' + this.sectionId;
       const cartUrl = this.dataset.cartUrl + '.js';
       const results = await Promise.all([
@@ -1072,7 +1074,7 @@
       let itemCount = 0;
       if (cart && typeof cart.item_count === 'number') itemCount = cart.item_count;
       document.dispatchEvent(
-        new CustomEvent('fl:cart:change', { bubbles: true, detail: { itemCount: itemCount } })
+        new CustomEvent('fl:cart:change', { bubbles: true, detail: { itemCount: itemCount, failed: failed } })
       );
     }
 

@@ -537,6 +537,11 @@
     text-align: center;
   }
 
+  .fl-cart-page__item > .fl-cart-page__status {
+    grid-column: 1 / -1;
+    text-align: start;
+  }
+
   .fl-cart-page__status:empty {
     display: none;
   }
@@ -735,6 +740,7 @@
       const noteValue = note ? note.value : null;
       let html = null;
       let error = null;
+      let errorKey = null;
       let cart = null;
       try {
         // One /cart/change.js per line, as in the cart drawer: unlike
@@ -751,7 +757,10 @@
             cart = data;
             html = data.sections ? data.sections[this.dataset.sectionId] : null;
           } else {
-            if (!error) error = (data && data.description) || this.dataset.errorText;
+            if (!error) {
+              error = (data && data.description) || this.dataset.errorText;
+              errorKey = key;
+            }
             html = null;
           }
         }
@@ -783,7 +792,7 @@
       if (cart && typeof cart.item_count === 'number') {
         document.dispatchEvent(new CustomEvent('fl:cart:change', { bubbles: true, detail: { itemCount: cart.item_count } }));
       }
-      this.showError(error);
+      this.showError(error, errorKey);
       this.classList.remove('is-busy');
       this.busy = false;
       if (this.again || Object.keys(this.pending).length) {
@@ -815,12 +824,18 @@
       if (target) target.focus();
     }
 
-    // Errors are shown in the summary and read by the live region, which
-    // stays outside the re-rendered markup.
-    showError(message) {
+    // Errors are shown under the refused line (in the summary when the line
+    // is gone) and read by the live region, which stays outside the
+    // re-rendered markup. Under the line, the reason is on screen next to the
+    // control that was used, even on a phone where the summary is far below.
+    showError(message, key) {
       const status = this.querySelector('[data-cart-page-status]');
       const live = this.querySelector('[data-cart-page-live]');
-      if (status) status.textContent = message || '';
+      if (status) {
+        status.textContent = message || '';
+        const line = message && key ? this.querySelector('[data-line-key="' + CSS.escape(key) + '"]') : null;
+        if (line) line.appendChild(status);
+      }
       if (!live) return;
       live.textContent = '';
       if (message) {

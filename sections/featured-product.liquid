@@ -837,10 +837,16 @@
         /* --- Add-to-cart button states (adding / added) --- */
         initFormStates() {
           if (!this.form || !this.addButton) return;
-          this._onCartChange = () => {
+          this._onCartChange = (event) => {
             if (!this._adding) return;
             this._adding = false;
             window.clearTimeout(this._revertTimer);
+            // A refused add also re-reads the cart: the drawer shows why, so
+            // the button goes back to its label instead of saying "Added".
+            if (event && event.detail && event.detail.failed) {
+              this.updateButton(this.currentVariant());
+              return;
+            }
             if (this.addLabel) this.addLabel.textContent = this.dataset.textAdded;
             if (this.addStatus) this.addStatus.textContent = this.dataset.textAdded;
             this._revertTimer = window.setTimeout(() => this.updateButton(this.currentVariant()), 2000);
