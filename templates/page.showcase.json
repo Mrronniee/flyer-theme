@@ -1,0 +1,366 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "image_banner": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_1": {
+          "type": "heading",
+          "settings": {}
+        },
+        "text_2": {
+          "type": "text",
+          "settings": {}
+        },
+        "buttons_3": {
+          "type": "buttons",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading_1",
+        "text_2",
+        "buttons_3"
+      ],
+      "settings": {}
+    },
+    "slideshow": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {}
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "heading": "Made to be worn often",
+            "box_align": "middle-right"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ],
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_1": {
+          "type": "heading",
+          "settings": {}
+        },
+        "text_2": {
+          "type": "text",
+          "settings": {}
+        },
+        "button_3": {
+          "type": "button",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading_1",
+        "text_2",
+        "button_3"
+      ],
+      "settings": {}
+    },
+    "multicolumn": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_1": {
+          "type": "column",
+          "settings": {}
+        },
+        "column_2": {
+          "type": "column",
+          "settings": {}
+        },
+        "column_3": {
+          "type": "column",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "column_1",
+        "column_2",
+        "column_3"
+      ],
+      "settings": {}
+    },
+    "multirow": {
+      "type": "multirow",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {}
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {}
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3"
+      ],
+      "settings": {}
+    },
+    "collage": {
+      "type": "collage",
+      "blocks": {
+        "image_1": {
+          "type": "image",
+          "settings": {}
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {}
+        },
+        "collection_3": {
+          "type": "collection",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "image_1",
+        "product_2",
+        "collection_3"
+      ],
+      "settings": {}
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_1": {
+          "type": "featured_collection",
+          "settings": {}
+        },
+        "featured_collection_2": {
+          "type": "featured_collection",
+          "settings": {}
+        },
+        "featured_collection_3": {
+          "type": "featured_collection",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "featured_collection_1",
+        "featured_collection_2",
+        "featured_collection_3"
+      ],
+      "settings": {}
+    },
+    "featured_product": {
+      "type": "featured-product",
+      "blocks": {
+        "title_1": {
+          "type": "title",
+          "settings": {}
+        },
+        "price_2": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_3": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "quantity_4": {
+          "type": "quantity",
+          "settings": {}
+        },
+        "buy_buttons_5": {
+          "type": "buy_buttons",
+          "settings": {}
+        },
+        "description_6": {
+          "type": "description",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title_1",
+        "price_2",
+        "variant_picker_3",
+        "quantity_4",
+        "buy_buttons_5",
+        "description_6"
+      ],
+      "settings": {}
+    },
+    "comparison": {
+      "type": "comparison",
+      "blocks": {
+        "column_1": {
+          "type": "column",
+          "settings": {
+            "title": "Essential",
+            "subtitle": "For occasional orders",
+            "price": "Free",
+            "highlight": false,
+            "values": "Over $75\n14 days\nno\nno\nno",
+            "button_label": "Choose plan"
+          }
+        },
+        "column_2": {
+          "type": "column",
+          "settings": {
+            "title": "Standard",
+            "subtitle": "For regular customers",
+            "price": "$9 per month",
+            "highlight": true,
+            "values": "yes\n30 days\nyes\nno\nyes",
+            "button_label": "Choose plan"
+          }
+        },
+        "column_3": {
+          "type": "column",
+          "settings": {
+            "title": "Premium",
+            "subtitle": "For collectors",
+            "price": "$19 per month",
+            "highlight": false,
+            "values": "yes\n60 days\nyes\nyes\nyes",
+            "button_label": "Choose plan"
+          }
+        }
+      },
+      "block_order": [
+        "column_1",
+        "column_2",
+        "column_3"
+      ],
+      "settings": {}
+    },
+    "size_guide": {
+      "type": "size-guide",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "label": "XS",
+            "values": "80 / 31.5,62 / 24.5,86 / 34,60 / 23.5"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "label": "S",
+            "values": "84 / 33,66 / 26,90 / 35.5,62 / 24.5"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "label": "M",
+            "values": "88 / 34.5,70 / 27.5,94 / 37,64 / 25"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "label": "L",
+            "values": "94 / 37,76 / 30,100 / 39.5,66 / 26"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "label": "XL",
+            "values": "100 / 39.5,82 / 32.5,106 / 41.5,68 / 27"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5"
+      ],
+      "settings": {}
+    },
+    "collapsible_content": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_1": {
+          "type": "collapsible_row",
+          "settings": {}
+        },
+        "collapsible_row_2": {
+          "type": "collapsible_row",
+          "settings": {}
+        },
+        "collapsible_row_3": {
+          "type": "collapsible_row",
+          "settings": {}
+        },
+        "collapsible_row_4": {
+          "type": "collapsible_row",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "collapsible_row_1",
+        "collapsible_row_2",
+        "collapsible_row_3",
+        "collapsible_row_4"
+      ],
+      "settings": {}
+    },
+    "email_signup_banner": {
+      "type": "email-signup-banner",
+      "blocks": {
+        "heading_1": {
+          "type": "heading",
+          "settings": {}
+        },
+        "paragraph_2": {
+          "type": "paragraph",
+          "settings": {}
+        },
+        "email_form_3": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading_1",
+        "paragraph_2",
+        "email_form_3"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "image_banner",
+    "slideshow",
+    "rich_text",
+    "multicolumn",
+    "multirow",
+    "collage",
+    "collection_list",
+    "featured_product",
+    "comparison",
+    "size_guide",
+    "collapsible_content",
+    "email_signup_banner"
+  ]
+}

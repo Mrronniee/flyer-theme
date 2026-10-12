@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.8.5 - 2026-10-12
+
+### Added
+- **A "showcase" page template.** Twelve sections had no place in any
+  template, so you could only discover them by adding them yourself: image
+  banner, slideshow, rich text, multicolumn, multirow, collage, collection
+  list, featured product, comparison table, size guide, collapsible content
+  and email signup banner. The new "showcase" page template shows each of them
+  with its starter blocks and default colors, below the page's own content. To
+  use it, pick it as the template of a page in your admin. Your other pages
+  are unchanged.
+
 ## 1.8.4 - 2026-10-07
 
 ### Fixed
