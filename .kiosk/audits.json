@@ -1,44 +1,224 @@
 {
   "liquid-validator": {
-    "version": "1.8.4",
-    "date": "2026-10-09",
+    "version": "1.8.5",
+    "date": "2026-10-13",
     "verdict": "passé",
-    "resume": "12 contrôles OK sur 12 ; Theme Check sur 70 fichiers .liquid (cart, cart-drawer, product, featured-product, lookbook compris) : 0 ERROR, 0 WARNING, 0 INFO.",
-    "commit": "acb365a"
+    "resume": "verifier-theme.py complet : code de sortie 0, 12/12 contrôles OK ; Theme Check officiel et brut sur 70 fichiers .liquid : 0 ERROR, 0 WARNING, 0 INFO ; aucune alerte à classer.",
+    "commit": "7262769",
+    "couverture": {
+      "verifier-theme": {
+        "etat": "mesuré",
+        "mesure": "verifier-theme.py complet (sans --rapide) : code de sortie 0, 12 contrôles OK sur 12 (dont Theme Check 70 fichiers)"
+      },
+      "theme-check": {
+        "etat": "mesuré",
+        "mesure": "validateur brut sur 70 fichiers .liquid en 2 lots de 35, tous VALID : 0 ERROR, 0 WARNING, 0 INFO"
+      },
+      "alertes-lues": {
+        "etat": "sans objet",
+        "mesure": "aucune ALERTE émise par verifier-theme.py ni aucun WARNING/INFO du Theme Check brut ; gabarit page.showcase.json : 13 entrées de order, toutes les sections référencées existent"
+      }
+    }
   },
   "theme-bilingue-checker": {
-    "version": "1.8.4",
-    "date": "2026-10-09",
-    "verdict": "passé",
-    "resume": "Statique : 267 clés EN et 267 FR, 0 orpheline, 0 reste anglais, 17 insécables et 0 espace ordinaire avant : ; ! ?, clé sections.lookbook.shop_label présente dans les deux langues : 0 BLOQUANT, 0 ALERTE ; éditeur en anglais (INFO). Démo, passe ciblée : 8 pages ou états × EN et FR (Lookbook, panier vide et rempli, tiroir, collection, produit, refus simulé) : 0 mot de la mauvaise langue venu du thème, « Shop — » / « Acheter — » 4 liens sur 4 ; restes anglais en FR = contenu de démo saisi dans les réglages et menus (ALERTE hors thème).",
-    "commit": "acb365a"
+    "version": "1.8.5",
+    "date": "2026-10-13",
+    "verdict": "échoué",
+    "resume": "Locales storefront 267/267 clés à parité, 0 clé orpheline sur 248 clés utilisées, 0 reste anglais dans fr.json (24 identiques légitimes), pas de locales schema (INFO, éditeur en anglais assumé) ; démo EN 6 pages à theme.id 195174072646 avec 1 phrase française dans le contenu de la page showcase de la boutique (« Vitrine de toutes les sections du thème. ») ; démo FR 6 pages, anglais restant uniquement dans les contenus par défaut des gabarits JSON et de la boutique.",
+    "commit": "7262769",
+    "couverture": {
+      "parite-vitrine": {
+        "etat": "mesuré",
+        "mesure": "en.default.json 267 clés, fr.json 267 clés, 0 clé d'un seul côté"
+      },
+      "cles-orphelines": {
+        "etat": "mesuré",
+        "mesure": "248 clés | t utilisées, 0 absente (5 pluriels one/other présents) ; 0 clé t: de schéma utilisée"
+      },
+      "francais-reel": {
+        "etat": "mesuré",
+        "mesure": "fr.json : 24 valeurs identiques à l'anglais, toutes légitimes (réseaux, Pagination, Contact, Total…), 0 reste anglais, 0 faute de ponctuation insécable ; fr.schema.json absent, sans objet"
+      },
+      "parite-editeur": {
+        "etat": "sans objet",
+        "mesure": "ni en.default.schema.json ni fr.schema.json dans locales/, 0 clé t: utilisée ; éditeur en anglais, choix assumé"
+      },
+      "demo-en": {
+        "etat": "mesuré",
+        "mesure": "6 pages lues (accueil, collection flyer-essentials, produit overshirt, panier, recherche, /en/pages/showcase), theme.id 195174072646 partout ; 1 phrase française, dans le corps de la page showcase de la boutique (« Vitrine de toutes les sections du thème. »), hors dépôt"
+      },
+      "demo-fr": {
+        "etat": "mesuré",
+        "mesure": "6 pages lues (racine + /pages/showcase), theme.id 195174072646 partout ; 0 libellé de locale du thème en anglais ; anglais restant côté thème = contenus par défaut des gabarits JSON (header-group.json:11, footer-group.json:11-26, templates/index.json, page.showcase.json) ; côté boutique = « My Store » et textes de démo"
+      }
+    }
   },
   "theme-editeur-checker": {
-    "version": "1.8.4",
-    "date": "2026-10-09",
+    "version": "1.8.5",
+    "date": "2026-10-13",
     "verdict": "passé",
-    "resume": "54 schémas valides, 21 gabarits et 2 groupes sans écart, 0 réglage mort, 0 default vide, shop_label du Lookbook sans default et sans gabarit cassé : 0 BLOQUANT, 2 ALERTE (566 libellés d'éditeur en dur, connue ; contrôle des defaults non exhaustif).",
-    "commit": "acb365a"
-  },
-  "theme-parcours-tester": {
-    "version": "1.8.4",
-    "date": "2026-10-09",
-    "verdict": "passé",
-    "resume": "Passe ciblée (tiroir, page panier, Lookbook), 4 couples EN/FR × 1440/390 × 16 étapes : 63 OK, 0 ÉCHEC, 1 non refaite (Commander en FR 1440) ; refus de stock réels sous la ligne et compteurs égaux à /cart.js, plus de « Added to cart » après un refus, « Shop — » / « Acheter — » 4 liens sur 4 ; 0 erreur JS du thème.",
-    "commit": "acb365a"
+    "resume": "54 schémas valides (0 invalide), 23 gabarits/groupes JSON valides dont page.showcase.json (12 sections et 41 blocs, 0 écart), 134 réglages globaux alignés sans réglage mort, 0 default vide, 0 BLOQUANT ; ALERTE : 0 clé t: et 923 libellés d'éditeur en dur, aucun locales/*.schema.json.",
+    "commit": "7262769",
+    "couverture": {
+      "schemas": {
+        "etat": "mesuré",
+        "mesure": "54 schémas JSON valides sur 54 sections ; 22 sans preset (gabarits, comptes clients, header, footer, cart-drawer, quick-view, wishlist-item) ; enabled_on sur header, related-products et wishlist, 0 écart croisé avec 23 JSON ; 14 sections avec max_blocks et des limit de blocs, tous respectés par presets et gabarits"
+      },
+      "gabarits": {
+        "etat": "mesuré",
+        "mesure": "23 JSON valides (16 templates, 7 customers, 2 groupes header/footer comptés dans les 23 via sections/*.json) ; 0 type de section ou de bloc absent, 0 réglage inconnu ou invalide ; page.showcase.json : 12 sections plus main, 41 blocs, tout existe, max_blocks et limit respectés ; 11 gabarits obligatoires présents"
+      },
+      "reglages-globaux": {
+        "etat": "mesuré",
+        "mesure": "settings_schema.json : theme_info FLYER 1.8.5 KIOSK en premier, 134 ids uniques ; settings_data presets.FLYER : 0 id inconnu, 0 select hors options, 0 range hors bornes ou pas ; 0 réglage mort ; 0 lu non déclaré ; clés construites social_* (meta-tags.liquid:98-99) toutes déclarées"
+      },
+      "libelles": {
+        "etat": "mesuré",
+        "mesure": "ALERTE : 0 clé t: dans les schémas, 923 libellés en dur (compte brut, exceptions admises non déduites), aucun locales/*.schema.json (ni en.default ni fr) ; éditeur non traduisible, pas un BLOQUANT selon la définition"
+      },
+      "valeurs-defaut": {
+        "etat": "mesuré",
+        "mesure": "0 default vide ; tous les default conformes à leur type (hex, range dans bornes et pas, richtext avec <p>) ; presets sans contenu propre (apps, contact, custom-liquid, disclosures, page-content, related-products, video, wishlist) vérifiés par lecture du rendu intrinsèque, video a un placeholder"
+      }
+    }
   },
   "theme-a11y-auditor": {
-    "version": "1.8.4",
-    "date": "2026-10-09",
-    "verdict": "passé",
-    "resume": "Passe ciblée : les 3 corrections de 91481e9 vérifiées (ajout refusé sans « Added to cart » à 1440 et 390, un seul repère banner, message de stock sous la ligne et à l'écran à 390, 360 et 320 sur 12 passages) ; tiroir à 1440 et 390 : 48 Tab sans fuite, 28 contrastes sans échec (min 6,39:1), axe 0 violation : 0 BLOQUANT, 1 ALERTE (axe region sur le lien d'évitement, bonne pratique).",
-    "commit": "acb365a"
+    "version": "1.8.5",
+    "date": "2026-10-13",
+    "verdict": "échoué",
+    "resume": "2 BLOQUANT (texte du bandeau image 3,36:1 sur le showcase 1440/390 ; titre de tuile collage en carte à 1,00:1 et 1,29:1 en scheme-3/5, collage.liquid:299), 2 ALERTE (débordement horizontal de 162 px sur le showcase en 390 ; 2 zones défilantes sans nom), 42 chargements de page, 1430 combinaisons de fond, 2105 textes, 1310 arrêts de Tab.",
+    "commit": "7262769",
+    "couverture": {
+      "contraste-texte": {
+        "etat": "mesuré",
+        "mesure": "2105 textes sur 42 chargements (EN/FR, 1440/390/360/320, tiroirs, recherche, quick-view, facettes ouvertes) ; minimum 5,91:1 hors échec ; 1 échec : p.fl-banner__text 3,36:1 (échantillon de pixels) ; hover 14 éléments par page, minimum > 4,6"
+      },
+      "variantes-fond": {
+        "etat": "mesuré",
+        "mesure": "1430 combinaisons élément × schéma (scheme-1 à 5), 6030 textes ; porteurs : toutes les color_scheme de section, container_color_scheme (collapsible-content), row_color_scheme (multirow), color_scheme des blocs du slideshow, cart_color_scheme, badges soldé/épuisé, cartes produit/collection/blog/collage/collection-list/featured-blog simulées, fond du pied (paper/surface) ; 2 échecs : collage tuile Card scheme-3 1,00:1 et scheme-5 1,29:1 (collage.liquid:299) ; sections non mesurées : apps (rendu vide), article et blog en section_id (erreur Liquid sans contexte) ; page-content, custom-liquid, video, image-with-text : 0 texte à mesurer par défaut"
+      },
+      "icones": {
+        "etat": "mesuré",
+        "mesure": "315 icônes mesurées sur 42 chargements, 0 sous 3:1 ; minimum 6,39:1 (loupe du tiroir de recherche) ; variantes de fond minimum 12,62:1 ; chevrons de summary et boutons sans texte visible inclus"
+      },
+      "recouvrement": {
+        "etat": "mesuré",
+        "mesure": "0 recouvrement ; écart minimal 8 px (bouton de la newsletter du pied) ; 12 px pour la loupe et le bouton d'effacement du tiroir de recherche ; 14 px quand le bouton chevauche le champ (newsletter de l'accueil) ; EN et FR, 1440 et 390"
+      },
+      "clavier": {
+        "etat": "mesuré",
+        "mesure": "1310 arrêts de Tab sur 42 chargements ; 0 piège ; 0 élément atteignable manquant (cap de 40 arrêts à 360/320) ; ordre = ordre du DOM ; zones défilantes atteintes par Tab à 390"
+      },
+      "focus-visible": {
+        "etat": "mesuré",
+        "mesure": "anneau mesuré sur chaque arrêt, minimum 17,4:1 en schéma par défaut ; schémas 1 à 5 : minimum 11,72:1 (accueil) et 12,62:1 (showcase) ; shopify-account et pastille/radio vérifiés par Tab réel et différence de pixels ; shopify-account et shop-pay-wallet-button sont des composants Shopify"
+      },
+      "tiroir-modales": {
+        "etat": "mesuré",
+        "mesure": "tiroir panier vide et rempli, ajout au panier au clavier, recherche, menu mobile, quick-view et menu déroulant : focus dedans, Échap ferme, focus rendu au déclencheur ; role=dialog et aria-modal sur le tiroir panier et la recherche, <dialog> natif pour le menu et le quick-view ; sélecteur langue/pays non rendu sur la démo"
+      },
+      "semantique": {
+        "etat": "mesuré",
+        "mesure": "1 h1 par page sur toutes les pages, 0 saut de titre, 0 contrôle sans nom, 0 id dupliqué, 0 champ sans label ; aria-live présent (ajout panier, statut recherche, newsletter) ; carrousel avec précédent/suivant/points nommés ; prix soldés : 2 sur la collection, 0 mal distingué ; erreurs de formulaire contrôlées dans le code seulement (aucun envoi)"
+      },
+      "images": {
+        "etat": "mesuré",
+        "mesure": "0 image sans alt, 0 alt de type nom de fichier ; alt vide sur les images décoratives ; 0 SVG exposé sans nom (32 SVG en aria-hidden à l'accueil)"
+      },
+      "mouvement-reduit": {
+        "etat": "mesuré",
+        "mesure": "accueil, showcase, collection : sans préférence 13 à 14 transitions et fl-hero-monte 0,55 s ; avec reduce 0 animation et 0 transition ; autorotation désactivée par défaut ; slideshow et barre d'annonce lisent matchMedia"
+      },
+      "couverture-pages": {
+        "etat": "mesuré",
+        "mesure": "EN 1440 et 390 : accueil, collection, produit, panier, recherche, recherche vide, liste d'envies, showcase 13 sections, contact, 404, blog news et journal, article ; FR 1440 et 390 : accueil, recherche, panier, produit, contact ; 360 et 320 : accueil et panier EN et FR ; non mesuré : showcase en 360/320, soumission des formulaires"
+      }
+    }
+  },
+  "theme-parcours-tester": {
+    "version": "1.8.5",
+    "date": "2026-10-13",
+    "verdict": "échoué",
+    "resume": "Audit complet FLYER 1.8.5 sur la démo 195174072646 : 4 passes de 23 étapes (EN/FR × 1440/390) toutes OK, 0 erreur JS du thème, compteur d'en-tête juste dans 56/56 comparaisons avec /cart.js, 6 éléments showcase OK ; échoué uniquement parce que le sélecteur langue/devise n'est pas affiché sur la démo (point entete non mesuré).",
+    "commit": "7262769",
+    "couverture": {
+      "produit-panier": {
+        "etat": "mesuré",
+        "mesure": "overshirt S/M/L : variante M puis L, id 57356396462406, ?variant=, ajout de 2 : ligne Size: L/Taille : L, 236 €, cart.js q=2, focus dans le tiroir role=dialog, 4 passes OK. Prix qui suit : mesuré sur ocre-angle-lamp (245→280→320 €), car les variantes d'overshirt sont toutes à 118 €. Image de variante non démontrable : aucune variante de la démo n'a d'image."
+      },
+      "ajout-rapide": {
+        "etat": "mesuré",
+        "mesure": "Carte Canvas tote de flyer-essentials : bonne ligne et bon prix (32 €) dans le tiroir, compteur 1 = cart.js ; recouvrement bouton/titre 0 px², bouton/prix 0 px² ; bouton 293x44 en 1440, 165x44 en 390 ; quick view s'ouvre et se ferme avec Echap ; 4 passes OK."
+      },
+      "tiroir": {
+        "etat": "mesuré",
+        "mesure": "+1 (3, 354 €), −1 (2, 236 €), saisie 5 (590 €) puis 1 (118 €), Echap ferme et le focus revient au bouton d'ajout, réouverture par l'icône panier, suppression → état vide traduit EN/FR, bouton Checkout → shop.app/checkout. Pas de barre de livraison offerte dans le tiroir (constat). Une lenteur d'affichage non reproduite en EN 390 (2 passes sur 5), voir observation 2 du rapport."
+      },
+      "page-panier": {
+        "etat": "mesuré",
+        "mesure": "/cart (EN et FR, 1440 et 390) : +1, −1, saisie 4 (472 €), sous-total et total de ligne justes, compteur « 4 items »/« 4 articles », note enregistrée dans cart.note, retrait → état vide traduit, Checkout → shop.app/checkout ; 4 passes OK."
+      },
+      "recherche": {
+        "etat": "mesuré",
+        "mesure": "« overshirt » : 2 résultats ; « zzqxkwv » : état vide traduit (« No results found »/« Aucun résultat ») ; prédictive « overs » : 3 résultats, statut annoncé, mot absent 0 résultat, Echap ferme ; 4 passes OK."
+      },
+      "collection": {
+        "etat": "mesuré",
+        "mesure": "/collections/all, 69 produits, 24 par page : tri prix croissant et décroissant changent les 3 premiers titres ; filtre prix ≤ 30 : 69 → 28 produits ; filtre « In stock » 69 → 69 (tout est en stock, non démontrable) ; pagination page 2 : 24 cartes différentes, un seul aria-current=page à chaque page ; 4 passes OK."
+      },
+      "formulaires": {
+        "etat": "mesuré",
+        "mesure": "Contact vide : contact[email] et contact[body] invalides, URL inchangée, e-mail mal formé refusé ; newsletter (accueil et pied) et email-signup-banner du showcase : valueMissing et URL inchangée ; aucun envoi réel (message de succès non vérifié) ; 4 passes OK."
+      },
+      "pages": {
+        "etat": "mesuré",
+        "mesure": "404 : statut 404, titre et texte traduits, lien d'accueil 200 ; FAQ d'accueil 5 éléments (groupe exclusif, ouverture et fermeture OK) ; collapsible du showcase 4 lignes OK ; pas de quiz ni de constructeur dans ce thème. Showcase : slideshow, size-guide, comparison, featured-product sans produit (pas de formulaire ni d'ajout, panier à 0) OK. Images et liens du showcase : 0 img et 0 lien dans la page, rien à tester."
+      },
+      "entete": {
+        "etat": "non mesuré",
+        "mesure": "Menu mobile (dialog, sous-menu, Echap, fermer) et sous-menu desktop (Shop, Echap) OK sur 4 passes. Sélecteur langue/devise : 0 formulaire de localisation sur la démo, car sections/header.liquid:197-201 exige show_*_selector coché et plus d'un pays ou d'une langue. Non exercé, reprise possible une fois show_language_selector activé sur la démo."
+      },
+      "console": {
+        "etat": "mesuré",
+        "mesure": "0 erreur JS du thème en EN 390, FR 1440 et FR 390 ; EN 1440 : 3 avertissements Early Hints (preload non utilisé de cormorant-garamond-300-latin.woff2, base.css, compiled_assets/styles.css, fichiers qui ne sont pas à FLYER) ; ~395 ERR_TUNNEL_CONNECTION_FAILED, ~67 Failed to fetch (monorail, wpm), 23 MonorailRequestError, 23 bugsnag ignorés comme scripts Shopify ou proxy cloud."
+      },
+      "compteur-panier": {
+        "etat": "mesuré",
+        "mesure": "14 comparaisons par passe, 56 au total, compteur d'en-tête [data-cart-count] = item_count de /cart.js à chaque étape (accueil, ajout produit, +1, −1, saisie, vide, ajout rapide, stock limité, page panier) : 56/56 égaux."
+      }
+    }
   },
   "theme-perf-auditor": {
-    "version": "1.8.4",
-    "date": "2026-10-09",
+    "version": "1.8.5",
+    "date": "2026-10-13",
     "verdict": "passé",
-    "resume": "Lighthouse, accueil, 1 passe par appareil : mobile perf 63, a11y 97, LCP 3,0 s (image du héros), TBT 3 210 ms venu des scripts Shopify et de la barre d'aperçu, CLS 0 ; bureau perf 99, a11y 97, LCP 0,7 s, CLS 0 ; benchmarkIndex 1360,5 (mobile) et 1663,5 (bureau), machine cloud.",
-    "commit": "acb365a"
+    "resume": "Perf mobile 84/75/85/72 et bureau 99/99/98/97 (accueil/collection/produit overshirt/showcase), CLS max 0,016, a11y 97 partout, best-practices >= 93, 0 BLOQUANT, 0 ALERTE ; LCP theme 1,8/2,2 s sur accueil/produit, 0,88 s (collection) et 0,56 s (showcase) mesurés sans limitation de débit ; benchmarkIndex 2297-2506.",
+    "commit": "7262769",
+    "couverture": {
+      "lighthouse-mobile": {
+        "etat": "mesuré",
+        "mesure": "accueil 84, collection flyer-essentials 75, produit overshirt (3 variantes, paiement express) 85, showcase 72 ; benchmarkIndex 2506/2483/2297/2363 ; Google Chrome for Testing 153.0.8010.12 ; moyenne des 3 pages du repère 81,3"
+      },
+      "lighthouse-desktop": {
+        "etat": "mesuré",
+        "mesure": "accueil 99, collection 99, produit 98, showcase 97 ; benchmarkIndex 2298/2484/2316/2355 ; moyenne des 3 pages 98,7"
+      },
+      "lcp": {
+        "etat": "mesuré",
+        "mesure": "mobile accueil img.fl-hero__img 1,8 s, produit fl-gallery__media img 2,2 s ; collection et showcase mobile = bandeau cookies Shopify (4,4 s / 4,5 s), élément thème mesuré à part : img 0,88 s et h2.fl-banner__heading 0,56 s ; bureau accueil 0,5 s, collection 0,5 s, produit 0,8 s, showcase 1,2 s (bandeau Shopify)"
+      },
+      "cls": {
+        "etat": "mesuré",
+        "mesure": "mobile 0/0/0/0, bureau accueil 0, collection 0,005, produit 0, showcase 0,016 ; max 0,016, seuil 0,1"
+      },
+      "part-theme": {
+        "etat": "mesuré",
+        "mesure": "mobile : poids thème 648/349/328/187 KB (accueil/collection/produit/showcase) ; CSS 18 KB (critical.css 4,1 + styles.css 14,1), JS 18 KB (scripts.js 11,7 + snippet-scripts.js 3,7 + wishlist.js 1,0 + quick-view.js 1,4), fonts Work Sans 3 x 22-24 KB ; démarrage thème 899/608/699/845 ms contre 2783/2402/2743/2360 ms pour les autres sources ; bureau 167-184 ms contre 447-663 ms ; redirection preview 249-887 ms rangée côté plateforme"
+      },
+      "pieges-kiosk": {
+        "etat": "mesuré",
+        "mesure": "héros transform-only (hero-split.liquid fl-hero-monte), fl-stamp sur pseudo-éléments seulement, fl-reveal ajouté par JS seulement ; scroll-snap : testimonials et collection-list sans padding conteneur, lookbook avec scroll-padding-inline ; fonts via font_url preload_tag et font-display swap, aucun Google Fonts ; images : 22/22 CDN avec width, height et srcset, 21 en lazy, hero fetchpriority high, unsized-images OK"
+      }
+    }
   }
 }
