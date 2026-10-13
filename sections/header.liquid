@@ -949,6 +949,22 @@
   .fl-header__loc-select {
     width: 100%;
   }
+
+  /* On phones the globe sits mid-bar: anchored to its right edge, the panel
+     ran off the left of the screen (select at x=-26 at 390px). It hangs from
+     the bar instead, aligned to the page margin on the right. */
+  @media (max-width: 749px) {
+    .fl-header__bar {
+      position: relative;
+    }
+    .fl-header__loc {
+      position: static;
+    }
+    .fl-header__loc-panel {
+      top: 100%;
+      right: var(--page-margin);
+    }
+  }
 {% endstylesheet %}
 
 {% javascript %}

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.7 - 2026-10-13
+
+### Fixed
+- **Language and country selector on phones.** On a phone, the panel that
+  opens from the globe icon in the header ran off the left edge of the screen,
+  cutting off the start of the list. It now opens below the header, inside the
+  screen, on every phone width.
+
 ## 1.8.6 - 2026-10-13
 
 ### Fixed
