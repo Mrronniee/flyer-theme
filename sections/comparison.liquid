@@ -46,14 +46,18 @@
     {%- endif -%}
 
     {%- if section.blocks.size > 0 -%}
-      <div class="fl-comparison__scroll">
+      {%- liquid
+        assign caption = section.settings.heading | escape
+        if caption == blank
+          assign caption = 'sections.comparison.caption' | t
+        endif
+      -%}
+      {%- comment -%}
+        The table scrolls sideways on phones: a named, focusable region lets
+        keyboard users scroll it and tells screen readers what it holds.
+      {%- endcomment -%}
+      <div class="fl-comparison__scroll" role="region" aria-label="{{ caption }}" tabindex="0">
         <table class="fl-comparison__table">
-          {%- liquid
-            assign caption = section.settings.heading | escape
-            if caption == blank
-              assign caption = 'sections.comparison.caption' | t
-            endif
-          -%}
           <caption class="visually-hidden">{{ caption }}</caption>
           <thead>
             <tr>
@@ -144,6 +148,9 @@
   }
 
   .fl-comparison__scroll {
+    /* Containing block for the visually hidden text in the cells: without
+       it they were placed against the section and widened the page. */
+    position: relative;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }

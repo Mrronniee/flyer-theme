@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.8.6 - 2026-10-13
+
+### Fixed
+- **Image banner text readable without an image.** Until you add an image, the
+  banner shows a light placeholder under a dark layer. That layer was too light
+  for the white text on top of it. It is now dark enough to read.
+- **Collage titles on card tiles.** With the "Card" style and a dark color
+  scheme for cards, the title under a collage tile was dark on dark and could
+  not be read. It now takes the text color of the card's scheme.
+- **No sideways scroll on phones.** The comparison table and the size guide
+  scroll sideways inside their own frame, but text read only by screen readers
+  in their cells pushed the whole page wider than the screen. The page now
+  stays the width of the screen. The same guard is on the other sideways
+  scrollers (collection list, lookbook, testimonials).
+- **Scrollable tables named and reachable by keyboard.** The comparison table
+  and the size guide can be focused with the Tab key and scrolled with the
+  arrow keys, and screen readers announce them by their title.
+
 ## 1.8.5 - 2026-10-12
 
 ### Added

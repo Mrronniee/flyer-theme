@@ -58,7 +58,7 @@
       {%- endif -%}
 
       {%- if section.blocks.size > 0 -%}
-        <div class="fl-size-guide__scroll">
+        <div class="fl-size-guide__scroll" role="region" aria-label="{{ caption }}" tabindex="0">
           <table class="fl-size-guide__table">
             <caption class="visually-hidden">{{ caption }}</caption>
             <thead>
@@ -167,6 +167,9 @@
   }
 
   .fl-size-guide__scroll {
+    /* Containing block for the visually hidden text in the cells: without
+       it they were placed against the section and widened the page. */
+    position: relative;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }

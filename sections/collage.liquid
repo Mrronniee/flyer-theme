@@ -301,7 +301,11 @@
     text-decoration: none;
   }
 
+  /* A card tile carries its own colour scheme class: its text takes that
+     scheme's ink, not the inherited colour set on .fl-collage__tile above
+     (which, loaded after the scheme rules, left dark text on a dark card). */
   .fl-collage__tile--card {
+    color: var(--color-ink);
     padding: var(--card-image-padding, 0);
     border: var(--card-border-width, 0) solid
       rgba(var(--color-ink-rgb), var(--card-border-opacity, 0.1));

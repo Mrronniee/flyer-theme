@@ -47,11 +47,13 @@
 
   {%- comment -%}
     With no image the placeholder is light, so the merchant's overlay setting is
-    floored at 45% — otherwise the default banner ships with unreadable text.
+    floored at 55% — otherwise the default banner ships with unreadable text.
+    White text over black at 55% on a white placeholder measures 4.75:1; at 45%
+    it was 3.36:1, under the 4.5:1 that body text needs.
   {%- endcomment -%}
   {%- assign overlay = section.settings.overlay_opacity -%}
-  {%- if section.settings.image == blank and overlay < 45 -%}
-    {%- assign overlay = 45 -%}
+  {%- if section.settings.image == blank and overlay < 55 -%}
+    {%- assign overlay = 55 -%}
   {%- endif -%}
   <div
     class="fl-banner__overlay"
