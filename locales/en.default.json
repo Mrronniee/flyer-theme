@@ -42,6 +42,7 @@
     },
     "localization": {
       "country_label": "Country/region",
+      "country_language_label": "Country/region and language",
       "language_label": "Language",
       "update": "Update"
     },

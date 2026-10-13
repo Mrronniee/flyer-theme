@@ -724,6 +724,13 @@ main > .shopify-section + .shopify-section {
 }
 
 /* --- Overlay primitives (drawers, dialogs) --- */
+/* The browser gives <dialog> its own black text (CanvasText), whatever the
+   colour scheme: on a dark scheme the menu drawer's store name was black on
+   black. Dialogs take the scheme's ink like the rest of the page. */
+dialog {
+  color: var(--color-ink);
+}
+
 .fl-overlay {
   position: fixed;
   inset: 0;

@@ -204,8 +204,17 @@
       -%}
       {%- if header_country or header_language -%}
         {%- comment -%} Native <details>: opens without JS; forms post without JS. {%- endcomment -%}
-        <details class="fl-header__loc">
-          <summary class="fl-header__icon-btn fl-header__loc-toggle" aria-label="{{ 'general.localization.country_label' | t }}">
+        <details class="fl-header__loc" data-dropdown>
+          {%- liquid
+            if header_country and header_language
+              assign loc_label = 'general.localization.country_language_label' | t
+            elsif header_country
+              assign loc_label = 'general.localization.country_label' | t
+            else
+              assign loc_label = 'general.localization.language_label' | t
+            endif
+          -%}
+          <summary class="fl-header__icon-btn fl-header__loc-toggle" aria-label="{{ loc_label }}">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
               <circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5"/>
               <path d="M2.75 10h14.5M10 2.75c2.2 2.2 2.2 12.3 0 14.5M10 2.75c-2.2 2.2-2.2 12.3 0 14.5" stroke="currentColor" stroke-width="1.5"/>

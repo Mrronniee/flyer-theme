@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.8.8 - 2026-10-13
+
+### Fixed
+- **Store name in the phone menu on dark color schemes.** When your first
+  color scheme is dark, the store name at the top of the phone menu was black
+  on black. It now uses the scheme's text color, like the rest of the menu.
+- **Language and country panel closes like the other menus.** The panel that
+  opens from the globe icon now closes with the Escape key, when you click
+  elsewhere, or when keyboard focus leaves it, and focus goes back to the
+  globe.
+- **The globe button says what it opens.** Screen readers announced it as
+  "Country/region" even when it only offers languages. It now reads
+  "Language", "Country/region", or "Country/region and language", depending
+  on what the panel contains.
+
 ## 1.8.7 - 2026-10-13
 
 ### Fixed
