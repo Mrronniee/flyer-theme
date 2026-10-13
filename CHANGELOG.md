@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.9 - 2026-10-13
+
+### Fixed
+- **Product and search result titles are easier to tap.** The title link of
+  a product card and of a page or article in search results was only as tall
+  as its text. Each is now at least 24 pixels tall, as accessibility
+  guidelines ask, and nothing moves on the page.
+
 ## 1.8.8 - 2026-10-13
 
 ### Fixed

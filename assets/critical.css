@@ -587,6 +587,11 @@ h6 {
   left: auto;
 }
 .fl-card__link {
+  /* At least 24px tall as a target on its own (19px of text before), with
+     no layout shift: the padding is taken back by the negative margin. */
+  display: inline-block;
+  padding-block: 4px;
+  margin-block: -4px;
   text-decoration: none;
 }
 .fl-card__link::after {
