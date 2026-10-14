@@ -24,6 +24,26 @@
 - **Switching between sign in and password recovery moves keyboard focus**
   to the first field of the panel that opens.
 - **Saved addresses with quotes display correctly** when you edit them.
+- **Quick view price after a variant change.** Choosing another option in
+  the quick view now shows the price exactly as on the card: with the
+  currency code when that setting is on, and with the sale and regular
+  prices for a variant on sale. Before, only the bare amount remained.
+- **Quick view follows the "Show vendor" setting of product cards**, so it
+  shows the vendor only when the cards do.
+- **Sale price announced after a variant change** on the product page and in
+  the featured product section, as it is on first load.
+- **Store name no longer cut on phones.** With the language or country
+  selector on, the globe icon left too little room for the store name in the
+  header bar on phones ("My St…"). On phones, the selectors now sit in the
+  menu, above the account link; the bar keeps its other icons.
+- **Currency code everywhere.** With "Show currency codes" on, the price
+  filter note and active price filter, the order totals in the customer
+  account, the gift card balance and the predictive search prices now show
+  the currency code too.
+- **Cart drawer and cart page show the same line details.** The drawer now
+  shows the unit price, line and order discounts, line item properties set
+  by apps (engraving, gift message, uploaded file) and the subscription plan;
+  the cart page shows the properties and the plan too.
 - **Filter panel height on phones.** The filter list now follows the visible
   height of the screen when the browser's address bar shows or hides.
 

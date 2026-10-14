@@ -70,6 +70,8 @@
       which work without JS. Same pattern as the <noscript> players/buttons
       in video.liquid and collection.liquid. <shopify-account> is a script
       too: it is hidden and a plain account link stands in (see the icons).
+      On phones the country / language globe comes back to the bar as well:
+      with JS its forms live in the drawer, which cannot open here.
     {%- endcomment -%}
     <noscript>
       <style>
@@ -84,6 +86,12 @@
 
           .fl-header__nav {
             display: flex;
+          }
+        }
+
+        @media (max-width: 749px) {
+          .fl-header__loc {
+            display: block;
           }
         }
       </style>
@@ -322,61 +330,86 @@
         </button>
       </div>
 
-      {%- if menu.links.size > 0 -%}
-        <nav class="fl-header__drawer-nav" aria-label="{{ 'accessibility.main_menu' | t }}">
-          <ul class="fl-header__drawer-menu">
-            {%- for link in menu.links -%}
-              <li>
-                {%- if link.links.size > 0 -%}
-                  <details class="fl-header__drawer-details">
-                    <summary class="fl-header__drawer-link fl-header__drawer-summary">
-                      <span>{{ link.title | escape }}</span>
-                      <svg class="fl-header__caret" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" focusable="false">
-                        <path d="m2 3.5 3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </summary>
-                    <ul class="fl-header__drawer-sub">
-                      {%- for child in link.links -%}
-                        <li>
-                          <a
-                            class="fl-header__drawer-sublink"
-                            href="{{ child.url }}"
-                            {% if child.current %}
-                              aria-current="page"
-                            {% endif %}
-                          >{{ child.title | escape }}</a>
-                          {%- if child.links.size > 0 -%}
-                            <ul class="fl-header__drawer-sub fl-header__drawer-sub--nested">
-                              {%- for grand in child.links -%}
-                                <li>
-                                  <a
-                                    class="fl-header__drawer-sublink fl-header__drawer-sublink--nested"
-                                    href="{{ grand.url }}"
-                                    {% if grand.current %}
-                                      aria-current="page"
-                                    {% endif %}
-                                  >{{ grand.title | escape }}</a>
-                                </li>
-                              {%- endfor -%}
-                            </ul>
-                          {%- endif -%}
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  </details>
-                {%- else -%}
-                  <a
-                    class="fl-header__drawer-link"
-                    href="{{ link.url }}"
-                    {% if link.current %}
-                      aria-current="page"
-                    {% endif %}
-                  >{{ link.title | escape }}</a>
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
-          </ul>
-        </nav>
+      {%- comment -%}
+        Menu, then country / language, in one scrolling area between the
+        fixed head and the account foot. On phones the globe leaves the bar
+        (a fifth icon cut the shop name to "My St…" at 390px) and its forms
+        come here, shown under 750px only; above that the globe stays in the
+        bar and this block is hidden. loc_label is set with the globe, above.
+        The dialog is modal (showModal): its selects and Update buttons join
+        the Tab cycle with no script, and display: none takes them out of it.
+      {%- endcomment -%}
+      {%- if menu.links.size > 0 or header_country or header_language -%}
+        <div class="fl-header__drawer-body">
+          {%- if menu.links.size > 0 -%}
+            <nav class="fl-header__drawer-nav" aria-label="{{ 'accessibility.main_menu' | t }}">
+              <ul class="fl-header__drawer-menu">
+                {%- for link in menu.links -%}
+                  <li>
+                    {%- if link.links.size > 0 -%}
+                      <details class="fl-header__drawer-details">
+                        <summary class="fl-header__drawer-link fl-header__drawer-summary">
+                          <span>{{ link.title | escape }}</span>
+                          <svg class="fl-header__caret" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" focusable="false">
+                            <path d="m2 3.5 3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </summary>
+                        <ul class="fl-header__drawer-sub">
+                          {%- for child in link.links -%}
+                            <li>
+                              <a
+                                class="fl-header__drawer-sublink"
+                                href="{{ child.url }}"
+                                {% if child.current %}
+                                  aria-current="page"
+                                {% endif %}
+                              >{{ child.title | escape }}</a>
+                              {%- if child.links.size > 0 -%}
+                                <ul class="fl-header__drawer-sub fl-header__drawer-sub--nested">
+                                  {%- for grand in child.links -%}
+                                    <li>
+                                      <a
+                                        class="fl-header__drawer-sublink fl-header__drawer-sublink--nested"
+                                        href="{{ grand.url }}"
+                                        {% if grand.current %}
+                                          aria-current="page"
+                                        {% endif %}
+                                      >{{ grand.title | escape }}</a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              {%- endif -%}
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </details>
+                    {%- else -%}
+                      <a
+                        class="fl-header__drawer-link"
+                        href="{{ link.url }}"
+                        {% if link.current %}
+                          aria-current="page"
+                        {% endif %}
+                      >{{ link.title | escape }}</a>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </nav>
+          {%- endif -%}
+
+          {%- if header_country or header_language -%}
+            <div class="fl-header__drawer-loc" role="group" aria-labelledby="HeaderDrawer-loc-title">
+              <p class="fl-header__drawer-loc-title" id="HeaderDrawer-loc-title">{{ loc_label }}</p>
+              {%- if header_country -%}
+                {% render 'localization-form', kind: 'country', id_prefix: 'HeaderDrawer', class_prefix: 'fl-header__drawer-loc' %}
+              {%- endif -%}
+              {%- if header_language -%}
+                {% render 'localization-form', kind: 'language', id_prefix: 'HeaderDrawer', class_prefix: 'fl-header__drawer-loc' %}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
       {%- endif -%}
 
       {%- if shop.customer_accounts_enabled -%}
@@ -783,9 +816,23 @@
     font-weight: 600;
   }
 
-  .fl-header__drawer-nav {
+  /* Menu and country / language scroll together; the head and the account
+     foot stay put. A fixed language block would leave the menu a sliver on a
+     landscape phone (375px high). Positioned so the selects' visually hidden
+     labels (position: absolute) belong to this scrolling area: otherwise
+     they hang from the dialog, which the browser makes a scroll container
+     (overflow: auto on a modal dialog), and a label left below its fold by
+     a long menu would let the whole drawer, head included, scroll. */
+  .fl-header__drawer-body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
+  }
+
+  .fl-header__drawer-nav {
     padding: 8px 0;
   }
 
@@ -882,6 +929,39 @@
     text-underline-offset: 0.2em;
   }
 
+  /* Country / language in the drawer: phones only, where the globe leaves
+     the bar (see the Markets rules at the end). It sits at the foot of the
+     scrolling area, just above the account link. Each form stacks a
+     full-width select over its Update button: side by side, "Mettre à jour"
+     would leave the select too narrow for a country name in the 275px drawer
+     at 320px. */
+  .fl-header__drawer-loc {
+    display: none;
+  }
+
+  @media (max-width: 749px) {
+    .fl-header__drawer-loc {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+      margin-top: auto;
+      padding: 16px var(--page-margin);
+      border-top: 1px solid var(--color-line);
+    }
+  }
+
+  .fl-header__drawer-loc-title {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.875em;
+  }
+
+  .fl-header__drawer-loc-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
   @media (max-width: 989px) {
     .fl-header__nav {
       display: none;
@@ -900,7 +980,9 @@
   /* Small phones: the account icon stays in the bar next to search, wishlist
      and cart, so the icons give up some width (never height) to leave the
      shop name about as much room as before, and a name that still does not
-     fit ends with an ellipsis instead of running under the icons. */
+     fit ends with an ellipsis instead of running under the icons. The
+     country / language globe is not among them: under 750px it moves to the
+     menu drawer (see the Markets rules below). */
   @media (max-width: 419px) {
     .fl-header__bar {
       --fl-header-icon-width: 40px;
@@ -915,7 +997,9 @@
 
   /* The bar's own inline padding shrinks too: the icon buttons carry 8px of
      inner space around their glyph, so the burger and cart glyphs still line
-     up with the 24px page margin, and "My Store" fits in full at 320px. */
+     up with the 24px page margin, and "My Store" fits in full at 320px next
+     to the burger, search, account and cart. As a fifth icon the globe cut
+     it to "My…" at 360 and 320px (1.8.9): on phones it lives in the drawer. */
   @media (max-width: 359px) {
     .fl-header__bar {
       --fl-header-icon-width: 36px;
@@ -959,14 +1043,19 @@
     width: 100%;
   }
 
-  /* On phones the globe sits mid-bar: anchored to its right edge, the panel
-     ran off the left of the screen (select at x=-26 at 390px). It hangs from
-     the bar instead, aligned to the page margin on the right. */
+  /* Phones: as a fifth icon the globe cut the shop name to "My St…" at
+     390px and "My…" at 360 and 320px (1.8.9). It leaves the bar and its
+     forms are rendered in the menu drawer instead (.fl-header__drawer-loc).
+     Without JS the drawer cannot open and the <noscript> rules bring the
+     globe back: there it sits mid-bar, and anchored to its right edge the
+     panel ran off the left of the screen (select at x=-26 at 390px), so it
+     hangs from the bar, aligned to the page margin on the right. */
   @media (max-width: 749px) {
     .fl-header__bar {
       position: relative;
     }
     .fl-header__loc {
+      display: none;
       position: static;
     }
     .fl-header__loc-panel {

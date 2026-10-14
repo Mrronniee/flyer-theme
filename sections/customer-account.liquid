@@ -42,7 +42,12 @@
                   </div>
                   <div class="fl-account__cell">
                     <span class="fl-account__cell-label">{{ 'customer.account.total' | t }}</span>
-                    {{ order.total_price | money }}
+                    {%- comment -%} Same currency format as sections/customer-order.liquid. {%- endcomment -%}
+                    {%- if settings.currency_code_enabled -%}
+                      {{ order.total_price | money_with_currency }}
+                    {%- else -%}
+                      {{ order.total_price | money }}
+                    {%- endif -%}
                   </div>
                 </li>
               {%- endfor -%}

@@ -69,7 +69,13 @@
                   if filter.min_value.value or filter.max_value.value
                     assign price_active = true
                   endif
-                  assign max_price = filter.range_max | money
+                  # Same currency format as snippets/price.liquid (theme
+                  # setting Currency format > Show currency codes).
+                  if settings.currency_code_enabled
+                    assign max_price = filter.range_max | money_with_currency
+                  else
+                    assign max_price = filter.range_max | money
+                  endif
                   # Number inputs need a dot-decimal value. Going through
                   # money_without_currency yields "53,33" in comma-decimal
                   # locales, and stripping the comma multiplied it by 100.
@@ -85,7 +91,7 @@
                     <svg class="fl-caret" aria-hidden="true" focusable="false" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </summary>
                   <div class="fl-facet__panel">
-                    <p class="fl-facet__note">{{ 'collections.filters.highest_price' | t: price: max_price }}</p>
+                    <p class="fl-facet__note">{{ 'collections.filters.highest_price_html' | t: price: max_price }}</p>
                     <div class="fl-facet__price-row">
                       <div class="fl-facet__price-field">
                         <label class="fl-label" for="{{ form_id }}-price-min">{{ 'collections.filters.from' | t }}</label>
@@ -199,8 +205,18 @@
           {%- for filter in collection.filters -%}
             {%- if filter.type == 'price_range' -%}
               {%- if filter.min_value.value or filter.max_value.value -%}
-                {%- assign price_min = filter.min_value.value | default: 0 | money -%}
-                {%- assign price_max = filter.max_value.value | default: filter.range_max | money -%}
+                {%- liquid
+                  assign price_min_value = filter.min_value.value | default: 0
+                  assign price_max_value = filter.max_value.value | default: filter.range_max
+                  # Same currency format as snippets/price.liquid.
+                  if settings.currency_code_enabled
+                    assign price_min = price_min_value | money_with_currency
+                    assign price_max = price_max_value | money_with_currency
+                  else
+                    assign price_min = price_min_value | money
+                    assign price_max = price_max_value | money
+                  endif
+                -%}
                 <li>
                   <a class="fl-active-filters__pill" href="{{ filter.url_to_remove }}">
                     <span>{{ price_min }} – {{ price_max }}</span>

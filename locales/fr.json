@@ -145,7 +145,7 @@
       "no_results": "Aucun produit ne correspond à vos filtres.",
       "from": "De",
       "to": "À",
-      "highest_price": "Le prix le plus élevé est de {{ price }}",
+      "highest_price_html": "Le prix le plus élevé est de {{ price }}",
       "selected": "{{ count }} sélectionné(s)"
     }
   },

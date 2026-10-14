@@ -26,7 +26,12 @@
     </div>
 
     <div class="fl-qv__info">
-      {%- if product.vendor != blank -%}
+      {%- comment -%}
+        Same condition as snippets/product-card.liquid: the vendor follows
+        Product cards > Show vendor, so the quick view never shows more than
+        the card it was opened from.
+      {%- endcomment -%}
+      {%- if settings.card_show_vendor and product.vendor != blank -%}
         <p class="fl-qv__vendor">{{ product.vendor | escape }}</p>
       {%- endif -%}
 
@@ -37,6 +42,22 @@
       <div class="fl-qv__price" data-qv-price aria-live="polite">
         {% render 'price', product: product, variant: current_variant, show_from: false %}
       </div>
+
+      {%- if product.variants.size > 1 -%}
+        {%- comment -%}
+          One inert copy of snippets/price.liquid per variant. On a variant
+          change assets/quick-view.js clones the matching one into
+          [data-qv-price], so the price keeps exactly what the snippet prints
+          (currency code setting, struck-through compare price and its
+          screen reader labels, sold out label, unit price) instead of a bare
+          amount rebuilt in JS.
+        {%- endcomment -%}
+        {%- for variant in product.variants -%}
+          <template data-qv-price-for="{{ variant.id }}">
+            {%- render 'price', product: product, variant: variant, show_from: false -%}
+          </template>
+        {%- endfor -%}
+      {%- endif -%}
 
       {%- if product.description != blank -%}
         <p class="fl-qv__desc">{{ product.description | strip_html | truncatewords: 40 }}</p>
@@ -56,7 +77,6 @@
               {%- for variant in product.variants -%}
                 <option
                   value="{{ variant.id }}"
-                  data-price="{{ variant.price | money }}"
                   {% if variant.id == current_variant.id %}selected{% endif %}
                   {% unless variant.available %}disabled{% endunless %}
                 >

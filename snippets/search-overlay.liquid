@@ -24,11 +24,15 @@
 {%- liquid
   assign predictive = settings.predictive_search_enabled
   # Same resolution as snippets/price.liquid: suggestion prices must match
-  # the server-rendered cards when "Show currency codes" is on.
+  # the server-rendered cards when "Show currency codes" is on. A sample
+  # amount (1,234,567.89) goes through the same money filter, so it carries
+  # the currency the visitor browses in (symbol, code, separators, decimals);
+  # shop.money_format is the store currency's format, which put the store
+  # symbol next to amounts converted for another market.
   if settings.currency_code_enabled
-    assign money_format = shop.money_with_currency_format
+    assign money_sample = 123456789 | money_with_currency | strip_html
   else
-    assign money_format = shop.money_format
+    assign money_sample = 123456789 | money | strip_html
   endif
 -%}
 
@@ -39,7 +43,7 @@
     data-predictive="true"
     data-predictive-url="{{ routes.predictive_search_url }}"
     data-currency="{{ cart.currency.iso_code }}"
-    data-money-format="{{ money_format | escape }}"
+    data-money-sample="{{ money_sample | escape_once }}"
     data-label-loading="{{ 'accessibility.loading' | t }}"
     data-label-empty="{{ 'search.no_results_html' | t: terms: '%TERMS%' }}"
     data-label-results-one="{{ 'search.results_for_html' | t: count: 1, terms: '%TERMS%' | replace: '1', '%COUNT%' }}"
@@ -434,7 +438,7 @@
       this.predictiveUrl = this.dataset.predictiveUrl;
       this.searchUrl = this.dataset.searchUrl;
       this.currency = this.dataset.currency || 'USD';
-      this.moneyFormat = this.dataset.moneyFormat || '';
+      this.moneySample = this.dataset.moneySample || '';
       this.labels = {
         loading: this.dataset.labelLoading || 'Loading',
         empty: this.dataset.labelEmpty || 'No results for %TERMS%',
@@ -730,16 +734,26 @@
       return out;
     }
 
-    // Honours the shop's own money_format (symbol placement, separators) rather
-    // than guessing with Intl, which produced a different string from every
-    // price rendered server-side.
+    // Rebuilds the amount inside data-money-sample, the money filter's output
+    // for 1,234,567.89 ("$1,234,567.89", "1.234.567,89 €", "1'234'567.89 CHF",
+    // "¥1,234,568"): its digit run is swapped for the value with the same
+    // grouping mark, decimal mark and number of decimals, and the text around
+    // it (symbol, currency code) is kept. Guessing with Intl produced a
+    // different string from every price rendered server-side.
     formatMoney(value) {
-      if (this.moneyFormat) {
-        const rendered = this.moneyFormat.replace(
-          /\{\{\s*(\w+)\s*\}\}/,
-          (match, token) => this.formatAmount(value, token)
-        );
-        if (rendered !== this.moneyFormat) return rendered;
+      const sample = this.moneySample;
+      const match = sample ? sample.match(/\d(?:[\d.,'\s\u00a0\u202f]*\d)?/) : null;
+      if (match) {
+        const run = match[0];
+        // The whole part of the sample always has 7 digits (1234567, or
+        // 1234568 once rounded); any extra digit is a decimal.
+        const decimals = Math.max(0, run.replace(/\D/g, '').length - 7);
+        const decimalMark = decimals ? run.charAt(run.length - decimals - 1) : '';
+        const groupMark = /\d/.test(run.charAt(1)) ? '' : run.charAt(1);
+        const parts = Number(value).toFixed(decimals).split('.');
+        const whole = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, groupMark);
+        const amount = decimals ? whole + decimalMark + parts[1] : whole;
+        return sample.slice(0, match.index) + amount + sample.slice(match.index + run.length);
       }
       const locale = document.documentElement.lang || 'en';
       try {
@@ -747,25 +761,6 @@
       } catch (err) {
         return this.currency + ' ' + value.toFixed(2);
       }
-    }
-
-    formatAmount(value, token) {
-      const noDecimals = token.indexOf('no_decimals') !== -1;
-      const comma = token.indexOf('comma_separator') !== -1;
-      const apostrophe = token.indexOf('apostrophe_separator') !== -1;
-      const decimals = noDecimals ? 0 : 2;
-      const fixed = Number(value).toFixed(decimals);
-      const parts = fixed.split('.');
-      let thousands = ',';
-      let decimalMark = '.';
-      if (comma) {
-        thousands = '.';
-        decimalMark = ',';
-      } else if (apostrophe) {
-        thousands = "'";
-      }
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
-      return parts.length > 1 ? parts[0] + decimalMark + parts[1] : parts[0];
     }
   }
 

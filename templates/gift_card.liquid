@@ -82,7 +82,14 @@
       <div class="fl-gift__inner">
         <p class="fl-gift__shop">{{ shop.name }}</p>
 
-        <p class="fl-gift__amount">{{ gift_card.balance | money }}</p>
+        {%- comment -%} Same currency format as snippets/price.liquid. {%- endcomment -%}
+        <p class="fl-gift__amount">
+          {%- if settings.currency_code_enabled -%}
+            {{ gift_card.balance | money_with_currency }}
+          {%- else -%}
+            {{ gift_card.balance | money }}
+          {%- endif -%}
+        </p>
 
         {%- if gift_card.enabled == false or gift_card.expired -%}
           <p class="fl-form-status" role="status">{{ 'gift_card.expired' | t }}</p>

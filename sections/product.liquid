@@ -35,6 +35,7 @@
   data-text-soldout="{{ 'products.product.sold_out' | t }}"
   data-text-unavailable="{{ 'products.product.unavailable' | t }}"
   data-text-regular="{{ 'products.card.regular_price' | t }}"
+  data-text-sale="{{ 'products.card.sale_price' | t }}"
 >
   <div class="fl-product__grid">
     {%- comment -%} Gallery {%- endcomment -%}
@@ -857,6 +858,11 @@
           let html = '<span class="' + classes + '">';
           if (money.available === false) {
             html += '<span class="visually-hidden">' + this.dataset.textSoldout + '</span>';
+          }
+          // Same hidden label as snippets/price.liquid, so a sale price is
+          // still announced as such after a variant change.
+          if (money.compare) {
+            html += '<span class="visually-hidden">' + this.dataset.textSale + '</span>';
           }
           html += '<span class="fl-price__current">' + money.price + '</span>';
           if (money.compare) {

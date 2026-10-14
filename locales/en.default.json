@@ -145,7 +145,7 @@
       "no_results": "No products matched your filters.",
       "from": "From",
       "to": "To",
-      "highest_price": "The highest price is {{ price }}",
+      "highest_price_html": "The highest price is {{ price }}",
       "selected": "{{ count }} selected"
     }
   },

@@ -35,19 +35,22 @@ class FlQuickView extends HTMLElement {
     };
     document.addEventListener('fl:cart:change', this._onCartChange);
 
+    // Variant change: clone the <template data-qv-price-for> that
+    // sections/quick-view.liquid rendered from snippets/price.liquid for that
+    // variant. Rebuilding the price here used to drop the currency code, the
+    // struck-through compare price and its screen reader labels. The
+    // [data-qv-price] region is aria-live, so the new price is announced.
     this._onVariantChange = (event) => {
       const select = event.target.closest('[data-qv-variant]');
       if (!select) return;
-      const option = select.options[select.selectedIndex];
-      const price = this.querySelector('[data-qv-price]');
-      if (!option || !price) return;
-      const wrap = document.createElement('span');
-      wrap.className = 'fl-price';
-      const current = document.createElement('span');
-      current.className = 'fl-price__current';
-      current.textContent = option.getAttribute('data-price') || '';
-      wrap.appendChild(current);
-      price.replaceChildren(wrap);
+      const block = select.closest('[data-qv]');
+      const price = block && block.querySelector('[data-qv-price]');
+      if (!price) return;
+      const template = Array.from(block.querySelectorAll('template[data-qv-price-for]')).find(
+        (tpl) => tpl.getAttribute('data-qv-price-for') === select.value
+      );
+      if (!template) return;
+      price.replaceChildren(template.content.cloneNode(true));
     };
     this.addEventListener('change', this._onVariantChange);
 

@@ -113,9 +113,11 @@
                 if settings.currency_code_enabled
                   assign line_price = item.final_line_price | money_with_currency
                   assign line_compare = item.original_line_price | money_with_currency
+                  assign unit_measure = item.unit_price | money_with_currency
                 else
                   assign line_price = item.final_line_price | money
                   assign line_compare = item.original_line_price | money
+                  assign unit_measure = item.unit_price | money
                 endif
               -%}
               <li class="fl-cart__item">
@@ -146,12 +148,89 @@
                     </span>
                   {%- endunless -%}
 
+                  {%- comment -%}
+                    Line item properties (engraving, gift message… set by apps or
+                    custom product forms) and the subscription plan. A property
+                    whose name starts with an underscore is private by Shopify
+                    convention and stays hidden; an uploaded file is a link.
+                  {%- endcomment -%}
+                  {%- liquid
+                    assign visible_properties = 0
+                    for property in item.properties
+                      assign property_first_char = property.first | slice: 0
+                      if property.last != blank and property_first_char != '_'
+                        assign visible_properties = visible_properties | plus: 1
+                      endif
+                    endfor
+                  -%}
+                  {%- if visible_properties > 0 -%}
+                    <ul class="fl-cart__item-properties" role="list">
+                      {%- for property in item.properties -%}
+                        {%- assign property_first_char = property.first | slice: 0 -%}
+                        {%- if property.last != blank and property_first_char != '_' -%}
+                          <li>
+                            {{ property.first | escape }}{{ 'general.colon' | t }}
+                            {% if property.last contains '/uploads/' -%}
+                              <a href="{{ property.last | escape }}" rel="nofollow">
+                                {{- property.last | split: '/' | last | escape -}}
+                              </a>
+                            {%- else -%}
+                              {{ property.last | escape }}
+                            {%- endif %}
+                          </li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+
+                  {%- if item.selling_plan_allocation -%}
+                    <span class="fl-cart__item-plan">{{ item.selling_plan_allocation.selling_plan.name | escape }}</span>
+                  {%- endif -%}
+
                   <span class="fl-cart__item-price">
                     {%- if item.original_line_price != item.final_line_price -%}
-                      <s class="fl-cart__item-compare">{{ line_compare }}</s>
+                      <s class="fl-cart__item-compare">
+                        <span class="visually-hidden">{{ 'products.card.regular_price' | t }}</span>
+                        {{- line_compare -}}
+                      </s>
                     {%- endif -%}
                     <span>{{ line_price }}</span>
                   </span>
+
+                  {%- comment -%}
+                    Unit price (EU price indication), with the same markup and
+                    rules as the cart page: inside [data-cart-inner], so it
+                    follows every quantity change.
+                  {%- endcomment -%}
+                  {%- if item.unit_price_measurement -%}
+                    <span class="fl-cart__unit-measure">
+                      {{ unit_measure }}
+                      /
+                      {%- if item.unit_price_measurement.reference_value != 1 -%}
+                        {{ item.unit_price_measurement.reference_value }}
+                      {%- endif -%}
+                      {{ item.unit_price_measurement.reference_unit }}
+                    </span>
+                  {%- endif -%}
+
+                  {%- if item.line_level_discount_allocations.size > 0 -%}
+                    <ul class="fl-cart__discounts" role="list">
+                      {%- for allocation in item.line_level_discount_allocations -%}
+                        {%- liquid
+                          if settings.currency_code_enabled
+                            assign allocation_amount = allocation.amount | money_with_currency
+                          else
+                            assign allocation_amount = allocation.amount | money
+                          endif
+                        -%}
+                        <li class="fl-cart__discount">
+                          <span class="visually-hidden">{{ 'cart.discount' | t }}{{ 'general.colon' | t }} </span>
+                          {{- allocation.discount_application.title | escape }}
+                          (−{{ allocation_amount }})
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
 
                   <div class="fl-cart__item-row">
                     <div class="fl-cart__qty">
@@ -213,6 +292,31 @@
 
       {%- if cart.item_count > 0 -%}
         <div class="fl-cart__foot">
+          {%- comment -%}
+            Order-level discounts, as on the cart page: without these rows the
+            subtotal (already discounted) did not match the sum of the lines.
+          {%- endcomment -%}
+          {%- if cart.cart_level_discount_applications.size > 0 -%}
+            <ul class="fl-cart__discount-rows" role="list">
+              {%- for application in cart.cart_level_discount_applications -%}
+                {%- liquid
+                  if settings.currency_code_enabled
+                    assign discount_amount = application.total_allocated_amount | money_with_currency
+                  else
+                    assign discount_amount = application.total_allocated_amount | money
+                  endif
+                -%}
+                <li class="fl-cart__discount-row">
+                  <span>
+                    <span class="visually-hidden">{{ 'cart.discount' | t }}{{ 'general.colon' | t }} </span>
+                    {{- application.title | escape -}}
+                  </span>
+                  <span>−{{ discount_amount }}</span>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
           <div class="fl-cart__subtotal">
             <span>{{ 'cart.subtotal' | t }}</span>
             <span>{{ cart_total }}</span>
@@ -446,13 +550,38 @@
     color: var(--color-muted);
   }
 
-  .fl-cart__item-options {
+  .fl-cart__item-options,
+  .fl-cart__item-plan,
+  .fl-cart__unit-measure {
     font-size: 0.8125em;
     color: var(--color-muted);
   }
 
+  /* Same lists as the cart page (.fl-cart-page__discounts). A long engraving
+     text or file name wraps inside the 420px panel instead of widening it. */
+  .fl-cart__item-properties,
+  .fl-cart__discounts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.8125em;
+    color: var(--color-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .fl-cart__discounts {
+    margin-top: 4px;
+  }
+
+  /* Wraps like the cart page's .fl-cart-page__unit-price: at 320px with
+     currency codes on, the struck and final line prices do not fit side by
+     side in the 184px column, and each was split onto two lines instead. */
   .fl-cart__item-price {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     gap: 8px;
     font-size: 0.9375em;
@@ -536,6 +665,34 @@
     gap: 12px;
     padding: 16px 24px 20px;
     border-top: 1px solid var(--color-line);
+  }
+
+  .fl-cart__discount-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875em;
+    color: var(--color-muted);
+  }
+
+  .fl-cart__discount-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  /* A long one-word discount code wraps inside the 320px panel instead of
+     pushing its amount past the edge of the screen; the amount never breaks. */
+  .fl-cart__discount-row > span:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .fl-cart__discount-row > span:last-child {
+    flex-shrink: 0;
   }
 
   .fl-cart__subtotal {
