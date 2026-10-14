@@ -12,16 +12,47 @@
     </div>
 
     {%- form 'activate_customer_password', class: 'fl-account__form' -%}
+      {%- comment -%}
+        Errors: the summary takes focus on load and links to each field; each
+        invalid field carries aria-invalid and points to its own message.
+        The section is only the main section of customers/activate_account
+        (no preset), so its ids stay fixed.
+      {%- endcomment -%}
       {%- if form.errors -%}
-        <ul class="fl-account__errors" role="alert">
-          {%- for field in form.errors -%}
-            <li>{{ form.errors.messages[field] }}</li>
-          {%- endfor -%}
-        </ul>
+        <div id="FlActivateErrors" class="fl-form-status fl-form-status--error" role="alert" tabindex="-1" autofocus>
+          <ul class="fl-form-status__list">
+            {%- for field in form.errors -%}
+              {%- liquid
+                case field
+                  when 'password'
+                    assign field_target = 'FlActivatePassword'
+                  when 'password_confirmation'
+                    assign field_target = 'FlActivateConfirm'
+                  else
+                    assign field_target = blank
+                endcase
+              -%}
+              <li>
+                {%- if field_target != blank -%}
+                  <a href="#{{ field_target }}">
+                    {{- form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] -}}
+                  </a>
+                {%- else -%}
+                  {{ form.errors.messages[field] }}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
       {%- endif -%}
 
+      <p class="fl-form-note">{{ 'general.forms.required_note' | t }}</p>
+
       <div class="fl-field">
-        <label class="fl-label" for="FlActivatePassword">{{ 'customer.activate_account.password' | t }}</label>
+        <label class="fl-label" for="FlActivatePassword">
+          {{- 'customer.activate_account.password' | t -}}
+          <span class="fl-label__req" aria-hidden="true">*</span>
+        </label>
         <input
           class="fl-input"
           type="password"
@@ -29,12 +60,22 @@
           id="FlActivatePassword"
           autocomplete="new-password"
           required
+          {% if form.errors contains 'password' %}
+            aria-invalid="true"
+            aria-describedby="FlActivatePassword-error"
+          {% endif %}
         >
+        {%- if form.errors contains 'password' -%}
+          <p class="fl-field__error" id="FlActivatePassword-error">
+            {{- form.errors.translated_fields.password | capitalize }} {{ form.errors.messages.password -}}
+          </p>
+        {%- endif -%}
       </div>
 
       <div class="fl-field">
         <label class="fl-label" for="FlActivateConfirm">
           {{- 'customer.activate_account.password_confirm' | t -}}
+          <span class="fl-label__req" aria-hidden="true">*</span>
         </label>
         <input
           class="fl-input"
@@ -43,12 +84,25 @@
           id="FlActivateConfirm"
           autocomplete="new-password"
           required
+          {% if form.errors contains 'password_confirmation' %}
+            aria-invalid="true"
+            aria-describedby="FlActivateConfirm-error"
+          {% endif %}
         >
+        {%- if form.errors contains 'password_confirmation' -%}
+          <p class="fl-field__error" id="FlActivateConfirm-error">
+            {{- form.errors.translated_fields.password_confirmation | capitalize }} {{ form.errors.messages.password_confirmation -}}
+          </p>
+        {%- endif -%}
       </div>
 
       <div class="fl-account__actions">
         <button type="submit" class="fl-btn">{{ 'customer.activate_account.submit' | t }}</button>
-        <button type="submit" name="decline" class="fl-account__link">
+        {%- comment -%}
+          Declining needs no password: formnovalidate keeps the browser from
+          blocking this button on the two required fields.
+        {%- endcomment -%}
+        <button type="submit" name="decline" class="fl-account__link" formnovalidate>
           {{- 'customer.activate_account.cancel' | t -}}
         </button>
       </div>

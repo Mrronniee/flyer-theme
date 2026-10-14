@@ -12,16 +12,47 @@
     </div>
 
     {%- form 'reset_customer_password', class: 'fl-account__form' -%}
+      {%- comment -%}
+        Errors: the summary takes focus on load and links to each field; each
+        invalid field carries aria-invalid and points to its own message.
+        The section is only the main section of customers/reset_password
+        (no preset), so its ids stay fixed.
+      {%- endcomment -%}
       {%- if form.errors -%}
-        <ul class="fl-account__errors" role="alert">
-          {%- for field in form.errors -%}
-            <li>{{ form.errors.messages[field] }}</li>
-          {%- endfor -%}
-        </ul>
+        <div id="FlResetErrors" class="fl-form-status fl-form-status--error" role="alert" tabindex="-1" autofocus>
+          <ul class="fl-form-status__list">
+            {%- for field in form.errors -%}
+              {%- liquid
+                case field
+                  when 'password'
+                    assign field_target = 'FlResetPassword'
+                  when 'password_confirmation'
+                    assign field_target = 'FlResetConfirm'
+                  else
+                    assign field_target = blank
+                endcase
+              -%}
+              <li>
+                {%- if field_target != blank -%}
+                  <a href="#{{ field_target }}">
+                    {{- form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] -}}
+                  </a>
+                {%- else -%}
+                  {{ form.errors.messages[field] }}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
       {%- endif -%}
 
+      <p class="fl-form-note">{{ 'general.forms.required_note' | t }}</p>
+
       <div class="fl-field">
-        <label class="fl-label" for="FlResetPassword">{{ 'customer.reset_password.password' | t }}</label>
+        <label class="fl-label" for="FlResetPassword">
+          {{- 'customer.reset_password.password' | t -}}
+          <span class="fl-label__req" aria-hidden="true">*</span>
+        </label>
         <input
           class="fl-input"
           type="password"
@@ -29,11 +60,23 @@
           id="FlResetPassword"
           autocomplete="new-password"
           required
+          {% if form.errors contains 'password' %}
+            aria-invalid="true"
+            aria-describedby="FlResetPassword-error"
+          {% endif %}
         >
+        {%- if form.errors contains 'password' -%}
+          <p class="fl-field__error" id="FlResetPassword-error">
+            {{- form.errors.translated_fields.password | capitalize }} {{ form.errors.messages.password -}}
+          </p>
+        {%- endif -%}
       </div>
 
       <div class="fl-field">
-        <label class="fl-label" for="FlResetConfirm">{{ 'customer.reset_password.password_confirm' | t }}</label>
+        <label class="fl-label" for="FlResetConfirm">
+          {{- 'customer.reset_password.password_confirm' | t -}}
+          <span class="fl-label__req" aria-hidden="true">*</span>
+        </label>
         <input
           class="fl-input"
           type="password"
@@ -41,7 +84,16 @@
           id="FlResetConfirm"
           autocomplete="new-password"
           required
+          {% if form.errors contains 'password_confirmation' %}
+            aria-invalid="true"
+            aria-describedby="FlResetConfirm-error"
+          {% endif %}
         >
+        {%- if form.errors contains 'password_confirmation' -%}
+          <p class="fl-field__error" id="FlResetConfirm-error">
+            {{- form.errors.translated_fields.password_confirmation | capitalize }} {{ form.errors.messages.password_confirmation -}}
+          </p>
+        {%- endif -%}
       </div>
 
       <div class="fl-account__actions">

@@ -34,20 +34,20 @@
 >
   <div class="fl-overlay" data-cart-close aria-hidden="true"></div>
 
+  {% comment %}
+    aria-labelledby points at the title TEXT only, not at the whole <h2>: the
+    heading also carries the item count twice (visible badge + spoken count),
+    which made the dialog announce itself as "Your cart 4 4 items".
+    aria-label is the fallback for the frame in which the Section Rendering
+    API has just replaced [data-cart-inner] and the referenced node does not
+    exist yet; aria-labelledby wins over it again as soon as it is back. Both
+    resolve through the same translation key, so the name is never English on
+    a French storefront.
+  {% endcomment %}
   <div
     class="fl-cart__panel fl-drawer color-{{ settings.cart_color_scheme }}"
     role="dialog"
     aria-modal="true"
-    {% comment %}
-      aria-labelledby points at the title TEXT only, not at the whole <h2>: the
-      heading also carries the item count twice (visible badge + spoken count),
-      which made the dialog announce itself as "Your cart 4 4 items".
-      aria-label is the fallback for the frame in which the Section Rendering
-      API has just replaced [data-cart-inner] and the referenced node does not
-      exist yet; aria-labelledby wins over it again as soon as it is back. Both
-      resolve through the same translation key, so the name is never English on
-      a French storefront.
-    {% endcomment %}
     aria-labelledby="FlCartDrawerHeading"
     aria-label="{{ 'cart.drawer_title' | t }}"
     tabindex="-1"

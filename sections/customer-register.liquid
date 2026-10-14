@@ -11,13 +11,45 @@
     </div>
 
     {%- form 'create_customer', class: 'fl-account__form' -%}
+      {%- comment -%}
+        Errors: the summary takes focus on load and links to each field; each
+        invalid field carries aria-invalid and points to its own message.
+        The section is only the main section of customers/register (no
+        preset), so its ids stay fixed.
+      {%- endcomment -%}
       {%- if form.errors -%}
-        <ul class="fl-account__errors" role="alert">
-          {%- for field in form.errors -%}
-            <li>{{ form.errors.messages[field] }}</li>
-          {%- endfor -%}
-        </ul>
+        <div id="FlRegisterErrors" class="fl-form-status fl-form-status--error" role="alert" tabindex="-1" autofocus>
+          <ul class="fl-form-status__list">
+            {%- for field in form.errors -%}
+              {%- liquid
+                case field
+                  when 'first_name'
+                    assign field_target = 'FlRegisterFirst'
+                  when 'last_name'
+                    assign field_target = 'FlRegisterLast'
+                  when 'email'
+                    assign field_target = 'FlRegisterEmail'
+                  when 'password'
+                    assign field_target = 'FlRegisterPassword'
+                  else
+                    assign field_target = blank
+                endcase
+              -%}
+              <li>
+                {%- if field_target != blank -%}
+                  <a href="#{{ field_target }}">
+                    {{- form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] -}}
+                  </a>
+                {%- else -%}
+                  {{ form.errors.messages[field] }}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
       {%- endif -%}
+
+      <p class="fl-form-note">{{ 'general.forms.required_note' | t }}</p>
 
       <div class="fl-field">
         <label class="fl-label" for="FlRegisterFirst">{{ 'customer.register.first_name' | t }}</label>
@@ -28,7 +60,16 @@
           id="FlRegisterFirst"
           value="{{ form.first_name }}"
           autocomplete="given-name"
+          {% if form.errors contains 'first_name' %}
+            aria-invalid="true"
+            aria-describedby="FlRegisterFirst-error"
+          {% endif %}
         >
+        {%- if form.errors contains 'first_name' -%}
+          <p class="fl-field__error" id="FlRegisterFirst-error">
+            {{- form.errors.translated_fields.first_name | capitalize }} {{ form.errors.messages.first_name -}}
+          </p>
+        {%- endif -%}
       </div>
 
       <div class="fl-field">
@@ -40,11 +81,23 @@
           id="FlRegisterLast"
           value="{{ form.last_name }}"
           autocomplete="family-name"
+          {% if form.errors contains 'last_name' %}
+            aria-invalid="true"
+            aria-describedby="FlRegisterLast-error"
+          {% endif %}
         >
+        {%- if form.errors contains 'last_name' -%}
+          <p class="fl-field__error" id="FlRegisterLast-error">
+            {{- form.errors.translated_fields.last_name | capitalize }} {{ form.errors.messages.last_name -}}
+          </p>
+        {%- endif -%}
       </div>
 
       <div class="fl-field">
-        <label class="fl-label" for="FlRegisterEmail">{{ 'customer.register.email' | t }}</label>
+        <label class="fl-label" for="FlRegisterEmail">
+          {{- 'customer.register.email' | t -}}
+          <span class="fl-label__req" aria-hidden="true">*</span>
+        </label>
         <input
           class="fl-input"
           type="email"
@@ -54,11 +107,23 @@
           autocomplete="email"
           autocapitalize="off"
           required
+          {% if form.errors contains 'email' %}
+            aria-invalid="true"
+            aria-describedby="FlRegisterEmail-error"
+          {% endif %}
         >
+        {%- if form.errors contains 'email' -%}
+          <p class="fl-field__error" id="FlRegisterEmail-error">
+            {{- form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email -}}
+          </p>
+        {%- endif -%}
       </div>
 
       <div class="fl-field">
-        <label class="fl-label" for="FlRegisterPassword">{{ 'customer.register.password' | t }}</label>
+        <label class="fl-label" for="FlRegisterPassword">
+          {{- 'customer.register.password' | t -}}
+          <span class="fl-label__req" aria-hidden="true">*</span>
+        </label>
         <input
           class="fl-input"
           type="password"
@@ -66,7 +131,16 @@
           id="FlRegisterPassword"
           autocomplete="new-password"
           required
+          {% if form.errors contains 'password' %}
+            aria-invalid="true"
+            aria-describedby="FlRegisterPassword-error"
+          {% endif %}
         >
+        {%- if form.errors contains 'password' -%}
+          <p class="fl-field__error" id="FlRegisterPassword-error">
+            {{- form.errors.translated_fields.password | capitalize }} {{ form.errors.messages.password -}}
+          </p>
+        {%- endif -%}
       </div>
 
       <div class="fl-account__actions">

@@ -3,6 +3,12 @@
   Each saved address gets an expandable edit form; a final panel adds a new one.
   Country/province pairs are wired natively from the country option tags, so the
   province select fills in without Shopify's legacy helper script.
+  Errors: each address form is captured before its <details> so a form that
+  comes back with errors opens its panel; the summary then takes focus on load
+  and links to each field of snippets/address-fields.liquid (ids suffixed with
+  the form's uid). The section is only the main section of customers/addresses
+  (no preset), so its ids stay fixed. All these forms share one page, so only
+  the first summary rendered carries autofocus (addr_focus_taken).
 {% endcomment %}
 
 {% render 'customer-styles' %}
@@ -17,9 +23,78 @@
       <h1 class="fl-account__title">{{ 'customer.addresses.title' | t }}</h1>
     </div>
 
+    {%- assign addr_focus_taken = false -%}
     {%- paginate customer.addresses by 20 -%}
       {%- for address in customer.addresses -%}
-        <details class="fl-account__details">
+        {%- assign form_has_errors = false -%}
+        {%- capture address_form -%}
+          {%- form 'customer_address', address, class: 'fl-account__form' -%}
+            {%- if form.errors -%}
+              {%- assign form_has_errors = true -%}
+              <div
+                id="FlAddrErrors-{{ address.id }}"
+                class="fl-form-status fl-form-status--error"
+                role="alert"
+                tabindex="-1"
+                {% unless addr_focus_taken %}autofocus{% endunless %}
+              >
+                {%- assign addr_focus_taken = true -%}
+                <ul class="fl-form-status__list">
+                  {%- for field in form.errors -%}
+                    {%- liquid
+                      case field
+                        when 'first_name'
+                          assign field_target = 'FlAddrFirst-' | append: address.id
+                        when 'last_name'
+                          assign field_target = 'FlAddrLast-' | append: address.id
+                        when 'company'
+                          assign field_target = 'FlAddrCompany-' | append: address.id
+                        when 'address1'
+                          assign field_target = 'FlAddrOne-' | append: address.id
+                        when 'address2'
+                          assign field_target = 'FlAddrTwo-' | append: address.id
+                        when 'city'
+                          assign field_target = 'FlAddrCity-' | append: address.id
+                        when 'zip'
+                          assign field_target = 'FlAddrZip-' | append: address.id
+                        when 'country'
+                          assign field_target = 'FlAddrCountry-' | append: address.id
+                        when 'province'
+                          assign field_target = 'FlAddrProvince-' | append: address.id
+                        when 'phone'
+                          assign field_target = 'FlAddrPhone-' | append: address.id
+                        else
+                          assign field_target = blank
+                      endcase
+                    -%}
+                    <li>
+                      {%- if field_target != blank -%}
+                        <a href="#{{ field_target }}">
+                          {{- form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] -}}
+                        </a>
+                      {%- else -%}
+                        {{ form.errors.messages[field] }}
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+
+            {% render 'address-fields', form: form, uid: address.id %}
+
+            <label class="fl-account__checkbox">
+              {{ form.set_as_default_checkbox }}
+              <span>{{ 'customer.addresses.set_default' | t }}</span>
+            </label>
+
+            <div class="fl-account__actions">
+              <button type="submit" class="fl-btn">{{ 'customer.addresses.update' | t }}</button>
+            </div>
+          {%- endform -%}
+        {%- endcapture -%}
+
+        <details class="fl-account__details"{% if form_has_errors %} open{% endif %}>
           <summary class="fl-account__summary">
             <span>
               {{ address.first_name }} {{ address.last_name }} — {{ address.city }}
@@ -31,18 +106,7 @@
           <div class="fl-account__details-body">
             <address class="fl-account__address">{{ address | format_address }}</address>
 
-            {%- form 'customer_address', address, class: 'fl-account__form' -%}
-              {% render 'address-fields', form: form, uid: address.id %}
-
-              <label class="fl-account__checkbox">
-                {{ form.set_as_default_checkbox }}
-                <span>{{ 'customer.addresses.set_default' | t }}</span>
-              </label>
-
-              <div class="fl-account__actions">
-                <button type="submit" class="fl-btn">{{ 'customer.addresses.update' | t }}</button>
-              </div>
-            {%- endform -%}
+            {{ address_form }}
 
             <form
               method="post"
@@ -57,23 +121,80 @@
       {%- endfor -%}
     {%- endpaginate -%}
 
-    <details class="fl-account__details">
+    {%- assign form_has_errors = false -%}
+    {%- capture address_form -%}
+      {%- form 'customer_address', customer.new_address, class: 'fl-account__form' -%}
+        {%- if form.errors -%}
+          {%- assign form_has_errors = true -%}
+          <div
+            id="FlAddrErrors-new"
+            class="fl-form-status fl-form-status--error"
+            role="alert"
+            tabindex="-1"
+            {% unless addr_focus_taken %}autofocus{% endunless %}
+          >
+            {%- assign addr_focus_taken = true -%}
+            <ul class="fl-form-status__list">
+              {%- for field in form.errors -%}
+                {%- liquid
+                  case field
+                    when 'first_name'
+                      assign field_target = 'FlAddrFirst-new'
+                    when 'last_name'
+                      assign field_target = 'FlAddrLast-new'
+                    when 'company'
+                      assign field_target = 'FlAddrCompany-new'
+                    when 'address1'
+                      assign field_target = 'FlAddrOne-new'
+                    when 'address2'
+                      assign field_target = 'FlAddrTwo-new'
+                    when 'city'
+                      assign field_target = 'FlAddrCity-new'
+                    when 'zip'
+                      assign field_target = 'FlAddrZip-new'
+                    when 'country'
+                      assign field_target = 'FlAddrCountry-new'
+                    when 'province'
+                      assign field_target = 'FlAddrProvince-new'
+                    when 'phone'
+                      assign field_target = 'FlAddrPhone-new'
+                    else
+                      assign field_target = blank
+                  endcase
+                -%}
+                <li>
+                  {%- if field_target != blank -%}
+                    <a href="#{{ field_target }}">
+                      {{- form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] -}}
+                    </a>
+                  {%- else -%}
+                    {{ form.errors.messages[field] }}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {% render 'address-fields', form: form, uid: 'new' %}
+
+        <label class="fl-account__checkbox">
+          {{ form.set_as_default_checkbox }}
+          <span>{{ 'customer.addresses.set_default' | t }}</span>
+        </label>
+
+        <div class="fl-account__actions">
+          <button type="submit" class="fl-btn">{{ 'customer.addresses.add' | t }}</button>
+        </div>
+      {%- endform -%}
+    {%- endcapture -%}
+
+    <details class="fl-account__details"{% if form_has_errors %} open{% endif %}>
       <summary class="fl-account__summary">
         <span>{{ 'customer.addresses.add_new' | t }}</span>
       </summary>
       <div class="fl-account__details-body">
-        {%- form 'customer_address', customer.new_address, class: 'fl-account__form' -%}
-          {% render 'address-fields', form: form, uid: 'new' %}
-
-          <label class="fl-account__checkbox">
-            {{ form.set_as_default_checkbox }}
-            <span>{{ 'customer.addresses.set_default' | t }}</span>
-          </label>
-
-          <div class="fl-account__actions">
-            <button type="submit" class="fl-btn">{{ 'customer.addresses.add' | t }}</button>
-          </div>
-        {%- endform -%}
+        {{ address_form }}
       </div>
     </details>
   </div>

@@ -321,6 +321,12 @@ a {
   margin: 8px 0 0;
   padding-left: 1.2em;
 }
+.fl-form-status__list:first-child {
+  margin-top: 0;
+}
+.fl-form-status__list li + li {
+  margin-top: 6px;
+}
 .fl-form-status__list a {
   color: inherit;
 }

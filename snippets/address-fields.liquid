@@ -2,6 +2,9 @@
   Address form fields shared by the "edit" and "add" forms on the addresses page.
   The country select carries data-country-select; the province wrapper is matched
   by data-province-wrapper with the same uid, and filled by <fl-addresses>.
+  A field Shopify sends back in error carries aria-invalid and points to its own
+  message (the summary above the form, in sections/customer-addresses.liquid,
+  links to each field).
 
   @param {object} form - the customer_address form object
   @param {string} uid - unique suffix for element ids (address id, or 'new')
@@ -17,10 +20,19 @@
       class="fl-input"
       type="text"
       id="FlAddrFirst-{{ uid }}"
+      {% if form.errors contains 'first_name' %}
+        aria-invalid="true"
+        aria-describedby="FlAddrFirst-{{ uid }}-error"
+      {% endif %}
       name="address[first_name]"
-      value="{{ form.first_name }}"
+      value="{{ form.first_name | escape }}"
       autocomplete="given-name"
     >
+    {%- if form.errors contains 'first_name' -%}
+      <p class="fl-field__error" id="FlAddrFirst-{{ uid }}-error">
+        {{- form.errors.translated_fields['first_name'] | capitalize }} {{ form.errors.messages['first_name'] -}}
+      </p>
+    {%- endif -%}
   </div>
 
   <div class="fl-field">
@@ -29,10 +41,19 @@
       class="fl-input"
       type="text"
       id="FlAddrLast-{{ uid }}"
+      {% if form.errors contains 'last_name' %}
+        aria-invalid="true"
+        aria-describedby="FlAddrLast-{{ uid }}-error"
+      {% endif %}
       name="address[last_name]"
-      value="{{ form.last_name }}"
+      value="{{ form.last_name | escape }}"
       autocomplete="family-name"
     >
+    {%- if form.errors contains 'last_name' -%}
+      <p class="fl-field__error" id="FlAddrLast-{{ uid }}-error">
+        {{- form.errors.translated_fields['last_name'] | capitalize }} {{ form.errors.messages['last_name'] -}}
+      </p>
+    {%- endif -%}
   </div>
 
   <div class="fl-field fl-account__field--full">
@@ -41,10 +62,19 @@
       class="fl-input"
       type="text"
       id="FlAddrCompany-{{ uid }}"
+      {% if form.errors contains 'company' %}
+        aria-invalid="true"
+        aria-describedby="FlAddrCompany-{{ uid }}-error"
+      {% endif %}
       name="address[company]"
-      value="{{ form.company }}"
+      value="{{ form.company | escape }}"
       autocomplete="organization"
     >
+    {%- if form.errors contains 'company' -%}
+      <p class="fl-field__error" id="FlAddrCompany-{{ uid }}-error">
+        {{- form.errors.translated_fields['company'] | capitalize }} {{ form.errors.messages['company'] -}}
+      </p>
+    {%- endif -%}
   </div>
 
   <div class="fl-field fl-account__field--full">
@@ -53,10 +83,19 @@
       class="fl-input"
       type="text"
       id="FlAddrOne-{{ uid }}"
+      {% if form.errors contains 'address1' %}
+        aria-invalid="true"
+        aria-describedby="FlAddrOne-{{ uid }}-error"
+      {% endif %}
       name="address[address1]"
-      value="{{ form.address1 }}"
+      value="{{ form.address1 | escape }}"
       autocomplete="address-line1"
     >
+    {%- if form.errors contains 'address1' -%}
+      <p class="fl-field__error" id="FlAddrOne-{{ uid }}-error">
+        {{- form.errors.translated_fields['address1'] | capitalize }} {{ form.errors.messages['address1'] -}}
+      </p>
+    {%- endif -%}
   </div>
 
   <div class="fl-field fl-account__field--full">
@@ -65,10 +104,19 @@
       class="fl-input"
       type="text"
       id="FlAddrTwo-{{ uid }}"
+      {% if form.errors contains 'address2' %}
+        aria-invalid="true"
+        aria-describedby="FlAddrTwo-{{ uid }}-error"
+      {% endif %}
       name="address[address2]"
-      value="{{ form.address2 }}"
+      value="{{ form.address2 | escape }}"
       autocomplete="address-line2"
     >
+    {%- if form.errors contains 'address2' -%}
+      <p class="fl-field__error" id="FlAddrTwo-{{ uid }}-error">
+        {{- form.errors.translated_fields['address2'] | capitalize }} {{ form.errors.messages['address2'] -}}
+      </p>
+    {%- endif -%}
   </div>
 
   <div class="fl-field">
@@ -77,10 +125,19 @@
       class="fl-input"
       type="text"
       id="FlAddrCity-{{ uid }}"
+      {% if form.errors contains 'city' %}
+        aria-invalid="true"
+        aria-describedby="FlAddrCity-{{ uid }}-error"
+      {% endif %}
       name="address[city]"
-      value="{{ form.city }}"
+      value="{{ form.city | escape }}"
       autocomplete="address-level2"
     >
+    {%- if form.errors contains 'city' -%}
+      <p class="fl-field__error" id="FlAddrCity-{{ uid }}-error">
+        {{- form.errors.translated_fields['city'] | capitalize }} {{ form.errors.messages['city'] -}}
+      </p>
+    {%- endif -%}
   </div>
 
   <div class="fl-field">
@@ -89,10 +146,19 @@
       class="fl-input"
       type="text"
       id="FlAddrZip-{{ uid }}"
+      {% if form.errors contains 'zip' %}
+        aria-invalid="true"
+        aria-describedby="FlAddrZip-{{ uid }}-error"
+      {% endif %}
       name="address[zip]"
-      value="{{ form.zip }}"
+      value="{{ form.zip | escape }}"
       autocomplete="postal-code"
     >
+    {%- if form.errors contains 'zip' -%}
+      <p class="fl-field__error" id="FlAddrZip-{{ uid }}-error">
+        {{- form.errors.translated_fields['zip'] | capitalize }} {{ form.errors.messages['zip'] -}}
+      </p>
+    {%- endif -%}
   </div>
 
   <div class="fl-field fl-account__field--full">
@@ -100,11 +166,20 @@
     <select
       class="fl-select"
       id="FlAddrCountry-{{ uid }}"
+      {% if form.errors contains 'country' %}
+        aria-invalid="true"
+        aria-describedby="FlAddrCountry-{{ uid }}-error"
+      {% endif %}
       name="address[country]"
       autocomplete="country"
       data-country-select="{{ uid }}"
-      data-default="{{ form.country }}"
+      data-default="{{ form.country | escape }}"
     >
+    {%- if form.errors contains 'country' -%}
+      <p class="fl-field__error" id="FlAddrCountry-{{ uid }}-error">
+        {{- form.errors.translated_fields['country'] | capitalize }} {{ form.errors.messages['country'] -}}
+      </p>
+    {%- endif -%}
       {{ all_country_option_tags }}
     </select>
   </div>
@@ -114,10 +189,19 @@
     <select
       class="fl-select"
       id="FlAddrProvince-{{ uid }}"
+      {% if form.errors contains 'province' %}
+        aria-invalid="true"
+        aria-describedby="FlAddrProvince-{{ uid }}-error"
+      {% endif %}
       name="address[province]"
       autocomplete="address-level1"
-      data-default="{{ form.province }}"
+      data-default="{{ form.province | escape }}"
     ></select>
+    {%- if form.errors contains 'province' -%}
+      <p class="fl-field__error" id="FlAddrProvince-{{ uid }}-error">
+        {{- form.errors.translated_fields['province'] | capitalize }} {{ form.errors.messages['province'] -}}
+      </p>
+    {%- endif -%}
   </div>
 
   <div class="fl-field fl-account__field--full">
@@ -126,9 +210,18 @@
       class="fl-input"
       type="tel"
       id="FlAddrPhone-{{ uid }}"
+      {% if form.errors contains 'phone' %}
+        aria-invalid="true"
+        aria-describedby="FlAddrPhone-{{ uid }}-error"
+      {% endif %}
       name="address[phone]"
-      value="{{ form.phone }}"
+      value="{{ form.phone | escape }}"
       autocomplete="tel"
     >
+    {%- if form.errors contains 'phone' -%}
+      <p class="fl-field__error" id="FlAddrPhone-{{ uid }}-error">
+        {{- form.errors.translated_fields['phone'] | capitalize }} {{ form.errors.messages['phone'] -}}
+      </p>
+    {%- endif -%}
   </div>
 </div>

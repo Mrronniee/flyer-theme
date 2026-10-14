@@ -11,10 +11,19 @@
   at once, even while a keyboard user was only browsing the list with the
   arrow keys. You now pick an option, then confirm with the Update button,
   which is always visible.
-- **Contact form errors point to the right field.** When the form comes back
-  with an error, the list of errors takes focus and links to each field, and
-  each field in error is marked as such and announces its own message.
-  Required fields carry an asterisk, explained above the form.
+- **Form errors point to the right field.** When a form comes back with an
+  error, the list of errors takes focus and links to each field, and each
+  field in error is marked as such and announces its own message. This
+  applies to the contact form, the account forms (sign in, password recovery,
+  create account, activate account, reset password, addresses), the blog
+  comment form and the store password page. Required fields carry an
+  asterisk, explained above the form.
+- **Declining an account invitation no longer asks for a password.** The
+  Decline button on the account activation page was blocked by the browser
+  until both password fields were filled in.
+- **Switching between sign in and password recovery moves keyboard focus**
+  to the first field of the panel that opens.
+- **Saved addresses with quotes display correctly** when you edit them.
 - **Filter panel height on phones.** The filter list now follows the visible
   height of the screen when the browser's address bar shows or hides.
 
