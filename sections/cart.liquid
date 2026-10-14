@@ -79,6 +79,11 @@
               </a>
 
               <div class="fl-cart-page__info">
+                {%- comment -%}Theme setting: Cart > Show vendor (also read by the cart drawer).{%- endcomment -%}
+                {%- if settings.cart_show_vendor and item.product.vendor != blank -%}
+                  <span class="fl-cart-page__item-vendor">{{ item.product.vendor | escape }}</span>
+                {%- endif -%}
+
                 <a class="fl-cart-page__item-title" href="{{ item.url }}">{{ item_title }}</a>
 
                 {%- unless item.product.has_only_default_variant -%}
@@ -337,6 +342,13 @@
     flex-direction: column;
     gap: 4px;
     min-width: 0;
+  }
+
+  .fl-cart-page__item-vendor {
+    font-size: 0.75em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
   }
 
   .fl-cart-page__item-title {

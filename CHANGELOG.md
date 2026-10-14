@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.8.10 - 2026-10-14
+
+### Fixed
+- **Vendor on the cart page.** The "Show vendor" setting under Cart only
+  applied to the cart drawer. It now shows the product's vendor on the cart
+  page too, above each item's title, in the same style.
+
 ## 1.8.9 - 2026-10-13
 
 ### Fixed
