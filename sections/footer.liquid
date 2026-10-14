@@ -404,26 +404,6 @@
   }
 {% endstylesheet %}
 
-{% javascript %}
-  if (!customElements.get('fl-localization')) {
-    customElements.define(
-      'fl-localization',
-      class extends HTMLElement {
-        connectedCallback() {
-          const select = this.querySelector('select');
-          const button = this.querySelector('[data-loc-submit]');
-          if (!select) return;
-          if (button) button.hidden = true;
-          select.addEventListener('change', () => {
-            const form = this.closest('form');
-            if (form) form.submit();
-          });
-        }
-      }
-    );
-  }
-{% endjavascript %}
-
 {% schema %}
 {
   "name": "Footer",

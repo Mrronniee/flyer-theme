@@ -1,7 +1,8 @@
 {% doc %}
-  Country or language selector (Shopify Markets). Native form: works without
-  JS; <fl-localization> (defined in sections/footer.liquid) submits on change
-  and hides the button.
+  Country or language selector (Shopify Markets). Native form, no script: the
+  visitor picks an option, then confirms with the Update button. Submitting on
+  change would switch the page while a keyboard user browses the options with
+  the arrow keys (WCAG 3.2.2).
 
   @param {string} kind - 'country' or 'language'
   @param {string} id_prefix - unique id prefix, e.g. 'Footer' or 'Header'
@@ -20,7 +21,7 @@
 -%}
 
 {%- form 'localization', id: form_dom_id, class: form_class -%}
-  <fl-localization>
+  <div class="fl-localization">
     {%- if kind == 'country' -%}
       <label class="visually-hidden" for="{{ field_id }}">{{ 'general.localization.country_label' | t }}</label>
       <select id="{{ field_id }}" class="{{ select_class }}" name="country_code">
@@ -54,5 +55,5 @@
     <button type="submit" class="{{ submit_class }}" data-loc-submit>
       {{ 'general.localization.update' | t }}
     </button>
-  </fl-localization>
+  </div>
 {%- endform -%}

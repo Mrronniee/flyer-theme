@@ -296,6 +296,11 @@ a {
 .fl-field {
   margin-bottom: 18px;
 }
+/* Country / language form (snippets/localization-form.liquid): the select and
+   its Update button lay out as direct children of the form's flex or grid. */
+.fl-localization {
+  display: contents;
+}
 .fl-form-status {
   padding: 12px 14px;
   margin-bottom: 18px;
@@ -305,6 +310,32 @@ a {
 }
 .fl-form-status--error {
   border-color: currentcolor;
+}
+/* Form errors (contact, customer, comment and password forms): the summary
+   takes focus on load and links to each field; each invalid field carries
+   aria-invalid and points to its own message with aria-describedby. */
+.fl-form-status--error:focus {
+  outline-offset: 2px;
+}
+.fl-form-status__list {
+  margin: 8px 0 0;
+  padding-left: 1.2em;
+}
+.fl-form-status__list a {
+  color: inherit;
+}
+.fl-field__error {
+  margin: 6px 0 0;
+  font-size: 0.875em;
+  color: var(--color-ink);
+}
+.fl-label__req {
+  margin-left: 2px;
+}
+.fl-form-note {
+  margin: 0 0 18px;
+  font-size: 0.875em;
+  color: var(--color-muted);
 }
 
 /* --- Type utilities --- */

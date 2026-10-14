@@ -71,7 +71,10 @@
     "breadcrumbs": {
       "home": "Accueil"
     },
-    "colon": " :"
+    "colon": " :",
+    "forms": {
+      "required_note": "* Champs obligatoires"
+    }
   },
   "404": {
     "title": "Page introuvable",

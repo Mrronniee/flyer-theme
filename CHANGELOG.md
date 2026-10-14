@@ -6,6 +6,17 @@
 - **Vendor on the cart page.** The "Show vendor" setting under Cart only
   applied to the cart drawer. It now shows the product's vendor on the cart
   page too, above each item's title, in the same style.
+- **Language and country selectors no longer switch the page on their own.**
+  Choosing an option in the header or footer selector used to reload the page
+  at once, even while a keyboard user was only browsing the list with the
+  arrow keys. You now pick an option, then confirm with the Update button,
+  which is always visible.
+- **Contact form errors point to the right field.** When the form comes back
+  with an error, the list of errors takes focus and links to each field, and
+  each field in error is marked as such and announces its own message.
+  Required fields carry an asterisk, explained above the form.
+- **Filter panel height on phones.** The filter list now follows the visible
+  height of the screen when the browser's address bar shows or hides.
 
 ## 1.8.9 - 2026-10-13
 
