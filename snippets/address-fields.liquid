@@ -25,7 +25,7 @@
         aria-describedby="FlAddrFirst-{{ uid }}-error"
       {% endif %}
       name="address[first_name]"
-      value="{{ form.first_name | escape }}"
+      value="{{ form.first_name | escape_once }}"
       autocomplete="given-name"
     >
     {%- if form.errors contains 'first_name' -%}
@@ -46,7 +46,7 @@
         aria-describedby="FlAddrLast-{{ uid }}-error"
       {% endif %}
       name="address[last_name]"
-      value="{{ form.last_name | escape }}"
+      value="{{ form.last_name | escape_once }}"
       autocomplete="family-name"
     >
     {%- if form.errors contains 'last_name' -%}
@@ -67,7 +67,7 @@
         aria-describedby="FlAddrCompany-{{ uid }}-error"
       {% endif %}
       name="address[company]"
-      value="{{ form.company | escape }}"
+      value="{{ form.company | escape_once }}"
       autocomplete="organization"
     >
     {%- if form.errors contains 'company' -%}
@@ -88,7 +88,7 @@
         aria-describedby="FlAddrOne-{{ uid }}-error"
       {% endif %}
       name="address[address1]"
-      value="{{ form.address1 | escape }}"
+      value="{{ form.address1 | escape_once }}"
       autocomplete="address-line1"
     >
     {%- if form.errors contains 'address1' -%}
@@ -109,7 +109,7 @@
         aria-describedby="FlAddrTwo-{{ uid }}-error"
       {% endif %}
       name="address[address2]"
-      value="{{ form.address2 | escape }}"
+      value="{{ form.address2 | escape_once }}"
       autocomplete="address-line2"
     >
     {%- if form.errors contains 'address2' -%}
@@ -130,7 +130,7 @@
         aria-describedby="FlAddrCity-{{ uid }}-error"
       {% endif %}
       name="address[city]"
-      value="{{ form.city | escape }}"
+      value="{{ form.city | escape_once }}"
       autocomplete="address-level2"
     >
     {%- if form.errors contains 'city' -%}
@@ -151,7 +151,7 @@
         aria-describedby="FlAddrZip-{{ uid }}-error"
       {% endif %}
       name="address[zip]"
-      value="{{ form.zip | escape }}"
+      value="{{ form.zip | escape_once }}"
       autocomplete="postal-code"
     >
     {%- if form.errors contains 'zip' -%}
@@ -173,15 +173,15 @@
       name="address[country]"
       autocomplete="country"
       data-country-select="{{ uid }}"
-      data-default="{{ form.country | escape }}"
+      data-default="{{ form.country | escape_once }}"
     >
+      {{ all_country_option_tags }}
+    </select>
     {%- if form.errors contains 'country' -%}
       <p class="fl-field__error" id="FlAddrCountry-{{ uid }}-error">
         {{- form.errors.translated_fields['country'] | capitalize }} {{ form.errors.messages['country'] -}}
       </p>
     {%- endif -%}
-      {{ all_country_option_tags }}
-    </select>
   </div>
 
   <div class="fl-field fl-account__field--full" data-province-wrapper="{{ uid }}" hidden>
@@ -195,7 +195,7 @@
       {% endif %}
       name="address[province]"
       autocomplete="address-level1"
-      data-default="{{ form.province | escape }}"
+      data-default="{{ form.province | escape_once }}"
     ></select>
     {%- if form.errors contains 'province' -%}
       <p class="fl-field__error" id="FlAddrProvince-{{ uid }}-error">
@@ -215,7 +215,7 @@
         aria-describedby="FlAddrPhone-{{ uid }}-error"
       {% endif %}
       name="address[phone]"
-      value="{{ form.phone | escape }}"
+      value="{{ form.phone | escape_once }}"
       autocomplete="tel"
     >
     {%- if form.errors contains 'phone' -%}

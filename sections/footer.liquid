@@ -325,13 +325,19 @@
 
   .fl-footer__loc-form {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
+    min-width: 0;
+    max-width: 100%;
   }
 
-  .fl-footer__loc-select {
+  /* Compound selector: the global .fl-select (width: 100%) loads after the
+     section styles and would win over a single class. */
+  .fl-select.fl-footer__loc-select {
     width: auto;
     max-width: 100%;
+    min-width: 0;
   }
 
   .fl-footer__meta {

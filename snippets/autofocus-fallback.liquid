@@ -1,0 +1,19 @@
+{% doc %}
+  Focuses the element marked autofocus (a form's error summary or status
+  message) when the page was opened on an anchor. Shopify posts the contact,
+  comment and newsletter forms to a URL ending in an anchor (#contact_form…),
+  and browsers skip autofocus when the URL targets an element, so after an
+  error the focus would stay on the page instead of the summary.
+
+  @example
+  {% render 'autofocus-fallback' %}
+{% enddoc %}
+
+<script>
+  (function () {
+    if (!location.hash) return;
+    var el = document.querySelector('[autofocus]');
+    var active = document.activeElement;
+    if (el && (!active || active === document.body)) el.focus();
+  })();
+</script>

@@ -32,19 +32,30 @@
         The section is only the main section of customers/login (no preset),
         so its ids stay fixed.
       {%- endcomment -%}
+      {%- liquid
+        # A refused address comes back under 'form' (single-field form): it
+        # belongs to the email field as much as an error filed under 'email'.
+        assign recover_email_invalid = false
+        if form.errors contains 'email' or form.errors contains 'form'
+          assign recover_email_invalid = true
+        endif
+      -%}
       {%- if form.errors -%}
         {%- assign recover_posted = true -%}
         <div id="FlRecoverErrors" class="fl-form-status fl-form-status--error" role="alert" tabindex="-1" autofocus>
           <ul class="fl-form-status__list">
             {%- for field in form.errors -%}
               <li>
-                {%- if field == 'email' -%}
-                  <a href="#FlRecoverEmail">
-                    {{- form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] -}}
-                  </a>
-                {%- else -%}
-                  {{ form.errors.messages[field] }}
-                {%- endif -%}
+                {%- case field -%}
+                  {%- when 'email' -%}
+                    <a href="#FlRecoverEmail">
+                      {{- form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] -}}
+                    </a>
+                  {%- when 'form' -%}
+                    <a href="#FlRecoverEmail">{{ form.errors.messages[field] }}</a>
+                  {%- else -%}
+                    {{ form.errors.messages[field] }}
+                {%- endcase -%}
               </li>
             {%- endfor -%}
           </ul>
@@ -66,14 +77,18 @@
           autocomplete="email"
           autocapitalize="off"
           required
-          {% if form.errors contains 'email' %}
+          {% if recover_email_invalid %}
             aria-invalid="true"
             aria-describedby="FlRecoverEmail-error"
           {% endif %}
         >
-        {%- if form.errors contains 'email' -%}
+        {%- if recover_email_invalid -%}
           <p class="fl-field__error" id="FlRecoverEmail-error">
-            {{- form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email -}}
+            {%- if form.errors contains 'email' -%}
+              {{- form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email -}}
+            {%- else -%}
+              {{- form.errors.messages.form -}}
+            {%- endif -%}
           </p>
         {%- endif -%}
       </div>
