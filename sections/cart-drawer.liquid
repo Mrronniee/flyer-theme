@@ -114,10 +114,12 @@
                   assign line_price = item.final_line_price | money_with_currency
                   assign line_compare = item.original_line_price | money_with_currency
                   assign unit_measure = item.unit_price | money_with_currency
+                  assign each_price = item.final_price | money_with_currency
                 else
                   assign line_price = item.final_line_price | money
                   assign line_compare = item.original_line_price | money
                   assign unit_measure = item.unit_price | money
+                  assign each_price = item.final_price | money
                 endif
               -%}
               <li class="fl-cart__item">
@@ -196,6 +198,18 @@
                     {%- endif -%}
                     <span>{{ line_price }}</span>
                   </span>
+
+                  {%- comment -%}
+                    Price per item, as the cart page prints it in its own
+                    column. The drawer has a single stacked column, so it only
+                    appears once the quantity makes it differ from the line
+                    price above, and says so in words rather than by position.
+                  {%- endcomment -%}
+                  {%- if item.quantity > 1 -%}
+                    <span class="fl-cart__item-each">
+                      {{- 'cart.price_each_html' | t: price: each_price -}}
+                    </span>
+                  {%- endif -%}
 
                   {%- comment -%}
                     Unit price (EU price indication), with the same markup and
@@ -552,6 +566,7 @@
 
   .fl-cart__item-options,
   .fl-cart__item-plan,
+  .fl-cart__item-each,
   .fl-cart__unit-measure {
     font-size: 0.8125em;
     color: var(--color-muted);

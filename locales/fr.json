@@ -158,6 +158,7 @@
     "remove": "Retirer",
     "remove_title": "Retirer {{ title }}",
     "quantity": "Quantité",
+    "price_each_html": "{{ price }} l’unité",
     "note_label": "Note de commande",
     "note_placeholder": "Comment pouvons-nous vous aider ?",
     "subtotal": "Sous-total",

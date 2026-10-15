@@ -158,6 +158,7 @@
     "remove": "Remove",
     "remove_title": "Remove {{ title }}",
     "quantity": "Quantity",
+    "price_each_html": "{{ price }} each",
     "note_label": "Order note",
     "note_placeholder": "How can we help?",
     "subtotal": "Subtotal",

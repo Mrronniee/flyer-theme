@@ -1,0 +1,60 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "featured_blog": {
+      "type": "featured-blog",
+      "settings": {
+        "blog": "news"
+      }
+    },
+    "page_content": {
+      "type": "page-content",
+      "settings": {}
+    },
+    "quick_order_list": {
+      "type": "quick-order-list",
+      "settings": {}
+    },
+    "video": {
+      "type": "video",
+      "settings": {
+        "heading": "A closer look",
+        "description": "Two minutes on how the collection is cut, sewn and finished."
+      }
+    },
+    "countdown": {
+      "type": "countdown",
+      "settings": {
+        "end_date": "2027-12-31"
+      }
+    },
+    "custom_liquid": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<p>Custom Liquid renders whatever you paste here — HTML, Liquid, or an app embed. Example output: {{ shop.name }}.</p>"
+      }
+    },
+    "disclosures": {
+      "type": "disclosures",
+      "settings": {}
+    },
+    "apps": {
+      "type": "apps",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "featured_blog",
+    "page_content",
+    "quick_order_list",
+    "video",
+    "countdown",
+    "custom_liquid",
+    "disclosures",
+    "apps"
+  ]
+}

@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.8.11 - 2026-10-15
+
+### Added
+- **A page template that shows every section.** Eight sections could be added
+  in the theme editor but appeared in no template: Apps, Countdown, Custom
+  Liquid, Disclosures, Featured blog, Page content, Quick order list and
+  Video. A new page template gathers them, so you can see them all at once
+  before deciding where to use them. Pick it as the template of any page, or
+  append `?view=toutes-sections` to a page's address to preview it. The
+  blog, page, collection and video each section points to are yours to
+  choose in the editor.
+
+### Fixed
+- **Price per item in the cart drawer.** When a line holds more than one
+  item, the drawer showed only the line total, while the cart page also
+  shows what one item costs. The drawer now says it too, under the line
+  total.
+
 ## 1.8.10 - 2026-10-14
 
 ### Fixed
