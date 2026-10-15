@@ -80,99 +80,103 @@
     }
   },
   "theme-editeur-checker": {
-    "version": "1.8.9",
-    "date": "2026-10-14",
+    "version": "1.8.11",
+    "date": "2026-10-15",
     "verdict": "passé",
-    "resume": "54 schémas valides (0 invalide), 23 gabarits/groupes JSON valides (0 écart enabled_on/disabled_on), 134 réglages globaux alignés sans réglage mort, 0 default vide, 0 BLOQUANT ; ALERTE : 0 clé t: et 702 libellés d'éditeur en dur, aucun locales/*.schema.json ; ALERTE : plancher de voile à 55 % sans image non documenté (image-banner.liquid:54-57).",
-    "commit": "88f466b",
+    "resume": "Reprise ciblée de 1.8.9 : 54 schémas JSON valides (0 modifié entre 88f466b et 6bd5f2d), 24 gabarits/groupes JSON valides dont le nouveau page.toutes-sections.json (53 sections, 70 blocs, 0 écart enabled_on/disabled_on, 0 réglage inconnu), 134 réglages globaux déclarés et 134 lus (0 mort, 0 non déclaré), 489 réglages avec 0 default vide et 0 default incohérent, 0 BLOQUANT ; 3 ALERTE : 962 libellés d'éditeur en dur sans aucun locales/*.schema.json (chiffre identique avant/après), plancher de voile à 55 % sans image non documenté (image-banner.liquid:54-57 et 283-291), section disclosures invisible sur une boutique mono-pays/mono-langue (disclosures.liquid:27).",
+    "commit": "6bd5f2d",
     "reprise": {
-      "de": "1.8.6",
-      "commit": "eb05e7e"
+      "de": "1.8.9",
+      "commit": "88f466b"
     },
     "couverture": {
       "schemas": {
         "etat": "mesuré",
-        "mesure": "54 schémas JSON valides sur 54 ; 22 sans preset, tous techniques (404, article, blog, cart, cart-drawer, collection, collections, customer-* x7, footer, header, page, password, product, quick-view, search, wishlist-item) ; restrictions : header groups [header], related-products [product], wishlist [page] ; 0 écart croisé avec les gabarits ; 0 dépassement max_blocks/limit"
+        "mesure": "54 schémas JSON valides sur 54 sections, 0 invalide ; 22 sans preset, toutes techniques (404, article, blog, cart, cart-drawer, collection, collections, customer-* x7, footer, header, page, password, product, quick-view, search, wishlist-item) ; 33 presets ; 3 restrictions (header groups [header], related-products templates [product], wishlist templates [page]), 0 écart croisé avec les 24 JSON ; 0 incohérence max_blocks/limit/preset ; 257 lectures section.settings et 93 block.settings, 0 sans réglage déclaré ; diff 88f466b->6bd5f2d : 0 schéma de section modifié"
       },
       "gabarits": {
         "etat": "mesuré",
-        "mesure": "23 gabarits et groupes JSON valides, 44 sections référencées vérifiées, 0 type ou bloc absent, 0 réglage inconnu, 0 range hors bornes, 0 select hors options ; gabarits obligatoires présents"
+        "mesure": "24 fichiers JSON valides (15 templates + 7 customers + 2 groupes), +1 vs 1.8.9 = templates/page.toutes-sections.json ; 53 sections référencées et 70 blocs : 0 type sans fichier sections/<type>.liquid, 0 bloc absent du schéma, 0 réglage inconnu, 0 range hors bornes/pas, 0 select hors options, 0 id d'order orphelin ; groupes footer-group.json type=footer et header-group.json type=header ; gabarits obligatoires et customers/* au complet, gift_card.liquid présent"
       },
       "reglages-globaux": {
         "etat": "mesuré",
-        "mesure": "settings_schema.json : theme_info FLYER 1.8.9 KIOSK en premier, 134 ids uniques ; settings_data current : 0 id inconnu, 0 select hors options, 0 range hors bornes ou pas ; 0 réglage mort, 0 lu non déclaré"
+        "mesure": "settings_schema.json : theme_info FLYER 1.8.11 KIOSK en premier, 134 ids uniques (0 ajouté/supprimé/renommé vs 88f466b) ; settings_data current = preset FLYER, 0 id inconnu, 0 valeur hors bornes/pas/options, 5 color_schemes x 7 rôles complets ; 0 réglage mort, 0 lu non déclaré (9 faux positifs écartés : scheme.settings.* de css-variables.liquid:19-51, default_scheme.settings.background de theme.liquid:7 et password.liquid:7, section.blocks.first.settings.image de slideshow.liquid:34, .ratio de lookbook.liquid:70) ; clé construite 'social_'|append sur 7 réseaux lue en settings[key] (meta-tags.liquid:97-99)"
       },
       "libelles": {
         "etat": "mesuré",
-        "mesure": "ALERTE : 0 clé t: ; 702 libellés en dur dans les schémas (compte brut sans déduire les exceptions) ; aucun locales/*.schema.json ; éditeur non traduisible, pas un BLOQUANT ; clé storefront general.localization.country_language_label présente en EN et FR"
+        "mesure": "ALERTE : 0 clé t: dans les 54 schémas et settings_schema.json (donc 0 clé orpheline, pas de parité EN/FR à vérifier, aucun locales/*.schema.json) ; 963 libellés en dur bruts, 962 après exceptions (theme_info, unités de range), dont settings_schema.json 206, multirow 45, image-banner 44 ; compte strictement identique à 88f466b (963/963) : 1.8.11 n'en ajoute aucun ; éditeur non traduisible, pas un BLOQUANT"
       },
       "valeurs-defaut": {
         "etat": "mesuré",
-        "mesure": "0 default vide sur 54 schémas ; ALERTE image-banner.liquid:54-57 plancher 55 % sans image non mentionné dans l'info d'overlay_opacity (repris de 1.8.6)"
+        "mesure": "489 réglages avec id : 0 default vide, 0 default incohérent avec son type (range, color, select, checkbox, richtext, url) ; chiffres identiques à 88f466b ; 33 presets, 8 sans texte/média/bloc relus un par un : contact, page-content (placeholder en design_mode), video (placeholder_svg_tag lifestyle-2), wishlist (état vide traduit), related-products (titre de repli traduit) OK, apps et custom-liquid volontairement vides ; ALERTE disclosures.liquid:27 rien rendu sur boutique mono-pays/mono-langue, ALERTE image-banner.liquid:54-57 plancher 55 % sans image non mentionné dans l'info d'overlay_opacity (reconduite de 1.8.6)"
       },
       "cas-possibles": {
         "etat": "mesuré",
-        "mesure": "15 cas statiques sur schémas et gabarits, voir bloc cas",
+        "mesure": "16 cas : 1 mesuré à neuf (metachamp-acces-public, sans objet avec raison mesurée), 15 repris de 1.8.9 — justifié par 0 schéma de section modifié, 0 id de réglage global changé et des lectures section.settings/block.settings identiques (257/93) entre 88f466b et 6bd5f2d",
         "cas": {
           "editeur-ajout-retrait": {
-            "etat": "mesuré",
-            "mesure": "presets et blocs valides, limites respectées dans tous les gabarits ; ajout/retrait interactif non exécuté"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : presets et blocs valides, limites respectées dans tous les gabarits ; ajout/retrait interactif non exécuté"
           },
           "editeur-reglages-vides": {
-            "etat": "mesuré",
-            "mesure": "0 default vide, aucune clé ajoutée dans le diff 1.8.6->1.8.9 ; rendu à vide non testé en navigateur"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : 0 default vide, aucune clé ajoutée dans le diff 1.8.6->1.8.9 ; rendu à vide non testé en navigateur"
           },
           "editeur-valeurs-extremes": {
-            "etat": "mesuré",
-            "mesure": "range de settings_data dans les bornes et sur le pas, select dans leurs options ; textes longs non rendus"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : range de settings_data dans les bornes et sur le pas, select dans leurs options ; textes longs non rendus"
           },
           "editeur-blocs-apps": {
-            "etat": "mesuré",
-            "mesure": "0 type de bloc inconnu dans les gabarits ; @app seulement où le schéma le déclare"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : 0 type de bloc inconnu dans les gabarits ; @app seulement où le schéma le déclare"
           },
           "editeur-mise-a-jour": {
-            "etat": "mesuré",
-            "mesure": "diff 1.8.6->1.8.9 : 0 id de réglage renommé ou supprimé ; settings_data 0 id inconnu"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : diff 1.8.6->1.8.9 : 0 id de réglage renommé ou supprimé ; settings_data 0 id inconnu"
           },
           "editeur-schemas-couleurs": {
-            "etat": "sans objet",
-            "mesure": "1.8.9 ne touche aucun schéma de couleurs ; 0 id inconnu dans settings_data"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : 1.8.9 ne touche aucun schéma de couleurs ; 0 id inconnu dans settings_data"
           },
           "editeur-polices": {
-            "etat": "sans objet",
-            "mesure": "aucune police touchée par 1.8.9"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : aucune police touchée par 1.8.9"
           },
           "custom-liquid": {
-            "etat": "mesuré",
-            "mesure": "sections/custom-liquid.liquid présente, schéma valide avec preset"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : sections/custom-liquid.liquid présente, schéma valide avec preset"
           },
           "blocs-app-produit": {
-            "etat": "sans objet",
-            "mesure": "section produit non modifiée entre 1.8.6 et 1.8.9 (diff : header, search, critical.css, locales, schema_version) ; 0 écart de blocs mesuré"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : section produit non modifiée entre 1.8.6 et 1.8.9 (diff : header, search, critical.css, locales, schema_version) ; 0 écart de blocs mesuré"
           },
           "groupes-et-menus": {
-            "etat": "mesuré",
-            "mesure": "groupes sections/*.json valides, header enabled_on groups [header], 0 type absent"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : groupes sections/*.json valides, header enabled_on groups [header], 0 type absent"
           },
           "logo-favicon-focal": {
-            "etat": "sans objet",
-            "mesure": "non touché par le diff 1.8.6->1.8.9"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : non touché par le diff 1.8.6->1.8.9"
           },
           "polices-couleurs": {
-            "etat": "sans objet",
-            "mesure": "non touché par le diff 1.8.6->1.8.9"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : non touché par le diff 1.8.6->1.8.9"
           },
           "valeurs-par-defaut": {
-            "etat": "mesuré",
-            "mesure": "0 default vide sur 54 schémas, theme_info présent et premier"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : 0 default vide sur 54 schémas, theme_info présent et premier"
           },
           "apercu-editeur": {
-            "etat": "mesuré",
-            "mesure": "header : data-dropdown ajouté au <details> de localisation, aucun réglage ajouté ; test d'un rechargement de section dans l'éditeur réel non fait (statique)"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : header : data-dropdown ajouté au <details> de localisation, aucun réglage ajouté ; test d'un rechargement de section dans l'éditeur réel non fait (statique)"
           },
           "reglage-global-ecrase": {
-            "etat": "mesuré",
-            "mesure": "134 ids globaux, 0 mort, 0 lu non déclaré ; show_country_selector et show_language_selector du header lus par header.liquid"
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : 134 ids globaux, 0 mort, 0 lu non déclaré ; show_country_selector et show_language_selector du header lus par header.liquid"
+          },
+          "metachamp-acces-public": {
+            "etat": "sans objet",
+            "mesure": "grep sur tous les .liquid/.json/.js du thème : 0 occurrence de 'metafields' et 0 de 'metaobject', aucun réglage de type metaobject/metaobject_list dans les 54 schémas ni dans settings_schema.json — FLYER ne lit aucun métachamp, donc aucun access.storefront à vérifier et aucune section ne peut se vider pour cette raison"
           }
         }
       }
