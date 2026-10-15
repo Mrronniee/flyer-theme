@@ -183,115 +183,115 @@
     }
   },
   "theme-a11y-auditor": {
-    "version": "1.8.11",
+    "version": "1.8.12",
     "date": "2026-10-15",
     "verdict": "échoué",
-    "resume": "0 BLOQUANT, 1 ALERTE (champ de recherche sans anneau propre : indicateur porté par son formulaire, box-shadow 1 px à 17,4:1) ; 2 096 textes mesurés sur 15 pages EN/FR × 1440/390 (min 5,91:1), 505 combinaisons de schémas sans échec (min 5,16:1), 200 icônes min 17,27:1, 0 piège clavier, 0 arrêt sans focus visible ; les 2 ALERTE de 1.8.9 corrigées et vérifiées (sélecteurs sans envoi au change, bouton Update visible 17,4:1) ; 1 cas non mesuré : formulaires-erreurs (POST refusé par Shopify « Missing CAPTCHA token », js.hcaptcha.com refusé par le proxy ; comptes clients redirigés vers shopify.com).",
-    "commit": "6bd5f2d",
+    "resume": "0 BLOQUANT, 0 nouvelle ALERTE ; reprise ciblée des 7 fichiers corrigés sur 21 chargements (theme.id 195174072646, schema 1.8.12, 0 HTTP 429) : 925 textes de page EN/FR × 1440/390 sans échec (min 5,91:1 au DOM ; bannière sans image mesurée aux pixels à 4,74:1), vignettes de média annoncées par leur type (« Video 2 of 2 » / « Vidéo 2 sur 2 » sur /products/canvas-market-bag, aria-current déplacé à l'Entrée), disclosures remesurée sous 5 schémas en EN et FR (min 5,16:1), 9 options activées remesurées entières (sélecteurs à 1440/390/360/320, Échap et retour du focus, aucun envoi au change) ; 1 cas non mesuré : formulaires-erreurs — Shopify refuse le POST du formulaire de contact (302 de /en/contact vers la page avec les champs en requête, sans form.errors ; 403 « Your connection needs to be verified » en FR), la branche d'erreur serveur ne se rend pas.",
+    "commit": "385758f",
     "reprise": {
-      "de": "1.8.9",
-      "commit": "88f466b"
+      "de": "1.8.11",
+      "commit": "6bd5f2d"
     },
     "couverture": {
       "contraste-texte": {
-        "etat": "mesuré",
-        "mesure": "31 mesures de page (15 pages, EN et FR, 1440 et 390 ; + 360, 320, zoom 200 % et 400 %) : 2 096 textes visibles, 0 échec, minimum 5,91:1 (texte secondaire sur fond surface, /en/cart), 6,39:1 ailleurs ; survol mesuré sur accueil, collection et produit (12 contrôles chacun, min 16,1:1) ; textes sur calque mesurés aux pixels : bannière placeholder 4,67:1 (titre 48 px seuil 3 ; texte 17 px seuil 4,5)"
+        "etat": "repris",
+        "mesure": "repris de 1.8.11 : 31 mesures de page (15 pages, EN et FR, 1440 et 390 ; + 360, 320, zoom 200 % et 400 %) : 2 096 textes visibles, 0 échec, minimum 5,91:1 (texte secondaire sur fond surface, /en/cart), 6,39:1 ailleurs ; survol mesuré sur accueil, collection et produit (12 contrôles chacun, min 16,1:1) ; textes sur calque mesurés aux pixels : bannière placeholder 4,67:1 (titre 48 px seuil 3 ; texte 17 px seuil 4,5) | remesuré cette fois sur les pages touchées : 925 textes visibles sur 12 mesures de page (accueil, produit vidéo, panier, toutes-sections, contact, vitrine, EN et FR, 1440 et 390), 0 échec, min 5,91:1 (texte secondaire du panier) ; bannière d'image sans image mesurée aux pixels (capture décodée) : blanc sur rgb(115,115,115) = 4,74:1, titre 48 px (seuil 3) et texte 17 px (seuil 4,5)"
       },
       "variantes-fond": {
-        "etat": "mesuré",
-        "mesure": "465 combinaisons section×schéma (3 865 textes, 275 icônes) + 40 combinaisons panneau×schéma (recherche, tiroir panier, menu mobile, menu déroulant, panneau globe, quick-view) = 505 combinaisons, 0 échec, min texte 5,16:1, min icône 12,53:1 ; 5 schémas posés sur en-tête, pied, menu mobile, sous-menu, tiroir, recherche et panneaux ; pied background paper/surface inclus ; sections absentes des pages couvertes : aucune pour les variantes (les 8 sections customer-*, password et gift_card n'ont pas de réglage de fond et ne sont servies par aucune URL de la démo : nouveaux comptes clients redirigés vers shopify.com, boutique sans mot de passe, aucune carte cadeau) ; les 6 « échecs » DOM de la bannière d'image sont un calque noir 55 % invisible au DOM, mesurés aux pixels à 4,67:1"
+        "etat": "repris",
+        "mesure": "repris de 1.8.11 : 465 combinaisons section×schéma (3 865 textes, 275 icônes) + 40 combinaisons panneau×schéma (recherche, tiroir panier, menu mobile, menu déroulant, panneau globe, quick-view) = 505 combinaisons, 0 échec, min texte 5,16:1, min icône 12,53:1 ; 5 schémas posés sur en-tête, pied, menu mobile, sous-menu, tiroir, recherche et panneaux ; pied background paper/surface inclus ; sections absentes des pages couvertes : aucune pour les variantes (les 8 sections customer-*, password et gift_card n'ont pas de réglage de fond et ne sont servies par aucune URL de la démo : nouveaux comptes clients redirigés vers shopify.com, boutique sans mot de passe, aucune carte cadeau) ; les 6 « échecs » DOM de la bannière d'image sont un calque noir 55 % invisible au DOM, mesurés aux pixels à 4,67:1 | remesuré cette fois : disclosures (fichier corrigé) sous les 5 schémas en EN et en FR = 10 combinaisons, 4 textes chacune, 0 échec, min 5,16:1 (scheme-4) ; featured-product sous les 5 schémas sur /en/pages/showcase, 0 échec, min 12,62:1 ; menu mobile sous 390/360/320 (12 textes, 1 icône, min 6,39:1) et panneau globe de l'en-tête (2 textes, min 17,4:1) ; le rendu réservé à request.design_mode de disclosures ne sort jamais en vitrine (0 .fl-disclosures__empty sur les 2 pages, la boutique ayant 2 pays et 2 langues)"
       },
       "icones": {
-        "etat": "mesuré",
-        "mesure": "200 icônes porteuses de sens sur les pages (min 17,27:1) et 275 dans les balayages de schémas (min 12,53:1) : 0 sous 3:1 ; SVG dans un contrôle sans texte visible, icône de champ et chevrons inclus"
+        "etat": "repris",
+        "mesure": "repris de 1.8.11 : 200 icônes porteuses de sens sur les pages (min 17,27:1) et 275 dans les balayages de schémas (min 12,53:1) : 0 sous 3:1 ; SVG dans un contrôle sans texte visible, icône de champ et chevrons inclus | remesuré cette fois : 15 icônes porteuses de sens (13 sur l'accueil EN 1440, 1 dans le tiroir de menu, 1 sur la page contact après envoi), min 17,4:1, 0 sous 3:1"
       },
       "recouvrement": {
-        "etat": "mesuré",
-        "mesure": "0 champ recouvert : sur 15 pages × 1440/390 × EN/FR, aucun input/textarea/select n'a dans son parent direct une icône en position absolute qui le chevauche (0 cas) ; la loupe de la recherche est un frère flex placé avant le champ (gap 12 px), jamais au-dessus du texte"
+        "etat": "repris",
+        "mesure": "repris de 1.8.11 : 0 champ recouvert : sur 15 pages × 1440/390 × EN/FR, aucun input/textarea/select n'a dans son parent direct une icône en position absolute qui le chevauche (0 cas) ; la loupe de la recherche est un frère flex placé avant le champ (gap 12 px), jamais au-dessus du texte | remesuré cette fois : 0 champ recouvert sur 12 mesures de page, surcouche de recherche ouverte comprise (0 input/textarea/select avec une icône absolue chevauchante dans son parent direct)"
       },
       "clavier": {
-        "etat": "mesuré",
-        "mesure": "cycles Tab complets, identité d'élément : accueil 65/59 arrêts (1440/390), collection 121/116, showcase 31/19, liste des collections 43, produit 44/39, panier 26/22, recherche 33/29, contact 23/19, toutes-sections 60/55, wishlist 19/15, blog 21, article 23/18, 404 19, collection vide 19, produit épuisé 38, produit sans image 39, accueil FR 64/61 ; ordre = ordre du DOM (0 inversion), 0 piège, 0 arrêt hors écran, lien d'évitement en premier arrêt"
+        "etat": "repris",
+        "mesure": "repris de 1.8.11 : cycles Tab complets, identité d'élément : accueil 65/59 arrêts (1440/390), collection 121/116, showcase 31/19, liste des collections 43, produit 44/39, panier 26/22, recherche 33/29, contact 23/19, toutes-sections 60/55, wishlist 19/15, blog 21, article 23/18, 404 19, collection vide 19, produit épuisé 38, produit sans image 39, accueil FR 64/61 ; ordre = ordre du DOM (0 inversion), 0 piège, 0 arrêt hors écran, lien d'évitement en premier arrêt | remesuré cette fois : cycle Tab complet de l'accueil EN 1440 (69 éléments tabulables, 65 arrêts, 62 identités distinctes, 0 inversion par rapport au DOM, 0 arrêt hors écran, lien d'évitement en premier arrêt) ; galerie produit : Entrée sur la 2e vignette change le média et déplace aria-current ; le seul arrêt sans nom et sans anneau est l'iframe de la barre d'aperçu Shopify (#PBarNextFrame), hors du thème"
       },
       "focus-visible": {
-        "etat": "mesuré",
-        "mesure": "0 arrêt sans indicateur visible sur tous les cycles ; anneau minimum 16,1:1 (outline solid 2 px) ; cas particulier mesuré : le champ de la surcouche de recherche a outline:none et son indicateur est le box-shadow 0 1px 0 de son formulaire, présent au focus et absent hors focus, 17,4:1 (ALERTE) ; 0 cible sous 24×24 px (cases de filtre 16×16 avec label cliquable 226×44)"
+        "etat": "repris",
+        "mesure": "repris de 1.8.11 : 0 arrêt sans indicateur visible sur tous les cycles ; anneau minimum 16,1:1 (outline solid 2 px) ; cas particulier mesuré : le champ de la surcouche de recherche a outline:none et son indicateur est le box-shadow 0 1px 0 de son formulaire, présent au focus et absent hors focus, 17,4:1 (ALERTE) ; 0 cible sous 24×24 px (cases de filtre 16×16 avec label cliquable 226×44) | remesuré cette fois : 0 arrêt du thème sans indicateur visible sur le cycle complet de l'accueil EN 1440 (65 arrêts), anneau minimum 16,1:1 ; vignettes de la galerie produit : outline solid 2 px à 17,4:1 à 1440 et 390 ; 0 cible sous 24×24 px (hors 2 boutons radio de 1×1 px du guide des tailles, dont le label cliquable fait 48×44 et 44×44)"
       },
       "tiroir-modales": {
         "etat": "mesuré",
-        "mesure": "tiroir panier (role=dialog, aria-modal, « Your cart »/« Votre panier »), recherche (role=dialog, aria-modal, « Search »/« Recherche »), menu mobile et quick-view en <dialog> modal (« Main menu »/« Menu principal », « Quick view ») : focus dedans, Tab qui boucle (0 arrêt hors panneau), Échap ferme, focus rendu au déclencheur, à 1440/390/360/320, EN et FR ; panneau globe et menu déroulant : Échap ferme le details et rend le focus au summary ; ajout au panier : tiroir ouvert, focus dedans, « Added to cart » en aria-live, Échap rend le focus au bouton ; 9 options activées mesurées entières (reveal 7 blocs, vendor carte 8 à 6,39:1, vendor recherche prédictive 6,39:1, codes devise « €118,00 EUR » partout, vendor panier 6,39:1 sur /en/cart et dans le tiroir, sélecteurs pays et langue en-tête et pied : BE/FR et fr/en, bouton Update visible 248×45 / 106×45 / 261×45 à 17,4:1, aucun envoi au change, dans l'écran à 1440, 390, 360 et 320)"
+        "mesure": "les 9 options activées remesurées entières : animations_reveal_on_scroll (7 blocs, tous révélés, 0 à l'opacité 0, coupés par prefers-reduced-motion) ; card_show_vendor (8 cartes à 6,39:1, 13 px) ; predictive_search_show_vendor (3 fournisseurs à 6,39:1, annonce role=status « 4 results for “bag” ») ; currency_code_enabled (16 prix sur 16 avec « EUR » sur l'accueil, 2 sur 2 au panier) ; cart_show_vendor (« Maison Essai » 6,39:1 sur /en/cart et dans le tiroir) ; header et footer show_country_selector et show_language_selector (noms Country/region, Language, Pays/région, Langue, bouton Update/Mettre à jour 248×45, 106×45, 286/261/226×45, aucun envoi au change sur 6 sélecteurs — URL inchangée —, panneau globe ouvert au clavier, Échap ferme et rend le focus au summary, bloc pays/langue entier dans l'écran à 1440, 390 (334 px), 360 (309 px) et 320 (274 px)) ; tiroir panier (role=dialog, aria-modal, « Your cart »), recherche (role=dialog, aria-modal, « Search »), menu mobile (<dialog> modal, « Main menu ») : focus dedans à l'ouverture, Échap ferme, focus rendu au déclencheur aux 4 largeurs ; erreur d'ajout au-delà du stock : tiroir ouvert, message role=status aria-live=polite à 16,1:1, focus dans le tiroir"
       },
       "semantique": {
         "etat": "mesuré",
-        "mesure": "1 seul h1 et 0 saut de titre sur 15 pages ; 0 contrôle sans nom accessible (la vignette du panier porte aria-hidden + tabindex=-1, doublée par le lien de titre) ; 0 id dupliqué, 0 champ sans label ; prix barrés en <s> line-through avec « Sale price » et « Regular price » lus (carte, produit, quick-view) ; aria-live : compteur panier, statut du tiroir (« Added to cart », « 1 item in cart »), recherche prédictive (« 4 results for “bag” »), prix produit et prix du quick-view"
+        "mesure": "vignettes de média (correction 1.8.12) : « Image 1 of 2 » + « Video 2 of 2 » en EN et « Image 1 sur 2 » + « Vidéo 2 sur 2 » en FR sur /products/canvas-market-bag, aria-current sur la vignette active et déplacé à l'activation clavier, galerie en role=group « Gallery viewer » / « Galerie d'images », vidéo avec controls, sans autoplay, nommée « Canvas market bag — video » (aucun média 3D sur la boutique : branche model non rendue) ; 1 seul h1 et 0 saut de niveau sur les 12 mesures de page ; 0 id dupliqué, 0 champ sans nom accessible, 0 contrôle sans nom (hors iframe de la barre d'aperçu Shopify) ; aria-live : compteur du panier (role=status), statut du tiroir, recherche prédictive, prix produit, erreur de quantité du panier (role=status hors de la zone re-rendue)"
       },
       "images": {
-        "etat": "mesuré",
-        "mesure": "0 <img> sans alt sur 15 pages (accueil 22 images : 8 alt vides, 14 renseignés ; collection 33 ; liste des collections 24 ; showcase 0 image, 39 SVG placeholders) ; 0 SVG décoratif exposé : les 4 fl-trust__icon et le fl-video__play sont dans un span aria-hidden=\"true\""
+        "etat": "repris",
+        "mesure": "repris de 1.8.11 : 0 <img> sans alt sur 15 pages (accueil 22 images : 8 alt vides, 14 renseignés ; collection 33 ; liste des collections 24 ; showcase 0 image, 39 SVG placeholders) ; 0 SVG décoratif exposé : les 4 fl-trust__icon et le fl-video__play sont dans un span aria-hidden=\"true\" | remesuré cette fois : 0 <img> sans alt sur 12 mesures de page (134 images, dont 42 à alt vide) ; vignettes de la galerie en alt=\"\" (le nom est porté par le bouton) ; placeholders SVG de la page vitrine en aria-hidden"
       },
       "mouvement-reduit": {
         "etat": "mesuré",
-        "mesure": "accueil 1440 : sans préférence 92 transitions (> 50 ms) et 2 animations (fl-hero-monte 0,55 s) ; avec prefers-reduced-motion reduce, rechargement : 0 transition, 0 animation, 0 animation en cours, aucun bloc reveal à l'opacité 0 ; slideshow data-autoplay=false"
+        "mesure": "accueil EN 1440 rechargé avec prefers-reduced-motion: reduce : 0 transition de plus de 50 ms, 0 animation, 0 animation en cours, 7 blocs reveal tous visibles (0 classe fl-reveal, 0 opacité 0), aucun attribut data-autoplay actif, aucune vidéo en lecture automatique"
       },
       "couverture-pages": {
         "etat": "mesuré",
-        "mesure": "31 chargements, Shopify.theme.id = 195174072646 vérifié à chaque fois, 0 HTTP 429. EN 1440 et 390 : accueil, collection /collections/all, produit field-jacket, panier avec article, recherche ?q=bag (+ prédictive), contact, page.toutes-sections, page.showcase, wishlist, article journal ; EN 1440 : blog journal, liste des collections, 404, collection vide coming-soon, produit épuisé ribbed-beanie, produit sans image linen-napkin-set ; EN 360 et 320 : accueil et panneaux ; zoom 720×450 (200 %) et 320×256 (400 %) ; FR 1440 et 390 : accueil, contact, panneaux. Non servies : customers/* (nouveaux comptes clients, 302 vers shopify.com refusé par le proxy), gift_card (aucune carte cadeau sur la boutique), password (boutique sans mot de passe, /password redirige vers /en)"
+        "mesure": "21 chargements, Shopify.theme.id = 195174072646 et schema_version 1.8.12 vérifiés à chaque fois, 0 HTTP 429. EN 1440 : accueil (×2), /products/canvas-market-bag, /cart, /pages/flyer-all-sections, /pages/contact (×3 dont 2 envois de formulaire), /products/field-jacket (ajout au-delà du stock), /cart (quantité au-delà du stock), /pages/showcase (×2) ; EN 390 : accueil, /products/canvas-market-bag ; EN 360 et 320 : accueil redimensionné (tiroir de menu et sélecteurs) ; FR racine 1440 : accueil, /products/canvas-market-bag, /pages/flyer-all-sections, /pages/contact (×2) ; EN 1440 avec prefers-reduced-motion : accueil. /en/pages/flyer-showcase répond 404 : la page vitrine de la démo est /pages/showcase. Non servies, comme en 1.8.11 : customers/* (redirigés vers shopify.com), gift_card, password"
       },
       "cas-possibles": {
         "etat": "non mesuré",
-        "mesure": "12 cas sur 13 mesurés ; formulaires-erreurs non mesuré : Shopify refuse le POST des formulaires contact et commentaire (HTTP 400 « Missing CAPTCHA token ») et js.hcaptcha.com est refusé par le proxy de la session (403 au CONNECT), les pages de compte redirigent vers shopify.com (hôte refusé), et la seule erreur sans captcha (quantité 999 au panier) n'est pas déclenchable faute de produit de test à inventaire suivi",
+        "mesure": "12 cas sur 13 acquis (repris de 1.8.11, aucun fichier corrigé ne les touche) ; formulaires-erreurs reste non mesuré après 4 tentatives réelles : le POST du formulaire de contact du thème (method=post, action /en/contact, 6 champs, form_key présent) reçoit de Shopify un 302 vers /en/pages/contact?contact[body]=…&form_type=contact#contact_form sans form.errors ni contact_posted (EN, 2 envois) et un 403 « Your connection needs to be verified » (FR) ; js.hcaptcha.com reste refusé par le proxy (403 au CONNECT) et les pages de compte redirigent vers shopify.com. Tous les éléments [autofocus] du thème (résumés d'erreur, messages de succès) sont derrière un état de formulaire serveur : la branche corrigée par snippets/autofocus-fallback.liquid ne peut pas être rendue depuis cette session.",
         "cas": {
           "fonds-et-schemas": {
-            "etat": "mesuré",
-            "mesure": "465 combinaisons section×schéma (3 865 textes, 275 icônes) + 40 panneau×schéma (en-tête, pied, menu mobile, sous-menu, tiroir panier, recherche, panneau globe, menu déroulant, quick-view) : 0 échec, min 5,16:1, icônes 12,53:1 ; pied paper/surface inclus"
+            "etat": "repris",
+            "mesure": "repris de 1.8.11 : 465 combinaisons section×schéma (3 865 textes, 275 icônes) + 40 panneau×schéma (en-tête, pied, menu mobile, sous-menu, tiroir panier, recherche, panneau globe, menu déroulant, quick-view) : 0 échec, min 5,16:1, icônes 12,53:1 ; pied paper/surface inclus | remesuré cette fois : disclosures × 5 schémas en EN et FR, featured-product × 5 schémas, menu mobile à 390/360/320, panneau globe : 0 échec, min 5,16:1"
           },
           "clavier-complet": {
-            "etat": "mesuré",
-            "mesure": "tout ce qui s'ouvre se ferme à Échap et rend le focus (menu mobile, recherche, tiroir panier, quick-view, panneau globe, menu déroulant) à 1440/390/360/320 EN et FR ; 0 piège sur 17 cycles complets ; ordre = DOM, 0 inversion ; lien d'évitement premier arrêt"
+            "etat": "repris",
+            "mesure": "repris de 1.8.11 : tout ce qui s'ouvre se ferme à Échap et rend le focus (menu mobile, recherche, tiroir panier, quick-view, panneau globe, menu déroulant) à 1440/390/360/320 EN et FR ; 0 piège sur 17 cycles complets ; ordre = DOM, 0 inversion ; lien d'évitement premier arrêt | remesuré cette fois : cycle complet de l'accueil EN 1440 (65 arrêts, 0 inversion), Échap sur le menu mobile (390/360/320), la recherche, le tiroir panier et le panneau globe rend le focus au déclencheur"
           },
           "petits-ecrans-zoom": {
-            "etat": "mesuré",
-            "mesure": "320×640, 720×450 (200 %) et 320×256 (400 %) : scrollWidth = clientWidth partout, 0 débordement horizontal ; tiroir du menu défilant à 320×256 avec bouton Fermer visible ; bloc pays/langue du tiroir entier dans l'écran (274 px à 320, 309 à 360, 334 à 390) ; « My Store » non tronqué à 360 et 320"
+            "etat": "repris",
+            "mesure": "repris de 1.8.11 : 320×640, 720×450 (200 %) et 320×256 (400 %) : scrollWidth = clientWidth partout, 0 débordement horizontal ; tiroir du menu défilant à 320×256 avec bouton Fermer visible ; bloc pays/langue du tiroir entier dans l'écran (274 px à 320, 309 à 360, 334 à 390) ; « My Store » non tronqué à 360 et 320 | remesuré cette fois : bloc pays/langue du tiroir entier dans l'écran à 320 (274 px), 360 (309 px) et 390 (334 px)"
           },
           "mouvement-reduit": {
             "etat": "mesuré",
-            "mesure": "emulateMedia reduce + rechargement : 92 transitions et 2 animations tombent à 0, aucun reveal à l'opacité 0, slideshow autoplay=false"
+            "mesure": "accueil EN 1440 rechargé sous prefers-reduced-motion: reduce : 0 transition (> 50 ms), 0 animation, 0 animation en cours, 7 blocs reveal visibles sans classe fl-reveal"
           },
           "contenu-par-defaut": {
-            "etat": "mesuré",
-            "mesure": "showcase et toutes-sections rendus avec les contenus par défaut : bannière sans image (placeholder SVG aria-hidden + calque noir forcé à 55 %) mesurée aux pixels 4,67:1 à 1440 et 390, slideshow, collage, comparison, size-guide, countdown, quick-order-list, custom-liquid, disclosures, featured-blog, apps (rendu vide) : 0 texte illisible, 0 image de contenu sans alt"
+            "etat": "repris",
+            "mesure": "repris de 1.8.11 : showcase et toutes-sections rendus avec les contenus par défaut : bannière sans image (placeholder SVG aria-hidden + calque noir forcé à 55 %) mesurée aux pixels 4,67:1 à 1440 et 390, slideshow, collage, comparison, size-guide, countdown, quick-order-list, custom-liquid, disclosures, featured-blog, apps (rendu vide) : 0 texte illisible, 0 image de contenu sans alt | remesuré cette fois : /pages/showcase (124 textes) et /pages/flyer-all-sections EN et FR (106 textes chacune), featured-product sans produit choisi rend son contenu d'exemple « Example product » sans vignette, bannière sans image mesurée aux pixels à 4,74:1, 0 image de contenu sans alt"
           },
           "options-activees": {
             "etat": "mesuré",
-            "mesure": "les 9 options mesurées entières : animations_reveal_on_scroll (7 blocs, contraste après apparition, 0 arrêt clavier masqué, coupé par reduce) ; card_show_vendor (8 cartes accueil, 24 collection, 6,39:1 à 13 px) ; predictive_search_show_vendor (3 suggestions, 6,39:1, annonce « 4 results for “bag” ») ; currency_code_enabled (« €118,00 EUR » cartes, produit, panier, filtres de prix, suggestions) ; cart_show_vendor (« Maison Essai » 6,39:1 sur /en/cart et dans le tiroir — absent en 1.8.9, corrigé) ; header et footer show_country_selector et show_language_selector (BE/FR et fr/en, libellés Country/region, Language, Pays/région, Langue, bouton Update/Mettre à jour visible et nommé, 17,4:1, aucun envoi au change, clavier et Échap, dans l'écran à 1440, 390, 360 et 320)"
+            "mesure": "les 9 options de la démo remesurées entières : reveal (7 blocs, révélés, coupés par reduce), card_show_vendor (8 cartes, 6,39:1), predictive_search_show_vendor (3 fournisseurs, 6,39:1, annonce « 4 results for “bag” »), currency_code_enabled (16/16 prix avec EUR), cart_show_vendor (6,39:1 page et tiroir), header et footer × country et language (noms, tailles 248-226×45/47, Échap et retour du focus, aucun envoi au change, dans l'écran à 1440, 390, 360 et 320)"
           },
           "cibles-tactiles": {
-            "etat": "mesuré",
-            "mesure": "0 contrôle sous 24×24 px sur 15 pages × 1440/390 ; boutons d'icône 44×44 ; cases de filtre 16×16 px avec label cliquable 226×44 px (exception WCAG 2.5.8 satisfaite par la cible réelle)"
+            "etat": "repris",
+            "mesure": "repris de 1.8.11 : 0 contrôle sous 24×24 px sur 15 pages × 1440/390 ; boutons d'icône 44×44 ; cases de filtre 16×16 px avec label cliquable 226×44 px (exception WCAG 2.5.8 satisfaite par la cible réelle) | remesuré cette fois : 0 contrôle sous 24×24 px sur 12 mesures de page, vignettes de galerie 64×64, boutons Update 45 px de haut ; 2 boutons radio de 1×1 px du guide des tailles ont un label cliquable de 48×44 et 44×44 px"
           },
           "titres-formulaires-html": {
-            "etat": "mesuré",
-            "mesure": "1 h1 par page, 0 saut de niveau, tailles distinctes (h1 93,6/39,4 px, h2 29,2 px, h3 16-17 px) ; chaque champ a un id unique et un label for (0 id dupliqué, 0 champ sans label sur 15 pages) ; bordures de champ 3,89:1 ; icônes ≥ 3:1 ; validité HTML par validateur externe non testée (seulement ids, labels et imbrication mesurés)"
+            "etat": "repris",
+            "mesure": "repris de 1.8.11 : 1 h1 par page, 0 saut de niveau, tailles distinctes (h1 93,6/39,4 px, h2 29,2 px, h3 16-17 px) ; chaque champ a un id unique et un label for (0 id dupliqué, 0 champ sans label sur 15 pages) ; bordures de champ 3,89:1 ; icônes ≥ 3:1 ; validité HTML par validateur externe non testée (seulement ids, labels et imbrication mesurés) | remesuré cette fois : 1 h1 et 0 saut de niveau sur 12 mesures de page, 0 id dupliqué, 0 champ sans label ; champs de contact : id unique + label for, required sur e-mail et message, autocomplete name/email/tel, bordures à 17,4:1 ; 3 fieldset d'options sur /products/field-jacket"
           },
           "medias-et-carrousels": {
-            "etat": "mesuré",
-            "mesure": "slideshow du showcase : role=region, nom « Carousel », data-autoplay=false (aucune rotation automatique), boutons Previous/Next/Go to slide 1-2 de 44×44 nommés, Entrée change la diapo et met à jour la région aria-live, images du média aria-hidden ; section video : poster avec icône de lecture aria-hidden, 0 texte en échec ; quick-view : média et sélecteur de variante au clavier, prix annoncé en aria-live"
+            "etat": "repris",
+            "mesure": "repris de 1.8.11 : slideshow du showcase : role=region, nom « Carousel », data-autoplay=false (aucune rotation automatique), boutons Previous/Next/Go to slide 1-2 de 44×44 nommés, Entrée change la diapo et met à jour la région aria-live, images du média aria-hidden ; section video : poster avec icône de lecture aria-hidden, 0 texte en échec ; quick-view : média et sélecteur de variante au clavier, prix annoncé en aria-live | remesuré cette fois : galerie du produit vidéo — 2 vignettes 64×64 nommées par type (Image/Video, Image/Vidéo), aria-current déplacé à l'Entrée, vidéo avec controls, sans autoplay, nommée ; aucun média 3D sur la boutique"
           },
           "composants-commerce": {
-            "etat": "mesuré",
-            "mesure": "carte produit : 4 arrêts (liste d'envies, titre, ajout ou « Choose options », quick view), un seul lien produit, image alt renseigné ou vide ; prix soldé et prix normal nommés tous les deux et prix barré en <s> (carte, produit, quick-view : « Sale price €38,00 EUR / Regular price €46,00 EUR ») ; tiroir panier : compteur en role=status (« 1 item in cart »), « Remove Field Jacket », « Quantity — Field Jacket », boutons ± 44×44 ; accordéons et facettes en <details>/<summary> nommés"
+            "etat": "repris",
+            "mesure": "repris de 1.8.11 : carte produit : 4 arrêts (liste d'envies, titre, ajout ou « Choose options », quick view), un seul lien produit, image alt renseigné ou vide ; prix soldé et prix normal nommés tous les deux et prix barré en <s> (carte, produit, quick-view : « Sale price €38,00 EUR / Regular price €46,00 EUR ») ; tiroir panier : compteur en role=status (« 1 item in cart »), « Remove Field Jacket », « Quantity — Field Jacket », boutons ± 44×44 ; accordéons et facettes en <details>/<summary> nommés | remesuré cette fois : cartes de l'accueil avec vendeur à 6,39:1, prix avec code devise, tiroir panier nommé « Your cart » avec quantité étiquetée « Quantity — Field Jacket » et erreur de stock annoncée en role=status"
           },
           "formulaires-erreurs": {
             "etat": "non mesuré",
-            "mesure": "états d'erreur serveur impossibles à provoquer : POST /en/contact et POST des commentaires refusés par Shopify (HTTP 400 « Missing CAPTCHA token ») et js.hcaptcha.com refusé par le proxy de la session (403 au CONNECT) ; pages de compte redirigées vers shopify.com (nouveaux comptes clients, hôte refusé) ; erreur de quantité du panier non déclenchable (999 accepté, aucun produit de test à inventaire suivi). Mesuré malgré tout : état normal de tous les formulaires rendus (contact, commentaire, panier, produit, localisation, newsletter) — required, autocomplete name/email/tel, label for unique, note « * Required fields » 6,39:1, astérisques aria-hidden, bordures 3,89:1, 3 fieldset/legend pour les options de variante ; branche d'erreur lue dans le code (role=alert + tabindex=-1 + autofocus, liens d'ancre, aria-invalid, aria-describedby avec ids cohérents) mais non rendue"
+            "mesure": "branche d'erreur serveur impossible à rendre : POST complet et conforme du formulaire de contact (form_type=contact, utf8, 4 champs, form_key) renvoyé par Shopify en 302 vers la page avec les champs en requête, sans form.errors (EN, 2 envois successifs), et en 403 « Your connection needs to be verified » (FR) ; js.hcaptcha.com refusé par le proxy (403 au CONNECT) ; comptes clients redirigés vers shopify.com. Mesuré malgré tout : état normal des formulaires (contact EN/FR : label for + id unique, required, autocomplete name/email/tel, bordures 17,4:1 ; 3 fieldset/legend d'options produit) et deux vraies erreurs serveur du panier — ajout de 5 unités d'une variante à 3 en stock : « Only 3 items were added to your cart due to availability. » dans le tiroir en role=status aria-live=polite à 16,1:1, focus dans le tiroir ; même refus sur /cart : message sous la ligne concernée (6,39:1, 14 px) + région role=status hors de la zone re-rendue, focus gardé sur le champ « Quantity — Field Jacket », quantité ramenée à 3 (vérifiée par /cart.js)"
           },
           "mobile-sans-survol": {
-            "etat": "mesuré",
-            "mesure": "à 390 comme à 1440, les actions de carte (ajout, quick view, liste d'envies) sont visibles sans survol et atteignables au Tab (116 arrêts à 390 sur la collection, 0 élément révélé seulement au survol) ; aucun verrouillage d'orientation ; le panneau de facettes de collection.liquid est passé en max-height: 70dvh (70vh conservé en repli) — défaut 1.8.9 corrigé ; aucun clignotement"
+            "etat": "repris",
+            "mesure": "repris de 1.8.11 : à 390 comme à 1440, les actions de carte (ajout, quick view, liste d'envies) sont visibles sans survol et atteignables au Tab (116 arrêts à 390 sur la collection, 0 élément révélé seulement au survol) ; aucun verrouillage d'orientation ; le panneau de facettes de collection.liquid est passé en max-height: 70dvh (70vh conservé en repli) — défaut 1.8.9 corrigé ; aucun clignotement | remesuré cette fois : accueil et produit à 390 — actions de carte et vignettes atteignables au Tab sans survol"
           },
           "en-tete-modes": {
-            "etat": "mesuré",
-            "mesure": "un seul mode (collant ; pas de mode transparent) : à scrollY = 2000 le conteneur de section est en position sticky, top = 0, fond opaque rgb(255,255,255), texte 17,4:1 et icônes 17,4:1 à 1440 et 390 ; en-tête mesuré aussi sous les 5 schémas (menu mobile, sous-menu, globe, recherche, tiroir)"
+            "etat": "repris",
+            "mesure": "repris de 1.8.11 : un seul mode (collant ; pas de mode transparent) : à scrollY = 2000 le conteneur de section est en position sticky, top = 0, fond opaque rgb(255,255,255), texte 17,4:1 et icônes 17,4:1 à 1440 et 390 ; en-tête mesuré aussi sous les 5 schémas (menu mobile, sous-menu, globe, recherche, tiroir) | remesuré cette fois : en-tête de l'accueil EN et FR, icônes à 17,4:1, panneau globe lisible ouvert (17,4:1)"
           }
         }
       }
