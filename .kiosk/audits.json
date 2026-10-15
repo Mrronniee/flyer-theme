@@ -21,59 +21,59 @@
     }
   },
   "theme-bilingue-checker": {
-    "version": "1.8.9",
-    "date": "2026-10-14",
+    "version": "1.8.11",
+    "date": "2026-10-15",
     "verdict": "passé",
-    "resume": "Locales storefront 268/268 clés à parité (nouvelle clé country_language_label en EN et FR), 0 clé orpheline sur 249 clés utilisées, 0 reste anglais dans fr.json (25 identiques légitimes), pas de locales schema (INFO, éditeur en anglais assumé) ; démo EN 6 pages à theme.id 195174072646 sans mot français ; démo FR 6 pages à theme.id 195174072646, 0 libellé de locale du thème en anglais, anglais restant = contenus par défaut du thème classés, 0 côté boutique.",
-    "commit": "88f466b",
+    "resume": "Reprise ciblée de 1.8.9 : locales 270/270 clés à parité (2 clés ajoutées, 1 renommée des deux côtés), 251 clés | t utilisées et 0 orpheline, 0 reste anglais dans fr.json (25 identiques légitimes, 0 faute d'insécable), pas de locales de schéma (INFO) ; démo EN 6 pages à theme.id 195174072646 sans mot français, démo FR 6 pages + tiroir panier à 2 exemplaires sans libellé de locale anglais, anglais restant = contenu par défaut du thème classé fichier:ligne + blog de la boutique ; 4/4 cas mesurés, dont les 2 chaînes FR ajoutées sans débordement à 390 px.",
+    "commit": "6bd5f2d",
     "reprise": {
-      "de": "1.8.6",
-      "commit": "eb05e7e"
+      "de": "1.8.9",
+      "commit": "88f466b"
     },
     "couverture": {
       "parite-vitrine": {
         "etat": "mesuré",
-        "mesure": "remesuré sur 88f466b : en.default.json 268 clés, fr.json 268 clés, 0 clé d'un seul côté (ajout de general.localization.country_language_label, en:45 et fr:45)"
+        "mesure": "remesuré sur 6bd5f2d (locales/en.default.json et locales/fr.json modifiés par la correction) : en.default.json 270 clés, fr.json 270 clés, 0 clé d'un seul côté ; +2 des deux côtés (general.forms.required_note, cart.price_each_html), 1 renommée des deux côtés (collections.filters.highest_price → highest_price_html)"
       },
       "cles-orphelines": {
         "etat": "mesuré",
-        "mesure": "remesuré : 249 clés | t utilisées, 0 absente (5 clés à pluriel one/other présentes en EN : accessibility.cart_count, blog.comments, cart.item_count, collections.general.product_count, search.results_for_html) ; country_language_label utilisée par sections/header.liquid:210 ; 0 clé t: de schéma"
+        "mesure": "remesuré : 251 clés | t utilisées dans sections/snippets/layout/templates/config/assets, 0 absente en EN, 0 absente en FR (5 clés à pluriel one/other résolues) ; 0 clé t: de schéma ; required_note utilisée dans 7 sections, price_each_html dans cart-drawer.liquid:210, highest_price_html dans collection.liquid:94, aucune trace de l'ancien nom"
       },
       "francais-reel": {
         "etat": "mesuré",
-        "mesure": "remesuré sur 88f466b : fr.json 25 valeurs identiques à l'anglais, toutes légitimes (réseaux, Pagination, Page, Contact, Message, Total, Date, Province, Minutes, Description, Collections, Suggestions, Pages, Articles, date_formats.month_year), 0 reste anglais, 0 faute de ponctuation insécable ; fr.schema.json absent, sans objet"
+        "mesure": "remesuré sur 6bd5f2d : 25 valeurs FR identiques à l'anglais, toutes légitimes (13 réseaux, Pagination, Page, Description, Collections, Suggestions, Pages, Articles, Contact, Message, Total ×2, Date, Province, Minutes, date_formats.month_year), 0 reste anglais ; 0 faute d'espace insécable avant : ; ! ? sur 270 valeurs, 0 apostrophe droite ; fr.schema.json absent"
       },
       "parite-editeur": {
         "etat": "sans objet",
-        "mesure": "ni en.default.schema.json ni fr.schema.json dans locales/, 0 clé t: de schéma utilisée ; éditeur en anglais, choix assumé"
+        "mesure": "aucun fichier *.schema.json ajouté ni modifié par la correction ; ls locales/ = en.default.json, fr.json seulement, et 0 clé t: de schéma utilisée dans le thème ; éditeur en anglais, choix assumé (mesure identique à 1.8.9)"
       },
       "demo-en": {
         "etat": "mesuré",
-        "mesure": "6 pages lues (/en, collection flyer-essentials, produit overshirt, panier, recherche shirt, /en/pages/showcase), theme.id 195174072646 et locale en partout ; 0 mot français relevé"
+        "mesure": "6 pages lues le 15/10 (/en, /en/collections/flyer-essentials, /en/products/overshirt, /en/cart, /en/pages/contact, /en/pages/showcase?view=toutes-sections), status 200, Shopify.theme.id 195174072646 et locale en sur chacune, aucun 429 ; 0 mot français du thème (« Français » = language.endonym_name du sélecteur, « FR » = localization.country.iso_code aria-hidden)"
       },
       "demo-fr": {
         "etat": "mesuré",
-        "mesure": "6 pages lues (racine, collection, produit, panier, recherche, /pages/showcase), theme.id 195174072646 et locale fr partout ; 0 libellé de locale du thème en anglais ; anglais restant = contenu par défaut du thème : sections/header-group.json:11, sections/footer-group.json:26 (+ titre Shop du pied), templates/index.json:60,163,193 et textes de héros/confiance/témoignages/FAQ/inscription de templates/index.json, templates/page.showcase.json ; 0 texte anglais côté boutique ; le marchand les traduit dans l'éditeur"
+        "mesure": "6 pages lues (racine, /collections/flyer-essentials, /products/overshirt, /cart, /pages/contact, /pages/showcase?view=toutes-sections) + tiroir panier ouvert à 2 exemplaires, status 200, theme.id 195174072646 et locale fr partout ; 0 libellé de locale du thème en anglais ; anglais restant = contenu par défaut du thème (header-group.json:11 ; footer-group.json:11,18,19,25,26 ; index.json:6,16-31,49-50,60-85,103-122,141-170,191-193,239 ; featured-collection.liquid:159 ; nouveau en 1.8.11 : page.toutes-sections.json:24,25,34 et les default de schéma featured-blog.liquid:347, quick-order-list.liquid:538, countdown.liquid:293,299) que le marchand traduit dans l'éditeur, plus les 3 articles du blog news de la boutique ; 0 défaut de locale côté thème"
       },
       "cas-possibles": {
         "etat": "mesuré",
-        "mesure": "4 cas traités",
+        "mesure": "4 cas sur 4 provoqués et mesurés sur 6bd5f2d",
         "cas": {
           "langue-par-defaut": {
             "etat": "mesuré",
-            "mesure": "textes par défaut en anglais (langue par défaut du thème) classés ligne par ligne sur la démo FR (header-group.json:11, footer-group.json:26, index.json, page.showcase.json) ; le marchand les traduit dans l'éditeur ; 0 texte français dans la démo EN"
+            "mesure": "démo EN 6 pages : 0 texte français du thème ; démo FR 6 pages : 0 libellé de locale anglais, anglais restant classé fichier:ligne (gabarits, groupes de sections, default de schéma) + blog de la boutique ; grep de 12 mots français sur templates/*.json, config/settings_data.json et sections/*-group.json : 0 résultat"
           },
           "textes-longs-fr": {
             "etat": "mesuré",
-            "mesure": "nouveau libellé FR « Pays/région et langue » (22 caractères) porté en aria-label du bouton globe, texte non visible, donc aucun débordement possible ; le reste est repris de 1.8.6 : le rendu visuel relève de l'audit a11y"
+            "mesure": "les 2 chaînes FR ajoutées mesurées au navigateur à 390 px : .fl-cart__item-each « €118,00 EUR l'unité » scrollWidth 253 = clientWidth 253, bord droit 366 < 390 ; .fl-form-note « * Champs obligatoires » scrollWidth 342 = clientWidth 342, bord droit 366 < 390 ; documentElement.scrollWidth 390 = clientWidth 390 sur les deux pages, aucun débordement"
           },
           "typographie-fr": {
             "etat": "mesuré",
-            "mesure": "0 faute d'espace insécable avant : ; ? ! sur 268 valeurs de fr.json ; la valeur ajoutée n'a aucune ponctuation à protéger ; nombres et guillemets sans objet dans les nouvelles chaînes"
+            "mesure": "0 faute d'espace insécable avant : ; ? ! sur les 270 valeurs de fr.json, 0 apostrophe droite (les 2 nouvelles valeurs utilisent U+2019) ; rendu live sur la démo FR : « Taille : S » avec U+00A0 via general.colon, et « €118,00 EUR l'unité » au tiroir"
           },
           "messages-dynamiques": {
             "etat": "mesuré",
-            "mesure": "249 clés | t résolues, dont les 5 clés à pluriel (item_count, cart_count aria-live, product_count, results_for_html, comments) présentes en EN et en FR ; panier FR lu sur la démo : 0 libellé de locale en anglais"
+            "mesure": "tiroir panier chargé de 2 exemplaires et lu dans les deux langues sur la démo : FR « 2 articles / €118,00 EUR l'unité / Sous-total / Taxes incluses… / Paiement », EN « 2 items / €118,00 EUR each / Subtotal / Checkout », pluriel résolu des deux côtés ; panier vide « Votre panier est vide. » / « Your cart is empty. » ; aria-live header.liquid:311 alimentée par accessibility.cart_count one/other présent en EN et FR ; 12 clés d'erreur, de succès et d'état vide toutes traduites, aucune identique à l'EN ; 251 clés | t résolues"
           }
         }
       }
