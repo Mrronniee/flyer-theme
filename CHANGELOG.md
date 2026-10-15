@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.8.14 - 2026-10-16
+
+### Fixed
+- **An error on one form no longer appears on another.** Several forms of a
+  page can post to the same address — the contact form and the footer
+  newsletter both post to `/contact` — and Shopify then renders the same error,
+  and the same submitted values, inside each of them. Sending the newsletter
+  with a bad address showed an error on the contact form too, copied the
+  address into its e-mail field and marked it invalid. Only the form you sent
+  now shows its error, keeps its values and takes the focus.
+- **The country and language button announces the code it shows.** The button
+  in the header displays the current country code, but read out only
+  "Country/region and language". Speech users could not say what they read. Its
+  name now ends with the code, as "Country/region and language: FR".
+
 ## 1.8.13 - 2026-10-15
 
 ### Fixed

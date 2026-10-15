@@ -221,6 +221,12 @@
             else
               assign loc_label = 'general.localization.language_label' | t
             endif
+            # The button shows the country code, so the accessible name has to
+            # contain it: speech users say what they read (WCAG 2.5.3).
+            if header_country
+              assign loc_colon = 'general.colon' | t
+              assign loc_label = loc_label | append: loc_colon | append: ' ' | append: localization.country.iso_code
+            endif
           -%}
           <summary class="fl-header__icon-btn fl-header__loc-toggle" aria-label="{{ loc_label }}">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">

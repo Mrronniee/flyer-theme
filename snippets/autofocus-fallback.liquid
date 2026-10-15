@@ -1,15 +1,27 @@
 {% doc %}
-  Focuses the element marked autofocus (a form's error summary or status
-  message) when the page was opened on an anchor. Shopify posts the contact,
-  comment and newsletter forms to a URL ending in an anchor (#contact_form…),
-  and browsers skip autofocus when the URL targets an element, so after an
-  error the focus would stay on the page instead of the summary.
+  Keeps a submitted form's error state to that form alone, and puts the focus
+  on it.
 
-  Shopify anchors that redirect to the form it received, so the fragment names
-  the submitted form. A page can hold several forms that post to the same
-  address — the contact form and the footer newsletter both post to /contact —
-  and they then all render their error state, so several elements carry
-  autofocus. The fragment is what tells them apart.
+  Several forms of a page can post to the same address — the contact form and
+  the footer newsletter both post to /contact — and Shopify then renders the
+  same form.errors, and the same submitted values, inside every {% form %} of
+  the page. Without this, sending the newsletter with a bad address also shows
+  an error on the contact form, copies the address into its e-mail field and
+  marks it invalid, and two elements end up carrying autofocus.
+
+  Shopify anchors its redirect to the form it received (#contact_form,
+  #Footer-news-newsletter-1), so the fragment names the submitted form. The
+  error state of the other forms is cleared as soon as the page is parsed, and
+  the focus is placed once it has loaded: the browser re-applies the fragment
+  between parsing and load, which would otherwise take the focus back to the
+  top of the page (measured 15/10/2026).
+
+  Fields whose value is only an echo of the submission carry data-form-echo, so
+  a foreign value can be cleared. Fields holding stored data — a saved address,
+  for instance — do not carry it and are left alone.
+
+  Without JavaScript the page stays as Shopify rendered it: nothing is hidden
+  that was not already shown.
 
   @example
   {% render 'autofocus-fallback' %}
@@ -30,23 +42,56 @@
       return target.tagName === 'FORM' ? target : target.closest('form');
     }
 
-    function focusSummary() {
+    function clearForeignErrors(sent) {
+      var forms = document.querySelectorAll('form');
+      for (var i = 0; i < forms.length; i++) {
+        var form = forms[i];
+        if (form === sent) continue;
+
+        var messages = form.querySelectorAll('.fl-form-status--error, .fl-field__error');
+        if (!messages.length) continue;
+
+        var cleared = [];
+        for (var m = 0; m < messages.length; m++) {
+          if (messages[m].id) cleared.push(messages[m].id);
+          messages[m].remove();
+        }
+
+        var marked = form.querySelectorAll('[aria-invalid="true"]');
+        for (var k = 0; k < marked.length; k++) {
+          marked[k].removeAttribute('aria-invalid');
+          marked[k].removeAttribute('autofocus');
+          var describedby = marked[k].getAttribute('aria-describedby');
+          if (describedby && cleared.indexOf(describedby) !== -1) {
+            marked[k].removeAttribute('aria-describedby');
+          }
+        }
+
+        var echoes = form.querySelectorAll('[data-form-echo]');
+        for (var e = 0; e < echoes.length; e++) echoes[e].value = '';
+      }
+    }
+
+    function focusSummary(sent) {
       var active = document.activeElement;
       if (active && active !== document.body) return;
       // Prefer the form Shopify anchored to; fall back to the first marked
       // element so a page with a single form keeps its previous behaviour.
-      var scope = submittedForm();
-      var el = (scope && scope.querySelector('[autofocus]')) || document.querySelector('[autofocus]');
+      var el = (sent && sent.querySelector('[autofocus]')) || document.querySelector('[autofocus]');
       if (el) el.focus();
     }
 
-    // The browser re-applies the URL fragment between parsing and load, which
-    // takes the focus back to <body>. Waiting for load keeps the focus on the
-    // summary (measured 15/10/2026: focused during parsing, lost before load).
+    var sent = submittedForm();
+    // The snippet is rendered at the end of <body>, so the forms are parsed:
+    // clearing now keeps a foreign error from ever being shown.
+    if (sent) clearForeignErrors(sent);
+
     if (document.readyState === 'complete') {
-      focusSummary();
+      focusSummary(sent);
     } else {
-      window.addEventListener('load', focusSummary, { once: true });
+      window.addEventListener('load', function () {
+        focusSummary(sent);
+      }, { once: true });
     }
   })();
 </script>

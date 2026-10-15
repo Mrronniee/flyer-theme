@@ -96,6 +96,7 @@
           id="{{ name_id }}"
           name="contact[name]"
           value="{{ form.name | escape_once }}"
+          data-form-echo
           autocomplete="name"
           {% if form.errors contains 'name' %}
             aria-invalid="true"
@@ -120,6 +121,7 @@
           id="{{ email_id }}"
           name="contact[email]"
           value="{{ form.email | escape_once }}"
+          data-form-echo
           autocomplete="email"
           autocapitalize="off"
           required
@@ -143,6 +145,7 @@
           id="{{ phone_id }}"
           name="contact[phone]"
           value="{{ form.phone | escape_once }}"
+          data-form-echo
           autocomplete="tel"
           {% if form.errors contains 'phone' %}
             aria-invalid="true"

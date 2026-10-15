@@ -59,6 +59,7 @@
           name="customer[first_name]"
           id="FlRegisterFirst"
           value="{{ form.first_name }}"
+          data-form-echo
           autocomplete="given-name"
           {% if form.errors contains 'first_name' %}
             aria-invalid="true"
@@ -80,6 +81,7 @@
           name="customer[last_name]"
           id="FlRegisterLast"
           value="{{ form.last_name }}"
+          data-form-echo
           autocomplete="family-name"
           {% if form.errors contains 'last_name' %}
             aria-invalid="true"
@@ -104,6 +106,7 @@
           name="customer[email]"
           id="FlRegisterEmail"
           value="{{ form.email }}"
+          data-form-echo
           autocomplete="email"
           autocapitalize="off"
           required

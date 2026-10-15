@@ -140,6 +140,7 @@
             id="FlCommentName"
             name="comment[author]"
             value="{{ form.author }}"
+            data-form-echo
             autocomplete="name"
             required
             {% if form.errors contains 'author' %}
@@ -165,6 +166,7 @@
             id="FlCommentEmail"
             name="comment[email]"
             value="{{ form.email }}"
+            data-form-echo
             autocomplete="email"
             autocapitalize="off"
             required
