@@ -21,59 +21,59 @@
     }
   },
   "theme-bilingue-checker": {
-    "version": "1.8.11",
+    "version": "1.8.12",
     "date": "2026-10-15",
     "verdict": "passé",
-    "resume": "Reprise ciblée de 1.8.9 : locales 270/270 clés à parité (2 clés ajoutées, 1 renommée des deux côtés), 251 clés | t utilisées et 0 orpheline, 0 reste anglais dans fr.json (25 identiques légitimes, 0 faute d'insécable), pas de locales de schéma (INFO) ; démo EN 6 pages à theme.id 195174072646 sans mot français, démo FR 6 pages + tiroir panier à 2 exemplaires sans libellé de locale anglais, anglais restant = contenu par défaut du thème classé fichier:ligne + blog de la boutique ; 4/4 cas mesurés, dont les 2 chaînes FR ajoutées sans débordement à 390 px.",
-    "commit": "6bd5f2d",
+    "resume": "Reprise ciblée de 1.8.11 : locales 273/273 clés à parité (3 clés ajoutées des deux côtés), 254 clés t utilisées et 0 orpheline, 0 reste anglais dans fr.json (25 identiques légitimes, 0 faute d'insécable, 0 apostrophe droite), pas de locales de schéma (INFO) ; démo 1.8.12 relue sur 4 pages (2 EN, 2 FR) à theme.id 195174072646, vignettes vidéo annoncées « Video 2 of 2 » / « Vidéo 2 sur 2 », 0 mot français en EN et 0 libellé de locale anglais en FR (2 restes = contenu par défaut header-group.json:11 et footer-group.json:25) ; 4/4 cas mesurés.",
+    "commit": "385758f",
     "reprise": {
-      "de": "1.8.9",
-      "commit": "88f466b"
+      "de": "1.8.11",
+      "commit": "6bd5f2d"
     },
     "couverture": {
       "parite-vitrine": {
         "etat": "mesuré",
-        "mesure": "remesuré sur 6bd5f2d (locales/en.default.json et locales/fr.json modifiés par la correction) : en.default.json 270 clés, fr.json 270 clés, 0 clé d'un seul côté ; +2 des deux côtés (general.forms.required_note, cart.price_each_html), 1 renommée des deux côtés (collections.filters.highest_price → highest_price_html)"
+        "mesure": "remesuré sur 385758f (locales/en.default.json et locales/fr.json modifiés) : en.default.json 273 clés, fr.json 273 clés, 0 clé d'un seul côté ; +3 des deux côtés depuis 1.8.11 (products.product.media_item_video, products.product.media_item_model, sections.disclosures.editor_empty), aucune clé retirée ni renommée"
       },
       "cles-orphelines": {
         "etat": "mesuré",
-        "mesure": "remesuré : 251 clés | t utilisées dans sections/snippets/layout/templates/config/assets, 0 absente en EN, 0 absente en FR (5 clés à pluriel one/other résolues) ; 0 clé t: de schéma ; required_note utilisée dans 7 sections, price_each_html dans cart-drawer.liquid:210, highest_price_html dans collection.liquid:94, aucune trace de l'ancien nom"
+        "mesure": "remesuré : 254 clés distinctes utilisées dans sections/snippets/layout/templates/config/assets (251 en '…' | t direct + 3 passées par variable media_item_key), 0 absente en EN, 0 absente en FR (pluriels one/other résolus) ; 0 clé t: de schéma ; media_item_video assignée en featured-product.liquid:115 et product.liquid:89, media_item_model en featured-product.liquid:117 et product.liquid:91, media_item en featured-product.liquid:119 et product.liquid:93, editor_empty utilisée en disclosures.liquid:38"
       },
       "francais-reel": {
         "etat": "mesuré",
-        "mesure": "remesuré sur 6bd5f2d : 25 valeurs FR identiques à l'anglais, toutes légitimes (13 réseaux, Pagination, Page, Description, Collections, Suggestions, Pages, Articles, Contact, Message, Total ×2, Date, Province, Minutes, date_formats.month_year), 0 reste anglais ; 0 faute d'espace insécable avant : ; ! ? sur 270 valeurs, 0 apostrophe droite ; fr.schema.json absent"
+        "mesure": "remesuré sur 385758f : 25 valeurs FR identiques à l'anglais, toutes légitimes (aucune ne contient de mot anglais discriminant), 0 reste anglais sur 273 valeurs ; 0 faute d'espace insécable avant : ; ! ? ; 0 apostrophe droite ; les 3 nouvelles valeurs FR correctes (« Vidéo … sur … », « Modèle 3D … sur … », editor_empty avec U+00A0 avant le : et 4 apostrophes U+2019) ; fr.schema.json absent"
       },
       "parite-editeur": {
         "etat": "sans objet",
-        "mesure": "aucun fichier *.schema.json ajouté ni modifié par la correction ; ls locales/ = en.default.json, fr.json seulement, et 0 clé t: de schéma utilisée dans le thème ; éditeur en anglais, choix assumé (mesure identique à 1.8.9)"
+        "mesure": "remesuré sur 385758f : ls locales/ = en.default.json et fr.json seulement, aucun fichier *.schema.json, et 0 clé t: de schéma utilisée dans le thème ; le seul texte d'éditeur modifié par la correction (info de image-banner.liquid:290) est en anglais en dur, cohérent avec le choix assumé d'un éditeur en anglais"
       },
       "demo-en": {
         "etat": "mesuré",
-        "mesure": "6 pages lues le 15/10 (/en, /en/collections/flyer-essentials, /en/products/overshirt, /en/cart, /en/pages/contact, /en/pages/showcase?view=toutes-sections), status 200, Shopify.theme.id 195174072646 et locale en sur chacune, aucun 429 ; 0 mot français du thème (« Français » = language.endonym_name du sélecteur, « FR » = localization.country.iso_code aria-hidden)"
+        "mesure": "2 pages remesurées le 15/10 sur 1.8.12 (/en/products/canvas-market-bag, /en/pages/flyer-all-sections), status 200, Shopify.theme.id 195174072646, schema_version 1.8.12, locale en, aucun 429 : 0 mot français du thème dans le texte visible ; vignettes du produit à vidéo = [\"Image 1 of 2\",\"Video 2 of 2\"] ; disclosures rend « Country/region … Language … Update ». Les 4 autres pages de 1.8.11 reprises : aucun des 8 fichiers modifiés ne les rend"
       },
       "demo-fr": {
         "etat": "mesuré",
-        "mesure": "6 pages lues (racine, /collections/flyer-essentials, /products/overshirt, /cart, /pages/contact, /pages/showcase?view=toutes-sections) + tiroir panier ouvert à 2 exemplaires, status 200, theme.id 195174072646 et locale fr partout ; 0 libellé de locale du thème en anglais ; anglais restant = contenu par défaut du thème (header-group.json:11 ; footer-group.json:11,18,19,25,26 ; index.json:6,16-31,49-50,60-85,103-122,141-170,191-193,239 ; featured-collection.liquid:159 ; nouveau en 1.8.11 : page.toutes-sections.json:24,25,34 et les default de schéma featured-blog.liquid:347, quick-order-list.liquid:538, countdown.liquid:293,299) que le marchand traduit dans l'éditeur, plus les 3 articles du blog news de la boutique ; 0 défaut de locale côté thème"
+        "mesure": "2 pages remesurées (/products/canvas-market-bag, /pages/flyer-all-sections), status 200, theme.id 195174072646, locale fr : 0 libellé de locale du thème en anglais ; vignettes = [\"Image 1 sur 2\",\"Vidéo 2 sur 2\"], disclosures rend « Pays/région … Langue … Mettre à jour » ; anglais restant = contenu par défaut du thème que le marchand traduit dans l'éditeur : sections/header-group.json:11 « Free shipping on orders over $50 » et sections/footer-group.json:25 « Newsletter ». Les 4 autres pages de 1.8.11 reprises (mêmes classements, aucun fichier modifié ne les rend)"
       },
       "cas-possibles": {
         "etat": "mesuré",
-        "mesure": "4 cas sur 4 provoqués et mesurés sur 6bd5f2d",
+        "mesure": "4 cas sur 4 provoqués et mesurés sur 385758f",
         "cas": {
           "langue-par-defaut": {
             "etat": "mesuré",
-            "mesure": "démo EN 6 pages : 0 texte français du thème ; démo FR 6 pages : 0 libellé de locale anglais, anglais restant classé fichier:ligne (gabarits, groupes de sections, default de schéma) + blog de la boutique ; grep de 12 mots français sur templates/*.json, config/settings_data.json et sections/*-group.json : 0 résultat"
+            "mesure": "remesuré : grep de 13 mots français sur templates/, sections/*-group.json et config/settings_data.json = 0 résultat ; démo EN 2 pages 0 texte français du thème ; démo FR 2 pages 0 libellé de locale anglais, 2 restes anglais classés fichier:ligne (header-group.json:11, footer-group.json:25) ; les 3 clés ajoutées existent dans les deux langues"
           },
           "textes-longs-fr": {
             "etat": "mesuré",
-            "mesure": "les 2 chaînes FR ajoutées mesurées au navigateur à 390 px : .fl-cart__item-each « €118,00 EUR l'unité » scrollWidth 253 = clientWidth 253, bord droit 366 < 390 ; .fl-form-note « * Champs obligatoires » scrollWidth 342 = clientWidth 342, bord droit 366 < 390 ; documentElement.scrollWidth 390 = clientWidth 390 sur les deux pages, aucun débordement"
+            "mesure": "les 3 chaînes FR ajoutées ne sont pas du texte en page : 2 sont des aria-label de vignette, 1 ne rend qu'en request.design_mode. Contrôle au navigateur sur /products/canvas-market-bag à 390 px : documentElement.scrollWidth 390 = clientWidth 390, vignettes « Image 1 sur 2 » bord droit 88 px et « Vidéo 2 sur 2 » bord droit 160 px, < 390 ; aucun débordement à 1440 non plus (1440 = 1440 sur les 4 pages lues)"
           },
           "typographie-fr": {
             "etat": "mesuré",
-            "mesure": "0 faute d'espace insécable avant : ; ? ! sur les 270 valeurs de fr.json, 0 apostrophe droite (les 2 nouvelles valeurs utilisent U+2019) ; rendu live sur la démo FR : « Taille : S » avec U+00A0 via general.colon, et « €118,00 EUR l'unité » au tiroir"
+            "mesure": "remesuré sur les 273 valeurs de fr.json : 0 faute d'espace insécable avant : ; ? !, 0 apostrophe droite, 0 guillemet droit hors attribut HTML (password.admin_html) ; la nouvelle valeur sections.disclosures.editor_empty porte U+00A0 en position 25 (« masquée : ») et U+2019 aux positions 44, 49, 86 et 101 ; « Vidéo » et « Modèle 3D » accentués, vérifiés en rendu sur la démo FR"
           },
           "messages-dynamiques": {
             "etat": "mesuré",
-            "mesure": "tiroir panier chargé de 2 exemplaires et lu dans les deux langues sur la démo : FR « 2 articles / €118,00 EUR l'unité / Sous-total / Taxes incluses… / Paiement », EN « 2 items / €118,00 EUR each / Subtotal / Checkout », pluriel résolu des deux côtés ; panier vide « Votre panier est vide. » / « Your cart is empty. » ; aria-live header.liquid:311 alimentée par accessibility.cart_count one/other présent en EN et FR ; 12 clés d'erreur, de succès et d'état vide toutes traduites, aucune identique à l'EN ; 251 clés | t résolues"
+            "mesure": "la branche dynamique ajoutée (case media.media_type dans product.liquid:85-94 et featured-product.liquid:111-120) mesurée en direct sur /products/canvas-market-bag (1 image + 1 vidéo) : aria-label EN [\"Image 1 of 2\",\"Video 2 of 2\"], FR [\"Image 1 sur 2\",\"Vidéo 2 sur 2\"] — les deux branches image et vidéo rendues dans les deux langues ; branche 'model' non rendue (aucun média 3D sur la démo), clé résolue en EN et FR dans les locales ; rendu réservé à l'éditeur de disclosures non atteignable sur la vitrine (request.design_mode faux, et la boutique a 2 langues : .fl-disclosures__empty = 0 nœud sur /pages/flyer-all-sections EN et FR), clé résolue dans les deux locales. Messages de panier, erreurs et états vides repris de 1.8.11 : aucune clé de panier touchée par la correction"
           }
         }
       }
