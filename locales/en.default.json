@@ -105,6 +105,8 @@
       "description": "Description",
       "media_label": "Gallery viewer",
       "media_item": "Image {{ index }} of {{ count }}",
+      "media_item_video": "Video {{ index }} of {{ count }}",
+      "media_item_model": "3D model {{ index }} of {{ count }}",
       "view_details": "View full details",
       "taxes_included": "Taxes included.",
       "added_to_cart": "Added to cart",
@@ -371,6 +373,9 @@
       "feature": "Feature",
       "yes": "Yes",
       "no": "No"
+    },
+    "disclosures": {
+      "editor_empty": "This section is hidden: your store has only one country/region and one language. It appears once a second market or language is published."
     }
   }
 }

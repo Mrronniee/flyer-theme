@@ -105,6 +105,8 @@
       "description": "Description",
       "media_label": "Galerie d’images",
       "media_item": "Image {{ index }} sur {{ count }}",
+      "media_item_video": "Vidéo {{ index }} sur {{ count }}",
+      "media_item_model": "Modèle 3D {{ index }} sur {{ count }}",
       "view_details": "Voir tous les détails",
       "taxes_included": "Taxes incluses.",
       "added_to_cart": "Ajouté au panier",
@@ -371,6 +373,9 @@
       "feature": "Caractéristique",
       "yes": "Oui",
       "no": "Non"
+    },
+    "disclosures": {
+      "editor_empty": "Cette section est masquée : votre boutique n’a qu’un pays/région et une langue. Elle s’affiche dès qu’un second marché ou une seconde langue est publié."
     }
   }
 }

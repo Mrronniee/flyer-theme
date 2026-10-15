@@ -109,12 +109,22 @@
           {%- if feat_product.media.size > 1 -%}
             <div class="fl-featprod__thumbs">
               {%- for media in feat_product.media -%}
+                {%- liquid
+                  case media.media_type
+                    when 'video', 'external_video'
+                      assign media_item_key = 'products.product.media_item_video'
+                    when 'model'
+                      assign media_item_key = 'products.product.media_item_model'
+                    else
+                      assign media_item_key = 'products.product.media_item'
+                  endcase
+                -%}
                 <button
                   type="button"
                   class="fl-featprod__thumb"
                   data-thumb
                   data-media-id="{{ media.id }}"
-                  aria-label="{{ 'products.product.media_item' | t: index: forloop.index, count: feat_product.media.size }}"
+                  aria-label="{{ media_item_key | t: index: forloop.index, count: feat_product.media.size }}"
                   {% if forloop.first %}
                     aria-current="true"
                   {% endif %}

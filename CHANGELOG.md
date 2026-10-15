@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.8.12 - 2026-10-15
+
+### Fixed
+- **Focus lands on the error summary after a form is sent.** Contact, comment
+  and newsletter forms come back to an address ending in an anchor, and the
+  browser moved the focus back to the top of the page just after it had been
+  placed on the summary of errors. A screen reader or keyboard user had to
+  hunt for what went wrong. The focus is now placed once the page has finished
+  loading, so it stays on the summary.
+- **Video and 3D thumbnails are no longer announced as images.** On a product
+  with a video, the gallery thumbnails were all read "Image 2 of 2", including
+  the one that opens the video. Videos and 3D models are now announced as
+  such, on the product page and in the Featured product section.
+
+### Changed
+- **Disclosures section visible in the editor on a single-market store.** The
+  section shows a country and a language selector, so it rendered nothing at
+  all when a store has only one of each — the merchant added it and saw an
+  empty page. The editor now shows a line explaining why it is hidden. Nothing
+  changes on the live storefront.
+- **Clearer help text for the image banner overlay.** The overlay setting now
+  says that, with no image chosen, the overlay stays at 55% or above to keep
+  the text legible over the placeholder.
+
 ## 1.8.11 - 2026-10-15
 
 ### Added

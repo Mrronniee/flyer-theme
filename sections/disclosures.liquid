@@ -24,6 +24,22 @@
   endif
 -%}
 
+{%- if show_country == false and show_language == false and request.design_mode -%}
+  {%- comment -%}
+    Editor-only affordance: on a store with a single country/region and a
+    single language the section renders nothing on the live storefront, so
+    the merchant would add it from its preset and see an empty page.
+  {%- endcomment -%}
+  <section
+    class="fl-disclosures full-width color-{{ section.settings.color_scheme }}"
+    style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
+  >
+    <div class="fl-disclosures__inner">
+      <p class="fl-disclosures__empty">{{ 'sections.disclosures.editor_empty' | t }}</p>
+    </div>
+  </section>
+{%- endif -%}
+
 {%- if show_country or show_language -%}
   <section
     class="fl-disclosures full-width color-{{ section.settings.color_scheme }}"
@@ -118,6 +134,11 @@
 
   .fl-disclosures__submit {
     margin-block-start: 10px;
+  }
+
+  .fl-disclosures__empty {
+    margin: 0;
+    max-width: 60ch;
   }
 
   @media (max-width: 749px) {

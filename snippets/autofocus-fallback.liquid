@@ -12,8 +12,18 @@
 <script>
   (function () {
     if (!location.hash) return;
-    var el = document.querySelector('[autofocus]');
-    var active = document.activeElement;
-    if (el && (!active || active === document.body)) el.focus();
+    function focusSummary() {
+      var el = document.querySelector('[autofocus]');
+      var active = document.activeElement;
+      if (el && (!active || active === document.body)) el.focus();
+    }
+    // The browser re-applies the URL fragment between parsing and load, which
+    // takes the focus back to <body>. Waiting for load keeps the focus on the
+    // summary (measured 15/10/2026: focused during parsing, lost before load).
+    if (document.readyState === 'complete') {
+      focusSummary();
+    } else {
+      window.addEventListener('load', focusSummary, { once: true });
+    }
   })();
 </script>
