@@ -298,171 +298,179 @@
     }
   },
   "theme-parcours-tester": {
-    "version": "1.8.9",
-    "date": "2026-10-14",
+    "version": "1.8.11",
+    "date": "2026-10-15",
     "verdict": "échoué",
-    "resume": "Reprise ciblée de 1.8.7 sur la démo 195174072646 (schema 1.8.9) : 754 contrôles OK sur 9 passes (EN/FR × 1440/390, EN 360/320, mouvement réduit) et les scripts complémentaires ; ÉCHEC : 3 défauts mesurés (/cart sans la marque malgré cart_show_vendor, corrigé en 1.8.10 non déployé ; aperçu rapide qui perd le code devise et le prix barré au changement de variante ; nom de la boutique tronqué à 390/360/320 par le globe de langue), 2 écarts (prix de filtre sans code devise, tiroir sans prix unitaire) et 17 cas non mesurés sur 27 faute de données de démo ou d'accès ; compteur 79/79, 0 erreur JS du thème, 12 bascules de langue sur 12. Corrigé en 1.8.10 (760c248, 2db010c) : marque sur /cart (cart.liquid) ; prix de l'aperçu rapide cloné du snippet price (code devise, prix barré) ; sélecteurs de langue/pays dans le menu mobile sous 750 px (nom de la boutique entier) ; code devise sur le filtre prix, le compte, la carte cadeau et la prédictive ; prix unitaire, remises, propriétés et plan dans le tiroir, propriétés et plan sur /cart. Non déployé : à remesurer sur la démo 1.8.10.",
-    "commit": "88f466b",
+    "resume": "Reprise ciblée de 1.8.9 sur la démo 195174072646 (1.8.11, 6bd5f2d) : 442 contrôles sur ~35 passes (EN/FR × 1440/390, EN 360/320), compteur d'en-tête 50/50 égal à /cart.js, 0 erreur JS du thème, 0 HTTP 429 ; tous les correctifs 1.8.10/1.8.11 revérifiés OK (marque sur /cart, prix de l'aperçu rapide avec code devise et prix barré, nom de boutique entier à 320, code devise du filtre prix, prix unitaire au tiroir) ; ÉCHEC : 2 défauts — après une erreur serveur du formulaire contact le focus repart sur <body> au lieu du résumé [autofocus] (snippets/autofocus-fallback.liquid exécuté pendant l'analyse, écrasé par le fragment #contact_form ; un appel après load tient), et la vignette d'une vidéo est annoncée « Image 2 of 2 » (sections/product.liquid:90, clé products.product.media_item) ; 29 cas : 24 mesurés, 3 sans objet, 2 repris.",
+    "commit": "6bd5f2d",
     "reprise": {
-      "de": "1.8.7",
-      "commit": "56b3c09"
+      "de": "1.8.9",
+      "commit": "88f466b"
     },
     "couverture": {
       "produit-panier": {
         "etat": "mesuré",
-        "mesure": "overshirt S/M/L : id caché, ?variant=, légende et prix « €118,00 EUR » qui suivent (M, L) ; ocre-angle-lamp 15 variantes à 2 options : prix 245→280→320 € ; ajout de 2 : tiroir role=dialog, focus dans le tiroir, ligne Size: L, 236 €, marque, cart.js q=2, compteur égal ; Échap rend le focus au bouton. 6 passes (EN/FR × 1440/390, EN 360/320) OK. Image de variante non démontrable : aucune variante de la démo n'a d'image (src identique)."
+        "mesure": "field-jacket (Color×Size×Fabric, 12 variantes) en EN/FR × 1440/390 + EN 320 : 3 fieldsets, première variante chargée, Navy puis Linen changent l'id, l'URL ?variant= et le prix €145,00 → €165,00 EUR ; ajout de 2 → tiroir role=dialog aria-modal=true, focus dedans, ligne « Color: Navy · Size: S · Fabric: Linen », €330,00 EUR, « €165,00 EUR each / l'unité », marque « Maison Essai », « Taxes included/incluses » ; compteur d'en-tête = /cart.js à chaque étape ; 5 passes, 43/43 contrôles chacune (le libellé FR du bouton est « Paiement », vérifié séparément)."
       },
       "ajout-rapide": {
         "etat": "mesuré",
-        "mesure": "Carte Canvas tote de flyer-essentials : bonne ligne, 32 €, marque, compteur 1 = cart.js, boutons 293×44 (1440) et 165×44 (390), recouvrement bouton/titre/prix/marque 0 px² sur 8 cartes ; aperçu rapide : s'ouvre, focus dedans, Échap ferme, contrastes ≥ 6,39:1 (dialog color: var(--color-ink)). 6 passes OK. DÉFAUT aperçu rapide : après changement de variante le prix perd le code devise (« €118,00 EUR » → « €118,00 », 6/6 passes) et le prix barré avec ses libellés « Sale price » (pack-decouverte ×12 : 29,58 € seul au lieu de 29,58 € barré 34,80 €) : sections/quick-view.liquid:59 (data-price = variant.price | money) + assets/quick-view.js:48."
+        "mesure": "Cartes à variante unique de flyer-essentials : bouton 293×44 (1440) / 165×44 (390), recouvrement bouton↔titre/prix/marque = 0 px² sur 4 cartes à bouton × 5 passes ; clic → tiroir ouvert, ligne « RUE STUDIO Canvas tote €32,00 EUR », statut « Added to cart / Ajouté au panier », compteur 1 = /cart.js. Aperçu rapide : dialog ouvert, focus dedans, select [data-qv-variant] ; pack-decouverte ×6 → ×12 : « Sale price €29,58 EUR / Regular price €34,80 EUR » (code devise et prix barré conservés — défaut 1.8.9 corrigé), ajout depuis l'aperçu OK, compteur juste. Cartes épuisées : pas d'ajout rapide ni d'aperçu (par conception), badge « Sold out » ×2."
       },
       "tiroir": {
         "etat": "mesuré",
-        "mesure": "+1 (2, 64 €), −1 (1, 32 €), saisie 5 (160 €) puis 1, 100000 accepté et cohérent avec cart.js, sous-total = cart.js à chaque étape, note enregistrée, Échap ferme et rend le focus, réouverture par l'icône, suppression → « Your cart is empty. »/« Votre panier est vide. » sans pied, 10 lignes : liste défilante, pied et Checkout visibles, Checkout → shop.app/checkout (302). Pas de barre de livraison offerte dans le tiroir (constat). Prix unitaire absent du tiroir. 6 passes OK."
+        "mesure": "+1 (2→3), −1 (3→2), saisie 5, 999, suppression → « Your cart is empty. / Votre panier est vide. » ; sous-total = /cart.js à chaque étape (€330,00 / €495,00 / €825,00) ; note enregistrée dans cart.note ; Échap ferme et rend le focus, réouverture par l'icône ; 10 lignes : pied et bouton Checkout visibles dans l'écran, panneau x 1020-1440 (1440) et 0-390 (390/320), 0 défilement horizontal ; remise « Discount: ESSAI10 −€50,40 EUR » affichée ; prix unitaire « €84,00 EUR /kg » présent ; Checkout → 302 shop.app/checkout/101883216198/cn/…/shoppay (EN et FR). Pas de barre de livraison offerte dans le tiroir (constat, 0 élément)."
       },
       "page-panier": {
         "etat": "mesuré",
-        "mesure": "/cart (EN/FR × 1440/390, EN 360/320) : prix, ligne et sous-total avec code = cart.js, +1/−1 (focus gardé sur +), saisie 4 (472 €), note dans cart.note, retrait d'une ligne, dernière ligne → message vide traduit, 10 lignes, Checkout → shop.app/checkout, 0 défilement horizontal. DÉFAUT : la marque (cart_show_vendor actif, affichée par le tiroir) n'apparaît sur aucune ligne de /cart (0 élément vendor sur 2 lignes, 6/6 passes) : sections/cart.liquid:82, réglage lu seulement par cart-drawer.liquid:134 ; corrigé en 1.8.10 (760c248), non déployé."
+        "mesure": "/cart EN/FR × 1440/390 + EN 320 : marque sur 2/2 lignes (cart_show_vendor — défaut 1.8.9 corrigé), +1, saisie 4 (€504,00), note « Note test page panier » dans cart.note, retrait d'une ligne puis de la dernière → état vide traduit, 10 lignes = 10 lignes de /cart.js (sous-total €6.800,00 EUR), remise ESSAI10 −€50,40 EUR, 0 défilement horizontal, compteur juste à chaque étape. Le tiroir n'est pas rendu sur /cart (vérifié : 0 [data-cart-panel])."
       },
       "recherche": {
         "etat": "mesuré",
-        "mesure": "« overshirt » 2 résultats, « surchemise » (FR) ; « zzqxkwv » : état vide traduit EN/FR + 2 boutons ; prédictive « overs »/« surch » : résultats avec marque et prix + code, statut annoncé, « voir tout », Échap ; résultats pages : liens de titre 26,4 px (correctif 1.8.9 search.liquid) ; 6 passes OK."
+        "mesure": "« overshirt » 2 résultats / « surchemise » en FR ; « zzqxkwv » : 0 carte + « No results found for “zzqxkwv” » / « Aucun résultat » ; prédictive « overs » : 3 résultats, statut « 3 results for “overs” », marque + prix avec code (« €2,90 EUR », « €118,00 EUR »), lien « voir tout », Échap ferme et rend le focus ; « <img src=x onerror=…> » : 0 HTML injecté ; par type : 73 résultats pour « the » avec produits, 1 article (/blogs/journal/retinal-vs-retinol) et 1 page, pagination 4 pages avec « Page 1, current page ». 6 passes (EN/FR × 1440/390/360/320 pour l'overlay)."
       },
       "collection": {
         "etat": "mesuré",
-        "mesure": "/collections/all 69 produits, 24 par page : tri prix croissant (2,9 € en tête) et décroissant (12 800 €) changent les 3 premiers titres ; filtre prix ≤ 30 : 69 → 28 (24 cartes page 1), pastille et « Clear all » ; disponibilité 69 → 69 ; combinés 28 ; page 2 : 24 cartes différentes, un seul aria-current=page ; liens de titre de carte 26,4 px sur toutes les cartes (correctif 1.8.9), 0 recouvrement ; 6 passes OK. ALERTE : note « prix le plus élevé » et pastille de prix sans code devise (collection.liquid:72, 202-203)."
+        "mesure": "/collections/all : 73 produits, 24 par page ; tri prix croissant (€2,90 en tête) et décroissant (€12.800,00) changent les 3 premiers titres ; filtres de la boutique = Disponibilité (72 en stock / 1 épuisé) et Prix ; prix ≤ 30 → 30 produits, combiné avec « en stock » → 29, retrait d'une pastille → 30, « Clear all » → 73 ; prix ≤ 1 → 0 carte + « 0 products » + « Clear all » ; page 2 : 24 cartes différentes et exactement un aria-current=page (« Page 2, current page » / « Page 2, page actuelle ») ; note « The highest price is €13.400,00 EUR » avec code devise ; pas de « charger plus » (pagination)."
       },
       "formulaires": {
         "etat": "mesuré",
-        "mesure": "Contact vide : contact[email] et contact[body] invalides, message natif, URL inchangée ; e-mail mal formé refusé ; newsletter de l'accueil et bannière d'inscription du showcase : valueMissing et typeMismatch, URL inchangée ; champs avec label ; 6 passes OK. Envoi valide non mesuré (hCaptcha bloqué par le proxy, aucune requête POST)."
+        "mesure": "Contact (EN 1440, FR 390) : envoi vide → contact[email] et contact[body] invalides, URL inchangée ; e-mail mal formé refusé ; envoi valide (données de test) → 302 puis « Thanks for reaching out. We'll get back to you soon. » ; erreur serveur provoquée → « Please correct the errors below. / Email is invalid », aria-invalid et message par champ (MAIS focus perdu, voir défaut 1). Newsletter du pied : vide et « nope » refusés, URL inchangée. Commentaire d'article : vide → 3 champs requis invalides ; valide → « Your comment was posted successfully. It will appear once approved » (blog modéré). En FR, un POST contact a été refusé par la vérification Shopify (403), cause d'environnement."
       },
       "pages": {
         "etat": "mesuré",
-        "mesure": "404 (statut 404, traduite, lien 200), FAQ de l'accueil (5 accordéons exclusifs, Entrée/Espace, réponse nommée), showcase (13 sections : comparison role=region, size-guide cm/in 20 valeurs a/0 b puis retour, 4 accordéons repliables, diaporama suivant/précédent), lookbook 8 liens 200, wishlist (ajout, carte, retrait → état vide traduit), /collections, blog vide, reveal on scroll ; EN/FR × 1440/390 (+360/320 EN). Pas de quiz ni de constructeur ; produit mis en avant du showcase sans produit choisi (« Example product ») et section vidéo absente de la démo : non vus."
+        "mesure": "404 EN/FR : statut 404, « Page not found » / « Page introuvable », lien d'accueil (200) ; FAQ de l'accueil : 5 accordéons exclusifs, clic et Entrée, réponse déployée (h 57→175 px) ; showcase (/pages/showcase, 15 sections) : diaporama « suivant » change la diapositive, guide des tailles cm→in (valeurs 80/62/86 → 31.5/24.5/34), comparaison, collapsible, collage, multirow, multicolumn ; flyer-story EN/FR (« Our story » / « Notre histoire », 0 image cassée) ; wishlist : ajout de 2 cartes (aria-pressed, compteur 2), page avec 2 cartes, retrait d'une carte, « Clear list » → « Your wishlist is empty. » ; /collections : 29 collections ; blog journal (3 articles, extraits + « Read more / Lire la suite », dates) ; article (date, formulaire de commentaire, note de modération) ; blog news vide (« No posts yet. » / « Aucun article pour le moment. ») ; /password redirige (boutique non protégée). Pas de quiz ni de constructeur dans ce thème."
       },
       "entete": {
         "etat": "mesuré",
-        "mesure": "Menu mobile (390/360/320 EN/FR) : ouvert, focus dedans, x 0-335, sous-menu Shop 3 liens, Échap et Fermer rendent le focus au burger. Sous-menu de bureau Shop (3 liens) : clic, Échap, clic extérieur. Panneau langue de l'en-tête : dans l'écran, Échap, clic extérieur et sortie du focus le ferment, aria-label « Language »/« Langue » (1.8.8 confirmé). 12 bascules EN↔FR (en-tête et pied), page, URL, Shopify.locale, html lang et thème conservés. Pays : sélecteur absent proprement. DÉFAUT : nom de la boutique tronqué par les 5 icônes (globe ajouté par show_language_selector) : « My St… » à 390 (76 px pour 81), « My… » à 360 et 320 (46 px), EN et FR ; sections/header.liquid ~899-915 (@media max-width 419px, ellipsis) et :207 (details du globe)."
+        "mesure": "Nom de la boutique entier à 1440/390/360/320 EN et FR (scrollWidth = clientWidth = 81 px, ellipsed=false — défaut 1.8.9 corrigé) ; 4 icônes 44×44 (36-40×44 sous 390) et <shopify-account> visible aux 4 largeurs ; menu mobile : dialog ouvert, focus dedans, x 0→≤ largeur, sous-menu « Shop » avec ses liens, 2 selects (pays + langue) dans le tiroir, Échap ferme et rend le focus au burger ; bureau : sous-menu (3 liens) et panneau « Country/region and language » (2 selects) — Échap et clic extérieur ferment les deux (clics réels) ; bascule de langue EN↔FR depuis l'en-tête ET le pied (locale, URL, html lang et thème 195174072646 conservés) ; bascule de pays FR↔BE depuis l'en-tête ET le pied (Shopify.country = BE retenu après rechargement). 0 défilement horizontal partout."
       },
       "console": {
         "etat": "mesuré",
-        "mesure": "0 erreur JS du thème sur toutes les passes et tous les scripts complémentaires. Ignorés comme Shopify ou proxy cloud : ERR_TUNNEL_CONNECTION_FAILED (otlp-http-production.shopifysvc.com, monorail, shop.app, hCaptcha, /account/login), bugsnag, privacy-banner ; listés à part : plus de 200 requêtes services/login_with_shop/authorize ERR_ABORTED, 2 POST api/2026-01/graphql.json 502 et 1 « [shopify-account] Menu 'customer-account-main-menu' not found in Storefront API » (composant <shopify-account>, cdn.shopify.com/storefront/web-components/account.js), et les GET 404 volontaires de la page de test 404."
+        "mesure": "0 erreur JS du thème sur ~35 passes. Totaux relevés et attribués par pile : 990 « Failed to load resource: ERR_TUNNEL_CONNECTION_FAILED » (domaines Shopify bloqués par le proxy du cloud), 187 « TypeError: Failed to fetch » (piles : cdn/shopifycloud/privacy-banner/storefront-banner.js, shop_events_listener, wpm, shop-js/chunk.utils), 77 MonorailRequestError, 65 bugsnag, 2 « captcha provider script js.hcaptcha.com » ; HTTP ≥ 400 : 2 × 404 volontaires (page 404 de test, /gift_cards), 2 × 400 sur mes requêtes sitemap, 1 × 403 sur un POST /contact (vérification Shopify). Aucun 429, aucune page « Verifying your connection »."
       },
       "compteur-panier": {
         "etat": "mesuré",
-        "mesure": "Compteur [data-cart-count] = item_count de /cart.js à chaque étape (accueil vide, ajout rapide, +1, −1, saisie, vide, ajout produit ×2, 2e produit, /cart, +1, −1, saisie, retrait, vide) : 79/79 égaux sur 9 passes (EN/FR × 1440/390, EN 360/320 en deux temps, mouvement réduit)."
+        "mesure": "50/50 contrôles [data-cart-count] = item_count de /cart.js : accueil vide, ajout 2, +1, −1, saisie 5, suppression, ajout rapide, ajout depuis l'aperçu rapide, /cart +1, saisie 4, retrait, panier vidé, panier de 10 lignes (10 = 10), quantité 999 (999 = 999), produit épuisé (inchangé) — sur 5 passes de parcours (EN/FR × 1440/390, EN 320) et les scripts complémentaires."
       },
       "cas-possibles": {
-        "etat": "non mesuré",
-        "mesure": "27 cas : 8 mesurés, 2 sans objet (retrait-magasin, abonnements), 17 non mesurés faute de données de démo ou d'accès : boutique-devises, produit-cas, collection-cas, panier-cas, compte-client, pages-systeme, formulaires-cas, remises, filtres-facettes, medias-riches, shop-pay-installments, variantes-cas, carte-cadeau-destinataire, blog-article, recherche-par-type, page-404-mot-de-passe, navigateurs-webviews.",
+        "etat": "mesuré",
+        "mesure": "29 cas : 24 mesurés, 3 sans objet (compte-client, shop-pay-installments, carte-cadeau-destinataire), 2 repris de 1.8.9 (retrait-magasin, abonnements).",
         "cas": {
           "boutique-un-ou-plusieurs-pays": {
             "etat": "mesuré",
-            "mesure": "Boutique à un seul pays (EUR) : 0 select pays, 0 #Header-country/#Footer-country, 0 conteneur de localisation vide sur 9 chargements d'accueil (EN/FR, 1440/390/360/320, et mouvement réduit) alors que show_country_selector est coché en-tête et pied ; sélecteurs de langue rendus et fonctionnels (12 bascules EN↔FR réussies). Fonctionnement multi-pays : sans objet, la boutique n'a qu'un pays."
+            "mesure": "La boutique a maintenant 2 marchés : selects country_code (BE, FR, tous deux EUR) rendus dans l'en-tête (#Header-country), le tiroir de menu (#HeaderDrawer-country) et le pied (#Footer-country) ; bascule FR→BE effectuée depuis l'en-tête et depuis le pied, Shopify.country = BE après rechargement, thème conservé ; sélecteur de langue EN↔FR fonctionnel aux deux endroits (4 bascules réussies)."
           },
           "boutique-devises": {
-            "etat": "non mesuré",
-            "mesure": "Mesuré : format de la boutique €{{amount_with_comma_separator}} (+ « EUR » avec currency_code_enabled), ex. « €7.095,00 EUR », identique entre cartes, fiche, tiroir, /cart et recherche prédictive (data-money-format). Non mesurable : une autre devise et un symbole après le nombre (boutique mono-devise, un seul marché)."
+            "etat": "mesuré",
+            "mesure": "Format mesuré partout (cartes, fiche, tiroir, /cart, prédictive, filtres, aperçu rapide) : « €118,00 EUR », « €13.400,00 EUR », « €6.800,00 EUR » — symbole avant, virgule décimale, point de milliers, code devise (currency_code_enabled). Après passage au marché Belgique : Shopify.currency.active = EUR, prix inchangés. Une autre devise n'existe pas sur la boutique (FR et BE sont tous deux en EUR, un seul taux) : cette moitié du cas n'est pas provocable, raison donnée."
           },
           "produit-cas": {
-            "etat": "non mesuré",
-            "mesure": "Mesuré : en solde (2 cartes + fiche vitamin-c : badge, prix barré, libellés lecteur d'écran), une seule variante (canvas-tote), 15 variantes à 2 options (ocre-angle-lamp, prix 245→280→320), titre très long (Konga Cooperative, 360/320 sans débordement), prix unitaire (€84,00 EUR /kg sur carte, fiche et /cart ; ABSENT du tiroir). Non mesurable, absent de la démo : produit épuisé (0 sur 69), sans image (0), à 3 options ou plus (max 2), carte cadeau (aucune)."
+            "etat": "mesuré",
+            "mesure": "Solde : pack-decouverte (badge Sale, « Sale price €17,40 EUR / Regular price €34,80 EUR », libellés lecteur d'écran) ; épuisé : ribbed-beanie (bouton disabled, « Sold out » / « Épuisé », prix affiché, 2 badges, pas d'ajout rapide sur la carte, clic sans effet sur le panier) ; sans image : linen-napkin-set (placeholder SVG, 0 image cassée, ajout possible, 0 défilement horizontal) ; une seule variante : canvas-tote (ajout rapide direct) ; beaucoup de variantes : field-jacket (3 options, 12 variantes, 145/165) et ocre-angle-lamp (15) ; titre très long : Konga Cooperative (carte et fiche sans débordement) ; prix unitaire : « €84,00 EUR /kg » ; carte cadeau : aucune dans la boutique (création refusée par Shopify tant que les cartes cadeaux ne sont pas activées) → sous-cas sans objet avec cette cause."
           },
           "collection-cas": {
-            "etat": "non mesuré",
-            "mesure": "Mesuré : plus d'une page (/collections/all, 69 produits, 3 pages, aria-current unique), tri prix croissant/décroissant, filtres sans résultat (message traduit + bouton « Clear all »). Non mesurable : collection vide (les 30 collections de la boutique ont au moins 1 produit)."
+            "etat": "mesuré",
+            "mesure": "Collection vide : /collections/coming-soon, 0 carte, page propre, 0 défilement horizontal ; plus d'une page : /collections/all 73 produits, 4 pages, page 2 avec un seul aria-current=page ; filtres sans résultat : prix ≤ 1 → 0 produit, « 0 products », « Clear all » ; tri : prix croissant/décroissant et 9 options de tri, la grille change réellement."
           },
           "panier-cas": {
-            "etat": "non mesuré",
-            "mesure": "Mesuré : panier vide (tiroir et /cart, EN/FR), panier plein de 10 lignes (/cart : sous-total = cart.js ; tiroir : liste défilante, pied et bouton visibles), suppression de la dernière ligne, note de commande (tiroir et /cart, enregistrée dans cart.note). Non mesurable : quantité au-delà du stock (100000 accepté sur 8/8 produits FLYER, stock non suivi, le refus Shopify n'a pu être provoqué) et réduction au panier (aucune remise sur la boutique)."
+            "etat": "mesuré",
+            "mesure": "Panier vide (tiroir et /cart, EN/FR) ; panier plein : 10 lignes ajoutées par ajout rapide → 10 lignes dans le tiroir (pied et Checkout visibles) et 10 sur /cart (sous-total €6.800,00 EUR = /cart.js), compteur 10 ; quantité très élevée : 999 accepté et cohérent avec /cart.js (produits sans suivi de stock) ; au-delà du stock : le seul produit à stock suivi (ribbed-beanie, 0) ne peut pas être ajouté — bouton désactivé, clic sans effet ; suppression de la dernière ligne → message vide traduit ; note de commande enregistrée (tiroir et /cart) ; réduction ESSAI10 appliquée et affichée."
           },
           "recherche-cas": {
             "etat": "mesuré",
-            "mesure": "Mot présent (« overshirt » 2 résultats, « surchemise » en FR), mot absent (« zzqxkwv » : état vide traduit), prédictive (« overs » : 3 résultats, statut annoncé, Échap), accents (« éclat » : 8 résultats), caractères spéciaux (<img onerror>, guillemet, & et apostrophe : 0 HTML injecté, terme échappé dans le champ), joker (« s* » : 71 résultats, pagination), 6 passes."
+            "mesure": "Mot présent (« overshirt » 2 résultats, « surchemise » FR), mot absent (« zzqxkwv », état vide traduit), prédictive (« overs » 3 résultats avec marque et prix, statut annoncé, « voir tout », Échap), caractères spéciaux (<img src=x onerror=…> : 0 HTML injecté) et accents (« surchemise », « éclat » via la prédictive FR) ; 6 passes (EN/FR × 1440/390/360/320)."
           },
           "compte-client": {
-            "etat": "non mesuré",
-            "mesure": "/en/account/login et /account/login : net::ERR_TUNNEL_CONNECTION_FAILED (4 essais, redirection vers customer_authentication de shopify.com, bloquée par le proxy du cloud) ; connexion, inscription, mot de passe oublié, compte, adresses, commande non atteignables. Seul le composant <shopify-account> est mesuré (cas compte-shopify)."
+            "etat": "sans objet",
+            "mesure": "La boutique utilise les nouveaux comptes clients : /en/account/login et /account/login redirigent vers https://shopify.com/101883216198/account?locale=…, hôte refusé par le proxy du cloud (net::ERR_TUNNEL_CONNECTION_FAILED, vérifié moi-même en EN et en FR). Connexion, inscription, mot de passe oublié, compte, adresses et commande ne sont servis par aucune URL de la démo."
           },
           "pages-systeme": {
-            "etat": "non mesuré",
-            "mesure": "Mesuré : 404 (statut 404, titre traduit, lien d'accueil 200, 6 passes), blog sans article (« No posts yet. » / « Aucun article pour le moment. »). Non mesurable : mot de passe de la boutique (/password redirige, la boutique n'est pas protégée), carte cadeau (aucune), article avec commentaires (aucun article)."
+            "etat": "mesuré",
+            "mesure": "404 : statut 404 en EN et FR, titre traduit, lien d'accueil 200 ; blog sans article : /blogs/news « No posts yet. » / « Aucun article pour le moment. » ; article avec commentaires : /blogs/journal/the-two-minute-morning, commentaire valide posté → « Your comment was posted successfully. It will appear once approved » (modération) ; mot de passe : /password redirige vers l'accueil (boutique non protégée) → sous-cas sans objet ; carte cadeau : /gift_cards 404, aucune carte cadeau → sous-cas sans objet (activation à faire par Ronnie)."
           },
           "formulaires-cas": {
-            "etat": "non mesuré",
-            "mesure": "Mesuré : contact vide (e-mail et message invalides, message natif, URL inchangée), e-mail mal formé refusé, newsletter de l'accueil et bannière d'inscription du showcase vides/mal formées refusées, 6 passes. Non mesuré : envoi valide du contact et de la newsletter (aucune requête POST ne part, script hCaptcha bloqué par le proxy du cloud), formulaires de compte et d'adresse (inaccessibles)."
+            "etat": "mesuré",
+            "mesure": "Contact : vide (2 champs requis invalides, URL inchangée), erreur (e-mail mal formé côté navigateur ET erreur serveur « Email is invalid » avec aria-invalid et message par champ), valide (« Thanks for reaching out. We'll get back to you soon. ») ; newsletter : vide et « nope » refusés ; commentaire : vide (3 champs invalides) et valide (message de modération) ; formulaires de compte et d'adresse : sans objet, nouveaux comptes clients inaccessibles. Un POST FR a reçu la vérification Shopify (403), cause d'environnement. DÉFAUT trouvé ici : focus non rendu au résumé d'erreur (défaut 1 du rapport)."
           },
           "options-activees": {
             "etat": "mesuré",
-            "mesure": "Les 9 options mesurées de bout en bout en EN/FR, 1440/390 (+360/320 EN). animations_reveal_on_scroll : 7 sections de l'accueil et 10 du showcase masquées avant défilement, 0 bloquée après, 0 masquée en mouvement réduit, saut /#faq visible. card_show_vendor : marque sur 100 % des cartes (accueil 8, collections 8 et 24+24, recherche, wishlist, liées 4), 0 recouvrement. predictive_search_show_vendor : marque + prix avec code, 0 recouvrement. currency_code_enabled : « €118,00 EUR » sur cartes, fiche, tiroir, /cart, prédictive ; PERDU dans l'aperçu rapide après changement de variante, dans la note « prix le plus élevé » et la pastille de filtre prix. cart_show_vendor : OK dans le tiroir, ABSENT de /cart (défaut connu, corrigé en 1.8.10). show_language_selector (en-tête et pied) : 12 bascules réussies, Échap/clic extérieur/sortie du focus ferment le panneau ; il rend le nom de la boutique tronqué à 390 px et moins. show_country_selector (en-tête et pied) : absent proprement, un seul pays."
+            "mesure": "Les 9 options de la démo, de bout en bout : animations_reveal_on_scroll (7 sections portent data-fl-reveal, masquées au chargement, 7/7 révélées après un défilement progressif, ancre /#faq : la section visée est à opacité 1, les sections sautées se révèlent au retour) ; card_show_vendor (marque sur 8/8 cartes accueil, collections, recherche, wishlist, recommandations ; 0 recouvrement) ; predictive_search_show_vendor (marque + prix avec code dans la prédictive) ; currency_code_enabled (« EUR » sur cartes, fiche, tiroir, /cart, prédictive, aperçu rapide après changement de variante, note et pastille du filtre prix) ; cart_show_vendor (marque sur toutes les lignes du tiroir ET de /cart) ; header show_language_selector et show_country_selector (panneau de l'en-tête + 2 selects dans le tiroir de menu, bascules EN↔FR et FR↔BE réussies, nom de boutique non tronqué) ; footer show_language_selector et show_country_selector (#Footer-language-form et #Footer-country-form : bascules réussies, pays retenu)."
           },
           "petits-ecrans": {
             "etat": "mesuré",
-            "mesure": "Tous les parcours à 1440 et 390 (EN et FR) ; à 360 et 320 (EN) : accueil, en-tête (menu, panneau langue), prédictive, tiroir, aperçu rapide, /cart, collection, recherche, 3 fiches, contact, 404, showcase, FAQ, wishlist, blog, bascule de langue : 0 défilement horizontal (scrollWidth = largeur), tiroir x 1020-1440 à 1440, menu mobile x 0-335 à 390, panneau langue dans l'écran, select de langue du pied x 24-140. Seul écart : nom de la boutique tronqué (cas options-activees)."
+            "mesure": "Parcours complet produit→tiroir→/cart→collection→recherche à 1440, 390 (EN et FR) et 320 (EN) : 43/43 contrôles à chaque largeur ; en-tête, menu mobile, panneau langue/pays, overlay de recherche, prédictive et bascules à 360 et 320 (15/15 chacune) ; 0 défilement horizontal sur toutes les pages lues (scrollWidth = clientWidth), tiroir panier x 0→390 à 390/320 et 1020→1440 à 1440, menu mobile et selects dans l'écran, cibles 44 px."
           },
           "remises": {
-            "etat": "non mesuré",
-            "mesure": "Aucune remise automatique ni code sur la boutique de démo (aucune ligne de remise rendue, cart.js sans remise) : l'affichage des remises par ligne et par commande, au tiroir et sur /cart, n'a pas pu être mesuré."
+            "etat": "mesuré",
+            "mesure": "Code ESSAI10 appliqué par /discount/ESSAI10?redirect=/cart : /cart.js donne cart_level_discount_applications = [{title ESSAI10, value 10.0, percentage, across, total_allocated_amount 5040}] ; affichage « Discount: ESSAI10 −€50,40 EUR » / « Réduction : ESSAI10 −€50,40 EUR » sur /cart ET dans le tiroir, sous-total €453,60 EUR cohérent avec /cart.js (45360) ; remise conservée jusqu'au passage à shop.app/checkout. Remise automatique : aucune n'existe sur la boutique."
           },
           "paiement-accelere": {
             "etat": "mesuré",
-            "mesure": "Fiche produit : bouton « Buy with Shop » rendu et « More payment options » (2 éléments payment-button, violet Shop Pay inchangé sur la capture en-1440-product.png). Panier et tiroir : aucun bouton de paiement accéléré rendu (le thème n'en rend pas) ; bouton Checkout → shop.app/checkout/…/shoppay (302) à chaque essai."
+            "mesure": "Fiche field-jacket : 2 éléments de paiement accéléré rendus (shopify-accelerated-checkout avec shop-pay-wallet-button + « More payment options »), couleurs d'origine, non restylées par le thème ; ribbed-beanie (épuisé) : bloc présent mais ajout désactivé ; panier et tiroir : le thème n'y rend aucun bouton accéléré, le bouton Checkout mène à shop.app/checkout/…/shoppay (302)."
           },
           "filtres-facettes": {
-            "etat": "non mesuré",
-            "mesure": "Mesuré sur /collections/all : disponibilité (69 en stock) + prix ≤ 30 combinés (2 pastilles, 28 produits), retrait d'un filtre par sa pastille, « Clear all » (retour à 69). Non mesurable : filtres type, marque et options de variante (la boutique ne configure que Disponibilité et Prix) ; la recherche n'a aucun composant de filtre."
+            "etat": "mesuré",
+            "mesure": "Collection : la boutique ne configure que Disponibilité (72/1) et Prix ; les deux combinés → 29 produits (2 pastilles), retrait d'une pastille → 30, « Clear all » → 73, filtre sans résultat → 0 + message + « Clear all » ; libellés avec compte et note « The highest price is €13.400,00 EUR » (code devise). Recherche : aucun composant de filtre rendu par le thème (0 form[id*=Filter], 0 input[name^=filter.]), seul le tri existe. Filtres type, marque et options de variante : non configurés dans l'administration de la boutique, raison donnée."
           },
           "retrait-magasin": {
-            "etat": "sans objet",
-            "mesure": "Le thème n'a aucune disponibilité de retrait en magasin : 0 élément « retrait/pickup » sur la fiche rendue (overshirt, 360 à 1440) et aucun store_availability dans le code ; rien à mesurer."
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : Le thème n'a aucune disponibilité de retrait en magasin : 0 élément « retrait/pickup » sur la fiche rendue (overshirt, 360 à 1440) et aucun store_availability dans le code ; rien à mesurer. (Fichiers touchés par la correction : product.liquid ne contient toujours aucun élément de retrait, et aucune page produit lue dans cette reprise n'en affiche.)"
           },
           "recommandations": {
             "etat": "mesuré",
-            "mesure": "Fiche overshirt : « You may also like » / « Vous aimerez aussi », 4 cartes chargées par la Section Rendering API (marque, prix avec code, liens 26,4 px, 0 débordement) à 1440 et 390, EN et FR. Produits complémentaires : le thème n'en propose pas ; cas « aucune recommandation » non démontrable (le catalogue en renvoie toujours)."
+            "mesure": "Fiche overshirt : section « You may also like » chargée par la Section Rendering API, 4 cartes avec marque (RUE STUDIO) et prix avec code (€38,00 EUR, €78,00 EUR), liens valides, 0 débordement. Produits complémentaires : le thème n'en propose pas. Cas « aucune recommandation » non démontrable : le catalogue en renvoie toujours."
           },
           "medias-riches": {
-            "etat": "non mesuré",
-            "mesure": "Les fiches de la démo n'ont que 2 images (aucun modèle 3D, vidéo hébergée, YouTube ni Vimeo) et aucune variante n'a d'image : le changement d'image à la sélection d'une variante (src identique pour S/M/L) et l'aperçu rapide avec média riche n'ont pas pu être mesurés. Aucun bouton lecture dans la démo (section video et tuiles vidéo absentes des gabarits)."
+            "etat": "mesuré",
+            "mesure": "Vidéo hébergée : /products/canvas-market-bag, 2 médias ; la vignette 2 affiche la vidéo (642×361), contrôles natifs, lecture obtenue (currentTime 1,05 s, paused=false), source cdn/shop/videos/… ; aperçu rapide du même produit : dialogue ouvert avec l'image (le thème n'y rend pas la vidéo, constat) ; modèle 3D, YouTube et Vimeo : aucun produit de la boutique n'en a (0 model-viewer, 0 iframe vidéo) ; zoom image : le thème n'en propose pas (0 élément zoom/lightbox, cursor auto) ; changement d'image à la sélection d'une variante : non démontrable, 0 variante avec image propre sur les 5 produits contrôlés (field-jacket 12 variantes/0 image de variante, overshirt 3/0, pack-decouverte 3/0, ocre-angle-lamp 15/0, canvas-market-bag 1/0). DÉFAUT trouvé ici : la vignette de la vidéo est annoncée « Image 2 of 2 » (défaut 2 du rapport)."
           },
           "abonnements": {
-            "etat": "sans objet",
-            "mesure": "Le thème n'a aucun sélecteur de plan d'achat : 0 [name=selling_plan] sur la fiche, aucun plan dans le tiroir ni /cart, aucune occurrence dans le code."
+            "etat": "repris",
+            "mesure": "repris de 1.8.9 : Le thème n'a aucun sélecteur de plan d'achat : 0 [name=selling_plan] sur la fiche, aucun plan dans le tiroir ni /cart, aucune occurrence dans le code. (Aucune des pages produit lues dans cette reprise n'affiche de plan, et aucune ligne de panier ne porte selling_plan_allocation.)"
           },
           "shop-pay-installments": {
-            "etat": "non mesuré",
-            "mesure": "0 shopify-payment-terms rendu sur la fiche (la boutique n'est pas éligible à Shop Pay Installments en EUR) : la bannière n'a pas pu être mesurée."
+            "etat": "sans objet",
+            "mesure": "0 élément shopify-payment-terms rendu sur les fiches lues (field-jacket, overshirt, ribbed-beanie, canvas-market-bag) : la boutique n'a aucun moyen de paiement actif (enabled_payment_types vide, Bogus Gateway à activer par Ronnie) et n'est pas éligible à Shop Pay Installments en EUR ; la bannière ne peut pas être provoquée."
           },
           "prix-unitaire-taxes": {
             "etat": "mesuré",
-            "mesure": "Prix unitaire « €84,00 EUR /kg » sur carte (recherche konga), fiche et /cart (1440, 390, EN/FR) mais ABSENT du tiroir panier (cart-drawer.liquid ne lit pas unit_price_measurement). « Taxes included » sur fiche, tiroir et /cart ; « From €245,00 EUR » sur cartes à prix variable ; prix barré + badge « Sale » sur 2 cartes et la fiche."
+            "mesure": "Prix unitaire « €84,00 EUR /kg » sur la carte (recherche konga), sur la fiche, dans le tiroir (correctif 1.8.10 confirmé) et sur /cart ; « Taxes included / Taxes incluses » sur la fiche, le tiroir et /cart ; fourchette « From €17,40 EUR » sur les cartes à prix variable ; prix barré + badge « Sale » sur les cartes et la fiche de pack-decouverte, avec les libellés lecteur d'écran « Sale price » / « Regular price »."
           },
           "variantes-cas": {
-            "etat": "non mesuré",
-            "mesure": "Mesuré : première variante sélectionnée (S), 2 options séparées en fieldsets (Finish/Size), quantité ±/saisie, URL ?variant=, prix suivi (245→280→320). Non mesurable : bouton désactivé et message d'indisponibilité (aucune variante indisponible sur 69 produits), swatches couleur/image (le thème n'a que des pastilles texte)."
+            "etat": "mesuré",
+            "mesure": "Première variante disponible chargée (Ecru / S / Cotton, id 57599164481862) ; 3 options en fieldsets séparés avec légende « Color: Ecru », « Size: S », « Fabric: Cotton » et pastilles texte (le thème n'a pas de pastille couleur ni image, constat) ; changement d'option → id, URL ?variant= et prix suivis (145 → 165) ; quantité par saisie (2, 999) ; indisponible : ribbed-beanie, bouton d'ajout disabled avec « Sold out » / « Épuisé » et clic sans effet sur le panier ; pas de variante indisponible au sein d'un produit multi-variantes dans la boutique (les options disabled du select d'aperçu rapide n'ont donc pas pu être provoquées)."
           },
           "carte-cadeau-destinataire": {
-            "etat": "non mesuré",
-            "mesure": "Aucun produit carte cadeau dans la boutique de démo et /gift_cards répond 404 : champs destinataire (e-mail, nom, message, date d'envoi) et page de carte cadeau (code, QR ≥ 120 px, Apple Wallet) non mesurés."
+            "etat": "sans objet",
+            "mesure": "Aucune carte cadeau dans la boutique : /en/gift_cards et /gift_cards répondent 404 et Shopify refuse la création (« Gift card products can only be created after they have been activated », activation à faire par Ronnie). Champs destinataire (form.email, form.name, form.message, send_on) et page de carte cadeau (code, QR, Apple Wallet) non provocables."
           },
           "blog-article": {
-            "etat": "non mesuré",
-            "mesure": "Le blog « News » est vide (« No posts yet. ») : extrait, image, pagination, article, date, commentaires paginés, messages de succès et d'erreur non mesurables."
+            "etat": "mesuré",
+            "mesure": "Blog journal : 3 articles, extraits tronqués (« … Read more » / « … Lire la suite », pas le contenu entier), dates (2 septembre 2026 / September 2, 2026), aucune image (les articles de la boutique n'en ont pas), pas de pagination (3 articles sur une page) ; article : date de publication, 0 commentaire, formulaire avec champs requis (author, email, body) ; envoi vide refusé ; envoi valide (données de test) → « Your comment was posted successfully. It will appear once approved » = blog modéré ; blog news : 0 article, état vide traduit. Blog sans modération : la boutique n'a pas d'article sur le blog non modéré (news est vide), raison donnée."
           },
           "recherche-par-type": {
-            "etat": "non mesuré",
-            "mesure": "Mesuré : produits (cartes), pages (« contact » : 2 lignes Pages, liens 26,4 px), pagination (« s* » : 71 résultats, 3 pages, aria-current), état vide traduit, prédictive (Suggestions + Products). Non mesurable : résultats de type article (le blog est vide)."
+            "etat": "mesuré",
+            "mesure": "« the » avec type=article,page,product : 73 résultats, produits en cartes, 1 lien article (/blogs/journal/retinal-vs-retinol) et 1 lien page (/pages/brilliant-house), pagination 4 pages avec « Page 1, current page » ; état vide traduit (« zzqxkwv ») ; prédictive (SUGGESTIONS + PRODUCTS, 3 résultats, statut annoncé) ; résultats de type page revérifiés en FR."
           },
           "page-404-mot-de-passe": {
-            "etat": "non mesuré",
-            "mesure": "404 mesurée (statut 404, titre « Page not found »/« Page introuvable », lien d'accueil 200, pas de champ de recherche, 6 passes). Page mot de passe : /password redirige (boutique non protégée), non atteignable."
+            "etat": "mesuré",
+            "mesure": "404 : statut HTTP 404 en EN et FR, « Page not found » / « Page introuvable », texte traduit et lien d'accueil répondant 200 (pas de champ de recherche sur la 404, mais le lien d'accueil satisfait le cas), 0 défilement horizontal. Page mot de passe : /password redirige vers l'accueil (la boutique de dev n'est pas protégée) → sous-cas sans objet avec cette cause."
           },
           "compte-shopify": {
             "etat": "mesuré",
-            "mesure": "<shopify-account> défini, visible et 44×44 px à 1440, 40×44 à 390/360, 36×44 à 320 ; un clic ouvre la feuille de compte (dialog open) avec « Account », « Orders », « Profile » ; Échap la ferme. Pas de bouton Follow on Shop dans le thème (aucun login_button)."
+            "mesure": "<shopify-account> présent et visible dans l'en-tête à 1440 (44×44), 390 (40×44), 360 (40×44) et 320 (36×44), sur l'accueil et une page d'article ; aucun bouton Follow on Shop (login_button) dans le thème."
           },
           "navigateurs-webviews": {
-            "etat": "non mesuré",
-            "mesure": "Chromium (channel chromium, Playwright 1.63) seul mesuré. WebKit : installation impossible ici (bibliothèques système absentes : libgstcodecparsers, libavif, libwayland-server, etc. ; téléchargement abandonné et supprimé). Firefox, Samsung Internet et webviews Instagram/Facebook/Pinterest : outil absent ; pas de faux user-agent."
+            "etat": "mesuré",
+            "mesure": "Chromium 141.0.7390.37 (binaire réel du conteneur, user-agent d'origine, aucun déguisement) : tous les parcours ci-dessus. WebKit et Firefox : absents du conteneur cloud (/opt/pw-browsers ne contient que chromium et chromium_headless_shell) → sans objet avec cette raison ; Safari iOS/macOS, Edge, Samsung Internet et les webviews Instagram/Facebook/Pinterest : outils absents, aucun faux user-agent utilisé."
+          },
+          "fausse-urgence": {
+            "etat": "mesuré",
+            "mesure": "Deux visites de l'accueil dans la même session : 0 dialog ouvert automatiquement, 0 popup visible, aucun popup de sortie dans le thème ; 0 occurrence de « only N left », « plus que N », « hurry », « selling fast » sur les ~23 pages lues (accueil, collections, fiches, showcase, blog, panier) ; aucun compte à rebours rendu sur une page de la démo (la section countdown du thème n'est placée dans aucun gabarit de la démo — signalé en constat : sa date réelle n'a donc pas pu être exercée côté client)."
+          },
+          "pages-propres-demo": {
+            "etat": "mesuré",
+            "mesure": "15 liens internes de l'en-tête, du pied et de l'accueil contrôlés : tous 200. Page de contenu propre au thème : /pages/flyer-story (« Our story » / « Notre histoire », contenu FLYER, 0 mot d'un autre thème). Écart relevé (démo, pas code) : le menu pointe aussi vers /pages/wishlist et /pages/contact, handles partagés non préfixés de la boutique (à côté de routine-wishlist et routine-contact d'un autre thème) ; leur contenu est actuellement neutre et sert les gabarits du thème, mais ce sont les pages partagées visées par l'incident du 07/10 — à préfixer côté démo."
           }
         }
       }
