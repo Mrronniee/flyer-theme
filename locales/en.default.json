@@ -375,7 +375,8 @@
       "no": "No"
     },
     "disclosures": {
-      "editor_empty": "This section is hidden: your store has only one country/region and one language. It appears once a second market or language is published."
+      "editor_empty_single": "This section is hidden: the selectors turned on here have only one option. It appears once a second market or language is published.",
+      "editor_empty_disabled": "This section is hidden: both of its selectors are turned off. Turn on the country/region or the language selector above."
     }
   }
 }

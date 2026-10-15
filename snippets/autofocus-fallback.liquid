@@ -5,6 +5,12 @@
   and browsers skip autofocus when the URL targets an element, so after an
   error the focus would stay on the page instead of the summary.
 
+  Shopify anchors that redirect to the form it received, so the fragment names
+  the submitted form. A page can hold several forms that post to the same
+  address — the contact form and the footer newsletter both post to /contact —
+  and they then all render their error state, so several elements carry
+  autofocus. The fragment is what tells them apart.
+
   @example
   {% render 'autofocus-fallback' %}
 {% enddoc %}
@@ -12,11 +18,28 @@
 <script>
   (function () {
     if (!location.hash) return;
-    function focusSummary() {
-      var el = document.querySelector('[autofocus]');
-      var active = document.activeElement;
-      if (el && (!active || active === document.body)) el.focus();
+
+    function submittedForm() {
+      var target;
+      try {
+        target = document.querySelector(decodeURIComponent(location.hash));
+      } catch (e) {
+        return null;
+      }
+      if (!target) return null;
+      return target.tagName === 'FORM' ? target : target.closest('form');
     }
+
+    function focusSummary() {
+      var active = document.activeElement;
+      if (active && active !== document.body) return;
+      // Prefer the form Shopify anchored to; fall back to the first marked
+      // element so a page with a single form keeps its previous behaviour.
+      var scope = submittedForm();
+      var el = (scope && scope.querySelector('[autofocus]')) || document.querySelector('[autofocus]');
+      if (el) el.focus();
+    }
+
     // The browser re-applies the URL fragment between parsing and load, which
     // takes the focus back to <body>. Waiting for load keeps the focus on the
     // summary (measured 15/10/2026: focused during parsing, lost before load).

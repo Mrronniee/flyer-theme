@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.8.13 - 2026-10-15
+
+### Fixed
+- **Focus goes to the form you actually sent.** A page can hold several forms
+  that post to the same address — the contact form and the footer newsletter
+  both post to `/contact`. When one came back with an error, the focus could
+  land on the other one's message. The theme now follows the anchor Shopify
+  adds to the address, which names the form it received.
+
+### Changed
+- **Clearer reason when the Disclosures section is hidden in the editor.** The
+  note added in 1.8.12 only mentioned stores with a single country/region and
+  language. It now tells the two cases apart: both selectors turned off in the
+  section, or the selectors turned on having a single option on this store.
+
 ## 1.8.12 - 2026-10-15
 
 ### Fixed

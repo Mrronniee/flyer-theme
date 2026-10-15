@@ -375,7 +375,8 @@
       "no": "Non"
     },
     "disclosures": {
-      "editor_empty": "Cette section est masquée : votre boutique n’a qu’un pays/région et une langue. Elle s’affiche dès qu’un second marché ou une seconde langue est publié."
+      "editor_empty_single": "Cette section est masquée : les sélecteurs activés ici n’ont qu’une option. Elle s’affiche dès qu’un second marché ou une seconde langue est publié.",
+      "editor_empty_disabled": "Cette section est masquée : ses deux sélecteurs sont désactivés. Activez le sélecteur de pays/région ou celui de langue ci-dessus."
     }
   }
 }

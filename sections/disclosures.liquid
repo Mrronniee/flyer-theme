@@ -26,16 +26,25 @@
 
 {%- if show_country == false and show_language == false and request.design_mode -%}
   {%- comment -%}
-    Editor-only affordance: on a store with a single country/region and a
-    single language the section renders nothing on the live storefront, so
-    the merchant would add it from its preset and see an empty page.
+    Editor-only affordance: the section renders nothing on the live storefront
+    when it has no selector to show, so the merchant would add it from its
+    preset and see an empty page. Two different causes lead there, and the
+    message names the one that applies: both selectors turned off here, or
+    the selectors turned on having a single option on this store.
   {%- endcomment -%}
+  {%- liquid
+    if section.settings.enable_country_selector == false and section.settings.enable_language_selector == false
+      assign empty_key = 'sections.disclosures.editor_empty_disabled'
+    else
+      assign empty_key = 'sections.disclosures.editor_empty_single'
+    endif
+  -%}
   <section
     class="fl-disclosures full-width color-{{ section.settings.color_scheme }}"
     style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
   >
     <div class="fl-disclosures__inner">
-      <p class="fl-disclosures__empty">{{ 'sections.disclosures.editor_empty' | t }}</p>
+      <p class="fl-disclosures__empty">{{ empty_key | t }}</p>
     </div>
   </section>
 {%- endif -%}
