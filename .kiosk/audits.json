@@ -80,103 +80,103 @@
     }
   },
   "theme-editeur-checker": {
-    "version": "1.8.11",
+    "version": "1.8.12",
     "date": "2026-10-15",
     "verdict": "passé",
-    "resume": "Reprise ciblée de 1.8.9 : 54 schémas JSON valides (0 modifié entre 88f466b et 6bd5f2d), 24 gabarits/groupes JSON valides dont le nouveau page.toutes-sections.json (53 sections, 70 blocs, 0 écart enabled_on/disabled_on, 0 réglage inconnu), 134 réglages globaux déclarés et 134 lus (0 mort, 0 non déclaré), 489 réglages avec 0 default vide et 0 default incohérent, 0 BLOQUANT ; 3 ALERTE : 962 libellés d'éditeur en dur sans aucun locales/*.schema.json (chiffre identique avant/après), plancher de voile à 55 % sans image non documenté (image-banner.liquid:54-57 et 283-291), section disclosures invisible sur une boutique mono-pays/mono-langue (disclosures.liquid:27).",
-    "commit": "6bd5f2d",
+    "resume": "Reprise ciblée de 1.8.11 sur 4 sections : 54 schémas JSON valides dont 1 seul modifié (image-banner, texte d'info d'overlay_opacity), schémas de disclosures/product/featured-product byte-identiques, 134 réglages globaux (0 mort, 0 non déclaré), 489 réglages avec 0 default vide, 962 libellés en dur (compte inchangé), 0 BLOQUANT ; ALERTE 1.8.11 n°2 levée (voile mesuré à 55 % sans image sur /en/pages/showcase, conforme à la nouvelle info), ALERTE n°1 traitée en code (rendu design_mode non atteignable en vitrine : 2 pays et 2 langues), ALERTE libellés en dur reconduite, 1 ALERTE nouvelle disclosures.liquid:27 (le message éditeur n'énonce pas la cause « deux cases décochées »).",
+    "commit": "385758f",
     "reprise": {
-      "de": "1.8.9",
-      "commit": "88f466b"
+      "de": "1.8.11",
+      "commit": "6bd5f2d"
     },
     "couverture": {
       "schemas": {
         "etat": "mesuré",
-        "mesure": "54 schémas JSON valides sur 54 sections, 0 invalide ; 22 sans preset, toutes techniques (404, article, blog, cart, cart-drawer, collection, collections, customer-* x7, footer, header, page, password, product, quick-view, search, wishlist-item) ; 33 presets ; 3 restrictions (header groups [header], related-products templates [product], wishlist templates [page]), 0 écart croisé avec les 24 JSON ; 0 incohérence max_blocks/limit/preset ; 257 lectures section.settings et 93 block.settings, 0 sans réglage déclaré ; diff 88f466b->6bd5f2d : 0 schéma de section modifié"
+        "mesure": "54 schémas JSON valides sur 54 sections, 0 invalide ; 22 sans preset toutes techniques, 32 avec preset (33 presets) ; 3 restrictions (header groups [header], related-products templates [product], wishlist templates [page]), 0 écart croisé avec les 22 templates JSON ; 0 incohérence max_blocks/limit/preset ; diff 6bd5f2d->385758f : 1 seul schéma modifié (sections/image-banner.liquid, valeur de \"info\" d'overlay_opacity), 0 id de réglage ni type de bloc ajouté/renommé/supprimé, schémas de disclosures, product et featured-product identiques"
       },
       "gabarits": {
-        "etat": "mesuré",
-        "mesure": "24 fichiers JSON valides (15 templates + 7 customers + 2 groupes), +1 vs 1.8.9 = templates/page.toutes-sections.json ; 53 sections référencées et 70 blocs : 0 type sans fichier sections/<type>.liquid, 0 bloc absent du schéma, 0 réglage inconnu, 0 range hors bornes/pas, 0 select hors options, 0 id d'order orphelin ; groupes footer-group.json type=footer et header-group.json type=header ; gabarits obligatoires et customers/* au complet, gift_card.liquid présent"
+        "etat": "repris",
+        "mesure": "repris de 1.8.11 : 24 fichiers JSON valides (15 templates + 7 customers + 2 groupes), 53 sections et 70 blocs référencés, 0 type sans fichier sections/<type>.liquid, 0 bloc absent du schéma, 0 réglage inconnu, 0 range hors bornes/pas, 0 select hors options, 0 id d'order orphelin ; groupes footer-group.json type=footer et header-group.json type=header ; gabarits obligatoires et customers/* au complet — justifié : aucun templates/*.json ni sections/*.json dans le diff 6bd5f2d->385758f, et ids/types de réglages des 4 sections touchées inchangés (recontrôlé à l'identique : 24 fichiers, 53 sections, 70 blocs, 0 erreur)"
       },
       "reglages-globaux": {
         "etat": "mesuré",
-        "mesure": "settings_schema.json : theme_info FLYER 1.8.11 KIOSK en premier, 134 ids uniques (0 ajouté/supprimé/renommé vs 88f466b) ; settings_data current = preset FLYER, 0 id inconnu, 0 valeur hors bornes/pas/options, 5 color_schemes x 7 rôles complets ; 0 réglage mort, 0 lu non déclaré (9 faux positifs écartés : scheme.settings.* de css-variables.liquid:19-51, default_scheme.settings.background de theme.liquid:7 et password.liquid:7, section.blocks.first.settings.image de slideshow.liquid:34, .ratio de lookbook.liquid:70) ; clé construite 'social_'|append sur 7 réseaux lue en settings[key] (meta-tags.liquid:97-99)"
+        "mesure": "config/settings_schema.json touché : seul theme_version 1.8.11->1.8.12 (theme_info premier, FLYER/KIOSK) ; 134 ids uniques, 0 doublon, 0 ajouté/supprimé/renommé ; settings_data current = preset FLYER, 0 id inconnu, 0 valeur hors bornes/pas/options, 5 color_schemes x 7 rôles ; 0 réglage mort, 0 lu non déclaré (134 lus / 134 déclarés) ; clé construite settings[key] sur les réseaux sociaux (snippets/meta-tags.liquid:98-99), 0 alias de settings"
       },
       "libelles": {
         "etat": "mesuré",
-        "mesure": "ALERTE : 0 clé t: dans les 54 schémas et settings_schema.json (donc 0 clé orpheline, pas de parité EN/FR à vérifier, aucun locales/*.schema.json) ; 963 libellés en dur bruts, 962 après exceptions (theme_info, unités de range), dont settings_schema.json 206, multirow 45, image-banner 44 ; compte strictement identique à 88f466b (963/963) : 1.8.11 n'en ajoute aucun ; éditeur non traduisible, pas un BLOQUANT"
+        "mesure": "0 clé t: dans les 54 schémas et settings_schema.json, aucun locales/*.schema.json (donc 0 clé orpheline, pas de parité EN/FR applicable) ; 962 libellés en dur après exceptions, compte strictement identique à 6bd5f2d (la 1.8.12 ne modifie que la valeur d'un \"info\" existant d'image-banner) ; répartition settings_schema.json 206, multirow 45, image-banner 44, slideshow 36, collage 35, collapsible-content 32 ; ALERTE reconduite (note_paquet, correction = version mineure), non bloquante ; les 3 clés vitrine ajoutées (products.product.media_item_video, media_item_model, sections.disclosures.editor_empty) existent en EN et FR"
       },
       "valeurs-defaut": {
         "etat": "mesuré",
-        "mesure": "489 réglages avec id : 0 default vide, 0 default incohérent avec son type (range, color, select, checkbox, richtext, url) ; chiffres identiques à 88f466b ; 33 presets, 8 sans texte/média/bloc relus un par un : contact, page-content (placeholder en design_mode), video (placeholder_svg_tag lifestyle-2), wishlist (état vide traduit), related-products (titre de repli traduit) OK, apps et custom-liquid volontairement vides ; ALERTE disclosures.liquid:27 rien rendu sur boutique mono-pays/mono-langue, ALERTE image-banner.liquid:54-57 plancher 55 % sans image non mentionné dans l'info d'overlay_opacity (reconduite de 1.8.6)"
+        "mesure": "489 réglages avec id : 0 default vide, 0 default incohérent avec son type ; 33 presets ; preset Disclosures : la 1.8.12 ajoute un rendu éditeur (disclosures.liquid:27-40) qui lève l'ALERTE « section vide » de 1.8.11 — clé sections.disclosures.editor_empty présente EN+FR, vitrine inchangée (0 .fl-disclosures__empty, 2 selects, 0 erreur Liquid sur /en/pages/flyer-all-sections, theme.id 195174072646, schema 1.8.12) ; preset Image banner : default overlay_opacity 20 sans image rend 55 % (rgb(0 0 0 / 55%) mesuré sur /en/pages/showcase), conforme à la nouvelle info (image-banner.liquid:54-57 et 290) ; ALERTE nouvelle non bloquante disclosures.liquid:27, le message n'énonce pas la cause « enable_country_selector et enable_language_selector décochés »"
       },
       "cas-possibles": {
         "etat": "mesuré",
-        "mesure": "16 cas : 1 mesuré à neuf (metachamp-acces-public, sans objet avec raison mesurée), 15 repris de 1.8.9 — justifié par 0 schéma de section modifié, 0 id de réglage global changé et des lectures section.settings/block.settings identiques (257/93) entre 88f466b et 6bd5f2d",
+        "mesure": "16 cas : 7 mesurés à neuf (ceux que touchent les 4 sections corrigées), 8 repris de 1.8.11, 1 sans objet ; justification des reprises : 0 template/groupe/settings_data dans le diff, schémas des 4 sections à ids et types identiques, seul theme_version modifié dans settings_schema.json",
         "cas": {
           "editeur-ajout-retrait": {
-            "etat": "repris",
-            "mesure": "repris de 1.8.9 : presets et blocs valides, limites respectées dans tous les gabarits ; ajout/retrait interactif non exécuté"
+            "etat": "mesuré",
+            "mesure": "disclosures touchée : preset « Disclosures » intact, section ajoutée depuis son preset rend désormais une ligne d'explication en design_mode (disclosures.liquid:27-40) au lieu de rien ; 54 schémas : 0 incohérence max_blocks/limit, 0 type de bloc de preset inconnu ; blocs de product (9) et featured-product (8) identiques à 6bd5f2d ; limite : ajout/retrait interactif dans l'éditeur non exécuté (audit statique + vitrine)"
           },
           "editeur-reglages-vides": {
-            "etat": "repris",
-            "mesure": "repris de 1.8.9 : 0 default vide, aucune clé ajoutée dans le diff 1.8.6->1.8.9 ; rendu à vide non testé en navigateur"
+            "etat": "mesuré",
+            "mesure": "image-banner sans image choisie : placeholder rendu et voile forcé à 55 % (mesuré sur /en/pages/showcase, settings {} dans page.showcase.json) ; disclosures avec les deux sélecteurs indisponibles : plus de rendu vide, texte traduit EN+FR ; 489 réglages, 0 default vide ; 0 « Translation missing » sur les 3 pages lues (/en/pages/flyer-all-sections, /en/products/overshirt, /en/pages/showcase)"
           },
           "editeur-valeurs-extremes": {
             "etat": "repris",
-            "mesure": "repris de 1.8.9 : range de settings_data dans les bornes et sur le pas, select dans leurs options ; textes longs non rendus"
+            "mesure": "repris de 1.8.11 : range de settings_data dans les bornes et sur le pas, select dans leurs options ; textes longs non rendus — justifié : aucun min/max/step/options modifié par la 1.8.12 (overlay_opacity reste 0-80 pas 5, seul son texte d'info change)"
           },
           "editeur-blocs-apps": {
-            "etat": "repris",
-            "mesure": "repris de 1.8.9 : 0 type de bloc inconnu dans les gabarits ; @app seulement où le schéma le déclare"
+            "etat": "mesuré",
+            "mesure": "product.liquid et featured-product.liquid touchés : les deux déclarent @app en premier bloc, listes de blocs byte-identiques à 6bd5f2d (product 9 types, featured-product 8) ; 3 sections acceptent @app (apps, product, featured-product) ; 0 type de bloc inconnu dans les 24 JSON"
           },
           "editeur-mise-a-jour": {
-            "etat": "repris",
-            "mesure": "repris de 1.8.9 : diff 1.8.6->1.8.9 : 0 id de réglage renommé ou supprimé ; settings_data 0 id inconnu"
+            "etat": "mesuré",
+            "mesure": "diff 6bd5f2d->385758f : 0 id de réglage renommé ou supprimé (134 globaux inchangés, seul theme_version change ; 4 sections touchées à ids/types identiques) ; settings_data : 0 id inconnu, 0 valeur invalide — le marchand qui installe la 1.8.12 par-dessus la 1.8.11 garde tous ses réglages"
           },
           "editeur-schemas-couleurs": {
             "etat": "repris",
-            "mesure": "repris de 1.8.9 : 1.8.9 ne touche aucun schéma de couleurs ; 0 id inconnu dans settings_data"
+            "mesure": "repris de 1.8.11 : aucun schéma de couleurs touché, 0 id inconnu dans settings_data, 5 color_schemes x 7 rôles complets — justifié : config/settings_data.json absent du diff, et le nouveau bloc éditeur de disclosures réutilise la même classe color-{{ section.settings.color_scheme }} que la branche vitrine (ligne 34 ≡ ligne 44)"
           },
           "editeur-polices": {
             "etat": "repris",
-            "mesure": "repris de 1.8.9 : aucune police touchée par 1.8.9"
+            "mesure": "repris de 1.8.11 : aucune police touchée — justifié : aucun réglage font_picker dans le diff, settings_schema.json ne change que theme_version"
           },
           "custom-liquid": {
             "etat": "repris",
-            "mesure": "repris de 1.8.9 : sections/custom-liquid.liquid présente, schéma valide avec preset"
+            "mesure": "repris de 1.8.11 : sections/custom-liquid.liquid présente, schéma valide avec preset et réglage de type liquid (seule section du thème à en avoir un) — justifié : fichier absent du diff"
           },
           "blocs-app-produit": {
-            "etat": "repris",
-            "mesure": "repris de 1.8.9 : section produit non modifiée entre 1.8.6 et 1.8.9 (diff : header, search, critical.css, locales, schema_version) ; 0 écart de blocs mesuré"
+            "etat": "mesuré",
+            "mesure": "les deux sections produit touchées par la 1.8.12 : @app déclaré dans product.liquid et featured-product.liquid, l'essentiel de la fiche en blocs (title, price, variant_picker, quantity, buy_buttons, description, collapsible_tab/text) ; schémas byte-identiques avant/après, 0 écart de blocs dans templates/product.json et page.showcase.json"
           },
           "groupes-et-menus": {
             "etat": "repris",
-            "mesure": "repris de 1.8.9 : groupes sections/*.json valides, header enabled_on groups [header], 0 type absent"
+            "mesure": "repris de 1.8.11 : groupes sections/*.json valides (footer-group type=footer, header-group type=header), header enabled_on groups [header], 0 type absent — justifié : aucun fichier de groupe ni header/footer dans le diff"
           },
           "logo-favicon-focal": {
             "etat": "repris",
-            "mesure": "repris de 1.8.9 : non touché par le diff 1.8.6->1.8.9"
+            "mesure": "repris de 1.8.11 : non touché par le diff 6bd5f2d->385758f (ni header.liquid, ni settings_schema.json hors theme_version)"
           },
           "polices-couleurs": {
             "etat": "repris",
-            "mesure": "repris de 1.8.9 : non touché par le diff 1.8.6->1.8.9"
+            "mesure": "repris de 1.8.11 : non touché par le diff ; recontrôle libre : 5 color_schemes x 7 rôles, 0 valeur invalide dans settings_data"
           },
           "valeurs-par-defaut": {
-            "etat": "repris",
-            "mesure": "repris de 1.8.9 : 0 default vide sur 54 schémas, theme_info présent et premier"
+            "etat": "mesuré",
+            "mesure": "489 réglages, 0 default vide sur 54 schémas, theme_info présent et premier (FLYER 1.8.12 KIOSK) ; les deux réglages des sections corrigées gardent leurs defaults (overlay_opacity 20, enable_country_selector/enable_language_selector true, padding 48/48, color_scheme scheme-1) ; libellés en casse de phrase, 0 Lorem Ipsum"
           },
           "apercu-editeur": {
-            "etat": "repris",
-            "mesure": "repris de 1.8.9 : header : data-dropdown ajouté au <details> de localisation, aucun réglage ajouté ; test d'un rechargement de section dans l'éditeur réel non fait (statique)"
+            "etat": "mesuré",
+            "mesure": "request.design_mode nouvellement utilisé (disclosures.liquid:27) : en vitrine Shopify.designMode = false et 0 .fl-disclosures__empty rendu, la section pickers s'affiche normalement (2 forms, 2 selects), 0 erreur Liquid sur les 3 pages lues ; le bloc est bien parsé par Shopify ; limite : l'éditeur de thème lui-même n'est pas ouvrable ici, le rendu design_mode n'est donc pas observé (boutique à 2 pays et 2 langues de surcroît)"
           },
           "reglage-global-ecrase": {
             "etat": "repris",
-            "mesure": "repris de 1.8.9 : 134 ids globaux, 0 mort, 0 lu non déclaré ; show_country_selector et show_language_selector du header lus par header.liquid"
+            "mesure": "repris de 1.8.11 : 134 ids globaux, 0 mort, 0 lu non déclaré ; show_country_selector et show_language_selector du header lus par header.liquid — justifié : header.liquid et settings_schema.json (hors theme_version) absents du diff ; les réglages de disclosures sont des réglages de section, sans équivalent global"
           },
           "metachamp-acces-public": {
             "etat": "sans objet",
-            "mesure": "grep sur tous les .liquid/.json/.js du thème : 0 occurrence de 'metafields' et 0 de 'metaobject', aucun réglage de type metaobject/metaobject_list dans les 54 schémas ni dans settings_schema.json — FLYER ne lit aucun métachamp, donc aucun access.storefront à vérifier et aucune section ne peut se vider pour cette raison"
+            "mesure": "grep sur tous les .liquid/.json/.js du thème au commit 385758f : 0 occurrence de « metafields » et 0 de « metaobject » dans le code (seule mention : .kiosk/audits.json, texte d'audit), aucun réglage de type metaobject/metaobject_list dans les 54 schémas ni dans settings_schema.json — FLYER ne lit aucun métachamp"
           }
         }
       }
