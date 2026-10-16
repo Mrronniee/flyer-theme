@@ -231,7 +231,9 @@
   }
 
   /* The toolbar itself is styled by the collection section, whose stylesheet
-     Shopify loads on every page; only the spacing is ours. */
+     Shopify does load on every page (measured); only the spacing is ours. Its
+     behaviour, on the other hand, is not global: it comes from
+     assets/facets-toolbar.js, loaded by the snippet. */
   .fl-searchpage__toolbar {
     margin-bottom: 28px;
   }

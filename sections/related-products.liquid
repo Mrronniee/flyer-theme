@@ -69,10 +69,17 @@
               {%- if settings.card_show_vendor -%}
                 <span class="fl-related__ghost-line fl-related__ghost-line--vendor"></span>
               {%- endif -%}
-              <span class="fl-related__ghost-line"></span>
+              <span class="fl-related__ghost-line fl-related__ghost-line--title"></span>
               <span class="fl-related__ghost-line fl-related__ghost-line--price"></span>
-              {%- if settings.quick_view_enabled -%}
-                <span class="fl-related__ghost-btn"></span>
+              {%- if settings.card_quick_add or settings.quick_view_enabled -%}
+                <span class="fl-related__ghost-quick">
+                  {%- if settings.card_quick_add -%}
+                    <span class="fl-related__ghost-btn"></span>
+                  {%- endif -%}
+                  {%- if settings.quick_view_enabled -%}
+                    <span class="fl-related__ghost-btn"></span>
+                  {%- endif -%}
+                </span>
               {%- endif -%}
             </div>
           </article>
@@ -108,10 +115,15 @@
     background: var(--color-surface);
   }
 
-  /* 1.5em is the height a line of this text really takes (font size times the
-     normal line height), so the placeholder card is as tall as a real one. */
+  /* Heights taken from a real card measured on the demo, so the reserved block
+     is the height of the one that replaces it: vendor 21 px, title 18, price
+     26, buttons 102 (10 px of padding, two 44 px buttons, a 4 px gap), plus the
+     three 4 px gaps of .fl-card__info = 179 px. The shorter bars of 1.8.17 left
+     the footer moving when the grid landed (+56 px at 1440, +162 px at 390).
+     A title that wraps to two lines on a narrow screen still moves it a little:
+     the theme cannot know the merchant's product names in advance. */
   .fl-related__ghost-line {
-    height: 1.5em;
+    height: 1.15em;
     width: 70%;
     border-radius: 2px;
     background: var(--color-surface);
@@ -119,15 +131,29 @@
 
   .fl-related__ghost-line--vendor {
     width: 40%;
+    height: 1.6em;
     font-size: 0.8125em;
+  }
+
+  .fl-related__ghost-line--title {
+    width: 70%;
   }
 
   .fl-related__ghost-line--price {
     width: 30%;
+    height: 1.6em;
+  }
+
+  /* Same box as .fl-card__quick: pushed to the bottom, one column, 4 px apart. */
+  .fl-related__ghost-quick {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: auto;
+    padding-top: 10px;
   }
 
   .fl-related__ghost-btn {
-    margin-top: auto;
     min-height: 44px;
     border-radius: var(--radius-btn);
     background: var(--color-surface);

@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.8.19 - 2026-10-16
+
+### Fixed
+- **Filters and sorting work on the search results page.** Since 1.8.17 the
+  search results carried the same toolbar as a collection, but its behaviour
+  lived in the collection section, and Shopify only loads a section's script on
+  the pages that use that section: ticking a filter or picking a sort order did
+  nothing on a search page unless you went through the Apply button of the price
+  filter. The toolbar now carries its own script, so it behaves the same
+  wherever it appears.
+- **Less movement when the recommendations arrive.** The space held for "You may
+  also like" was shorter than the cards that replace it, so the footer still
+  moved when they landed. The placeholder now holds the height of a real card —
+  vendor line, title, price and buttons — measured on a live page. A product
+  title that wraps onto a second line still moves it slightly: the theme cannot
+  know your product names in advance.
+
 ## 1.8.18 - 2026-10-16
 
 ### Fixed
