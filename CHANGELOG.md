@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.8.18 - 2026-10-16
+
+### Fixed
+- **A wide table in a page or an article can be scrolled with a keyboard.**
+  Since 1.8.17 such a table scrolls inside its column instead of widening the
+  page, but the scrolling area could only be reached with a mouse or a finger:
+  on a narrow screen, or at 400% zoom, part of a twenty-column table was out of
+  reach for anyone using a keyboard. The theme now wraps each table in a region
+  that takes focus and scrolls with the arrow keys, named after the table's
+  caption when it has one. The region only appears while the table really
+  overflows, so a table that fits adds no stop in the tab order, and the table
+  keeps its own semantics for screen readers.
+
 ## 1.8.17 - 2026-10-16
 
 ### Added

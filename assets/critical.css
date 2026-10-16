@@ -527,15 +527,37 @@ h6 {
 }
 
 /* A table typed into a page or an article has no width of its own to respect:
-   as a block it stays inside the text column and scrolls there, instead of
-   widening the whole page. The cells break their words first, so it only
-   scrolls when the content really cannot fit. */
+   it stays inside the text column and scrolls there, instead of widening the
+   whole page. The cells break their words first, so it only scrolls when the
+   content really cannot fit.
+   Without JavaScript the table scrolls on its own; snippets/rte-tables.liquid
+   moves that scrolling to a wrapper it can make focusable, because a region
+   that scrolls must be reachable with a keyboard (WCAG 2.1.1). The wrapper
+   carries the role, never the table, whose own semantics must survive. */
 .fl-rte table {
   display: block;
   width: max-content;
   max-width: 100%;
   overflow-x: auto;
   border-collapse: collapse;
+}
+
+.fl-rte__table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.fl-rte__table-scroll > table {
+  display: table;
+  width: max-content;
+  max-width: none;
+  overflow-x: visible;
+}
+
+/* The focus ring of the scrollable region is drawn inside it: at the width of
+   the text column, a ring offset outside would be clipped by the page. */
+.fl-rte__table-scroll:focus-visible {
+  outline-offset: -2px;
 }
 
 .fl-rte :is(th, td) {

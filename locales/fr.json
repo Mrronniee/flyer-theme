@@ -15,6 +15,7 @@
       "other": "{{ count }} articles dans le panier"
     },
     "search": "Rechercher",
+    "table_scroll": "Tableau, défilement horizontal",
     "previous": "Précédent",
     "next": "Suivant",
     "loading": "Chargement…",

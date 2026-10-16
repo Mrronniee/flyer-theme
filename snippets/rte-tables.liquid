@@ -1,0 +1,72 @@
+{% comment %}
+  Tables typed into a page, an article or a product description.
+
+  A wide table scrolls inside its column rather than widening the page
+  (assets/critical.css), and a region that scrolls has to be reachable with a
+  keyboard: WCAG 2.1.1, the scrollable-region-focusable rule. The markup comes
+  from the merchant, so the theme wraps each table here, at runtime, in a
+  focusable region — `role` goes on the wrapper, never on the table, which
+  would destroy its table semantics.
+
+  The region is only announced and focusable while the table really overflows:
+  below that it is an ordinary table, and no empty tab stop is added. Without
+  JavaScript the table still scrolls on its own, so nothing is hidden.
+{% endcomment %}
+<script>
+  (function () {
+    'use strict';
+    var label = {{ 'accessibility.table_scroll' | t | json }};
+
+    function wrap(table) {
+      var holder = table.parentNode;
+      if (holder && holder.classList.contains('fl-rte__table-scroll')) return holder;
+      holder = document.createElement('div');
+      holder.className = 'fl-rte__table-scroll';
+      table.parentNode.insertBefore(holder, table);
+      holder.appendChild(table);
+      return holder;
+    }
+
+    function name(table) {
+      var caption = table.querySelector('caption');
+      var text = caption && caption.textContent.trim();
+      return text || label;
+    }
+
+    function sync() {
+      var tables = document.querySelectorAll('.fl-rte table');
+      for (var i = 0; i < tables.length; i++) {
+        var table = tables[i];
+        var holder = wrap(table);
+        // 1px of slack: sub-pixel widths must not make a fitting table focusable.
+        if (holder.scrollWidth > holder.clientWidth + 1) {
+          holder.setAttribute('role', 'region');
+          holder.setAttribute('tabindex', '0');
+          holder.setAttribute('aria-label', name(table));
+        } else {
+          holder.removeAttribute('role');
+          holder.removeAttribute('tabindex');
+          holder.removeAttribute('aria-label');
+        }
+      }
+    }
+
+    function schedule() {
+      if (schedule.pending) return;
+      schedule.pending = true;
+      window.requestAnimationFrame(function () {
+        schedule.pending = false;
+        sync();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', sync, { once: true });
+    } else {
+      sync();
+    }
+    window.addEventListener('resize', schedule);
+    // A section re-rendered in the theme editor brings its own tables.
+    document.addEventListener('shopify:section:load', schedule);
+  })();
+</script>

@@ -15,6 +15,7 @@
       "other": "{{ count }} items in cart"
     },
     "search": "Search",
+    "table_scroll": "Table, scrolls sideways",
     "previous": "Previous",
     "next": "Next",
     "loading": "Loading…",
