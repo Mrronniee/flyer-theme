@@ -170,6 +170,7 @@
           name="contact[body]"
           rows="6"
           required
+          data-form-echo
           {% if form.errors contains 'body' %}
             aria-invalid="true"
             aria-describedby="{{ body_id }}-error"

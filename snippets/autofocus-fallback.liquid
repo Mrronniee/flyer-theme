@@ -4,17 +4,20 @@
 
   Several forms of a page can post to the same address — the contact form and
   the footer newsletter both post to /contact — and Shopify then renders the
-  same form.errors, and the same submitted values, inside every {% form %} of
-  the page. Without this, sending the newsletter with a bad address also shows
-  an error on the contact form, copies the address into its e-mail field and
-  marks it invalid, and two elements end up carrying autofocus.
+  same form.errors, the same form.posted_successfully? and the same submitted
+  values inside every {% form %} of the page. Without this, sending the
+  newsletter with a bad address also shows an error on the contact form, copies
+  the address into its e-mail field and marks it invalid; and subscribing from
+  the footer also thanks the visitor in the newsletter section at the top of
+  the page, for a subscription they never made. Either way two elements end up
+  carrying autofocus.
 
   Shopify anchors its redirect to the form it received (#contact_form,
   #Footer-news-newsletter-1), so the fragment names the submitted form. The
-  error state of the other forms is cleared as soon as the page is parsed, and
-  the focus is placed once it has loaded: the browser re-applies the fragment
-  between parsing and load, which would otherwise take the focus back to the
-  top of the page (measured 15/10/2026).
+  reply state of the other forms — error and success alike — is cleared as soon
+  as the page is parsed, and the focus is placed once it has loaded: the
+  browser re-applies the fragment between parsing and load, which would
+  otherwise take the focus back to the top of the page (measured 15/10/2026).
 
   Fields whose value is only an echo of the submission carry data-form-echo, so
   a foreign value can be cleared. Fields holding stored data — a saved address,
@@ -42,13 +45,16 @@
       return target.tagName === 'FORM' ? target : target.closest('form');
     }
 
-    function clearForeignErrors(sent) {
+    function clearForeignReplies(sent) {
       var forms = document.querySelectorAll('form');
       for (var i = 0; i < forms.length; i++) {
         var form = forms[i];
         if (form === sent) continue;
 
-        var messages = form.querySelectorAll('.fl-form-status--error, .fl-field__error');
+        // .fl-form-status covers both the error summary and the success
+        // message: Shopify renders form.posted_successfully? in every form of
+        // the page too, so a success leaks the same way an error does.
+        var messages = form.querySelectorAll('.fl-form-status, .fl-field__error');
         if (!messages.length) continue;
 
         var cleared = [];
@@ -84,7 +90,7 @@
     var sent = submittedForm();
     // The snippet is rendered at the end of <body>, so the forms are parsed:
     // clearing now keeps a foreign error from ever being shown.
-    if (sent) clearForeignErrors(sent);
+    if (sent) clearForeignReplies(sent);
 
     if (document.readyState === 'complete') {
       focusSummary(sent);

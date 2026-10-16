@@ -221,14 +221,17 @@
             else
               assign loc_label = 'general.localization.language_label' | t
             endif
-            # The button shows the country code, so the accessible name has to
-            # contain it: speech users say what they read (WCAG 2.5.3).
+            # The button shows the country code, so its accessible name has to
+            # contain it: speech users say what they read (WCAG 2.5.3). Only
+            # the button's name takes the code — loc_label is also the visible
+            # title of the drawer group below, where no code is shown.
+            assign loc_button_label = loc_label
             if header_country
               assign loc_colon = 'general.colon' | t
-              assign loc_label = loc_label | append: loc_colon | append: ' ' | append: localization.country.iso_code
+              assign loc_button_label = loc_label | append: loc_colon | append: ' ' | append: localization.country.iso_code
             endif
           -%}
-          <summary class="fl-header__icon-btn fl-header__loc-toggle" aria-label="{{ loc_label }}">
+          <summary class="fl-header__icon-btn fl-header__loc-toggle" aria-label="{{ loc_button_label }}">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
               <circle cx="10" cy="10" r="7.25" stroke="currentColor" stroke-width="1.5"/>
               <path d="M2.75 10h14.5M10 2.75c2.2 2.2 2.2 12.3 0 14.5M10 2.75c-2.2 2.2-2.2 12.3 0 14.5" stroke="currentColor" stroke-width="1.5"/>

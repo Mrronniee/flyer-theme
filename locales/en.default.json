@@ -375,7 +375,7 @@
       "no": "No"
     },
     "disclosures": {
-      "editor_empty_single": "This section is hidden: the selectors turned on here have only one option. It appears once a second market or language is published.",
+      "editor_empty_single": "This section is hidden: the selectors turned on here have only one option. Turn on the other selector, or publish a second market or language for the ones turned on.",
       "editor_empty_disabled": "This section is hidden: both of its selectors are turned off. Turn on the country/region or the language selector above."
     }
   }

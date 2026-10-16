@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.8.15 - 2026-10-16
+
+### Fixed
+- **A subscription is confirmed only where you subscribed.** A page can hold
+  two sign-up forms — the Newsletter section and the one in the footer — and
+  Shopify renders the reply in both. Subscribing from the footer also thanked
+  the visitor at the top of the page, for a subscription they never made. The
+  message now stays with the form that was sent, as the error already did.
+- **The country and language title in the mobile menu no longer repeats the
+  code.** The title of the group read "Country/region and language: FR", the
+  name given to the button in the bar, where the code is displayed. In the menu
+  no code is shown next to it, so the title is plain again.
+- **A message left in the other form's box is cleared too.** The contact and
+  comment message boxes kept a body copied from a submission that was not
+  theirs, because only single-line fields were being cleared.
+
+### Changed
+- **Clearer remedy when the Disclosures section is hidden in the editor.** The
+  note said a second market or language had to be published, which was wrong
+  when only one of the two selectors was turned on. It now tells you to turn on
+  the other selector, or to publish a second market or language for the ones
+  turned on.
+
 ## 1.8.14 - 2026-10-16
 
 ### Fixed
