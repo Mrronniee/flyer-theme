@@ -21,59 +21,59 @@
     }
   },
   "theme-bilingue-checker": {
-    "version": "1.8.12",
-    "date": "2026-10-15",
+    "version": "1.8.14",
+    "date": "2026-10-16",
     "verdict": "passé",
-    "resume": "Reprise ciblée de 1.8.11 : locales 273/273 clés à parité (3 clés ajoutées des deux côtés), 254 clés t utilisées et 0 orpheline, 0 reste anglais dans fr.json (25 identiques légitimes, 0 faute d'insécable, 0 apostrophe droite), pas de locales de schéma (INFO) ; démo 1.8.12 relue sur 4 pages (2 EN, 2 FR) à theme.id 195174072646, vignettes vidéo annoncées « Video 2 of 2 » / « Vidéo 2 sur 2 », 0 mot français en EN et 0 libellé de locale anglais en FR (2 restes = contenu par défaut header-group.json:11 et footer-group.json:25) ; 4/4 cas mesurés.",
-    "commit": "385758f",
+    "resume": "Reprise ciblée de 1.8.12 : locales 274/274 clés à parité (editor_empty remplacée des deux côtés par editor_empty_single et editor_empty_disabled), 255 clés t utilisées et 0 orpheline (ancienne clé editor_empty absente du code du thème), 0 reste anglais sur les 274 valeurs de fr.json (25 identiques légitimes, 0 faute d'insécable, 0 apostrophe droite), aucun locales/*.schema.json (sans objet) ; démo 1.8.14 relue en 6 chargements (3 EN, 3 FR, 1440 et 390), theme.id 195174072646 et schema_version 1.8.14 sur les 6, 0 429 : nom accessible du bouton pays/langue « Country/region and language: FR » et « Pays/région et langue : FR » (U+00A0 vérifié au rendu), 0 mot français du thème en EN, 3 restes anglais en FR tous du contenu par défaut (header-group.json:11, footer-group.json:19 et :26) ; 4/4 cas mesurés ; 0 BLOQUANT, 1 ALERTE (header.liquid:409, le titre visible du tiroir mobile réutilise loc_label et affiche désormais « : FR »).",
+    "commit": "ccab863",
     "reprise": {
-      "de": "1.8.11",
-      "commit": "6bd5f2d"
+      "de": "1.8.12",
+      "commit": "385758f"
     },
     "couverture": {
       "parite-vitrine": {
         "etat": "mesuré",
-        "mesure": "remesuré sur 385758f (locales/en.default.json et locales/fr.json modifiés) : en.default.json 273 clés, fr.json 273 clés, 0 clé d'un seul côté ; +3 des deux côtés depuis 1.8.11 (products.product.media_item_video, products.product.media_item_model, sections.disclosures.editor_empty), aucune clé retirée ni renommée"
+        "mesure": "remesuré sur ccab863 (locales/en.default.json et locales/fr.json modifiés) : en.default.json 274 clés aplaties, fr.json 274 clés, 0 clé d'un seul côté ; depuis 1.8.12 sections.disclosures.editor_empty retirée des deux côtés et remplacée des deux côtés par editor_empty_single et editor_empty_disabled (273 → 274), aucune autre clé ajoutée, retirée ni renommée ; aucun en-tête /* auto-generated */ dans les deux fichiers"
       },
       "cles-orphelines": {
         "etat": "mesuré",
-        "mesure": "remesuré : 254 clés distinctes utilisées dans sections/snippets/layout/templates/config/assets (251 en '…' | t direct + 3 passées par variable media_item_key), 0 absente en EN, 0 absente en FR (pluriels one/other résolus) ; 0 clé t: de schéma ; media_item_video assignée en featured-product.liquid:115 et product.liquid:89, media_item_model en featured-product.liquid:117 et product.liquid:91, media_item en featured-product.liquid:119 et product.liquid:93, editor_empty utilisée en disclosures.liquid:38"
+        "mesure": "remesuré : 255 clés t distinctes utilisées dans sections/snippets/layout/templates/config/assets/blocks (252 en '…' | t direct + 3 passées par variable : empty_key en disclosures.liquid:47, media_item_key en product.liquid:101 et featured-product.liquid:127), 0 absente en EN, 0 absente en FR (pluriels one/other résolus) ; 0 clé t: de schéma ; les deux nouvelles clés assignées en disclosures.liquid:37 et :39 résolvent en EN et FR ; general.colon (ajoutée au nom accessible en header.liquid:227-228) présente en EN (':') et FR ('\\u00a0:') ; l'ancienne clé sections.disclosures.editor_empty n'apparaît plus nulle part dans le code du thème ni dans les locales (seules occurrences : les textes d'audit archivés de .kiosk/audits.json)"
       },
       "francais-reel": {
         "etat": "mesuré",
-        "mesure": "remesuré sur 385758f : 25 valeurs FR identiques à l'anglais, toutes légitimes (aucune ne contient de mot anglais discriminant), 0 reste anglais sur 273 valeurs ; 0 faute d'espace insécable avant : ; ! ? ; 0 apostrophe droite ; les 3 nouvelles valeurs FR correctes (« Vidéo … sur … », « Modèle 3D … sur … », editor_empty avec U+00A0 avant le : et 4 apostrophes U+2019) ; fr.schema.json absent"
+        "mesure": "remesuré sur les 274 valeurs de fr.json : 25 valeurs identiques à l'anglais, toutes légitimes (réseaux sociaux, « Page {{ number }} », « Message », « Total », « Description », « Province »… aucune ne porte de mot anglais discriminant), 0 reste anglais ; les 2 nouvelles valeurs FR sont du français réel (« Cette section est masquée\\u00a0: les sélecteurs activés ici n'ont qu'une option… » et « …ses deux sélecteurs sont désactivés. Activez le sélecteur de pays/région ou celui de langue ci-dessus. ») ; 0 faute d'espace insécable avant : ; ! ?, 0 apostrophe droite, 0 Title Case ; fr.schema.json absent (donc sans objet pour ce fichier)"
       },
       "parite-editeur": {
         "etat": "sans objet",
-        "mesure": "remesuré sur 385758f : ls locales/ = en.default.json et fr.json seulement, aucun fichier *.schema.json, et 0 clé t: de schéma utilisée dans le thème ; le seul texte d'éditeur modifié par la correction (info de image-banner.liquid:290) est en anglais en dur, cohérent avec le choix assumé d'un éditeur en anglais"
+        "mesure": "remesuré sur ccab863 : ls locales/ = en.default.json et fr.json seulement, aucun fichier *.schema.json, et 0 clé \"t:\" dans les schémas du thème (0 occurrence sur sections/, snippets/, blocks/, config/) ; les 4 fichiers de la portée n'ajoutent aucun libellé d'éditeur traduit — le schéma de disclosures.liquid est inchangé et celui de header.liquid aussi. Éditeur en anglais en dur : choix assumé de la 1.8.x inscrit en note_paquet du registre"
       },
       "demo-en": {
         "etat": "mesuré",
-        "mesure": "2 pages remesurées le 15/10 sur 1.8.12 (/en/products/canvas-market-bag, /en/pages/flyer-all-sections), status 200, Shopify.theme.id 195174072646, schema_version 1.8.12, locale en, aucun 429 : 0 mot français du thème dans le texte visible ; vignettes du produit à vidéo = [\"Image 1 of 2\",\"Video 2 of 2\"] ; disclosures rend « Country/region … Language … Update ». Les 4 autres pages de 1.8.11 reprises : aucun des 8 fichiers modifiés ne les rend"
+        "mesure": "3 pages EN relues le 16/10 sur la 1.8.14 (/en/pages/flyer-all-sections à 1440, /en/products/canvas-market-bag à 1440 puis à 390), status 200, Shopify.theme.id 195174072646 et schema_version 1.8.14 sur chacune, Shopify.locale 'en', aucun 429 : 0 mot français du thème dans le texte visible (3083 et 1380 caractères balayés avec un dictionnaire de 26 mots discriminants). Nom accessible du bouton pays/langue = « Country/region and language: FR » (31 points de code, ':' U+003A sans espace avant, conforme à l'anglais), code visible « FR » dans un span aria-hidden ; disclosures rend 2 <select> et les libellés « Country/region », « Language », boutons « Update », 0 .fl-disclosures__empty. Les autres pages des verdicts 1.8.11/1.8.12 sont reprises : aucun des 4 fichiers de la portée ne rend de texte propre à ces pages, et header.liquid (rendu partout) a été mesuré sur ces 3 pages"
       },
       "demo-fr": {
         "etat": "mesuré",
-        "mesure": "2 pages remesurées (/products/canvas-market-bag, /pages/flyer-all-sections), status 200, theme.id 195174072646, locale fr : 0 libellé de locale du thème en anglais ; vignettes = [\"Image 1 sur 2\",\"Vidéo 2 sur 2\"], disclosures rend « Pays/région … Langue … Mettre à jour » ; anglais restant = contenu par défaut du thème que le marchand traduit dans l'éditeur : sections/header-group.json:11 « Free shipping on orders over $50 » et sections/footer-group.json:25 « Newsletter ». Les 4 autres pages de 1.8.11 reprises (mêmes classements, aucun fichier modifié ne les rend)"
+        "mesure": "3 pages FR relues (/pages/flyer-all-sections à 1440, /products/canvas-market-bag à 1440 puis à 390), status 200, theme.id 195174072646, schema_version 1.8.14, Shopify.locale 'fr' : 0 libellé de locale du thème resté en anglais. Nom accessible du bouton pays/langue = « Pays/région et langue\\u00a0: FR » (26 points de code, U+00A0 en position 22 puis ':' puis espace normale puis « FR » : l'insécable survit à la composition en Liquid) ; disclosures rend « Pays/région », « Langue », « Mettre à jour ». Anglais restant, classé : 3 chaînes, toutes du contenu par défaut du thème que le marchand traduit dans l'éditeur — sections/header-group.json:11 « Free shipping on orders over $50 », sections/footer-group.json:19 « Share what makes your store different… », sections/footer-group.json:26 « Sign up for new arrivals and occasional news. » ; plus 1 titre d'article du blog de la boutique de dev (« Why your serum pills… »), contenu de la boutique, hors thème. Aucune de ces 4 chaînes n'est touchée par la 1.8.14"
       },
       "cas-possibles": {
         "etat": "mesuré",
-        "mesure": "4 cas sur 4 provoqués et mesurés sur 385758f",
+        "mesure": "4 cas sur 4 provoqués et mesurés sur ccab863",
         "cas": {
           "langue-par-defaut": {
             "etat": "mesuré",
-            "mesure": "remesuré : grep de 13 mots français sur templates/, sections/*-group.json et config/settings_data.json = 0 résultat ; démo EN 2 pages 0 texte français du thème ; démo FR 2 pages 0 libellé de locale anglais, 2 restes anglais classés fichier:ligne (header-group.json:11, footer-group.json:25) ; les 3 clés ajoutées existent dans les deux langues"
+            "mesure": "remesuré : grep insensible à la casse de 17 mots français sur templates/, sections/header-group.json, sections/footer-group.json et config/settings_data.json = 0 occurrence ; démo EN 3 pages, 0 texte français du thème ; démo FR 3 pages, 0 libellé de locale anglais, 3 restes anglais classés fichier:ligne (header-group.json:11, footer-group.json:19, footer-group.json:26) ; les 2 clés ajoutées existent dans les deux langues, l'ancienne n'existe plus dans aucune"
           },
           "textes-longs-fr": {
             "etat": "mesuré",
-            "mesure": "les 3 chaînes FR ajoutées ne sont pas du texte en page : 2 sont des aria-label de vignette, 1 ne rend qu'en request.design_mode. Contrôle au navigateur sur /products/canvas-market-bag à 390 px : documentElement.scrollWidth 390 = clientWidth 390, vignettes « Image 1 sur 2 » bord droit 88 px et « Vidéo 2 sur 2 » bord droit 160 px, < 390 ; aucun débordement à 1440 non plus (1440 = 1440 sur les 4 pages lues)"
+            "mesure": "la chaîne composée du bouton pays/langue s'allonge de 4 caractères en FR (« Pays/région et langue\\u00a0: FR », 26 caractères contre 21) : c'est un aria-label dans la barre, mais le même loc_label est rendu en TEXTE VISIBLE comme titre du groupe du tiroir mobile (header.liquid:409). Mesuré au navigateur à 390 px, tiroir ouvert : titre 286 × 22 px, display block, visible, dans l'écran ; documentElement.scrollWidth 390 = clientWidth 390 (EN et FR), 0 débordement horizontal ; à 1440 aussi (scrollWidth 1440 = clientWidth sur les 2 pages). Les 2 nouvelles valeurs FR de disclosures ne rendent qu'en request.design_mode (max-width 60ch sur .fl-disclosures__empty)"
           },
           "typographie-fr": {
             "etat": "mesuré",
-            "mesure": "remesuré sur les 273 valeurs de fr.json : 0 faute d'espace insécable avant : ; ? !, 0 apostrophe droite, 0 guillemet droit hors attribut HTML (password.admin_html) ; la nouvelle valeur sections.disclosures.editor_empty porte U+00A0 en position 25 (« masquée : ») et U+2019 aux positions 44, 49, 86 et 101 ; « Vidéo » et « Modèle 3D » accentués, vérifiés en rendu sur la démo FR"
+            "mesure": "remesuré sur les 274 valeurs de fr.json : 0 espace normale avant : ; ? !, 0 apostrophe droite, 1 seul guillemet droit (attribut HTML de password.admin_html, légitime) ; editor_empty_single et editor_empty_disabled portent U+00A0 avant leur « : » et des apostrophes U+2019. Et surtout au RENDU, là où une chaîne composée perd l'insécable : general.colon vaut '\\u00a0:' en FR et ':' en EN, et le nom accessible rendu sur la démo donne bien ['0x65','0xa0','0x3a','0x20','0x46','0x52'] en fin de « …langue\\u00a0: FR » (FR) et '…language: FR' sans espace avant le ':' (EN), sur les 3 pages FR et les 3 pages EN"
           },
           "messages-dynamiques": {
             "etat": "mesuré",
-            "mesure": "la branche dynamique ajoutée (case media.media_type dans product.liquid:85-94 et featured-product.liquid:111-120) mesurée en direct sur /products/canvas-market-bag (1 image + 1 vidéo) : aria-label EN [\"Image 1 of 2\",\"Video 2 of 2\"], FR [\"Image 1 sur 2\",\"Vidéo 2 sur 2\"] — les deux branches image et vidéo rendues dans les deux langues ; branche 'model' non rendue (aucun média 3D sur la démo), clé résolue en EN et FR dans les locales ; rendu réservé à l'éditeur de disclosures non atteignable sur la vitrine (request.design_mode faux, et la boutique a 2 langues : .fl-disclosures__empty = 0 nœud sur /pages/flyer-all-sections EN et FR), clé résolue dans les deux locales. Messages de panier, erreurs et états vides repris de 1.8.11 : aucune clé de panier touchée par la correction"
+            "mesure": "les 2 branches dynamiques ajoutées par la 1.8.14 : (1) nom accessible composé du bouton pays/langue (header.liquid:218-228) mesuré en direct dans les deux langues sur 6 chargements, branche « pays+langue » rendue (la boutique a 2 pays et 2 langues) — les branches « pays seul » et « langue seule » ne sont pas atteignables sur la démo, leurs clés general.localization.country_label et language_label sont résolues en EN et FR ; (2) choix entre editor_empty_disabled et editor_empty_single (disclosures.liquid:36-40) : LIMITE DE MESURE — ce rendu est enfermé dans request.design_mode, donc non atteignable en vitrine, et la boutique de dev a 2 pays et 2 langues (0 nœud .fl-disclosures__empty et 2 <select> sur /en/pages/flyer-all-sections et /pages/flyer-all-sections) ; contrôle statique : les ids enable_country_selector et enable_language_selector testés en ligne 36 existent bien dans le schéma de la section (default true), et les 2 clés résolvent en EN et FR. Les messages de panier, erreurs de formulaire et états vides sont repris de 1.8.12 : aucune de leurs clés n'est touchée par les 4 fichiers de la portée"
           }
         }
       }
