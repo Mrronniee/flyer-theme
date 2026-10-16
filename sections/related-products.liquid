@@ -158,6 +158,32 @@
     border-radius: var(--radius-btn);
     background: var(--color-surface);
   }
+
+  /* Two columns on a phone: the card is 165px wide, where a product name wraps
+     to a second line and a sale price drops its compare price below the
+     current one (measured at 390 on the demo: title 18.4 -> 36.8px, price
+     25.6 -> 59.2px, so the row grew 52px when the grid landed). The
+     placeholder cannot know which product will wrap, so inside this grid both
+     lines are reserved on the real cards too: every card is then exactly as
+     tall as the block it replaces, and the footer does not move. Above 749px
+     the card is wide enough that nothing wraps, and nothing is reserved. */
+  @media screen and (max-width: 749px) {
+    .fl-related .fl-card__title {
+      min-height: 2.3em;
+    }
+
+    .fl-related .fl-price {
+      min-height: 3.7em;
+    }
+
+    .fl-related__ghost-line--title {
+      height: 2.3em;
+    }
+
+    .fl-related__ghost-line--price {
+      height: 3.7em;
+    }
+  }
 {% endstylesheet %}
 
 {% javascript %}
@@ -220,34 +246,34 @@
 
 {% schema %}
 {
-  "name": "Related products",
+  "name": "t:names.related_products",
   "settings": [
     {
       "type": "select",
       "id": "intent",
-      "label": "Recommendation type",
-      "info": "Complementary products are the ones you pair by hand in the free Shopify Search & Discovery app. Add this section a second time to show both.",
+      "label": "t:labels.recommendation_type",
+      "info": "t:info.complementary_products_are_the_ones_you_pair",
       "options": [
         {
           "value": "related",
-          "label": "Related products (automatic)"
+          "label": "t:labels.related_products_automatic"
         },
         {
           "value": "complementary",
-          "label": "Complementary products (Search & Discovery)"
+          "label": "t:labels.complementary_products_search_discovery"
         }
       ],
       "default": "related"
     },
     {
       "type": "paragraph",
-      "content": "Automatic recommendations based on the current product. Use on the product template."
+      "content": "t:content.automatic_recommendations_based_on_the_current_produ"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
-      "info": "Leave blank to use the default heading."
+      "label": "t:labels.heading",
+      "info": "t:info.leave_blank_to_use_the_default_heading"
     },
     {
       "type": "range",
@@ -256,7 +282,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -266,14 +292,26 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
-  "enabled_on": { "templates": ["product"] },
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  },
   "presets": [
-    { "name": "Related products" },
-    { "name": "Complementary products", "settings": { "intent": "complementary", "heading": "Goes well with" } }
+    {
+      "name": "t:names.related_products"
+    },
+    {
+      "name": "t:names.complementary_products",
+      "settings": {
+        "intent": "complementary",
+        "heading": "Goes well with"
+      }
+    }
   ]
 }
 {% endschema %}

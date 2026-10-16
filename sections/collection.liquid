@@ -489,30 +489,30 @@
 
 {% schema %}
 {
-  "name": "Collection",
+  "name": "t:names.collection",
   "settings": [
     {
       "type": "checkbox",
       "id": "show_description",
-      "label": "Show collection description",
+      "label": "t:labels.show_collection_description",
       "default": true
     },
     {
       "type": "header",
-      "content": "Product grid"
+      "content": "t:content.product_grid"
     },
     {
       "type": "select",
       "id": "cols_desktop",
-      "label": "Columns on desktop",
+      "label": "t:labels.columns_on_desktop",
       "options": [
         {
           "value": "3",
-          "label": "3 columns"
+          "label": "t:labels.3_columns"
         },
         {
           "value": "4",
-          "label": "4 columns"
+          "label": "t:labels.4_columns"
         }
       ],
       "default": "4"
@@ -520,22 +520,22 @@
     {
       "type": "select",
       "id": "cols_mobile",
-      "label": "Columns on mobile",
+      "label": "t:labels.columns_on_mobile",
       "options": [
         {
           "value": "1",
-          "label": "1 column"
+          "label": "t:labels.1_column"
         },
         {
           "value": "2",
-          "label": "2 columns"
+          "label": "t:labels.2_columns"
         }
       ],
       "default": "2"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -544,7 +544,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -554,7 +554,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ]

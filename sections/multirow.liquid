@@ -204,33 +204,33 @@
 
 {% schema %}
 {
-  "name": "Multirow",
+  "name": "t:names.multirow",
   "max_blocks": 8,
   "settings": [
     {
       "type": "header",
-      "content": "Image"
+      "content": "t:content.image"
     },
     {
       "type": "select",
       "id": "image_height",
-      "label": "Image height",
+      "label": "t:labels.image_height",
       "options": [
         {
           "value": "adapt",
-          "label": "Adapt to image"
+          "label": "t:labels.adapt_to_image"
         },
         {
           "value": "small",
-          "label": "Small"
+          "label": "t:labels.small"
         },
         {
           "value": "medium",
-          "label": "Medium"
+          "label": "t:labels.medium"
         },
         {
           "value": "large",
-          "label": "Large"
+          "label": "t:labels.large"
         }
       ],
       "default": "medium"
@@ -238,68 +238,68 @@
     {
       "type": "select",
       "id": "desktop_image_width",
-      "label": "Image width on desktop",
+      "label": "t:labels.image_width_on_desktop",
       "options": [
         {
           "value": "small",
-          "label": "Small"
+          "label": "t:labels.small"
         },
         {
           "value": "medium",
-          "label": "Medium"
+          "label": "t:labels.medium"
         },
         {
           "value": "large",
-          "label": "Large"
+          "label": "t:labels.large"
         }
       ],
       "default": "medium",
-      "info": "On mobile the image is always full width."
+      "info": "t:info.on_mobile_the_image_is_always_full"
     },
     {
       "type": "select",
       "id": "image_layout",
-      "label": "Image placement",
+      "label": "t:labels.image_placement",
       "options": [
         {
           "value": "alternate-left",
-          "label": "Alternate from left"
+          "label": "t:labels.alternate_from_left"
         },
         {
           "value": "alternate-right",
-          "label": "Alternate from right"
+          "label": "t:labels.alternate_from_right"
         },
         {
           "value": "left",
-          "label": "Always left"
+          "label": "t:labels.always_left"
         },
         {
           "value": "right",
-          "label": "Always right"
+          "label": "t:labels.always_right"
         }
       ],
       "default": "alternate-left"
     },
     {
       "type": "header",
-      "content": "Content"
+      "content": "t:content.content"
     },
     {
       "type": "select",
       "id": "desktop_content_position",
-      "label": "Content position on desktop",
+      "label": "t:labels.content_position_on_desktop",
       "options": [
         {
           "value": "top",
-          "label": "Top"
+          "label": "t:labels.top"
         },
         {
           "value": "middle",
-          "label": "Middle"
+          "label": "t:labels.middle"
         },
         {
           "value": "bottom",
-          "label": "Bottom"
+          "label": "t:labels.bottom"
         }
       ],
       "default": "middle"
@@ -307,19 +307,19 @@
     {
       "type": "select",
       "id": "desktop_content_alignment",
-      "label": "Content alignment on desktop",
+      "label": "t:labels.content_alignment_on_desktop",
       "options": [
         {
           "value": "left",
-          "label": "Left"
+          "label": "t:labels.left"
         },
         {
           "value": "center",
-          "label": "Center"
+          "label": "t:labels.center"
         },
         {
           "value": "right",
-          "label": "Right"
+          "label": "t:labels.right"
         }
       ],
       "default": "left"
@@ -327,39 +327,39 @@
     {
       "type": "select",
       "id": "button_style",
-      "label": "Button style",
+      "label": "t:labels.button_style",
       "options": [
         {
           "value": "primary",
-          "label": "Primary"
+          "label": "t:labels.primary"
         },
         {
           "value": "secondary",
-          "label": "Secondary"
+          "label": "t:labels.secondary"
         }
       ],
       "default": "secondary"
     },
     {
       "type": "header",
-      "content": "Colors"
+      "content": "t:content.colors"
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "color_scheme",
       "id": "row_color_scheme",
-      "label": "Row color scheme",
+      "label": "t:labels.row_color_scheme",
       "default": "scheme-1",
-      "info": "Applied to the text side of every row."
+      "info": "t:info.applied_to_the_text_side_of_every"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -368,7 +368,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -378,55 +378,55 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "blocks": [
     {
       "type": "row",
-      "name": "Row",
+      "name": "t:names.row",
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "t:labels.image"
         },
         {
           "type": "text",
           "id": "caption",
-          "label": "Caption",
+          "label": "t:labels.caption",
           "default": "Add a caption"
         },
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading",
+          "label": "t:labels.heading",
           "default": "Row heading"
         },
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
+          "label": "t:labels.text",
           "default": "<p>Pair a large image with a short story. Use this space to walk customers through your process, your materials, or the people behind the brand.</p>"
         },
         {
           "type": "text",
           "id": "button_label",
-          "label": "Button label",
-          "info": "Add a label and a link to show the button."
+          "label": "t:labels.button_label",
+          "info": "t:info.add_a_label_and_a_link_to"
         },
         {
           "type": "url",
           "id": "button_link",
-          "label": "Button link"
+          "label": "t:labels.button_link"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Multirow",
+      "name": "t:names.multirow",
       "blocks": [
         {
           "type": "row"

@@ -338,18 +338,18 @@
 
 {% schema %}
 {
-  "name": "Featured blog",
+  "name": "t:names.featured_blog",
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:labels.heading",
       "default": "From the journal"
     },
     {
       "type": "blog",
       "id": "blog",
-      "label": "Blog"
+      "label": "t:labels.blog"
     },
     {
       "type": "range",
@@ -357,7 +357,7 @@
       "min": 2,
       "max": 4,
       "step": 1,
-      "label": "Posts to show",
+      "label": "t:labels.posts_to_show",
       "default": 3
     },
     {
@@ -366,43 +366,43 @@
       "min": 1,
       "max": 4,
       "step": 1,
-      "label": "Columns on desktop",
+      "label": "t:labels.columns_on_desktop",
       "default": 3
     },
     {
       "type": "checkbox",
       "id": "show_image",
-      "label": "Show featured image",
+      "label": "t:labels.show_featured_image",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_date",
-      "label": "Show publication date",
+      "label": "t:labels.show_publication_date",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_author",
-      "label": "Show author",
+      "label": "t:labels.show_author",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "show_view_all",
-      "label": "Show “View all” link",
-      "info": "Shown when the blog has more posts than the section displays.",
+      "label": "t:labels.show_view_all_link",
+      "info": "t:info.shown_when_the_blog_has_more_posts",
       "default": true
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -411,7 +411,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -421,13 +421,13 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "presets": [
     {
-      "name": "Featured blog"
+      "name": "t:names.featured_blog"
     }
   ]
 }

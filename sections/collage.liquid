@@ -508,53 +508,53 @@
 
 {% schema %}
 {
-  "name": "Collage",
+  "name": "t:names.collage",
   "max_blocks": 3,
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:labels.heading",
       "default": "Multimedia collage",
-      "info": "Leave blank to hide the heading."
+      "info": "t:info.leave_blank_to_hide_the_heading"
     },
     {
       "type": "header",
-      "content": "Layout"
+      "content": "t:content.layout"
     },
     {
       "type": "select",
       "id": "desktop_layout",
-      "label": "Large block on desktop",
+      "label": "t:labels.large_block_on_desktop",
       "options": [
         {
           "value": "left",
-          "label": "First block, left"
+          "label": "t:labels.first_block_left"
         },
         {
           "value": "center",
-          "label": "Second block, center"
+          "label": "t:labels.second_block_center"
         },
         {
           "value": "right",
-          "label": "Last block, right"
+          "label": "t:labels.last_block_right"
         }
       ],
       "default": "left",
-      "info": "The centered layout needs three blocks."
+      "info": "t:info.the_centered_layout_needs_three_blocks"
     },
     {
       "type": "select",
       "id": "mobile_layout",
-      "label": "Mobile layout",
+      "label": "t:labels.mobile_layout",
       "options": [
         {
           "value": "collage",
-          "label": "Collage"
+          "label": "t:labels.collage"
         },
         {
           "value": "column",
-          "label": "One column"
+          "label": "t:labels.one_column"
         }
       ],
       "default": "column"
@@ -562,29 +562,29 @@
     {
       "type": "select",
       "id": "card_styles",
-      "label": "Block style",
+      "label": "t:labels.block_style",
       "options": [
         {
           "value": "none",
-          "label": "Media"
+          "label": "t:labels.media"
         },
         {
           "value": "product-card-wrapper",
-          "label": "Card"
+          "label": "t:labels.card"
         }
       ],
       "default": "product-card-wrapper",
-      "info": "Applies to image, collection and video blocks. Product blocks always use the Product cards theme settings."
+      "info": "t:info.applies_to_image_collection_and_video_blocks"
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -593,7 +593,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -603,84 +603,87 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "blocks": [
     {
       "type": "image",
-      "name": "Image",
+      "name": "t:names.image",
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "t:labels.image"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "t:labels.link"
         }
       ]
     },
     {
       "type": "product",
-      "name": "Product",
+      "name": "t:names.product",
       "settings": [
         {
           "type": "product",
           "id": "product",
-          "label": "Product"
+          "label": "t:labels.product"
         },
         {
           "type": "checkbox",
           "id": "second_image",
-          "label": "Show second image on hover",
+          "label": "t:labels.show_second_image_on_hover",
           "default": false
         },
         {
           "type": "checkbox",
           "id": "quick_add",
-          "label": "Show quick add button",
+          "label": "t:labels.show_quick_add_button",
           "default": true
         }
       ]
     },
     {
       "type": "collection",
-      "name": "Collection",
+      "name": "t:names.collection",
       "settings": [
         {
           "type": "collection",
           "id": "collection",
-          "label": "Collection"
+          "label": "t:labels.collection"
         }
       ]
     },
     {
       "type": "video",
-      "name": "Video",
+      "name": "t:names.video",
       "settings": [
         {
           "type": "image_picker",
           "id": "cover_image",
-          "label": "Cover image"
+          "label": "t:labels.cover_image"
         },
         {
           "type": "video_url",
           "id": "video_url",
-          "accept": ["youtube", "vimeo"],
-          "label": "Video link",
+          "accept": [
+            "youtube",
+            "vimeo"
+          ],
+          "label": "t:labels.video_link",
           "placeholder": "https://www.youtube.com/watch?v=",
-          "info": "Plays inside the tile. Opens on YouTube or Vimeo without JavaScript."
+          "info": "t:info.plays_inside_the_tile_opens_on_youtube"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Collage",
+      "name": "t:names.collage",
       "blocks": [
         {
           "type": "image"

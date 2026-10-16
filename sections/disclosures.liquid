@@ -164,33 +164,33 @@
 
 {% schema %}
 {
-  "name": "Disclosures",
+  "name": "t:names.disclosures",
   "settings": [
     {
       "type": "paragraph",
-      "content": "Each picker only appears when the store offers more than one country or language."
+      "content": "t:content.each_picker_only_appears_when_the_store"
     },
     {
       "type": "checkbox",
       "id": "enable_country_selector",
-      "label": "Show country/region picker",
+      "label": "t:labels.show_country_region_picker",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "enable_language_selector",
-      "label": "Show language picker",
+      "label": "t:labels.show_language_picker",
       "default": true
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -199,7 +199,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -209,13 +209,13 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "presets": [
     {
-      "name": "Disclosures"
+      "name": "t:names.disclosures"
     }
   ]
 }

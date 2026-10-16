@@ -301,60 +301,63 @@
 
 {% schema %}
 {
-  "name": "Video",
+  "name": "t:names.video",
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading"
+      "label": "t:labels.heading"
     },
     {
       "type": "header",
-      "content": "Shopify-hosted video"
+      "content": "t:content.shopify_hosted_video"
     },
     {
       "type": "video",
       "id": "video",
-      "label": "Video"
+      "label": "t:labels.video"
     },
     {
       "type": "header",
-      "content": "Or embed from a URL"
+      "content": "t:content.or_embed_from_a_url"
     },
     {
       "type": "paragraph",
-      "content": "Used only when no Shopify-hosted video is selected above."
+      "content": "t:content.used_only_when_no_shopify_hosted_video"
     },
     {
       "type": "video_url",
       "id": "video_url",
-      "accept": ["youtube", "vimeo"],
-      "label": "Video URL",
-      "info": "Accepts a YouTube or Vimeo link."
+      "accept": [
+        "youtube",
+        "vimeo"
+      ],
+      "label": "t:labels.video_url",
+      "info": "t:info.accepts_a_youtube_or_vimeo_link"
     },
     {
       "type": "header",
-      "content": "Cover"
+      "content": "t:content.cover"
     },
     {
       "type": "image_picker",
       "id": "cover_image",
-      "label": "Cover image"
+      "label": "t:labels.cover_image"
     },
     {
       "type": "text",
       "id": "description",
-      "label": "Video alt text",
-      "info": "Describe the video for customers using a screen reader."
+      "label": "t:labels.video_alt_text",
+      "info": "t:info.describe_the_video_for_customers_using_a"
     },
     {
       "type": "header",
-      "content": "Layout"
+      "content": "t:content.layout"
     },
     {
       "type": "checkbox",
       "id": "full_width",
-      "label": "Make video full width",
+      "label": "t:labels.make_video_full_width",
       "default": false
     },
     {
@@ -364,18 +367,18 @@
       "max": 40,
       "step": 4,
       "unit": "px",
-      "label": "Padding around video",
+      "label": "t:labels.padding_around_video",
       "default": 0
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -384,7 +387,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -394,13 +397,13 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "presets": [
     {
-      "name": "Video"
+      "name": "t:names.video"
     }
   ]
 }

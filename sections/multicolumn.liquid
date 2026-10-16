@@ -174,38 +174,38 @@
 
 {% schema %}
 {
-  "name": "Multicolumn",
+  "name": "t:names.multicolumn",
   "max_blocks": 12,
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:labels.heading",
       "default": "Why shop with us",
-      "info": "Leave blank to hide the heading."
+      "info": "t:info.leave_blank_to_hide_the_heading"
     },
     {
       "type": "select",
       "id": "columns",
-      "label": "Columns on desktop",
+      "label": "t:labels.columns_on_desktop",
       "options": [
         {
           "value": "2",
-          "label": "2 columns"
+          "label": "t:labels.2_columns"
         },
         {
           "value": "3",
-          "label": "3 columns"
+          "label": "t:labels.3_columns"
         },
         {
           "value": "4",
-          "label": "4 columns"
+          "label": "t:labels.4_columns"
         }
       ],
       "default": "3"
@@ -213,22 +213,22 @@
     {
       "type": "select",
       "id": "alignment",
-      "label": "Content alignment",
+      "label": "t:labels.content_alignment",
       "options": [
         {
           "value": "left",
-          "label": "Left"
+          "label": "t:labels.left"
         },
         {
           "value": "center",
-          "label": "Center"
+          "label": "t:labels.center"
         }
       ],
       "default": "left"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -237,7 +237,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -247,54 +247,54 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "blocks": [
     {
       "type": "column",
-      "name": "Column",
+      "name": "t:names.column",
       "settings": [
         {
           "type": "checkbox",
           "id": "show_image",
-          "label": "Show image",
+          "label": "t:labels.show_image",
           "default": true
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "t:labels.image"
         },
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading",
+          "label": "t:labels.heading",
           "default": "Column heading"
         },
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
+          "label": "t:labels.text",
           "default": "<p>Add a short description of the product, service, or benefit you want to highlight here.</p>"
         },
         {
           "type": "text",
           "id": "link_label",
-          "label": "Link label"
+          "label": "t:labels.link_label"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "t:labels.link"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Multicolumn",
+      "name": "t:names.multicolumn",
       "blocks": [
         {
           "type": "column"

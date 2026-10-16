@@ -244,66 +244,66 @@
 
 {% schema %}
 {
-  "name": "Size guide",
+  "name": "t:names.size_guide",
   "max_blocks": 12,
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:labels.heading",
       "default": "Size guide"
     },
     {
       "type": "richtext",
       "id": "intro",
-      "label": "Intro",
+      "label": "t:labels.intro",
       "default": "<p>Measurements are taken flat across the garment. If you sit between two sizes, choose the larger one.</p>"
     },
     {
       "type": "text",
       "id": "col_headings",
-      "label": "Column headings",
+      "label": "t:labels.column_headings",
       "default": "Chest,Waist,Hips,Length",
-      "info": "Separate with commas."
+      "info": "t:info.separate_with_commas"
     },
     {
       "type": "header",
-      "content": "Units"
+      "content": "t:content.units"
     },
     {
       "type": "checkbox",
       "id": "unit_toggle",
-      "label": "Show a unit toggle",
+      "label": "t:labels.show_a_unit_toggle",
       "default": true,
-      "info": "Type both values in each cell, separated by a slash: 84 / 33."
+      "info": "t:info.type_both_values_in_each_cell_separated"
     },
     {
       "type": "text",
       "id": "unit_a",
-      "label": "First unit",
+      "label": "t:labels.first_unit",
       "default": "cm"
     },
     {
       "type": "text",
       "id": "unit_b",
-      "label": "Second unit",
+      "label": "t:labels.second_unit",
       "default": "in"
     },
     {
       "type": "text",
       "id": "note",
-      "label": "Note",
+      "label": "t:labels.note",
       "default": "Measurements may vary by up to 1 cm."
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -312,7 +312,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -322,34 +322,34 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "blocks": [
     {
       "type": "row",
-      "name": "Size row",
+      "name": "t:names.size_row",
       "settings": [
         {
           "type": "text",
           "id": "label",
-          "label": "Size",
+          "label": "t:labels.size",
           "default": "M"
         },
         {
           "type": "text",
           "id": "values",
-          "label": "Values",
+          "label": "t:labels.values",
           "default": "88 / 34.5,70 / 27.5,94 / 37,64 / 25",
-          "info": "One value per column heading, separated by commas, in the same order."
+          "info": "t:info.one_value_per_column_heading_separated_by"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Size guide",
+      "name": "t:names.size_guide",
       "blocks": [
         {
           "type": "row",

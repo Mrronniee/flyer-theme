@@ -73,34 +73,34 @@
 
 {% schema %}
 {
-  "name": "Page content",
+  "name": "t:names.page_content",
   "settings": [
     {
       "type": "page",
       "id": "page",
-      "label": "Page"
+      "label": "t:labels.page"
     },
     {
       "type": "checkbox",
       "id": "show_heading",
-      "label": "Show heading",
+      "label": "t:labels.show_heading",
       "default": true
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
-      "info": "Leave blank to use the page title."
+      "label": "t:labels.heading",
+      "info": "t:info.leave_blank_to_use_the_page_title"
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -109,7 +109,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -119,13 +119,13 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "presets": [
     {
-      "name": "Page"
+      "name": "t:names.page"
     }
   ]
 }

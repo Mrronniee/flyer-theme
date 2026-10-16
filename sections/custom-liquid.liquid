@@ -28,23 +28,23 @@
 
 {% schema %}
 {
-  "name": "Custom Liquid",
+  "name": "t:names.custom_liquid",
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "liquid",
       "id": "custom_liquid",
-      "label": "Custom Liquid",
-      "info": "Add app snippets or other Liquid code."
+      "label": "t:labels.custom_liquid",
+      "info": "t:info.add_app_snippets_or_other_liquid_code"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -53,7 +53,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -63,13 +63,13 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "presets": [
     {
-      "name": "Custom Liquid"
+      "name": "t:names.custom_liquid"
     }
   ]
 }

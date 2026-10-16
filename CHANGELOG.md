@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.8.22 - 2026-10-16
+
+### Added
+- **The theme editor speaks French too.** Every section name, setting label,
+  option and help text now comes from `locales/en.default.schema.json` and
+  `locales/fr.schema.json` — 482 entries, 962 places — so a merchant working in
+  French sees the theme in French while customising it. The English wording is
+  unchanged, and the example content of the presets stays in the theme's
+  default language, as Shopify expects.
+
+### Fixed
+- **Each error in a form summary is a target of its own.** The links that jump
+  to the field in error were as tall as their text (19px), which is below the
+  24px a pointer needs; they are now 24px tall, 6px apart, with the same
+  wording and the same underline.
+- **The recommendations no longer move the footer on a phone.** Two columns
+  leave a card 165px wide, where a long product name takes two lines and a sale
+  price puts its compare price underneath; the reserved block assumed one line
+  of each, so the footer dropped 52px when the grid landed. Both lines are now
+  reserved on the cards and on the block that stands in for them, so nothing
+  moves. Nothing changes above 749px, where the card is wide enough.
+
 ## 1.8.21 - 2026-10-16
 
 ### Fixed

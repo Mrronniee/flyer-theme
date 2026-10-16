@@ -450,65 +450,65 @@
 
 {% schema %}
 {
-  "name": "Footer",
+  "name": "t:names.footer",
   "settings": [
     {
       "type": "select",
       "id": "background",
-      "label": "Background",
+      "label": "t:labels.background",
       "options": [
         {
           "value": "paper",
-          "label": "White"
+          "label": "t:labels.white"
         },
         {
           "value": "surface",
-          "label": "Soft gray"
+          "label": "t:labels.soft_gray"
         }
       ],
       "default": "paper"
     },
     {
       "type": "header",
-      "content": "Bottom bar"
+      "content": "t:content.bottom_bar"
     },
     {
       "type": "checkbox",
       "id": "show_kiosk_credit",
-      "label": "Show \"Theme by KIOSK\" credit",
-      "info": "A small link next to the copyright line. Feel free to turn it off.",
+      "label": "t:labels.show_theme_by_kiosk_credit",
+      "info": "t:info.a_small_link_next_to_the_copyright",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_country_selector",
-      "label": "Show country selector",
-      "info": "Only shown when the store has multiple countries enabled.",
+      "label": "t:labels.show_country_selector",
+      "info": "t:info.only_shown_when_the_store_has_multiple",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "show_language_selector",
-      "label": "Show language selector",
-      "info": "Only shown when the store has multiple languages enabled.",
+      "label": "t:labels.show_language_selector",
+      "info": "t:info.only_shown_when_the_store_has_multiple_2",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
-      "label": "Show payment icons",
+      "label": "t:labels.show_payment_icons",
       "default": true
     },
     {
       "type": "link_list",
       "id": "legal_menu",
-      "label": "Policies menu",
-      "info": "Shown next to the copyright. Hidden when a Menu block above already shows the same menu.",
+      "label": "t:labels.policies_menu",
+      "info": "t:info.shown_next_to_the_copyright_hidden_when",
       "default": "footer"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -517,7 +517,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -527,7 +527,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
@@ -535,67 +535,67 @@
   "blocks": [
     {
       "type": "menu",
-      "name": "Menu",
+      "name": "t:names.menu",
       "settings": [
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading",
-          "info": "Leave empty to show the translated heading in each storefront language."
+          "label": "t:labels.heading",
+          "info": "t:info.leave_empty_to_show_the_translated_heading"
         },
         {
           "type": "link_list",
           "id": "menu",
-          "label": "Menu",
+          "label": "t:labels.menu",
           "default": "footer"
         }
       ]
     },
     {
       "type": "text",
-      "name": "Text",
+      "name": "t:names.text",
       "settings": [
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading",
-          "info": "Leave empty to show the translated heading in each storefront language."
+          "label": "t:labels.heading",
+          "info": "t:info.leave_empty_to_show_the_translated_heading"
         },
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
-          "info": "Leave empty to show the translated placeholder in each storefront language."
+          "label": "t:labels.text",
+          "info": "t:info.leave_empty_to_show_the_translated_placeholder"
         }
       ]
     },
     {
       "type": "brand",
-      "name": "Brand information",
+      "name": "t:names.brand_information",
       "limit": 1,
       "settings": [
         {
           "type": "paragraph",
-          "content": "Edit the content under Theme settings > Brand information."
+          "content": "t:content.edit_the_content_under_theme_settings_brand"
         }
       ]
     },
     {
       "type": "newsletter",
-      "name": "Newsletter",
+      "name": "t:names.newsletter",
       "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading",
-          "info": "Leave empty to show the translated heading in each storefront language."
+          "label": "t:labels.heading",
+          "info": "t:info.leave_empty_to_show_the_translated_heading"
         },
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
-          "info": "Leave empty to show the translated placeholder in each storefront language."
+          "label": "t:labels.text",
+          "info": "t:info.leave_empty_to_show_the_translated_placeholder"
         }
       ]
     }

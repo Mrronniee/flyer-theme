@@ -57,17 +57,17 @@
 
 {% schema %}
 {
-  "name": "Rich text",
+  "name": "t:names.rich_text",
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -76,7 +76,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -86,75 +86,75 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "blocks": [
     {
       "type": "eyebrow",
-      "name": "Eyebrow",
+      "name": "t:names.eyebrow",
       "limit": 1,
       "settings": [
         {
           "type": "text",
           "id": "text",
-          "label": "Eyebrow",
+          "label": "t:labels.eyebrow",
           "default": "Our story"
         }
       ]
     },
     {
       "type": "heading",
-      "name": "Heading",
+      "name": "t:names.heading",
       "settings": [
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading",
+          "label": "t:labels.heading",
           "default": "Talk about your brand"
         }
       ]
     },
     {
       "type": "text",
-      "name": "Text",
+      "name": "t:names.text",
       "settings": [
         {
           "type": "richtext",
           "id": "text",
-          "label": "Text",
+          "label": "t:labels.text",
           "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
         }
       ]
     },
     {
       "type": "button",
-      "name": "Button",
+      "name": "t:names.button",
       "settings": [
         {
           "type": "text",
           "id": "label",
-          "label": "Button label",
+          "label": "t:labels.button_label",
           "default": "Learn more"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Button link"
+          "label": "t:labels.button_link"
         },
         {
           "type": "select",
           "id": "style",
-          "label": "Button style",
+          "label": "t:labels.button_style",
           "options": [
             {
               "value": "primary",
-              "label": "Primary"
+              "label": "t:labels.primary"
             },
             {
               "value": "secondary",
-              "label": "Secondary"
+              "label": "t:labels.secondary"
             }
           ],
           "default": "primary"
@@ -164,7 +164,7 @@
   ],
   "presets": [
     {
-      "name": "Rich text",
+      "name": "t:names.rich_text",
       "blocks": [
         {
           "type": "heading"

@@ -200,39 +200,39 @@
 
 {% schema %}
 {
-  "name": "FAQ",
+  "name": "t:names.faq",
   "max_blocks": 20,
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "text",
       "id": "eyebrow",
-      "label": "Eyebrow",
+      "label": "t:labels.eyebrow",
       "default": "Questions"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:labels.heading",
       "default": "Frequently asked questions"
     },
     {
       "type": "select",
       "id": "layout",
-      "label": "Layout",
+      "label": "t:labels.layout",
       "options": [
         {
           "value": "list",
-          "label": "List"
+          "label": "t:labels.list"
         },
         {
           "value": "split",
-          "label": "Heading beside questions"
+          "label": "t:labels.heading_beside_questions"
         }
       ],
       "default": "list"
@@ -240,12 +240,12 @@
     {
       "type": "checkbox",
       "id": "open_first",
-      "label": "Open first question by default",
+      "label": "t:labels.open_first_question_by_default",
       "default": false
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -254,7 +254,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -264,25 +264,25 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "blocks": [
     {
       "type": "question",
-      "name": "Question",
+      "name": "t:names.question",
       "settings": [
         {
           "type": "text",
           "id": "question",
-          "label": "Question",
+          "label": "t:labels.question",
           "default": "How long does shipping take?"
         },
         {
           "type": "richtext",
           "id": "answer",
-          "label": "Answer",
+          "label": "t:labels.answer",
           "default": "<p>Orders ship within 1–2 business days. Standard delivery takes 3–5 business days; express delivery arrives in 1–2.</p>"
         }
       ]
@@ -290,7 +290,7 @@
   ],
   "presets": [
     {
-      "name": "FAQ",
+      "name": "t:names.faq",
       "blocks": [
         {
           "type": "question",

@@ -335,7 +335,14 @@ a {
 .fl-form-status__list li + li {
   margin-top: 6px;
 }
+/* Each link is the shortest way back to the field in error, so it gets a
+   target of its own height instead of leaning on the "inline" exception of
+   WCAG 2.5.8: 19px of text plus 3px above and below. The 6px between two list
+   items keeps the two targets apart. */
 .fl-form-status__list a {
+  display: inline-block;
+  min-height: 24px;
+  padding-block: 3px;
   color: inherit;
 }
 .fl-field__error {

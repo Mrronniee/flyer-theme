@@ -156,25 +156,25 @@
 
 {% schema %}
 {
-  "name": "Featured collection",
+  "name": "t:names.featured_collection",
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:labels.heading",
       "default": "Featured collection",
-      "info": "Leave blank to use the collection name."
+      "info": "t:info.leave_blank_to_use_the_collection_name"
     },
     {
       "type": "collection",
       "id": "collection",
-      "label": "Collection"
+      "label": "t:labels.collection"
     },
     {
       "type": "range",
@@ -182,21 +182,21 @@
       "min": 2,
       "max": 12,
       "step": 1,
-      "label": "Products to show",
+      "label": "t:labels.products_to_show",
       "default": 8
     },
     {
       "type": "select",
       "id": "layout",
-      "label": "Layout",
+      "label": "t:labels.layout",
       "options": [
         {
           "value": "grid",
-          "label": "Uniform grid"
+          "label": "t:labels.uniform_grid"
         },
         {
           "value": "editorial",
-          "label": "Editorial (first product large)"
+          "label": "t:labels.editorial_first_product_large"
         }
       ],
       "default": "grid"
@@ -204,15 +204,15 @@
     {
       "type": "select",
       "id": "cols_desktop",
-      "label": "Columns on desktop",
+      "label": "t:labels.columns_on_desktop",
       "options": [
         {
           "value": "3",
-          "label": "3 columns"
+          "label": "t:labels.3_columns"
         },
         {
           "value": "4",
-          "label": "4 columns"
+          "label": "t:labels.4_columns"
         }
       ],
       "default": "4"
@@ -220,12 +220,12 @@
     {
       "type": "checkbox",
       "id": "show_view_all",
-      "label": "Show “View all” link",
+      "label": "t:labels.show_view_all_link",
       "default": true
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -234,7 +234,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -244,13 +244,13 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "presets": [
     {
-      "name": "Featured collection"
+      "name": "t:names.featured_collection"
     }
   ]
 }

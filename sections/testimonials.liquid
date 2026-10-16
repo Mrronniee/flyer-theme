@@ -385,39 +385,39 @@
 
 {% schema %}
 {
-  "name": "Testimonials",
+  "name": "t:names.testimonials",
   "max_blocks": 8,
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "text",
       "id": "eyebrow",
-      "label": "Eyebrow",
+      "label": "t:labels.eyebrow",
       "default": "What customers say"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:labels.heading",
       "default": "Loved by people who wear it daily"
     },
     {
       "type": "select",
       "id": "layout",
-      "label": "Layout",
+      "label": "t:labels.layout",
       "options": [
         {
           "value": "grid",
-          "label": "Grid"
+          "label": "t:labels.grid"
         },
         {
           "value": "carousel",
-          "label": "Carousel"
+          "label": "t:labels.carousel"
         }
       ],
       "default": "grid"
@@ -425,12 +425,12 @@
     {
       "type": "checkbox",
       "id": "show_rating",
-      "label": "Show star rating",
+      "label": "t:labels.show_star_rating",
       "default": true
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -439,7 +439,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -449,32 +449,32 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "blocks": [
     {
       "type": "testimonial",
-      "name": "Testimonial",
+      "name": "t:names.testimonial",
       "settings": [
         {
           "type": "textarea",
           "id": "quote",
-          "label": "Quote",
+          "label": "t:labels.quote",
           "default": "The quality is exactly what I hoped for. Delivered in three days, beautifully packed."
         },
         {
           "type": "text",
           "id": "author",
-          "label": "Author",
+          "label": "t:labels.author",
           "default": "Camille R."
         },
         {
           "type": "text",
           "id": "detail",
-          "label": "Detail",
-          "info": "For example: Verified buyer, Lyon",
+          "label": "t:labels.detail",
+          "info": "t:info.for_example_verified_buyer_lyon",
           "default": "Verified buyer, Lyon"
         },
         {
@@ -483,21 +483,21 @@
           "min": 1,
           "max": 5,
           "step": 1,
-          "label": "Rating",
+          "label": "t:labels.rating",
           "default": 5
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Portrait",
-          "info": "Optional, shown as a 48px circle."
+          "label": "t:labels.portrait",
+          "info": "t:info.optional_shown_as_a_48px_circle"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Testimonials",
+      "name": "t:names.testimonials",
       "blocks": [
         {
           "type": "testimonial",

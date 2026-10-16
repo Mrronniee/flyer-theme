@@ -216,32 +216,32 @@
 
 {% schema %}
 {
-  "name": "Contact form",
+  "name": "t:names.contact_form",
   "tag": "section",
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
-      "info": "Leave empty to use the page title."
+      "label": "t:labels.heading",
+      "info": "t:info.leave_empty_to_use_the_page_title"
     },
     {
       "type": "select",
       "id": "heading_tag",
-      "label": "Heading level",
-      "info": "Use H1 only when this is the main heading of the page.",
+      "label": "t:labels.heading_level",
+      "info": "t:info.use_h1_only_when_this_is_the",
       "options": [
         {
           "value": "h1",
-          "label": "H1"
+          "label": "t:labels.h1"
         },
         {
           "value": "h2",
-          "label": "H2"
+          "label": "t:labels.h2"
         },
         {
           "value": "h3",
-          "label": "H3"
+          "label": "t:labels.h3"
         }
       ],
       "default": "h2"
@@ -249,18 +249,18 @@
     {
       "type": "richtext",
       "id": "intro",
-      "label": "Intro text",
-      "info": "Leave empty to use the page content."
+      "label": "t:labels.intro_text",
+      "info": "t:info.leave_empty_to_use_the_page_content"
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -269,7 +269,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -279,13 +279,13 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "presets": [
     {
-      "name": "Contact form"
+      "name": "t:names.contact_form"
     }
   ]
 }

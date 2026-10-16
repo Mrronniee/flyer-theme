@@ -661,21 +661,21 @@
 
 {% schema %}
 {
-  "name": "Slideshow",
+  "name": "t:names.slideshow",
   "max_blocks": 5,
   "settings": [
     {
       "type": "select",
       "id": "layout",
-      "label": "Layout",
+      "label": "t:labels.layout",
       "options": [
         {
           "value": "full_bleed",
-          "label": "Full width"
+          "label": "t:labels.full_width"
         },
         {
           "value": "grid",
-          "label": "Inside page margins"
+          "label": "t:labels.inside_page_margins"
         }
       ],
       "default": "full_bleed"
@@ -683,23 +683,23 @@
     {
       "type": "select",
       "id": "slide_height",
-      "label": "Slide height",
+      "label": "t:labels.slide_height",
       "options": [
         {
           "value": "adapt",
-          "label": "Adapt to first image"
+          "label": "t:labels.adapt_to_first_image"
         },
         {
           "value": "small",
-          "label": "Small (40% of screen)"
+          "label": "t:labels.small_40_of_screen"
         },
         {
           "value": "medium",
-          "label": "Medium (60% of screen)"
+          "label": "t:labels.medium_60_of_screen"
         },
         {
           "value": "large",
-          "label": "Large (80% of screen)"
+          "label": "t:labels.large_80_of_screen"
         }
       ],
       "default": "medium"
@@ -707,7 +707,7 @@
     {
       "type": "checkbox",
       "id": "autorotate",
-      "label": "Rotate slides automatically",
+      "label": "t:labels.rotate_slides_automatically",
       "default": false
     },
     {
@@ -717,30 +717,30 @@
       "max": 9,
       "step": 1,
       "unit": "s",
-      "label": "Change slides every",
+      "label": "t:labels.change_slides_every",
       "default": 5
     },
     {
       "type": "checkbox",
       "id": "show_arrows",
-      "label": "Show arrows",
+      "label": "t:labels.show_arrows",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_dots",
-      "label": "Show dots",
+      "label": "t:labels.show_dots",
       "default": true
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -749,7 +749,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -759,84 +759,84 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "blocks": [
     {
       "type": "slide",
-      "name": "Slide",
+      "name": "t:names.slide",
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "t:labels.image"
         },
         {
           "type": "text",
           "id": "heading",
-          "label": "Heading",
+          "label": "t:labels.heading",
           "default": "New season essentials"
         },
         {
           "type": "text",
           "id": "subheading",
-          "label": "Subheading",
+          "label": "t:labels.subheading",
           "default": "Tell your brand’s story in a sentence or two."
         },
         {
           "type": "text",
           "id": "button_label",
-          "label": "Button label",
+          "label": "t:labels.button_label",
           "default": "Shop now",
-          "info": "Both the label and the link are needed to show the button."
+          "info": "t:info.both_the_label_and_the_link_are"
         },
         {
           "type": "url",
           "id": "button_link",
-          "label": "Button link"
+          "label": "t:labels.button_link"
         },
         {
           "type": "select",
           "id": "box_align",
-          "label": "Text position",
+          "label": "t:labels.text_position",
           "options": [
             {
               "value": "top-left",
-              "label": "Top left"
+              "label": "t:labels.top_left"
             },
             {
               "value": "top-center",
-              "label": "Top center"
+              "label": "t:labels.top_center"
             },
             {
               "value": "top-right",
-              "label": "Top right"
+              "label": "t:labels.top_right"
             },
             {
               "value": "middle-left",
-              "label": "Middle left"
+              "label": "t:labels.middle_left"
             },
             {
               "value": "middle-center",
-              "label": "Middle center"
+              "label": "t:labels.middle_center"
             },
             {
               "value": "middle-right",
-              "label": "Middle right"
+              "label": "t:labels.middle_right"
             },
             {
               "value": "bottom-left",
-              "label": "Bottom left"
+              "label": "t:labels.bottom_left"
             },
             {
               "value": "bottom-center",
-              "label": "Bottom center"
+              "label": "t:labels.bottom_center"
             },
             {
               "value": "bottom-right",
-              "label": "Bottom right"
+              "label": "t:labels.bottom_right"
             }
           ],
           "default": "middle-left"
@@ -844,7 +844,7 @@
         {
           "type": "color_scheme",
           "id": "color_scheme",
-          "label": "Text box color scheme",
+          "label": "t:labels.text_box_color_scheme",
           "default": "scheme-1"
         }
       ]
@@ -852,7 +852,7 @@
   ],
   "presets": [
     {
-      "name": "Slideshow",
+      "name": "t:names.slideshow",
       "settings": {
         "padding_top": 0,
         "padding_bottom": 0

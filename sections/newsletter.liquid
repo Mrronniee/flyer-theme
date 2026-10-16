@@ -127,35 +127,35 @@
 
 {% schema %}
 {
-  "name": "Newsletter",
+  "name": "t:names.newsletter",
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "text",
       "id": "eyebrow",
-      "label": "Eyebrow",
+      "label": "t:labels.eyebrow",
       "default": "Newsletter"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:labels.heading",
       "default": "Subscribe to our emails"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text",
+      "label": "t:labels.text",
       "default": "<p>Be the first to know about new arrivals and exclusive offers.</p>"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -164,7 +164,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -174,13 +174,13 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "presets": [
     {
-      "name": "Newsletter"
+      "name": "t:names.newsletter"
     }
   ]
 }

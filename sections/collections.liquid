@@ -177,34 +177,49 @@
 
 {% schema %}
 {
-  "name": "Collections list",
+  "name": "t:names.collections_list",
   "tag": "section",
   "settings": [
     {
       "type": "select",
       "id": "columns_desktop",
-      "label": "Columns on desktop",
+      "label": "t:labels.columns_on_desktop",
       "options": [
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" }
+        {
+          "value": "2",
+          "label": "t:labels.2"
+        },
+        {
+          "value": "3",
+          "label": "t:labels.3"
+        },
+        {
+          "value": "4",
+          "label": "t:labels.4"
+        }
       ],
       "default": "3"
     },
     {
       "type": "select",
       "id": "columns_mobile",
-      "label": "Columns on mobile",
+      "label": "t:labels.columns_on_mobile",
       "options": [
-        { "value": "1", "label": "1" },
-        { "value": "2", "label": "2" }
+        {
+          "value": "1",
+          "label": "t:labels.1"
+        },
+        {
+          "value": "2",
+          "label": "t:labels.2"
+        }
       ],
       "default": "2"
     },
     {
       "type": "checkbox",
       "id": "show_count",
-      "label": "Show product count",
+      "label": "t:labels.show_product_count",
       "default": false
     }
   ]

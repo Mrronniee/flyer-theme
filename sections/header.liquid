@@ -1223,55 +1223,55 @@
 
 {% schema %}
 {
-  "name": "Header",
+  "name": "t:names.header",
   "tag": "header",
   "class": "fl-header-section",
   "settings": [
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Menu",
+      "label": "t:labels.menu",
       "default": "main-menu"
     },
     {
       "type": "checkbox",
       "id": "sticky_header",
-      "label": "Sticky header",
+      "label": "t:labels.sticky_header",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_search",
-      "label": "Show search",
+      "label": "t:labels.show_search",
       "default": true
     },
     {
       "type": "header",
-      "content": "Customer account"
+      "content": "t:content.customer_account"
     },
     {
       "type": "link_list",
       "id": "customer_account_menu",
-      "label": "Account menu",
-      "info": "Links in the sheet that opens from the account icon. Shown when customer accounts are turned on.",
+      "label": "t:labels.account_menu",
+      "info": "t:info.links_in_the_sheet_that_opens_from",
       "default": "customer-account-main-menu"
     },
     {
       "type": "header",
-      "content": "Country and language"
+      "content": "t:content.country_and_language"
     },
     {
       "type": "checkbox",
       "id": "show_country_selector",
-      "label": "Show country/region selector",
-      "info": "Shown when the store sells in more than one country (Shopify Markets).",
+      "label": "t:labels.show_country_region_selector",
+      "info": "t:info.shown_when_the_store_sells_in_more",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "show_language_selector",
-      "label": "Show language selector",
-      "info": "Shown when the store has more than one published language.",
+      "label": "t:labels.show_language_selector",
+      "info": "t:info.shown_when_the_store_has_more_than",
       "default": false
     }
   ],

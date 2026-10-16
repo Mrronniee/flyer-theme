@@ -258,59 +258,59 @@
 
 {% schema %}
 {
-  "name": "Lookbook",
+  "name": "t:names.lookbook",
   "max_blocks": 6,
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "text",
       "id": "eyebrow",
-      "label": "Eyebrow",
+      "label": "t:labels.eyebrow",
       "default": "Lookbook"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:labels.heading",
       "default": "Worn, not staged"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text",
-      "info": "Optional short intro under the heading."
+      "label": "t:labels.text",
+      "info": "t:info.optional_short_intro_under_the_heading"
     },
     {
       "type": "select",
       "id": "rhythm",
-      "label": "Rhythm",
+      "label": "t:labels.rhythm",
       "options": [
         {
           "value": "offset",
-          "label": "Offset (every second look sits lower)"
+          "label": "t:labels.offset_every_second_look_sits_lower"
         },
         {
           "value": "even",
-          "label": "Even"
+          "label": "t:labels.even"
         }
       ],
       "default": "even",
-      "info": "Offset gives every look the first look’s image ratio, so the stagger stays regular. Use Even to mix ratios."
+      "info": "t:info.offset_gives_every_look_the_first_look"
     },
     {
       "type": "text",
       "id": "shop_label",
-      "label": "Product link prefix",
-      "info": "Shown as “Shop — Product title” under a look with a product. Leave empty to use the storefront language (Shop, Acheter)."
+      "label": "t:labels.product_link_prefix",
+      "info": "t:info.shown_as_shop_product_title_under_a"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -319,7 +319,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 64
     },
     {
@@ -329,36 +329,36 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 64
     }
   ],
   "blocks": [
     {
       "type": "look",
-      "name": "Look",
+      "name": "t:names.look",
       "settings": [
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "t:labels.image"
         },
         {
           "type": "select",
           "id": "ratio",
-          "label": "Image ratio",
+          "label": "t:labels.image_ratio",
           "options": [
             {
               "value": "4/5",
-              "label": "Portrait 4:5"
+              "label": "t:labels.portrait_4_5_2"
             },
             {
               "value": "3/4",
-              "label": "Portrait 3:4"
+              "label": "t:labels.portrait_3_4"
             },
             {
               "value": "1/1",
-              "label": "Square 1:1"
+              "label": "t:labels.square_1_1_2"
             }
           ],
           "default": "4/5"
@@ -366,31 +366,31 @@
         {
           "type": "text",
           "id": "caption",
-          "label": "Caption",
+          "label": "t:labels.caption",
           "default": "Overshirt, worn open"
         },
         {
           "type": "product",
           "id": "product",
-          "label": "Product",
-          "info": "Adds a “Shop — title” link with the price. Overrides the link below."
+          "label": "t:labels.product",
+          "info": "t:info.adds_a_shop_title_link_with_the"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "t:labels.link"
         },
         {
           "type": "text",
           "id": "link_label",
-          "label": "Link label"
+          "label": "t:labels.link_label"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Lookbook",
+      "name": "t:names.lookbook",
       "blocks": [
         {
           "type": "look",

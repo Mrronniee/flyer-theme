@@ -272,85 +272,85 @@
 
 {% schema %}
 {
-  "name": "Countdown",
+  "name": "t:names.countdown",
   "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "Color scheme",
+      "label": "t:labels.color_scheme",
       "default": "scheme-1"
     },
     {
       "type": "text",
       "id": "eyebrow",
-      "label": "Eyebrow",
+      "label": "t:labels.eyebrow",
       "default": "Limited time"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
+      "label": "t:labels.heading",
       "default": "Sale ends soon"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text",
+      "label": "t:labels.text",
       "default": "<p>Describe the offer and what ends when the clock hits zero.</p>"
     },
     {
       "type": "header",
-      "content": "End of the offer"
+      "content": "t:content.end_of_the_offer"
     },
     {
       "type": "text",
       "id": "end_date",
-      "label": "End date",
-      "info": "Format YYYY-MM-DD. Read in each visitor’s local time zone. The countdown stays hidden until a date is set."
+      "label": "t:labels.end_date",
+      "info": "t:info.format_yyyy_mm_dd_read_in_each"
     },
     {
       "type": "text",
       "id": "end_time",
-      "label": "End time",
+      "label": "t:labels.end_time",
       "default": "23:59",
-      "info": "24-hour format HH:MM, in the visitor’s local time."
+      "info": "t:info.24_hour_format_hh_mm_in_the"
     },
     {
       "type": "text",
       "id": "expired_text",
-      "label": "Text once expired",
+      "label": "t:labels.text_once_expired",
       "default": "This offer has ended."
     },
     {
       "type": "checkbox",
       "id": "hide_when_expired",
-      "label": "Hide section once expired",
+      "label": "t:labels.hide_section_once_expired",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "show_labels",
-      "label": "Show unit labels",
+      "label": "t:labels.show_unit_labels",
       "default": true
     },
     {
       "type": "header",
-      "content": "Button"
+      "content": "t:content.button"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Button label",
+      "label": "t:labels.button_label",
       "default": "Shop the sale"
     },
     {
       "type": "url",
       "id": "button_link",
-      "label": "Button link"
+      "label": "t:labels.button_link"
     },
     {
       "type": "header",
-      "content": "Spacing"
+      "content": "t:content.spacing"
     },
     {
       "type": "range",
@@ -359,7 +359,7 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Top padding",
+      "label": "t:labels.top_padding",
       "default": 48
     },
     {
@@ -369,13 +369,13 @@
       "max": 120,
       "step": 4,
       "unit": "px",
-      "label": "Bottom padding",
+      "label": "t:labels.bottom_padding",
       "default": 48
     }
   ],
   "presets": [
     {
-      "name": "Countdown"
+      "name": "t:names.countdown"
     }
   ]
 }
