@@ -295,7 +295,8 @@
           }
         }
       }
-    }
+    },
+    "correction": "1.8.21"
   },
   "theme-parcours-tester": {
     "version": "1.8.20",
@@ -478,7 +479,8 @@
           }
         }
       }
-    }
+    },
+    "correction": "1.8.21"
   },
   "theme-perf-auditor": {
     "version": "1.8.20",
