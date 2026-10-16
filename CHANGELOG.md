@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.1 - 2026-10-17
+
+### Fixed
+- **French punctuation in the theme editor.** Ten of the French editor labels
+  put an ordinary space before a colon or inside quotation marks, where French
+  needs a non-breaking one, so the colon or the closing mark could start a line
+  on its own. They now follow the same rule as the rest of the French text.
+
 ## 1.9.0 - 2026-10-17
 
 ### Added
