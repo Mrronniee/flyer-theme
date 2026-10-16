@@ -194,6 +194,7 @@
     "submit": "Rechercher",
     "clear": "Effacer la recherche",
     "no_results_html": "Aucun résultat pour « {{ terms }} ».",
+    "no_results_filters_html": "Aucun résultat pour « {{ terms }} » avec ces filtres.",
     "results_for_html": {
       "one": "{{ count }} résultat pour « {{ terms }} »",
       "other": "{{ count }} résultats pour « {{ terms }} »"

@@ -790,10 +790,14 @@
     border-radius: var(--radius-card);
   }
 
+  /* Spacing only: the width of a rich-text table belongs to critical.css,
+     which makes it as wide as its content and lets it scroll inside the text
+     column. A width here would win over that rule — same specificity, and
+     section stylesheets are loaded after critical.css — and the table would be
+     squeezed into the column instead of scrolling (measured 525.61px at 1440
+     on a twelve-column table, 1.8.20). */
   .fl-rte table {
-    width: 100%;
     margin-block: 0 0.9em;
-    border-collapse: collapse;
   }
 
   .fl-rte th,

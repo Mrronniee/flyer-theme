@@ -318,9 +318,16 @@
     text-decoration: none;
   }
 
-  /* A card tile carries its own colour scheme class: its text takes that
-     scheme's ink, not the inherited colour set on .fl-collage__tile above
-     (which, loaded after the scheme rules, left dark text on a dark card). */
+  /* Any tile that carries a colour scheme class takes that scheme's ink, not
+     the inherited colour set on .fl-collage__tile above: that rule is loaded
+     after the scheme rules and wins at equal specificity, which left dark
+     text on a dark card (1:1 measured on scheme 3 when a scheme sits on a
+     tile without --card). Two classes here, so the ink wins back. */
+  .fl-collage__tile[class*="color-scheme-"] {
+    color: var(--color-ink);
+  }
+
+  /* A card tile also carries the card's own frame. */
   .fl-collage__tile--card {
     color: var(--color-ink);
     padding: var(--card-image-padding, 0);

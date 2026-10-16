@@ -25,52 +25,98 @@
   </header>
 
   {%- if search.performed -%}
-    {%- assign terms_escaped = search.terms | escape -%}
+    {%- liquid
+      assign terms_escaped = search.terms | escape
+      assign search_sort_by = search.sort_by | default: search.default_sort_by
+      assign search_form_id = 'SearchFilters-' | append: section.id
+      capture search_clear_url
+        echo routes.search_url
+        echo '?q='
+        echo search.terms | url_encode
+        echo '&options%5Bprefix%5D=last&sort_by='
+        echo search_sort_by
+      endcapture
 
-    {%- if search.results_count == 0 -%}
-      <div class="fl-searchpage__empty">
-        <p class="fl-searchpage__empty-text">{{ 'search.no_results_html' | t: terms: terms_escaped }}</p>
-        <span class="fl-eyebrow">{{ 'search.suggestions' | t }}</span>
-        <div class="fl-searchpage__empty-actions">
-          <a class="fl-btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue_shopping' | t }}</a>
-          <a class="fl-btn fl-btn--secondary" href="{{ routes.collections_url }}">{{ 'collections.general.title' | t }}</a>
-        </div>
-      </div>
-    {%- else -%}
-      <div class="fl-searchpage__results">
+      # How many filter values the shopper has set, counted like the collection
+      # section does: a price range counts once, every other filter counts its
+      # active values.
+      assign search_active_count = 0
+      for f in search.filters
+        if f.type == 'price_range'
+          if f.min_value.value or f.max_value.value
+            assign search_active_count = search_active_count | plus: 1
+          endif
+        else
+          assign search_active_count = search_active_count | plus: f.active_values.size
+        endif
+      endfor
+
+      # The toolbar belongs to the page, not to the results: a filter that
+      # leaves nothing has to stay undoable. Until 1.8.20 it was rendered
+      # inside the "there are results" branch, so a search filtered down to
+      # zero lost its facets, its chips and its Clear all, and the only way
+      # back was the browser's back button. A plain search with no hits and no
+      # filter set still shows no toolbar, as before.
+      assign show_search_toolbar = false
+      if search.filters.size > 0 or search.sort_options.size > 0
+        if search.results_count > 0 or search_active_count > 0
+          assign show_search_toolbar = true
+        endif
+      endif
+    -%}
+
+    <div class="fl-searchpage__results">
+      {%- if search.results_count > 0 -%}
         <p class="fl-searchpage__count">
           {{ 'search.results_for_html' | t: terms: terms_escaped, count: search.results_count }}
         </p>
+      {%- endif -%}
 
-        {%- comment -%}
-          Same filters and sorting as the collection page: the search object
-          exposes the same filters and sort_options, so the toolbar is the
-          shared snippet. The query travels in a hidden field, so a filter or a
-          sort never loses the terms. Nothing is rendered when the shop has
-          neither filters nor sort options for search.
-        {%- endcomment -%}
-        {%- if search.filters.size > 0 or search.sort_options.size > 0 -%}
-          {%- liquid
-            assign search_sort_by = search.sort_by | default: search.default_sort_by
-            assign search_form_id = 'SearchFilters-' | append: section.id
-            capture search_clear_url
-              echo routes.search_url
-              echo '?q='
-              echo search.terms | url_encode
-              echo '&options%5Bprefix%5D=last&sort_by='
-              echo search_sort_by
-            endcapture
-          -%}
-          {% render 'facets-toolbar',
-            results: search,
-            form_id: search_form_id,
-            action: routes.search_url,
-            clear_url: search_clear_url,
-            wrapper_class: 'fl-searchpage__toolbar',
-            terms: search.terms
-          %}
-        {%- endif -%}
+      {%- comment -%}
+        Same filters and sorting as the collection page: the search object
+        exposes the same filters and sort_options, so the toolbar is the
+        shared snippet. The query travels in a hidden field, so a filter or a
+        sort never loses the terms.
+      {%- endcomment -%}
+      {%- if show_search_toolbar -%}
+        {% render 'facets-toolbar',
+          results: search,
+          form_id: search_form_id,
+          action: routes.search_url,
+          clear_url: search_clear_url,
+          wrapper_class: 'fl-searchpage__toolbar',
+          terms: search.terms
+        %}
+      {%- endif -%}
 
+      {%- if search.results_count == 0 -%}
+        <div class="fl-searchpage__empty">
+          {%- if search_active_count > 0 -%}
+            {%- comment -%}
+              Filtered down to nothing: the way out keeps the query and the
+              sort order, exactly like "Clear all" on a collection.
+            {%- endcomment -%}
+            <p class="fl-searchpage__empty-text">
+              {{ 'search.no_results_filters_html' | t: terms: terms_escaped }}
+            </p>
+            <div class="fl-searchpage__empty-actions">
+              <a class="fl-btn" href="{{ search_clear_url }}">{{ 'collections.filters.clear_all' | t }}</a>
+              <a class="fl-btn fl-btn--secondary" href="{{ routes.all_products_collection_url }}">
+                {{- 'cart.continue_shopping' | t -}}
+              </a>
+            </div>
+          {%- else -%}
+            <p class="fl-searchpage__empty-text">{{ 'search.no_results_html' | t: terms: terms_escaped }}</p>
+            <span class="fl-eyebrow">{{ 'search.suggestions' | t }}</span>
+            <div class="fl-searchpage__empty-actions">
+              <a class="fl-btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue_shopping' | t }}</a>
+              <a class="fl-btn fl-btn--secondary" href="{{ routes.collections_url }}">
+                {{- 'collections.general.title' | t -}}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- else -%}
         {%- paginate search.results by 24 -%}
           {%- liquid
             assign has_products = false
@@ -178,8 +224,8 @@
             </nav>
           {%- endif -%}
         {%- endpaginate -%}
-      </div>
-    {%- endif -%}
+      {%- endif -%}
+    </div>
   {%- endif -%}
 </div>
 

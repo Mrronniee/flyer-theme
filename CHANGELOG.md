@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.8.21 - 2026-10-16
+
+### Fixed
+- **A search filtered down to nothing can be undone from the page.** On the
+  search results page the filters and sorting bar was part of the results, so a
+  filter that matched nothing took the bar away with them: no facets, no chips,
+  no "Clear all", and the only way back was the browser's back button. The bar
+  now sits above the results, like on a collection page, and the empty state
+  offers a "Clear all" that keeps the search terms and the sort order.
+- **A wide table in a product description scrolls again.** The product section
+  set its own width for tables, which overruled the width that lets a rich-text
+  table scroll inside the text column, so a wide table was squeezed instead
+  (measured 526px at 1440 for a table needing 1103px). The product section now
+  sets only the spacing, and a table that cannot fit scrolls with a keyboard
+  reachable region, as it already did elsewhere. Tables narrower than the text
+  column now take their own width there too, instead of being stretched.
+- **A collage tile keeps its scheme's ink.** The tile's inherited colour
+  overruled the colour scheme's ink whenever a scheme sat on a tile that is not
+  a card, which would leave dark text on a dark tile. The ink of the scheme now
+  wins on any tile carrying one.
+
 ## 1.8.20 - 2026-10-16
 
 ### Fixed
