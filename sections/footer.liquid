@@ -97,6 +97,12 @@
                 {%- assign news_id = 'Footer-news-' | append: block.id -%}
                 {%- form 'customer', id: news_id, class: 'fl-footer__news' -%}
                   <input type="hidden" name="contact[tags]" value="newsletter">
+                  {%- comment -%}
+                    The reply is rendered beside the field, never instead of
+                    it: Shopify renders form.posted_successfully? in every
+                    'customer' form of the page, so when autofocus-fallback
+                    clears a foreign reply the form must still hold its field.
+                  {%- endcomment -%}
                   {%- if form.posted_successfully? -%}
                     <p
                       class="fl-form-status fl-footer__news-status"
@@ -106,39 +112,37 @@
                     >
                       {{ 'general.newsletter.success' | t }}
                     </p>
-                  {%- else -%}
-                    {%- if form.errors -%}
-                      <p
-                        class="fl-form-status fl-form-status--error fl-footer__news-status"
-                        id="{{ news_id }}-error"
-                        aria-live="polite"
-                      >
-                        {{ 'general.newsletter.error' | t }}
-                      </p>
-                    {%- endif -%}
-                    <div class="fl-footer__news-row">
-                      <label class="visually-hidden" for="{{ news_id }}-email">{{ 'general.newsletter.label' | t }}</label>
-                      <input
-                        id="{{ news_id }}-email"
-                        class="fl-input"
-                        type="email"
-                        name="contact[email]"
-                        value="{{ form.email }}"
-                        data-form-echo
-                        placeholder="{{ 'general.newsletter.placeholder' | t }}"
-                        required
-                        autocomplete="email"
-                        autocapitalize="off"
-                        autocorrect="off"
-                        {% if form.errors %}
-                          autofocus
-                          aria-invalid="true"
-                          aria-describedby="{{ news_id }}-error"
-                        {% endif %}
-                      >
-                      <button type="submit" class="fl-btn">{{ 'general.newsletter.submit' | t }}</button>
-                    </div>
+                  {%- elsif form.errors -%}
+                    <p
+                      class="fl-form-status fl-form-status--error fl-footer__news-status"
+                      id="{{ news_id }}-error"
+                      aria-live="polite"
+                    >
+                      {{ 'general.newsletter.error' | t }}
+                    </p>
                   {%- endif -%}
+                  <div class="fl-footer__news-row">
+                    <label class="visually-hidden" for="{{ news_id }}-email">{{ 'general.newsletter.label' | t }}</label>
+                    <input
+                      id="{{ news_id }}-email"
+                      class="fl-input"
+                      type="email"
+                      name="contact[email]"
+                      value="{{ form.email }}"
+                      data-form-echo
+                      placeholder="{{ 'general.newsletter.placeholder' | t }}"
+                      required
+                      autocomplete="email"
+                      autocapitalize="off"
+                      autocorrect="off"
+                      {% if form.errors %}
+                        autofocus
+                        aria-invalid="true"
+                        aria-describedby="{{ news_id }}-error"
+                      {% endif %}
+                    >
+                    <button type="submit" class="fl-btn">{{ 'general.newsletter.submit' | t }}</button>
+                  </div>
                 {%- endform -%}
               </div>
           {%- endcase -%}

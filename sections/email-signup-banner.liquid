@@ -101,6 +101,12 @@
                 {%- form 'customer', id: form_id -%}
                   <input type="hidden" name="contact[tags]" value="newsletter">
 
+                  {%- comment -%}
+                    The reply is rendered beside the field, never instead of
+                    it: Shopify renders form.posted_successfully? in every
+                    'customer' form of the page, so when autofocus-fallback
+                    clears a foreign reply the form must still hold its field.
+                  {%- endcomment -%}
                   {%- if form.posted_successfully? -%}
                     <p
                       class="fl-form-status fl-esb__status"
@@ -110,42 +116,40 @@
                     >
                       {{ 'general.newsletter.success' | t }}
                     </p>
-                  {%- else -%}
-                    {%- if form.errors -%}
-                      <p
-                        class="fl-form-status fl-form-status--error fl-esb__status"
-                        id="{{ form_id }}-error"
-                        aria-live="polite"
-                      >
-                        {{ 'general.newsletter.error' | t }}
-                      </p>
-                    {%- endif -%}
-
-                    <div class="fl-esb__row">
-                      <label class="visually-hidden" for="{{ form_id }}-email">
-                        {{- 'general.newsletter.label' | t -}}
-                      </label>
-                      <input
-                        id="{{ form_id }}-email"
-                        class="fl-input"
-                        type="email"
-                        name="contact[email]"
-                        value="{{ form.email }}"
-                        data-form-echo
-                        placeholder="{{ 'general.newsletter.placeholder' | t }}"
-                        required
-                        autocomplete="email"
-                        autocapitalize="off"
-                        autocorrect="off"
-                        {% if form.errors %}
-                          autofocus
-                          aria-invalid="true"
-                          aria-describedby="{{ form_id }}-error"
-                        {% endif %}
-                      >
-                      <button type="submit" class="fl-btn">{{ 'general.newsletter.submit' | t }}</button>
-                    </div>
+                  {%- elsif form.errors -%}
+                    <p
+                      class="fl-form-status fl-form-status--error fl-esb__status"
+                      id="{{ form_id }}-error"
+                      aria-live="polite"
+                    >
+                      {{ 'general.newsletter.error' | t }}
+                    </p>
                   {%- endif -%}
+
+                  <div class="fl-esb__row">
+                    <label class="visually-hidden" for="{{ form_id }}-email">
+                      {{- 'general.newsletter.label' | t -}}
+                    </label>
+                    <input
+                      id="{{ form_id }}-email"
+                      class="fl-input"
+                      type="email"
+                      name="contact[email]"
+                      value="{{ form.email }}"
+                      data-form-echo
+                      placeholder="{{ 'general.newsletter.placeholder' | t }}"
+                      required
+                      autocomplete="email"
+                      autocapitalize="off"
+                      autocorrect="off"
+                      {% if form.errors %}
+                        autofocus
+                        aria-invalid="true"
+                        aria-describedby="{{ form_id }}-error"
+                      {% endif %}
+                    >
+                    <button type="submit" class="fl-btn">{{ 'general.newsletter.submit' | t }}</button>
+                  </div>
                 {%- endform -%}
               </div>
           {%- endcase -%}

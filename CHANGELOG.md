@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.16 - 2026-10-16
+
+### Fixed
+- **A sign-up form keeps its field after someone subscribes.** The Newsletter
+  section, the footer sign-up and the sign-up banner showed the thank-you
+  message in place of the e-mail field. On a page holding two of them, the one
+  you did not use was left with its heading and text but nothing to type in.
+  The message is now shown beside the field, as the contact form already did,
+  so a second address can be entered right away.
+
 ## 1.8.15 - 2026-10-16
 
 ### Fixed
