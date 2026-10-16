@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.8.22 - 2026-10-16
+## 1.9.0 - 2026-10-17
 
 ### Added
 - **The theme editor speaks French too.** Every section name, setting label,
