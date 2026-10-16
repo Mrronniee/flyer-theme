@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.20 - 2026-10-16
+
+### Fixed
+- **The main image of a page loads first again.** On a page that opens with a
+  full-height image, the first four product cards further down were being
+  fetched at the same high priority as that image, delaying it by about half a
+  second. Cards are now hurried only when the grid itself opens the page — on a
+  collection or a search page, where a card really is the largest image — and
+  the high-priority hint is reserved for it.
+
 ## 1.8.19 - 2026-10-16
 
 ### Fixed

@@ -82,7 +82,8 @@
               product: product,
               sizes: card_sizes,
               heading_level: 'h2',
-              loading: 'eager'
+              loading: 'eager',
+              priority: true
             %}
           {%- else -%}
             {% render 'product-card', product: product, sizes: card_sizes, heading_level: 'h2' %}

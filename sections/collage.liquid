@@ -72,13 +72,18 @@
               assign tile_sizes = large_sizes
             endif
 
-            # Near the top of the page, the first tile and the large one are the
-            # LCP candidates: they load eagerly. Everything else, and the whole
-            # section further down the page, stays lazy.
+            # Only when the collage OPENS the page are its first tile and its
+            # large one the page's largest image: they then load eagerly, at
+            # high priority for the product cards. `section.index <= 3` was too
+            # loose — behind a full-height hero, eager card images were measured
+            # stealing about 560ms from the hero's own LCP (1.8.17). Anywhere
+            # else, and for every other tile, loading stays lazy.
             assign tile_loading = 'lazy'
-            if section.index <= 3
+            assign tile_priority = false
+            if section.index == 1
               if forloop.first or is_large
                 assign tile_loading = 'eager'
+                assign tile_priority = true
               endif
             endif
           -%}
@@ -132,7 +137,8 @@
                       sizes: tile_sizes,
                       show_quick_add: block.settings.quick_add,
                       heading_level: tile_heading,
-                      loading: tile_loading
+                      loading: tile_loading,
+                      priority: tile_priority
                     %}
                     {%- if block.settings.second_image and block.settings.product.images[1] -%}
                       {%- comment -%}

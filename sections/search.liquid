@@ -99,7 +99,7 @@
                     {%- assign product_rank = product_rank | plus: 1 -%}
                     <li class="fl-searchpage__cell">
                       {%- if product_rank <= 4 -%}
-                        {% render 'product-card', product: result, heading_level: 'h2', loading: 'eager' %}
+                        {% render 'product-card', product: result, heading_level: 'h2', loading: 'eager', priority: true %}
                       {%- else -%}
                         {% render 'product-card', product: result, heading_level: 'h2' %}
                       {%- endif -%}

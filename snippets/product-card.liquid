@@ -9,13 +9,18 @@
     sits directly under the page h1, so the outline has no gap
   @param {string} [loading] - image loading attribute, 'lazy' (default) or
     'eager'. Pass 'eager' for the cards of the FIRST row of a grid: one of them
-    holds the LCP image and lazy-loading it delays the largest paint. 'eager'
-    also emits fetchpriority="high". Never pass it to a whole grid.
+    holds the LCP image and lazy-loading it delays the largest paint. Never pass
+    it to a whole grid.
+  @param {boolean} [priority] - adds fetchpriority="high", and only where a card
+    really is the page's largest image: a collection or a search page. On a page
+    that opens with a hero, four cards at high priority were measured stealing
+    about 560ms from the hero's own LCP (1.8.17), so `eager` no longer implies
+    it.
 
   @example
   {% render 'product-card', product: product %}
   {% render 'product-card', product: product, heading_level: 'h2' %}
-  {% render 'product-card', product: product, loading: 'eager' %}
+  {% render 'product-card', product: product, loading: 'eager', priority: true %}
 {% enddoc %}
 
 {%- liquid
@@ -30,10 +35,14 @@
   assign img_sizes = sizes | default: default_sizes
   assign img_widths = '360, 540, 720, 900'
 
-  # Caller-controlled priority. Lazy everywhere by default, but the first row of
-  # a grid sits above the fold and holds the LCP image, so it can opt into
-  # eager + fetchpriority high.
+  # Caller-controlled priority. Lazy everywhere by default; the first row of a
+  # grid can opt into eager, and only a grid that really holds the page's
+  # largest image adds fetchpriority high on top (see @param priority).
   assign img_loading = loading | default: 'lazy'
+  assign img_priority = false
+  if priority and img_loading == 'eager'
+    assign img_priority = true
+  endif
 
   assign on_sale = false
   if product.compare_at_price > product.price
@@ -73,11 +82,17 @@
 <article class="{{ card_classes }}">
   <div class="fl-card__media">
     {%- if product.featured_media -%}
-      {%- if img_loading == 'eager' -%}
+      {%- if img_priority -%}
         {{
           product.featured_media
           | image_url: width: 900
           | image_tag: widths: img_widths, sizes: img_sizes, alt: product.featured_media.alt, loading: 'eager', fetchpriority: 'high'
+        }}
+      {%- elsif img_loading == 'eager' -%}
+        {{
+          product.featured_media
+          | image_url: width: 900
+          | image_tag: widths: img_widths, sizes: img_sizes, alt: product.featured_media.alt, loading: 'eager'
         }}
       {%- else -%}
         {{
