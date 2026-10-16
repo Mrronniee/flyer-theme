@@ -212,9 +212,8 @@
           "settings": {
             "title": "Essential",
             "subtitle": "For occasional orders",
-            "price": "Free",
             "highlight": false,
-            "values": "Over $75\n14 days\nno\nno\nno",
+            "values": "no\nyes\nno\nno\nno",
             "button_label": "Choose plan"
           }
         },
@@ -223,9 +222,8 @@
           "settings": {
             "title": "Standard",
             "subtitle": "For regular customers",
-            "price": "$9 per month",
             "highlight": true,
-            "values": "yes\n30 days\nyes\nno\nyes",
+            "values": "yes\nyes\nyes\nno\nyes",
             "button_label": "Choose plan"
           }
         },
@@ -234,9 +232,8 @@
           "settings": {
             "title": "Premium",
             "subtitle": "For collectors",
-            "price": "$19 per month",
             "highlight": false,
-            "values": "yes\n60 days\nyes\nyes\nyes",
+            "values": "yes\nyes\nyes\nyes\nyes",
             "button_label": "Choose plan"
           }
         }

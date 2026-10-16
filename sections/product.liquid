@@ -275,6 +275,89 @@
                   data-variant-input
                   {% if has_noscript_variant_select %}disabled{% endif %}
                 >
+
+                {%- if product.gift_card? -%}
+                  {%- comment -%}
+                    Gift card product: Shopify mails the card to the recipient
+                    when the line carries these properties, the checkbox
+                    (__shopify_send_gift_card_to_recipient) being the switch.
+                    Everything is optional, so a buyer who keeps the card for
+                    themselves submits as before, and it all works without
+                    JavaScript: the fields belong to the product form.
+                  {%- endcomment -%}
+                  {%- assign gift_prefix = product_form_id | append: '-gift' -%}
+                  <div class="fl-product__gift">
+                    <div class="fl-product__gift-switch">
+                      <input
+                        type="checkbox"
+                        id="{{ gift_prefix }}-send"
+                        name="properties[__shopify_send_gift_card_to_recipient]"
+                        value="on"
+                      >
+                      <label for="{{ gift_prefix }}-send">
+                        {{- 'products.product.gift_card.send_to_recipient' | t -}}
+                      </label>
+                    </div>
+
+                    <div class="fl-field">
+                      <label class="fl-label" for="{{ gift_prefix }}-email">
+                        {{- 'products.product.gift_card.recipient_email' | t -}}
+                      </label>
+                      <input
+                        type="email"
+                        id="{{ gift_prefix }}-email"
+                        class="fl-input"
+                        name="properties[Recipient email]"
+                        autocomplete="off"
+                        autocapitalize="off"
+                        autocorrect="off"
+                      >
+                    </div>
+
+                    <div class="fl-field">
+                      <label class="fl-label" for="{{ gift_prefix }}-name">
+                        {{- 'products.product.gift_card.recipient_name' | t -}}
+                      </label>
+                      <input
+                        type="text"
+                        id="{{ gift_prefix }}-name"
+                        class="fl-input"
+                        name="properties[Recipient name]"
+                        autocomplete="off"
+                      >
+                    </div>
+
+                    <div class="fl-field">
+                      <label class="fl-label" for="{{ gift_prefix }}-message">
+                        {{- 'products.product.gift_card.message' | t -}}
+                      </label>
+                      <textarea
+                        id="{{ gift_prefix }}-message"
+                        class="fl-textarea"
+                        name="properties[Message]"
+                        rows="3"
+                        maxlength="200"
+                        aria-describedby="{{ gift_prefix }}-message-help"
+                      ></textarea>
+                      <span class="fl-product__gift-help" id="{{ gift_prefix }}-message-help">
+                        {{- 'products.product.gift_card.message_limit' | t -}}
+                      </span>
+                    </div>
+
+                    <div class="fl-field">
+                      <label class="fl-label" for="{{ gift_prefix }}-send-on">
+                        {{- 'products.product.gift_card.send_on' | t -}}
+                      </label>
+                      <input
+                        type="date"
+                        id="{{ gift_prefix }}-send-on"
+                        class="fl-input"
+                        name="properties[Send on]"
+                      >
+                    </div>
+                  </div>
+                {%- endif -%}
+
                 <button
                   type="submit"
                   name="add"
@@ -308,15 +391,30 @@
             {%- endif -%}
 
           {%- when 'collapsible_tab' -%}
-            <details class="fl-product__details" {{ block.shopify_attributes }}>
-              <summary class="fl-product__summary">
-                <span>{{ block.settings.heading | escape }}</span>
-                <span class="fl-product__summary-icon" aria-hidden="true"></span>
-              </summary>
-              <div class="fl-product__details-body fl-rte">
-                {{ block.settings.content }}
-              </div>
-            </details>
+            {%- comment -%}
+              A tab whose heading and content are both empty is not rendered at
+              all: an empty <summary> is a control with no accessible name, and
+              the merchant sees the block in the editor either way.
+            {%- endcomment -%}
+            {%- if block.settings.heading != blank or block.settings.content != blank -%}
+              <details class="fl-product__details" {{ block.shopify_attributes }}>
+                <summary class="fl-product__summary">
+                  <span>
+                    {%- if block.settings.heading != blank -%}
+                      {{- block.settings.heading | escape -}}
+                    {%- else -%}
+                      {{- 'products.product.details' | t -}}
+                    {%- endif -%}
+                  </span>
+                  <span class="fl-product__summary-icon" aria-hidden="true"></span>
+                </summary>
+                {%- if block.settings.content != blank -%}
+                  <div class="fl-product__details-body fl-rte">
+                    {{ block.settings.content }}
+                  </div>
+                {%- endif -%}
+              </details>
+            {%- endif -%}
 
           {%- when 'text' -%}
             {%- if block.settings.text != blank -%}
@@ -568,6 +666,24 @@
 
   .fl-qty__btn:hover {
     background: var(--color-surface);
+  }
+
+  .fl-product__gift {
+    margin-bottom: 18px;
+  }
+
+  .fl-product__gift-switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .fl-product__gift-help {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.8125em;
+    color: var(--color-muted);
   }
 
   /* The stepper clips its children to its rounded border (overflow: hidden),

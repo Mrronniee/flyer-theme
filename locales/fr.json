@@ -37,7 +37,11 @@
       "label": "Annonce"
     },
     "footer": {
-      "navigation": "Navigation du pied de page",
+      "quick_links": "Liens rapides",
+      "about_heading": "À propos",
+      "about_text": "Présentez votre boutique, vos annonces ou votre univers de marque à vos clients.",
+      "newsletter_heading": "Infolettre",
+      "newsletter_text": "Inscrivez-vous pour recevoir les nouveautés et les offres exclusives.",
       "theme_credit": "Thème par KIOSK"
     },
     "localization": {
@@ -103,6 +107,15 @@
       "increase_quantity": "Augmenter la quantité de {{ title }}",
       "vendor": "Marque",
       "description": "Description",
+      "details": "Détails",
+      "gift_card": {
+        "send_to_recipient": "Envoyer en cadeau",
+        "recipient_email": "E-mail du destinataire",
+        "recipient_name": "Nom du destinataire (facultatif)",
+        "message": "Message (facultatif)",
+        "message_limit": "200 caractères au maximum.",
+        "send_on": "Envoyer le (facultatif)"
+      },
       "media_label": "Galerie d’images",
       "media_item": "Image {{ index }} sur {{ count }}",
       "media_item_video": "Vidéo {{ index }} sur {{ count }}",
@@ -233,6 +246,7 @@
   "gift_card": {
     "add_to_apple_wallet": "Ajouter à Apple Wallet",
     "card": "Carte cadeau",
+    "qr_alt": "QR code de cette carte cadeau",
     "expired": "Cette carte cadeau a expiré",
     "expires_on": "Expire le {{ expires_on }}",
     "use_at_checkout": "Utilisez cette carte cadeau au moment du paiement"

@@ -136,13 +136,22 @@
                 {%- endif -%}
 
                 <span class="fl-cart-page__unit-price">
+                  {%- comment -%}
+                    Both amounts named, so a screen reader says which one
+                    applies (same pattern in the drawer and on the line total).
+                  {%- endcomment -%}
                   {%- if item.original_price != item.final_price -%}
                     <s class="fl-cart-page__compare">
                       <span class="visually-hidden">{{ 'products.card.regular_price' | t }}</span>
                       {{- unit_compare -}}
                     </s>
+                    <span>
+                      <span class="visually-hidden">{{ 'products.card.sale_price' | t }}</span>
+                      {{- unit_price -}}
+                    </span>
+                  {%- else -%}
+                    <span>{{ unit_price }}</span>
                   {%- endif -%}
-                  <span>{{ unit_price }}</span>
                 </span>
 
                 {%- if item.unit_price_measurement -%}
@@ -229,8 +238,13 @@
                     <span class="visually-hidden">{{ 'products.card.regular_price' | t }}</span>
                     {{- line_compare -}}
                   </s>
+                  <span>
+                    <span class="visually-hidden">{{ 'products.card.sale_price' | t }}</span>
+                    {{- line_price -}}
+                  </span>
+                {%- else -%}
+                  <span>{{ line_price }}</span>
                 {%- endif -%}
-                <span>{{ line_price }}</span>
               </div>
             </li>
           {%- endfor -%}
@@ -292,6 +306,18 @@
         <button type="submit" name="checkout" class="fl-btn fl-cart-page__checkout">
           {{ 'cart.checkout' | t }}
         </button>
+
+        {%- comment -%}
+          Accelerated checkout (Shop Pay, Apple Pay, Google Pay…): the product
+          page offers it through `form | payment_button`, and the cart page
+          through this object, which Shopify fills with the buttons the store
+          has enabled. Nothing is rendered when none is.
+        {%- endcomment -%}
+        {%- if additional_checkout_buttons -%}
+          <div class="fl-cart-page__accelerated">
+            {{ content_for_additional_checkout_buttons }}
+          </div>
+        {%- endif -%}
 
         <a class="fl-cart-page__continue" href="{{ routes.all_products_collection_url }}">
           {{ 'cart.continue_shopping' | t }}
@@ -583,6 +609,12 @@
 
   .fl-cart-page.is-enhanced .fl-cart-page__update {
     display: none;
+  }
+
+  /* Shopify sizes the buttons themselves; the container only sets the width of
+     the aside column and the gap to the checkout button above. */
+  .fl-cart-page__accelerated {
+    width: 100%;
   }
 
   .fl-cart-page__continue {

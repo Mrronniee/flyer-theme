@@ -71,6 +71,16 @@
             if is_large
               assign tile_sizes = large_sizes
             endif
+
+            # Near the top of the page, the first tile and the large one are the
+            # LCP candidates: they load eagerly. Everything else, and the whole
+            # section further down the page, stays lazy.
+            assign tile_loading = 'lazy'
+            if section.index <= 3
+              if forloop.first or is_large
+                assign tile_loading = 'eager'
+              endif
+            endif
           -%}
           <div
             class="fl-collage__item{% if is_large %} fl-collage__item--large{% endif %}"
@@ -99,7 +109,7 @@
                           widths: '300, 500, 700, 900, 1200, 1600',
                           sizes: tile_sizes,
                           alt: block.settings.image.alt,
-                          loading: 'lazy',
+                          loading: tile_loading,
                           class: 'fl-collage__img'
                       }}
                     {%- else -%}
@@ -121,7 +131,8 @@
                       product: block.settings.product,
                       sizes: tile_sizes,
                       show_quick_add: block.settings.quick_add,
-                      heading_level: tile_heading
+                      heading_level: tile_heading,
+                      loading: tile_loading
                     %}
                     {%- if block.settings.second_image and block.settings.product.images[1] -%}
                       {%- comment -%}
@@ -176,7 +187,7 @@
                           widths: '300, 500, 700, 900, 1200, 1600',
                           sizes: tile_sizes,
                           alt: coll.featured_image.alt,
-                          loading: 'lazy',
+                          loading: tile_loading,
                           class: 'fl-collage__img'
                       }}
                     {%- elsif coll.products.first.featured_image -%}
@@ -187,7 +198,7 @@
                           widths: '300, 500, 700, 900, 1200, 1600',
                           sizes: tile_sizes,
                           alt: coll.title,
-                          loading: 'lazy',
+                          loading: tile_loading,
                           class: 'fl-collage__img'
                       }}
                     {%- else -%}
@@ -228,7 +239,7 @@
                           widths: '300, 500, 700, 900, 1200, 1600',
                           sizes: tile_sizes,
                           alt: '',
-                          loading: 'lazy',
+                          loading: tile_loading,
                           class: 'fl-collage__img'
                       }}
                     {%- else -%}
@@ -648,7 +659,6 @@
           "id": "video_url",
           "accept": ["youtube", "vimeo"],
           "label": "Video link",
-          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
           "placeholder": "https://www.youtube.com/watch?v=",
           "info": "Plays inside the tile. Opens on YouTube or Vimeo without JavaScript."
         }

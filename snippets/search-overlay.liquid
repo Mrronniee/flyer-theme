@@ -200,6 +200,9 @@
     border-bottom: 1px solid var(--color-ink);
   }
 
+  /* The field has no border of its own: the line belongs to the form. The
+     thickening on focus is a bonus — the visible indicator is the theme's own
+     2px ring, which this field used to remove. */
   .fl-search__form:focus-within {
     box-shadow: 0 1px 0 var(--color-ink);
   }
@@ -218,10 +221,6 @@
     background: transparent;
     color: var(--color-ink);
     font-size: 1.25em;
-  }
-
-  .fl-search__input:focus-visible {
-    outline: none;
   }
 
   .fl-search__input::placeholder {

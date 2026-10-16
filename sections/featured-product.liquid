@@ -294,6 +294,88 @@
                       data-variant-input
                       {% if has_noscript_variant_select %}disabled{% endif %}
                     >
+
+                    {%- if feat_product.gift_card? -%}
+                      {%- comment -%}
+                        Same recipient fields as the product page: a featured
+                        product can be a gift card. The checkbox
+                        (__shopify_send_gift_card_to_recipient) is the switch,
+                        every field is optional, and it works without
+                        JavaScript.
+                      {%- endcomment -%}
+                      {%- assign gift_prefix = form_id | append: '-gift' -%}
+                      <div class="fl-featprod__gift">
+                        <div class="fl-featprod__gift-switch">
+                          <input
+                            type="checkbox"
+                            id="{{ gift_prefix }}-send"
+                            name="properties[__shopify_send_gift_card_to_recipient]"
+                            value="on"
+                          >
+                          <label for="{{ gift_prefix }}-send">
+                            {{- 'products.product.gift_card.send_to_recipient' | t -}}
+                          </label>
+                        </div>
+
+                        <div class="fl-field">
+                          <label class="fl-label" for="{{ gift_prefix }}-email">
+                            {{- 'products.product.gift_card.recipient_email' | t -}}
+                          </label>
+                          <input
+                            type="email"
+                            id="{{ gift_prefix }}-email"
+                            class="fl-input"
+                            name="properties[Recipient email]"
+                            autocomplete="off"
+                            autocapitalize="off"
+                            autocorrect="off"
+                          >
+                        </div>
+
+                        <div class="fl-field">
+                          <label class="fl-label" for="{{ gift_prefix }}-name">
+                            {{- 'products.product.gift_card.recipient_name' | t -}}
+                          </label>
+                          <input
+                            type="text"
+                            id="{{ gift_prefix }}-name"
+                            class="fl-input"
+                            name="properties[Recipient name]"
+                            autocomplete="off"
+                          >
+                        </div>
+
+                        <div class="fl-field">
+                          <label class="fl-label" for="{{ gift_prefix }}-message">
+                            {{- 'products.product.gift_card.message' | t -}}
+                          </label>
+                          <textarea
+                            id="{{ gift_prefix }}-message"
+                            class="fl-textarea"
+                            name="properties[Message]"
+                            rows="3"
+                            maxlength="200"
+                            aria-describedby="{{ gift_prefix }}-message-help"
+                          ></textarea>
+                          <span class="fl-featprod__gift-help" id="{{ gift_prefix }}-message-help">
+                            {{- 'products.product.gift_card.message_limit' | t -}}
+                          </span>
+                        </div>
+
+                        <div class="fl-field">
+                          <label class="fl-label" for="{{ gift_prefix }}-send-on">
+                            {{- 'products.product.gift_card.send_on' | t -}}
+                          </label>
+                          <input
+                            type="date"
+                            id="{{ gift_prefix }}-send-on"
+                            class="fl-input"
+                            name="properties[Send on]"
+                          >
+                        </div>
+                      </div>
+                    {%- endif -%}
+
                     <button
                       type="submit"
                       name="add"
@@ -587,6 +669,24 @@
 
   .fl-featprod__qty-btn:hover {
     background: var(--color-surface);
+  }
+
+  .fl-featprod__gift {
+    margin-bottom: 18px;
+  }
+
+  .fl-featprod__gift-switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .fl-featprod__gift-help {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.8125em;
+    color: var(--color-muted);
   }
 
   /* The stepper clips its children to its rounded border (overflow: hidden),

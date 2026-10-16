@@ -2,8 +2,13 @@
   Related products (product template).
   <fl-related> lazily fetches Shopify recommendations via the Section
   Rendering API (routes.product_recommendations_url) when the section nears
-  the viewport, then swaps in the returned grid. Renders nothing until the
-  API responds, and stays hidden when there are no recommendations.
+  the viewport, then swaps in the returned grid.
+  Until the answer arrives, the server renders a placeholder of the same shape
+  (heading + four cards at the card ratio), so the footer no longer jumps when
+  the grid lands: the empty section measured a CLS of 0.622 on a direct jump to
+  the bottom of the page on mobile. The placeholder is aria-hidden and holds no
+  link; the script replaces it with the grid, or empties the section when the
+  product has no recommendation.
 {% endcomment %}
 
 {%- liquid
@@ -19,17 +24,58 @@
     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent={{ section.settings.intent | default: 'related' }}"
   {% endif %}
 >
-  {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+  {%- if recommendations.performed? -%}
+    {%- if recommendations.products_count > 0 -%}
+      <div
+        class="fl-related__inner"
+        style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
+      >
+        <div class="fl-section-head">
+          <h2>{{ heading }}</h2>
+        </div>
+        <div class="fl-product-grid" style="--grid-cols: 4; --grid-cols-tablet: 3; --grid-cols-mobile: 2">
+          {%- for rec in recommendations.products -%}
+            {% render 'product-card', product: rec %}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  {%- else -%}
+    {%- comment -%}
+      First render, inside the product page: the recommendations are not known
+      yet. The placeholder carries the same classes as a real card, so the
+      reserved height follows the card style, the image ratio, the vendor line
+      and the quick-view button of the theme settings.
+    {%- endcomment -%}
+    {%- assign ghost_classes = 'fl-card fl-related__ghost' -%}
+    {%- if settings.card_style == 'card' -%}
+      {%- assign ghost_classes = ghost_classes | append: ' fl-card--boxed color-' | append: settings.card_color_scheme -%}
+    {%- endif -%}
     <div
-      class="fl-related__inner"
+      class="fl-related__inner fl-related__skeleton"
       style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px"
+      aria-hidden="true"
     >
       <div class="fl-section-head">
         <h2>{{ heading }}</h2>
       </div>
       <div class="fl-product-grid" style="--grid-cols: 4; --grid-cols-tablet: 3; --grid-cols-mobile: 2">
-        {%- for rec in recommendations.products -%}
-          {% render 'product-card', product: rec %}
+        {%- for i in (1..4) -%}
+          <article class="{{ ghost_classes }}">
+            <div class="fl-card__media">
+              <div class="fl-related__ghost-media"></div>
+            </div>
+            <div class="fl-card__info">
+              {%- if settings.card_show_vendor -%}
+                <span class="fl-related__ghost-line fl-related__ghost-line--vendor"></span>
+              {%- endif -%}
+              <span class="fl-related__ghost-line"></span>
+              <span class="fl-related__ghost-line fl-related__ghost-line--price"></span>
+              {%- if settings.quick_view_enabled -%}
+                <span class="fl-related__ghost-btn"></span>
+              {%- endif -%}
+            </div>
+          </article>
         {%- endfor -%}
       </div>
     </div>
@@ -39,6 +85,52 @@
 {% stylesheet %}
   .fl-related {
     display: block;
+  }
+
+  /* Shown only once <fl-related> is defined, which takes the section's own
+     JavaScript: with scripts off the recommendations never arrive, and a grey
+     grid left in place for good would be worse than no section at all. */
+  .fl-related__skeleton {
+    display: none;
+  }
+
+  fl-related:defined .fl-related__skeleton {
+    display: block;
+  }
+
+  /* Placeholder. Each bar takes the height of the text it stands in for, so the
+     card is exactly as tall as the real one; the tint is the surface colour of
+     the scheme, never a flashing animation. */
+  .fl-related__ghost-media {
+    width: 100%;
+    aspect-ratio: var(--card-ratio);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+  }
+
+  /* 1.5em is the height a line of this text really takes (font size times the
+     normal line height), so the placeholder card is as tall as a real one. */
+  .fl-related__ghost-line {
+    height: 1.5em;
+    width: 70%;
+    border-radius: 2px;
+    background: var(--color-surface);
+  }
+
+  .fl-related__ghost-line--vendor {
+    width: 40%;
+    font-size: 0.8125em;
+  }
+
+  .fl-related__ghost-line--price {
+    width: 30%;
+  }
+
+  .fl-related__ghost-btn {
+    margin-top: auto;
+    min-height: 44px;
+    border-radius: var(--radius-btn);
+    background: var(--color-surface);
   }
 {% endstylesheet %}
 
@@ -62,11 +154,14 @@
               .then((text) => {
                 const doc = new DOMParser().parseFromString(text, 'text/html');
                 const fresh = doc.querySelector('fl-related');
-                if (fresh && fresh.innerHTML.trim().length) {
-                  this.innerHTML = fresh.innerHTML;
-                }
+                // The placeholder is always replaced, including by an empty
+                // answer: left in place it would keep standing in for cards
+                // that are never going to come.
+                this.innerHTML = fresh ? fresh.innerHTML : '';
               })
-              .catch(() => {});
+              .catch(() => {
+                this.innerHTML = '';
+              });
           };
           if ('IntersectionObserver' in window) {
             this.observer = new IntersectionObserver(

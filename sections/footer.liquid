@@ -25,19 +25,25 @@
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'menu' -%}
-              <div class="fl-footer__col" {{ block.shopify_attributes }}>
-                {%- if block.settings.heading != blank -%}
-                  <h2 class="fl-footer__heading" id="Footer-heading-{{ block.id }}">{{ block.settings.heading | escape }}</h2>
-                {%- endif -%}
-                {%- if block.settings.menu != blank -%}
-                  <nav
-                    class="fl-footer__nav"
-                    {% if block.settings.heading != blank %}
-                      aria-labelledby="Footer-heading-{{ block.id }}"
-                    {% else %}
-                      aria-label="{{ 'general.footer.navigation' | t }}"
-                    {% endif %}
-                  >
+              {%- comment -%}
+                No menu, or a menu with no link: the whole column stays out. A
+                heading alone would announce a navigation landmark holding
+                nothing, and leave an empty cell in the grid.
+                An emptied heading falls back to the translated label instead of
+                the theme's own English wording (the badge_sale_label recipe):
+                the escaping is done in the assign, because `| t` already
+                escapes its result.
+              {%- endcomment -%}
+              {%- if block.settings.menu.links.size > 0 -%}
+                {%- liquid
+                  assign menu_heading = block.settings.heading | escape
+                  if block.settings.heading == blank
+                    assign menu_heading = 'general.footer.quick_links' | t
+                  endif
+                -%}
+                <div class="fl-footer__col" {{ block.shopify_attributes }}>
+                  <h2 class="fl-footer__heading" id="Footer-heading-{{ block.id }}">{{ menu_heading }}</h2>
+                  <nav class="fl-footer__nav" aria-labelledby="Footer-heading-{{ block.id }}">
                     <ul class="fl-footer__menu" role="list">
                       {%- for link in block.settings.menu.links -%}
                         <li>
@@ -46,16 +52,27 @@
                       {%- endfor -%}
                     </ul>
                   </nav>
-                {%- endif -%}
-              </div>
+                </div>
+              {%- endif -%}
 
             {%- when 'text' -%}
+              {%- comment -%}
+                Emptied fields fall back to the translated wording, so a French
+                storefront never shows the theme's English copy. To remove the
+                column, the merchant removes the block.
+              {%- endcomment -%}
+              {%- liquid
+                assign text_heading = block.settings.heading | escape
+                if block.settings.heading == blank
+                  assign text_heading = 'general.footer.about_heading' | t
+                endif
+              -%}
               <div class="fl-footer__col" {{ block.shopify_attributes }}>
-                {%- if block.settings.heading != blank -%}
-                  <h2 class="fl-footer__heading">{{ block.settings.heading | escape }}</h2>
-                {%- endif -%}
+                <h2 class="fl-footer__heading">{{ text_heading }}</h2>
                 {%- if block.settings.text != blank -%}
                   <div class="fl-footer__text">{{ block.settings.text }}</div>
+                {%- else -%}
+                  <div class="fl-footer__text"><p>{{ 'general.footer.about_text' | t }}</p></div>
                 {%- endif -%}
               </div>
 
@@ -64,35 +81,51 @@
               no consumer anywhere in the theme.
             {%- endcomment -%}
             {%- when 'brand' -%}
-              <div class="fl-footer__col fl-footer__col--brand" {{ block.shopify_attributes }}>
-                {%- if settings.brand_image -%}
-                  {%- assign brand_alt = shop.name | escape -%}
-                  {{
-                    settings.brand_image
-                    | image_url: width: 1100
-                    | image_tag:
-                      widths: '150, 300, 550, 1100',
-                      sizes: '(max-width: 749px) 60vw, 300px',
-                      alt: brand_alt,
-                      class: 'fl-footer__brand-img',
-                      loading: 'lazy'
-                  }}
-                {%- endif -%}
-                {%- if settings.brand_headline != blank -%}
-                  <p class="fl-footer__brand-headline">{{ settings.brand_headline }}</p>
-                {%- endif -%}
-                {%- if settings.brand_description != blank -%}
-                  <div class="fl-footer__text">{{ settings.brand_description }}</div>
-                {%- endif -%}
-              </div>
+              {%- comment -%}
+                The three brand settings are theme-level: when none is filled in
+                the block renders nothing instead of an empty column.
+              {%- endcomment -%}
+              {%- if settings.brand_image or settings.brand_headline != blank or settings.brand_description != blank -%}
+                <div class="fl-footer__col fl-footer__col--brand" {{ block.shopify_attributes }}>
+                  {%- if settings.brand_image -%}
+                    {%- assign brand_alt = shop.name | escape -%}
+                    {{
+                      settings.brand_image
+                      | image_url: width: 1100
+                      | image_tag:
+                        widths: '150, 300, 550, 1100',
+                        sizes: '(max-width: 749px) 60vw, 300px',
+                        alt: brand_alt,
+                        class: 'fl-footer__brand-img',
+                        loading: 'lazy'
+                    }}
+                  {%- endif -%}
+                  {%- if settings.brand_headline != blank -%}
+                    <p class="fl-footer__brand-headline">{{ settings.brand_headline }}</p>
+                  {%- endif -%}
+                  {%- if settings.brand_description != blank -%}
+                    <div class="fl-footer__text">{{ settings.brand_description }}</div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
 
             {%- when 'newsletter' -%}
+              {%- comment -%}
+                Same fallback as the Text block: an emptied heading or paragraph
+                shows the translated wording, not the theme's English copy.
+              {%- endcomment -%}
+              {%- liquid
+                assign news_heading = block.settings.heading | escape
+                if block.settings.heading == blank
+                  assign news_heading = 'general.footer.newsletter_heading' | t
+                endif
+              -%}
               <div class="fl-footer__col fl-footer__col--news" {{ block.shopify_attributes }}>
-                {%- if block.settings.heading != blank -%}
-                  <h2 class="fl-footer__heading">{{ block.settings.heading | escape }}</h2>
-                {%- endif -%}
+                <h2 class="fl-footer__heading">{{ news_heading }}</h2>
                 {%- if block.settings.text != blank -%}
                   <div class="fl-footer__text">{{ block.settings.text }}</div>
+                {%- else -%}
+                  <div class="fl-footer__text"><p>{{ 'general.footer.newsletter_text' | t }}</p></div>
                 {%- endif -%}
                 {%- assign news_id = 'Footer-news-' | append: block.id -%}
                 {%- form 'customer', id: news_id, class: 'fl-footer__news' -%}
@@ -508,7 +541,7 @@
           "type": "text",
           "id": "heading",
           "label": "Heading",
-          "default": "Quick links"
+          "info": "Leave empty to show the translated heading in each storefront language."
         },
         {
           "type": "link_list",
@@ -526,13 +559,13 @@
           "type": "text",
           "id": "heading",
           "label": "Heading",
-          "default": "About"
+          "info": "Leave empty to show the translated heading in each storefront language."
         },
         {
           "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "<p>Share store details, announcements, or brand content with your customers.</p>"
+          "info": "Leave empty to show the translated placeholder in each storefront language."
         }
       ]
     },
@@ -556,13 +589,13 @@
           "type": "text",
           "id": "heading",
           "label": "Heading",
-          "default": "Newsletter"
+          "info": "Leave empty to show the translated heading in each storefront language."
         },
         {
           "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "<p>Subscribe for new arrivals and exclusive offers.</p>"
+          "info": "Leave empty to show the translated placeholder in each storefront language."
         }
       ]
     }

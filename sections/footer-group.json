@@ -8,23 +8,16 @@
         "menu-1": {
           "type": "menu",
           "settings": {
-            "heading": "Shop",
             "menu": "footer"
           }
         },
         "text-1": {
           "type": "text",
-          "settings": {
-            "heading": "About",
-            "text": "<p>Share what makes your store different — your story, your materials, your promise.</p>"
-          }
+          "settings": {}
         },
         "newsletter-1": {
           "type": "newsletter",
-          "settings": {
-            "heading": "Newsletter",
-            "text": "<p>Sign up for new arrivals and occasional news.</p>"
-          }
+          "settings": {}
         }
       },
       "block_order": ["menu-1", "text-1", "newsletter-1"],

@@ -11,6 +11,10 @@ body {
   flex-direction: column;
   margin: 0;
   min-height: 100svh;
+  /* `anywhere` rather than `break-word`: it also lowers the minimum width of
+     flex and grid items, so a 60-character word or a long e-mail address
+     breaks instead of widening the page. */
+  overflow-wrap: anywhere;
 }
 
 /* Completes the sticky-footer pattern: without this the footer floats up on
@@ -34,6 +38,13 @@ svg {
   height: auto;
 }
 
+/* Embeds (a video pasted into a page, an article or a product description):
+   only the width is capped. `height: auto` would override the element's own
+   height attribute and collapse the frame to 150px. */
+iframe {
+  max-width: 100%;
+}
+
 input,
 textarea,
 select {
@@ -42,15 +53,6 @@ select {
 
 p {
   text-wrap: pretty;
-}
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
 }
 
 p:empty {
@@ -280,11 +282,17 @@ a {
   color: var(--color-muted);
   opacity: 1;
 }
+/* Fields keep the theme's focus ring (2px, offset 2px, set on :focus-visible
+   above): only the border colour is reinforced here. A thinner, flush ring was
+   hard to see against the field's own border.
+   The field is raised while focused because the joined rows (newsletter in the
+   footer and in its section) put a button flush against it, which would paint
+   over the ring on that side. */
 .fl-input:focus-visible,
 .fl-select:focus-visible,
 .fl-textarea:focus-visible {
-  outline-width: 1px;
-  outline-offset: 0;
+  position: relative;
+  z-index: 1;
   border-color: var(--color-ink);
 }
 .fl-label {
@@ -473,6 +481,16 @@ h6 {
 }
 
 /* --- Rich text rendered from Liquid (article.content, page.content) --- */
+/* Everything the merchant can paste in stays inside the column: the width of
+   an embed or an image is capped, and nothing is wider than the text. */
+.fl-rte {
+  overflow-wrap: anywhere;
+}
+
+.fl-rte :is(img, video, iframe, table) {
+  max-width: 100%;
+}
+
 .fl-rte > * + * {
   margin-top: 1.2em;
 }
@@ -508,8 +526,15 @@ h6 {
   text-decoration: underline;
 }
 
+/* A table typed into a page or an article has no width of its own to respect:
+   as a block it stays inside the text column and scrolls there, instead of
+   widening the whole page. The cells break their words first, so it only
+   scrolls when the content really cannot fit. */
 .fl-rte table {
-  width: 100%;
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
   border-collapse: collapse;
 }
 

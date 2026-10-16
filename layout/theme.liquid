@@ -34,7 +34,7 @@
     {% endif %}
 
     {% if settings.favicon %}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {% else %}
       {%- comment -%} Stops browsers requesting /favicon.ico (a 404 on every page). {%- endcomment -%}
       {%- assign empty_icon = 'data:,' -%}

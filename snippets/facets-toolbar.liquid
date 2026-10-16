@@ -1,0 +1,251 @@
+{%- comment -%}
+  Filters and sorting toolbar, shared by the collection page and the search
+  results page: both expose the same filters, sort_options, sort_by and
+  default_sort_by, so the markup, the CSS (section collection) and the
+  fl-collection-filters element are written once.
+
+  Parameters
+    results        collection or search object (filters, sort_options, sort_by)
+    form_id        unique id, used by every field's label
+    action         where the form submits (collection.url, routes.search_url)
+    count_text     already translated count line shown beside the sort select
+    clear_url      "Clear all" destination, sort kept
+    wrapper_class  class of the <fl-collection-filters> element
+    terms          search terms; only then are q and options[prefix] carried
+{%- endcomment -%}
+
+{%- liquid
+  assign sort_by = results.sort_by | default: results.default_sort_by
+
+  assign active_count = 0
+  for f in results.filters
+    if f.type == 'price_range'
+      if f.min_value.value or f.max_value.value
+        assign active_count = active_count | plus: 1
+      endif
+    else
+      assign active_count = active_count | plus: f.active_values.size
+    endif
+  endfor
+-%}
+
+<fl-collection-filters class="{{ wrapper_class }}">
+  <form
+    id="{{ form_id }}"
+    class="fl-toolbar"
+    method="get"
+    action="{{ action }}"
+    aria-label="{{ 'collections.filters.title' | t }}"
+    data-filter-form
+  >
+    {%- if terms != blank -%}
+      {%- comment -%}
+        Search page: the query has to travel with every filter and sort
+        submission, or the form would reload the page without its terms.
+        options[prefix] keeps the same prefix matching as the search form.
+      {%- endcomment -%}
+      <input type="hidden" name="q" value="{{ terms | escape }}">
+      <input type="hidden" name="options[prefix]" value="last">
+    {%- endif -%}
+    {%- if results.filters.size > 0 -%}
+      <details class="fl-toolbar__drawer" data-facets-drawer>
+        <summary class="fl-toolbar__drawer-toggle">
+          <span>{{ 'collections.filters.title' | t }}</span>
+          {%- if active_count > 0 -%}
+            <span class="fl-facet__badge" aria-hidden="true">{{ active_count }}</span>
+            <span class="visually-hidden">{{ 'collections.filters.selected' | t: count: active_count }}</span>
+          {%- endif -%}
+          <svg class="fl-caret" aria-hidden="true" focusable="false" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+
+        <div class="fl-toolbar__facets">
+          {%- for filter in results.filters -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- liquid
+                assign price_active = false
+                if filter.min_value.value or filter.max_value.value
+                  assign price_active = true
+                endif
+                # Same currency format as snippets/price.liquid (theme
+                # setting Currency format > Show currency codes).
+                if settings.currency_code_enabled
+                  assign max_price = filter.range_max | money_with_currency
+                else
+                  assign max_price = filter.range_max | money
+                endif
+                # Number inputs need a dot-decimal value. Going through
+                # money_without_currency yields "53,33" in comma-decimal
+                # locales, and stripping the comma multiplied it by 100.
+                assign max_placeholder = filter.range_max | divided_by: 100.0
+              -%}
+              <details class="fl-facet" data-facet>
+                <summary class="fl-facet__toggle">
+                  <span class="fl-facet__name">{{ filter.label | escape }}</span>
+                  {%- if price_active -%}
+                    <span class="fl-facet__badge" aria-hidden="true">1</span>
+                    <span class="visually-hidden">{{ 'collections.filters.selected' | t: count: 1 }}</span>
+                  {%- endif -%}
+                  <svg class="fl-caret" aria-hidden="true" focusable="false" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </summary>
+                <div class="fl-facet__panel">
+                  <p class="fl-facet__note">{{ 'collections.filters.highest_price_html' | t: price: max_price }}</p>
+                  <div class="fl-facet__price-row">
+                    <div class="fl-facet__price-field">
+                      <label class="fl-label" for="{{ form_id }}-price-min">{{ 'collections.filters.from' | t }}</label>
+                      <input
+                        id="{{ form_id }}-price-min"
+                        class="fl-input fl-facet__price-input"
+                        type="number"
+                        name="{{ filter.min_value.param_name }}"
+                        {%- if filter.min_value.value %}
+                          value="{{ filter.min_value.value | divided_by: 100.0 }}"
+                        {%- endif %}
+                        placeholder="0"
+                        min="0"
+                        max="{{ max_placeholder }}"
+                        step="0.01"
+                        inputmode="decimal"
+                      >
+                    </div>
+                    <div class="fl-facet__price-field">
+                      <label class="fl-label" for="{{ form_id }}-price-max">{{ 'collections.filters.to' | t }}</label>
+                      <input
+                        id="{{ form_id }}-price-max"
+                        class="fl-input fl-facet__price-input"
+                        type="number"
+                        name="{{ filter.max_value.param_name }}"
+                        {%- if filter.max_value.value %}
+                          value="{{ filter.max_value.value | divided_by: 100.0 }}"
+                        {%- endif %}
+                        placeholder="{{ max_placeholder }}"
+                        min="0"
+                        max="{{ max_placeholder }}"
+                        step="0.01"
+                        inputmode="decimal"
+                      >
+                    </div>
+                  </div>
+                  <button type="submit" class="fl-btn fl-btn--secondary fl-facet__price-apply">
+                    {{ 'collections.filters.apply' | t }}
+                  </button>
+                </div>
+              </details>
+            {%- else -%}
+              <details class="fl-facet" data-facet>
+                <summary class="fl-facet__toggle">
+                  <span class="fl-facet__name">{{ filter.label | escape }}</span>
+                  {%- if filter.active_values.size > 0 -%}
+                    <span class="fl-facet__badge" aria-hidden="true">{{ filter.active_values.size }}</span>
+                    <span class="visually-hidden">{{ 'collections.filters.selected' | t: count: filter.active_values.size }}</span>
+                  {%- endif -%}
+                  <svg class="fl-caret" aria-hidden="true" focusable="false" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </summary>
+                <div class="fl-facet__panel">
+                  <ul class="fl-facet__list" role="list">
+                    {%- for value in filter.values -%}
+                      {%- assign value_id = form_id | append: '-' | append: filter.param_name | handleize | append: '-' | append: forloop.index -%}
+                      <li class="fl-facet__item">
+                        <label
+                          class="fl-facet__option{% if value.count == 0 and value.active == false %} fl-facet__option--empty{% endif %}"
+                          for="{{ value_id }}"
+                        >
+                          <input
+                            id="{{ value_id }}"
+                            type="checkbox"
+                            class="fl-facet__checkbox"
+                            name="{{ value.param_name }}"
+                            value="{{ value.value | escape }}"
+                            {% if value.active %}checked{% endif %}
+                            {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                          >
+                          <span class="fl-facet__option-label">{{ value.label | escape }}</span>
+                          <span class="fl-facet__option-count">{{ value.count }}</span>
+                        </label>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+
+          <noscript>
+            <button type="submit" class="fl-btn fl-toolbar__apply">
+              {{ 'collections.filters.apply' | t }}
+            </button>
+          </noscript>
+        </div>
+      </details>
+    {%- endif -%}
+
+    <div class="fl-toolbar__end">
+      {%- comment -%}
+        The search page already prints its own count line above the toolbar, and
+        passes no text: no empty tag is left behind.
+      {%- endcomment -%}
+      {%- if count_text != blank -%}
+        <span class="fl-toolbar__count">{{ count_text }}</span>
+      {%- endif -%}
+      <div class="fl-toolbar__sort">
+        <label class="fl-toolbar__sort-label" for="{{ form_id }}-sort">{{ 'collections.sorting.title' | t }}</label>
+        <select id="{{ form_id }}-sort" class="fl-select" name="sort_by" data-sort>
+          {%- for option in results.sort_options -%}
+            <option value="{{ option.value | escape }}" {% if option.value == sort_by %}selected{% endif %}>
+              {{- option.name | escape -}}
+            </option>
+          {%- endfor -%}
+        </select>
+        <noscript>
+          <button type="submit" class="fl-btn fl-btn--secondary">{{ 'collections.filters.apply' | t }}</button>
+        </noscript>
+      </div>
+    </div>
+  </form>
+
+  {%- if active_count > 0 -%}
+    <div class="fl-active-filters">
+      <ul class="fl-active-filters__list" role="list">
+        {%- for filter in results.filters -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value or filter.max_value.value -%}
+              {%- liquid
+                assign price_min_value = filter.min_value.value | default: 0
+                assign price_max_value = filter.max_value.value | default: filter.range_max
+                # Same currency format as snippets/price.liquid.
+                if settings.currency_code_enabled
+                  assign price_min = price_min_value | money_with_currency
+                  assign price_max = price_max_value | money_with_currency
+                else
+                  assign price_min = price_min_value | money
+                  assign price_max = price_max_value | money
+                endif
+              -%}
+              <li>
+                <a class="fl-active-filters__pill" href="{{ filter.url_to_remove }}">
+                  <span>{{ price_min }} – {{ price_max }}</span>
+                  <span class="visually-hidden">{{ 'collections.filters.remove_filter' | t: name: filter.label }}</span>
+                  <svg aria-hidden="true" focusable="false" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- else -%}
+            {%- for value in filter.active_values -%}
+              <li>
+                <a class="fl-active-filters__pill" href="{{ value.url_to_remove }}">
+                  <span>{{ filter.label | escape }}{{ 'general.colon' | t }} {{ value.label | escape }}</span>
+                  <span class="visually-hidden">{{ 'collections.filters.remove_filter' | t: name: value.label }}</span>
+                  <svg aria-hidden="true" focusable="false" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </a>
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+        <li>
+          <a class="fl-active-filters__clear" href="{{ clear_url }}">
+            {{- 'collections.filters.clear_all' | t -}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  {%- endif -%}
+</fl-collection-filters>

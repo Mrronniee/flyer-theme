@@ -42,6 +42,35 @@
           {{ 'search.results_for_html' | t: terms: terms_escaped, count: search.results_count }}
         </p>
 
+        {%- comment -%}
+          Same filters and sorting as the collection page: the search object
+          exposes the same filters and sort_options, so the toolbar is the
+          shared snippet. The query travels in a hidden field, so a filter or a
+          sort never loses the terms. Nothing is rendered when the shop has
+          neither filters nor sort options for search.
+        {%- endcomment -%}
+        {%- if search.filters.size > 0 or search.sort_options.size > 0 -%}
+          {%- liquid
+            assign search_sort_by = search.sort_by | default: search.default_sort_by
+            assign search_form_id = 'SearchFilters-' | append: section.id
+            capture search_clear_url
+              echo routes.search_url
+              echo '?q='
+              echo search.terms | url_encode
+              echo '&options%5Bprefix%5D=last&sort_by='
+              echo search_sort_by
+            endcapture
+          -%}
+          {% render 'facets-toolbar',
+            results: search,
+            form_id: search_form_id,
+            action: routes.search_url,
+            clear_url: search_clear_url,
+            wrapper_class: 'fl-searchpage__toolbar',
+            terms: search.terms
+          %}
+        {%- endif -%}
+
         {%- paginate search.results by 24 -%}
           {%- liquid
             assign has_products = false
@@ -197,8 +226,14 @@
   }
 
   .fl-searchpage__count {
-    margin-bottom: 28px;
+    margin-bottom: 16px;
     color: var(--color-muted);
+  }
+
+  /* The toolbar itself is styled by the collection section, whose stylesheet
+     Shopify loads on every page; only the spacing is ours. */
+  .fl-searchpage__toolbar {
+    margin-bottom: 28px;
   }
 
   .fl-searchpage__group + .fl-searchpage__group {

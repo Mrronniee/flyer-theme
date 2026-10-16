@@ -37,7 +37,11 @@
       "label": "Announcement"
     },
     "footer": {
-      "navigation": "Footer navigation",
+      "quick_links": "Quick links",
+      "about_heading": "About",
+      "about_text": "Share store details, announcements, or brand content with your customers.",
+      "newsletter_heading": "Newsletter",
+      "newsletter_text": "Subscribe for new arrivals and exclusive offers.",
       "theme_credit": "Theme by KIOSK"
     },
     "localization": {
@@ -103,6 +107,15 @@
       "increase_quantity": "Increase quantity for {{ title }}",
       "vendor": "Vendor",
       "description": "Description",
+      "details": "Details",
+      "gift_card": {
+        "send_to_recipient": "Send as a gift",
+        "recipient_email": "Recipient email",
+        "recipient_name": "Recipient name (optional)",
+        "message": "Message (optional)",
+        "message_limit": "Up to 200 characters.",
+        "send_on": "Send on (optional)"
+      },
       "media_label": "Gallery viewer",
       "media_item": "Image {{ index }} of {{ count }}",
       "media_item_video": "Video {{ index }} of {{ count }}",
@@ -233,6 +246,7 @@
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
     "card": "Gift card",
+    "qr_alt": "QR code for this gift card",
     "expired": "This gift card has expired",
     "expires_on": "Expires on {{ expires_on }}",
     "use_at_checkout": "Use this gift card at checkout"

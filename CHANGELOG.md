@@ -1,5 +1,68 @@
 # Changelog
 
+## 1.8.17 - 2026-10-16
+
+### Added
+- **A QR code on the gift card page.** The card showed its code in text only,
+  which had to be typed by hand at the till. The page now draws the card's QR
+  code, at least 120 px wide, with a translated label; the code in text is
+  still there, including when scripts do not load.
+- **Recipient details on a gift card product.** A gift card can now be sent
+  straight to the person receiving it: e-mail, name, a message of up to 200
+  characters and a send date, on the product page as well as in the Featured
+  product section. Every field is optional, so buying a card for yourself
+  works exactly as before.
+- **Filters and sorting on the search results page.** Search results had
+  neither, while the collection page had both. They are now the same toolbar,
+  and a filter or a sort keeps the words you searched for.
+- **Accelerated checkout buttons on the cart page.** Shop Pay, Apple Pay and
+  the others were offered on the product page only. They now also appear under
+  the checkout button of the cart, when the shop has them turned on.
+
+### Fixed
+- **Every field shows the focus ring again.** The search field removed it
+  altogether, and the other fields replaced it with a thin flush line that was
+  hard to see. All of them now carry the theme's 2 px ring, which the button
+  joined to a sign-up field can no longer cover.
+- **The first product cards load first.** In the Featured collection and the
+  Collage, near the top of a page, the first row is now loaded straight away
+  instead of lazily: the main image of the page appears sooner. Further down
+  the page, nothing changes.
+- **The page no longer jumps when the recommendations arrive.** The "You may
+  also like" section was empty until its products were fetched, and the footer
+  moved when they landed. The space is now reserved by a placeholder of the
+  same size.
+- **The sale price is named next to the old price.** In the cart drawer and on
+  the cart page, a discounted line read two amounts without saying which one
+  applies; a screen reader now announces the regular price and the sale price.
+- **Long words, long links, pasted videos and wide tables stay inside the
+  page.** A sixty-character word, an e-mail address or an embedded video in a
+  page, an article or a product description could widen the whole page
+  sideways. A wide table typed into a page now scrolls inside its own column.
+- **A footer column with nothing in it is no longer shown.** A Menu block
+  whose menu was emptied kept its heading, announcing a list of links that held
+  none; the same went for an empty Text block and brand information left
+  blank.
+- **A product tab left empty is no longer rendered.** A collapsible tab with
+  neither heading nor content produced a button with no name.
+- **The icon of the site is no longer announced as a PNG.** A favicon uploaded
+  as a JPG, a WebP or an SVG was served in its own format but declared as a
+  PNG, on the shop, the password page and the gift card page.
+- **The read-me in the download carries the version of the theme.** It still
+  announced 1.8.4.
+
+### Changed
+- **The footer speaks the language of the shop.** Its headings and its sample
+  paragraphs were English text shipped with the theme, which stayed English on
+  a French storefront. Left empty, they now show the translated wording, and
+  anything you type replaces it as before.
+- **The default texts no longer promise anything on your behalf.** Free
+  shipping, a tracked delivery in three to five days, thirty-day returns with a
+  prepaid label, a discount of up to 30 %, prices in dollars and a third-party
+  video link were waiting in the announcement bar, the trust badges, the
+  comparison table, the countdown and the collage. They are replaced by neutral
+  wording that describes what to fill in.
+
 ## 1.8.16 - 2026-10-16
 
 ### Fixed

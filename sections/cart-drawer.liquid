@@ -190,13 +190,23 @@
                   {%- endif -%}
 
                   <span class="fl-cart__item-price">
+                    {%- comment -%}
+                      Two amounts side by side are only readable if both are
+                      named: the struck-through one as the regular price, the
+                      one that applies as the sale price.
+                    {%- endcomment -%}
                     {%- if item.original_line_price != item.final_line_price -%}
                       <s class="fl-cart__item-compare">
                         <span class="visually-hidden">{{ 'products.card.regular_price' | t }}</span>
                         {{- line_compare -}}
                       </s>
+                      <span>
+                        <span class="visually-hidden">{{ 'products.card.sale_price' | t }}</span>
+                        {{- line_price -}}
+                      </span>
+                    {%- else -%}
+                      <span>{{ line_price }}</span>
                     {%- endif -%}
-                    <span>{{ line_price }}</span>
                   </span>
 
                   {%- comment -%}

@@ -10,12 +10,21 @@
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
 
     {% if settings.favicon %}
-      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {% endif %}
 
     <title>{{ 'gift_card.card' | t }} &ndash; {{ shop.name }}</title>
 
     {{ content_for_header }}
+
+    {%- comment -%}
+      Draws the QR code of the card from gift_card.qr_identifier: Shopify gives
+      the identifier and leaves the drawing to the theme. With scripts off the
+      code in text below is still there.
+    {%- endcomment -%}
+    {% if gift_card.qr_identifier != blank %}
+      <script src="{{ 'gift-card-qr.js' | asset_url }}" defer></script>
+    {% endif %}
 
     {% style %}
       .fl-gift {
@@ -70,6 +79,22 @@
         word-break: break-all;
       }
 
+      .fl-gift__qr {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      /* The scanned area keeps its own light background, whatever the colour
+         scheme of the shop: a QR code on a dark surface does not read. */
+      .fl-gift__qr svg {
+        width: 160px;
+        height: 160px;
+        padding: 8px;
+        background: #fff;
+        border-radius: var(--radius-card);
+      }
+
       .fl-gift__wallet {
         display: inline-block;
         margin-top: 8px;
@@ -114,6 +139,15 @@
         </div>
 
         <p class="fl-gift__note">{{ 'gift_card.use_at_checkout' | t }}</p>
+
+        {%- if gift_card.qr_identifier != blank -%}
+          <div
+            class="fl-gift__qr"
+            data-gift-card-qr="{{ gift_card.qr_identifier }}"
+            data-size="160"
+            data-label="{{ 'gift_card.qr_alt' | t }}"
+          ></div>
+        {%- endif -%}
 
         <p class="fl-gift__code">{{ gift_card.code | format_code }}</p>
 
