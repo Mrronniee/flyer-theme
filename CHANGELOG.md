@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.9.3 - 2026-10-17
+
+### Fixed
+- **A price keeps its currency sign on the same line in the French theme
+  editor.** One French editor label still separated a number from its euro
+  sign with an ordinary space, where French needs a non-breaking one. It now
+  follows the same rule as the units and percent signs fixed in 1.9.2, which
+  closes the whole family: a number is never parted from what qualifies it —
+  unit, percent, currency, multiplication sign or thousands separator.
+
 ## 1.9.2 - 2026-10-17
 
 ### Fixed
