@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.2 - 2026-10-17
+
+### Fixed
+- **French numbers keep their unit on the same line in the theme editor.** Seven
+  French editor labels put an ordinary space between a number and its unit or
+  percent sign, where French needs a non-breaking one, so "55 %" or "48 px"
+  could be split across two lines. They now follow the same rule as the rest of
+  the French text, and a number in the thousands reads "1 800 px".
+
 ## 1.9.1 - 2026-10-17
 
 ### Fixed
