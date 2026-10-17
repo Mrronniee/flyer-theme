@@ -77,7 +77,8 @@
           }
         }
       }
-    }
+    },
+    "correction": "1.9.2"
   },
   "theme-editeur-checker": {
     "version": "1.9.0",
