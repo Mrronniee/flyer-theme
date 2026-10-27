@@ -360,13 +360,6 @@
       "raison": "survols en transform (cartes, collections, blog, collage, liste de collections, lookbook, vidéo) annulés sous prefers-reduced-motion."
     },
     {
-      "id": "cas-theme-a11y-auditor-titres-masques@1.9.0-971390d-20261017",
-      "version": "1.10.0",
-      "etat": "pas_un_defaut",
-      "ou": "sections/hero-split.liquid:192",
-      "raison": "seules les lignes du héros sont masquées ; padding-block 0.12em/0.14em autour de l'interligne 0.95 (corrigé dans ce lot, code-lignes-de-titre-masquees) ; aucun line-clamp sur un titre. La mesure avec une autre police reste à faire (C16)."
-    },
-    {
       "id": "cas-theme-a11y-auditor-reperes-de-page@1.9.0-971390d-20261017",
       "version": "1.10.0",
       "etat": "corrige",
@@ -435,33 +428,12 @@
       "raison": "sans objet : aucun pointerdown, pointermove, touchstart, touchmove ni mousedown dans le thème (grep vide) ; rails en défilement natif scroll-snap, avec boutons précédent/suivant."
     },
     {
-      "id": "cas-theme-a11y-auditor-couleur-seule@1.9.0-971390d-20261017",
-      "version": "1.10.0",
-      "etat": "pas_un_defaut",
-      "ou": "sections/product.liquid:636",
-      "raison": "pastille choisie en aplat inversé, indisponible en tirets, épuisée barrée, valeur écrite dans la légende ; liens soulignés ; aria-current sur la page et la vignette actives."
-    },
-    {
-      "id": "cas-theme-a11y-auditor-videos-sous-titres@1.9.0-971390d-20261017",
-      "version": "1.10.0",
-      "etat": "pas_un_defaut",
-      "ou": "sections/video.liquid:99",
-      "raison": "video_tag avec controls et lecteurs YouTube/Vimeo sans paramètre qui retire les sous-titres ; aucune piste retirée."
-    },
-    {
       "id": "cas-theme-bilingue-checker-menu-une-ligne@1.9.3-fd80480-20261017",
       "version": "1.10.0",
       "etat": "corrige",
       "ou": "sections/header.liquid:1204",
       "commit": "aa07db9",
       "raison": "menu en flex-wrap: wrap sans nowrap : une ligne (nowrap), et repli en burger mesuré (ResizeObserver, fitMenu) quand le menu déborde, à toute largeur."
-    },
-    {
-      "id": "cas-theme-bilingue-checker-francais-sans-anglicismes@1.9.3-fd80480-20261017",
-      "version": "1.10.0",
-      "etat": "pas_un_defaut",
-      "ou": "locales/fr.json:54",
-      "raison": "aucune valeur de fr.json ni fr.schema.json avec desktop, overlay, header, footer, hover, scroll, upsell, placeholder… ; contrôle « aucun mot anglais dans les locales francaises » OK."
     },
     {
       "id": "cas-theme-bilingue-checker-prepositions-devant-un-pays@1.9.3-fd80480-20261017",
@@ -477,13 +449,6 @@
       "ou": "assets/critical.css:684",
       "commit": "aa07db9",
       "raison": "aucun @media (hover: hover) : survols annulés sous (hover: none) (critical.css:190) et seconde image de carte cachée au toucher (critical.css:684)."
-    },
-    {
-      "id": "cas-theme-parcours-tester-apparitions-au-defilement@1.9.0-971390d-20261017",
-      "version": "1.10.0",
-      "etat": "pas_un_defaut",
-      "ou": "snippets/reveal.liquid:68",
-      "raison": "masquage posé par JS seulement, jamais sur ce qui est déjà dans l'écran (corrigé dans ce lot, code-declenchement-des-apparitions), rien sans JS ni en mouvement réduit."
     },
     {
       "id": "cas-theme-parcours-tester-glisser-au-doigt@1.9.0-971390d-20261017",
@@ -560,18 +525,84 @@
       "raison": "voile en pointer-events: none fermé, tiroir en visibility hidden, recherche [hidden], menu et aperçu en <dialog>, méga-menu en <details> au clic, fermé au clic extérieur et sur Échap."
     },
     {
-      "id": "cas-theme-perf-auditor-cls-contenu-tardif@1.9.0-971390d-20261017",
+      "id": "complement-29d7be5f",
+      "version": "1.10.1",
+      "etat": "corrige",
+      "ou": "sections/product.liquid:923",
+      "commit": "5b79ada",
+      "raison": "showMedia appelle pauseMedia sur le média quitté : video.pause(), postMessage pauseVideo (YouTube, enablejsapi=1) ou pause (Vimeo), model-viewer.pause() ; même méthode dans sections/featured-product.liquid:857."
+    },
+    {
+      "id": "complement-8fba1090",
+      "version": "1.10.1",
+      "etat": "corrige",
+      "ou": "sections/hero-split.liquid:42",
+      "commit": "5b79ada",
+      "raison": "loading eager et fetchpriority high seulement si section.index == 1, sinon lazy et auto ; même défaut corrigé dans sections/image-banner.liquid."
+    },
+    {
+      "id": "complement-2d1b46a1",
+      "version": "1.10.1",
+      "etat": "corrige",
+      "ou": "sections/related-products.liquid:259",
+      "commit": "5b79ada",
+      "raison": "réponse vide ou erreur : release() vide la section mais garde sa hauteur (min-height) tant qu'elle est à l'écran, et ne la replie qu'une fois hors de vue (IntersectionObserver) ; hors de l'écran elle se replie aussitôt. Mesure sur un produit sans recommandation laissée à la session des outils (C16)."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-couleur-seule@1.9.0-971390d-20261017",
+      "version": "1.10.1",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:934",
+      "commit": "5b79ada",
+      "raison": ".fl-header__drawer-link et .fl-header__drawer-sublink [aria-current='page'] soulignés comme sur ordinateur ; pastille choisie épuisée ou indisponible cerclée de 2 px d'encre (product.liquid:652, featured-product.liquid) ; vignette de galerie en cours cerclée de 2 px (même défaut)."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-titres-masques@1.9.0-971390d-20261017",
       "version": "1.10.0",
-      "etat": "pas_un_defaut",
-      "ou": "sections/related-products.liquid:56",
-      "raison": "squelette de recommandations de même forme, annonces empilées dans une même cellule, vidéos en aspect-ratio, apparitions en opacité/transform."
+      "etat": "corrige",
+      "ou": "sections/hero-split.liquid:192",
+      "commit": "897f922",
+      "raison": "masque des lignes de titre padding-block 0.12em 0.14em ajouté en 897f922 (absent en 1.9.0 et 1.9.3) : capitales accentuées et jambages ne sont plus coupés ; remesure « Égypte, jardin » à 390 et 1440 px à faire par la session des outils."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-videos-sous-titres@1.9.0-971390d-20261017",
+      "version": "1.10.1",
+      "etat": "corrige",
+      "ou": "snippets/media-player.liquid:23",
+      "commit": "5b79ada",
+      "raison": "les vidéos de fiche passent par media-player : video_tag avec controls: true (piste de sous-titres accessible dans le lecteur), YouTube et Vimeo par external_video_tag sans paramètre qui coupe les sous-titres ; utilisé par product.liquid et featured-product.liquid. sections/video.liquid passait déjà controls: true."
+    },
+    {
+      "id": "cas-theme-bilingue-checker-francais-sans-anglicismes@1.9.3-fd80480-20261017",
+      "version": "1.10.1",
+      "etat": "corrige",
+      "ou": "locales/fr.schema.json:65",
+      "commit": "5b79ada",
+      "raison": "« Saisissez oui pour une coche, non pour un tiret » et comparison.liquid:102 et 107 acceptent oui/non ; « Thème par KIOSK » (ligne 334) ; copyright remplacé par « mention de droit d'auteur » (28, 79) ; look remplacé par « tenue » (61, 78, 253, 449) ; « Shop » seul de la ligne 78 expliqué comme le mot anglais de la vitrine."
+    },
+    {
+      "id": "cas-theme-parcours-tester-apparitions-au-defilement@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "snippets/reveal.liquid:68",
+      "commit": "897f922",
+      "raison": "897f922 : rootMargin passé de -8 % à 15 % (reveal.liquid:46) et ce qui est déjà à l'écran n'est plus masqué (reveal.liquid:66-68) ; remesure (option activée ; accueil, collection, fiche ; 390 et 1440 px) à faire par la session des outils."
+    },
+    {
+      "id": "cas-theme-perf-auditor-cls-contenu-tardif@1.9.0-971390d-20261017",
+      "version": "1.10.1",
+      "etat": "corrige",
+      "ou": "layout/theme.liquid:11",
+      "commit": "5b79ada",
+      "raison": "classe js posée dans le head (theme et password) ; diaporama empilé seulement sans JS (.js .fl-slideshow), flèches des témoignages affichées dès le premier rendu et seulement s'il y a 2 avis ou plus, bouton Mettre à jour et pas à pas du panier en place dès le premier rendu (repli .is-static), compte à rebours expiré masqué par un script en ligne avant l'affichage ; même défaut corrigé pour le poster de video.liquid et le pied de quick-order-list."
     },
     {
       "id": "cas-theme-perf-auditor-image-lcp-prioritaire@1.9.0-971390d-20261017",
-      "version": "1.10.0",
-      "etat": "pas_un_defaut",
-      "ou": "sections/hero-split.liquid:48",
-      "raison": "héros en eager + fetchpriority high sans apparition, 1re image de fiche en priority high (product.liquid:70), bannière et 1re diapositive de même."
+      "version": "1.10.1",
+      "etat": "corrige",
+      "ou": "sections/image-with-text.liquid:14",
+      "commit": "5b79ada",
+      "raison": "eager et fetchpriority high si section.index == 1 dans image-with-text, featured-product, poster de video, multirow, multicolumn, lookbook, collection-list (1re rangée, high sur la 1re image), et aussi featured-blog et collapsible-content ; premier média vidéo ou 3D de la fiche : poster préchargé en fetchpriority high (snippets/media-player.liquid)."
     }
   ]
 }
