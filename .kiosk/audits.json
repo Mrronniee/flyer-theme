@@ -1,22 +1,30 @@
 {
   "liquid-validator": {
-    "version": "1.8.5",
-    "date": "2026-10-13",
+    "version": "1.10.1",
+    "date": "2026-10-27",
     "verdict": "passé",
-    "resume": "verifier-theme.py complet : code de sortie 0, 12/12 contrôles OK ; Theme Check officiel et brut sur 70 fichiers .liquid : 0 ERROR, 0 WARNING, 0 INFO ; aucune alerte à classer.",
-    "commit": "7262769",
+    "commit": "2d6b043",
+    "reprise": {
+      "de": "1.8.5",
+      "commit": "7262769"
+    },
+    "resume": "verifier-theme.py complet : code de sortie 0, 211/211 contrôles OK, 0 ALERTE, 0 ÉCHEC ; Theme Check officiel sur 105 fichiers (75 .liquid + 30 JSON) et validateur brut 105/105 VALID : 0 ERROR, 0 WARNING, 0 INFO ; aucune ALERTE à classer ; bibliothèque lue avant de juger (shopify-liquid-themes, liquid-theme-standards), rien requalifié.",
     "couverture": {
       "verifier-theme": {
         "etat": "mesuré",
-        "mesure": "verifier-theme.py complet (sans --rapide) : code de sortie 0, 12 contrôles OK sur 12 (dont Theme Check 70 fichiers)"
+        "mesure": "verifier-theme.py complet (sans --rapide) sur /home/user/flyer-theme --nom FLYER : code de sortie 0, 211 contrôles OK sur 211, 0 ALERTE, 0 ÉCHEC"
       },
       "theme-check": {
         "etat": "mesuré",
-        "mesure": "validateur brut sur 70 fichiers .liquid en 2 lots de 35, tous VALID : 0 ERROR, 0 WARNING, 0 INFO"
+        "mesure": "Theme Check officiel dans verifier-theme : 105 fichiers dont 30 JSON, OK ; validateur brut (validate.mjs, un seul appel, les 105 fichiers .liquid et JSON livrés) : Overall Status VALID, 105/105 SUCCESS, 0 ERROR, 0 WARNING, 0 INFO"
       },
       "alertes-lues": {
         "etat": "sans objet",
-        "mesure": "aucune ALERTE émise par verifier-theme.py ni aucun WARNING/INFO du Theme Check brut ; gabarit page.showcase.json : 13 entrées de order, toutes les sections référencées existent"
+        "mesure": "aucune ALERTE ni ÉCHEC émis par verifier-theme.py (211 lignes [OK]) et aucun WARNING/INFO du Theme Check brut : rien à classer ; aucun dossier archive/ dans le thème"
+      },
+      "bibliotheque": {
+        "etat": "mesuré",
+        "mesure": "shopify-liquid-themes/SKILL.md lu (Critical Gotchas : parenthèses, ternaire, for 50, Liquid dans stylesheet/javascript, include ; Schema Tag : types, range, visible_if, presets, default vide ; Translations : filtre t, interpolation, nommage des clés) et liquid-theme-standards/SKILL.md lu (CSS : stylesheet sans Liquid, spécificité, !important, dvh, prefers-reduced-motion ; JS : composants web, disconnectedCallback, AbortController, URLSearchParams, APIs natives ; HTML : éléments natifs, images loading/width/height/alt). Effet : rien changé, aucune ALERTE à requalifier ; recoupements sur le code à 0 occurrence (include 0, if à parenthèse 0, \"default\": \"\" 0, t|escape 0, line_item.price/line_price/total_discount 0, background-image marchand 0), concordants avec les contrôles OK correspondants"
       }
     }
   },
