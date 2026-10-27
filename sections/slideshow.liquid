@@ -1,8 +1,11 @@
 {% comment %}
   Slideshow.
   Progressive enhancement: without JS every slide is stacked and fully readable,
-  and the controls stay hidden. <fl-slideshow> adds `is-enhanced`, which switches
-  the track to a single overlapping cell and reveals arrows / dots / play-pause.
+  and the controls stay hidden. With JS (the `js` class set on <html> in the
+  head, layout/theme.liquid) the track is a single overlapping cell from the
+  first paint: the slides never show stacked and then fold (layout shift).
+  <fl-slideshow> then adds `is-enhanced`, which reveals arrows / dots /
+  play-pause (absolutely placed: they move nothing).
   Under prefers-reduced-motion the timer never runs, so the play/pause button is
   hidden rather than left as a dead control.
 {% endcomment %}
@@ -263,11 +266,11 @@
     background-color: var(--color-surface);
   }
 
-  .fl-slideshow.is-enhanced .fl-slideshow__track {
+  .js .fl-slideshow .fl-slideshow__track {
     display: grid;
   }
 
-  .fl-slideshow.is-enhanced .fl-slideshow__slide {
+  .js .fl-slideshow .fl-slideshow__slide {
     grid-area: 1 / 1;
     opacity: 0;
     visibility: hidden;
@@ -276,7 +279,7 @@
       visibility 0s linear 0.5s;
   }
 
-  .fl-slideshow.is-enhanced .fl-slideshow__slide.is-active {
+  .js .fl-slideshow .fl-slideshow__slide.is-active {
     opacity: 1;
     visibility: visible;
     transition: opacity 0.5s ease;

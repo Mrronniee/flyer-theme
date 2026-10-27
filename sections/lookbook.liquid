@@ -74,6 +74,19 @@
             {%- if href != blank -%}
               <a class="fl-lookbook__media-link" href="{{ href }}" tabindex="-1" aria-hidden="true">
             {%- endif -%}
+            {%- liquid
+              # First section of the page: the first row holds the largest paint and is
+              # fetched first (high priority for its first image only). Lower down
+              # everything waits (lazy) and leaves the bandwidth to the LCP.
+              assign img_load = 'lazy'
+              assign img_priority = 'auto'
+              if section.index == 1 and forloop.index <= 4
+                assign img_load = 'eager'
+                if forloop.first
+                  assign img_priority = 'high'
+                endif
+              endif
+            -%}
             {%- if block.settings.image -%}
               {{
                 block.settings.image
@@ -82,7 +95,8 @@
                   widths: '360, 540, 720, 900, 1200',
                   sizes: img_sizes,
                   alt: block.settings.image.alt,
-                  loading: 'lazy',
+                  loading: img_load,
+                  fetchpriority: img_priority,
                   class: 'fl-lookbook__img'
               }}
             {%- else -%}

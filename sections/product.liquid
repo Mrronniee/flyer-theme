@@ -70,7 +70,7 @@
                   | image_tag: widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(max-width: 989px) 100vw, 55vw', alt: media_alt, loading: load, fetchpriority: priority
                 }}
               {%- else -%}
-                {{ media | media_tag: image_size: '1200x' }}
+                {%- render 'media-player', media: media, priority: forloop.first -%}
               {%- endif -%}
             </div>
           {%- endfor -%}
@@ -536,8 +536,11 @@
     border-color: var(--color-muted);
   }
 
+  /* 2px ring, not only a darker border: the media in view does not rest on
+     colour alone (WCAG 1.4.1). */
   .fl-gallery__thumb[aria-current='true'] {
     border-color: var(--color-ink);
+    box-shadow: inset 0 0 0 1px var(--color-ink);
   }
 
   .fl-gallery__thumb img {
@@ -644,10 +647,13 @@
     color: var(--color-bg);
   }
 
+  /* Chosen but sold out: no fill, so a 2px ink ring (not a shade of grey)
+     tells it apart from the other sold-out values (WCAG 1.4.1). */
   .fl-product__radio:checked + .fl-product__value.is-soldout,
   .fl-product__radio:checked + .fl-product__value.is-unavailable {
+    border-color: var(--color-ink);
+    box-shadow: inset 0 0 0 1px var(--color-ink);
     background: transparent;
-    border-color: var(--color-muted);
     color: var(--color-muted);
   }
 
@@ -899,6 +905,7 @@
           const target = this.querySelector('[data-media-item][data-media-id="' + id + '"]');
           if (!target) return;
           this.querySelectorAll('[data-media-item]').forEach((item) => {
+            if (item !== target && !item.hidden) this.pauseMedia(item);
             item.hidden = item !== target;
           });
           if (!this.thumbs) return;
@@ -908,6 +915,24 @@
             } else {
               button.removeAttribute('aria-current');
             }
+          });
+        }
+
+        /* A hidden media keeps playing (sound included) unless paused:
+           native video, YouTube and Vimeo players, 3D model. */
+        pauseMedia(item) {
+          item.querySelectorAll('video').forEach((video) => video.pause());
+          item.querySelectorAll('iframe').forEach((frame) => {
+            const src = frame.src || '';
+            if (!frame.contentWindow) return;
+            if (src.includes('youtube')) {
+              frame.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            } else if (src.includes('vimeo')) {
+              frame.contentWindow.postMessage('{"method":"pause"}', '*');
+            }
+          });
+          item.querySelectorAll('model-viewer').forEach((model) => {
+            if (typeof model.pause === 'function') model.pause();
           });
         }
 

@@ -64,6 +64,15 @@
     </div>
   {%- endif -%}
 
+  {%- liquid
+    # First section of the page: the poster is the largest paint, fetched first.
+    assign poster_load = 'lazy'
+    assign poster_priority = 'auto'
+    if section.index == 1
+      assign poster_load = 'eager'
+      assign poster_priority = 'high'
+    endif
+  -%}
   <fl-video
     class="fl-video__frame{% unless section.settings.full_width %} fl-video__frame--boxed fl-media{% endunless %}"
     style="padding: {{ section.settings.image_padding }}px;"
@@ -80,7 +89,8 @@
                 sizes: poster_sizes,
                 class: 'fl-video__img',
                 alt: '',
-                loading: 'lazy'
+                loading: poster_load,
+                fetchpriority: poster_priority
             }}
           {%- else -%}
             {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-video__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
@@ -143,7 +153,8 @@
               widths: '750, 1100, 1500, 1920, 2560, 3840',
               sizes: poster_sizes,
               class: 'fl-video__img',
-              loading: 'lazy'
+              loading: poster_load,
+              fetchpriority: poster_priority
           }}
         {%- else -%}
           {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-video__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
@@ -185,9 +196,10 @@
     background-color: var(--color-surface);
   }
 
-  /* Hidden until <fl-video> upgrades and binds the click handler: without JS
-     the <noscript> player is shown instead and this button would be a
-     focusable, clickable no-op covering it. */
+  /* Hidden without JS: the <noscript> player is shown instead and this button
+     would be a focusable, clickable no-op covering it. With JS (`js` class on
+     <html>, set in the head) the poster shows from the first paint: it is
+     often the largest image of the section. */
   .fl-video__poster {
     position: absolute;
     inset: 0;
@@ -200,7 +212,7 @@
     cursor: pointer;
   }
 
-  .fl-video__frame.is-enhanced .fl-video__poster {
+  .js .fl-video__poster {
     display: block;
   }
 

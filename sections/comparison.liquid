@@ -2,7 +2,8 @@
   Comparison table.
   Criteria typed one per line, up to four column blocks (title, subtitle,
   price, button) with their values typed one per line in the same order:
-  “yes” renders a check, “no” a muted dash, anything else prints as text.
+  “yes” or “oui” renders a check, “no” or “non” a muted dash, anything else
+  prints as text.
   The highlighted column carries an accent rule on top and an eyebrow label,
   nothing more. Fully static, no JavaScript.
 {% endcomment %}
@@ -98,12 +99,12 @@
                     assign value_key = value | downcase
                   -%}
                   <td class="fl-comparison__cell{% if block.settings.highlight %} fl-comparison__cell--highlight{% endif %}">
-                    {%- if value_key == 'yes' -%}
+                    {%- if value_key == 'yes' or value_key == 'oui' -%}
                       <svg class="fl-comparison__check" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
                         <path d="M2.5 8.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
                       <span class="visually-hidden">{{ 'sections.comparison.yes' | t }}</span>
-                    {%- elsif value_key == 'no' -%}
+                    {%- elsif value_key == 'no' or value_key == 'non' -%}
                       <span class="fl-comparison__dash" aria-hidden="true">&ndash;</span>
                       <span class="visually-hidden">{{ 'sections.comparison.no' | t }}</span>
                     {%- else -%}

@@ -87,6 +87,22 @@
   </div>
 </section>
 
+{%- if section.settings.hide_when_expired and end_date != blank -%}
+  {%- comment -%}
+    An expired countdown set to hide is removed while the page is parsed, before
+    the first paint: hidden later by the section script, it pulled everything
+    below it up (layout shift).
+  {%- endcomment -%}
+  <script>
+    (function () {
+      const root = document.currentScript.previousElementSibling;
+      const clock = root ? root.querySelector('fl-countdown') : null;
+      const end = clock ? new Date(clock.dataset.end || '') : null;
+      if (end && !isNaN(end.getTime()) && end.getTime() <= Date.now()) root.hidden = true;
+    })();
+  </script>
+{%- endif -%}
+
 {% stylesheet %}
   .fl-countdown__inner {
     width: var(--content-width);

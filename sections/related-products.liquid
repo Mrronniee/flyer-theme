@@ -7,8 +7,9 @@
   (heading + four cards at the card ratio), so the footer no longer jumps when
   the grid lands: the empty section measured a CLS of 0.622 on a direct jump to
   the bottom of the page on mobile. The placeholder is aria-hidden and holds no
-  link; the script replaces it with the grid, or empties the section when the
-  product has no recommendation.
+  link; the script replaces it with the grid. When the product has no
+  recommendation, the emptied section keeps its height while it is on screen
+  and folds away once out of view, so the footer never jumps in sight.
 {% endcomment %}
 
 {%- liquid
@@ -213,20 +214,20 @@
               .then((text) => {
                 const doc = new DOMParser().parseFromString(text, 'text/html');
                 const fresh = doc.querySelector('fl-related');
+                const html = fresh ? fresh.innerHTML.trim() : '';
                 // The placeholder is always replaced, including by an empty
                 // answer: left in place it would keep standing in for cards
                 // that are never going to come.
-                this.innerHTML = fresh ? fresh.innerHTML : '';
+                if (html) {
+                  this.innerHTML = html;
+                } else {
+                  this.release();
+                }
               })
               .catch(() => {
                 // Optional content: the reserved space is released and a
                 // short status line says the suggestions could not load.
-                this.innerHTML = '';
-                const status = document.createElement('p');
-                status.className = 'fl-related__error';
-                status.setAttribute('role', 'status');
-                status.textContent = this.dataset.errorText || '';
-                if (status.textContent) this.appendChild(status);
+                this.release(this.dataset.errorText || '');
               });
           };
           if ('IntersectionObserver' in window) {
@@ -250,8 +251,37 @@
           }
         }
 
+        /* No grid to show (empty answer or error). Removing the placeholder
+           while it is on screen pulls the footer up (layout shift): the
+           space is kept, emptied, and given back only once the section is
+           out of view, where the change moves nothing the visitor sees
+           (scroll anchoring keeps the page still when it is above). */
+        release(message) {
+          const rect = this.getBoundingClientRect();
+          const inView = rect.bottom > 0 && rect.top < window.innerHeight;
+          if (inView && 'IntersectionObserver' in window) {
+            this.style.minHeight = rect.height + 'px';
+            this.releaseObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) return;
+                this.releaseObserver.disconnect();
+                this.style.minHeight = '';
+              });
+            });
+            this.releaseObserver.observe(this);
+          }
+          this.innerHTML = '';
+          if (!message) return;
+          const status = document.createElement('p');
+          status.className = 'fl-related__error';
+          status.setAttribute('role', 'status');
+          status.textContent = message;
+          this.appendChild(status);
+        }
+
         disconnectedCallback() {
           if (this.observer) this.observer.disconnect();
+          if (this.releaseObserver) this.releaseObserver.disconnect();
         }
       }
     );

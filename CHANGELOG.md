@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.10.1 - 2026-10-27
+
+### Fixed
+- **A product video stops when another media is shown.** Switching to another
+  image in the product gallery (or the featured product section) pauses a
+  video, a YouTube or Vimeo player, or a 3D model, so its sound no longer plays
+  on behind the picture.
+- **Product videos show their player controls**, captions included, on the
+  product page and in the featured product section.
+- **Faster first image wherever a section opens the page.** Image with text,
+  multirow, multicolumn, lookbook, collection list, featured blog, collapsible
+  content, featured product and the video poster load their first image first
+  when the section is at the top of the page; the split hero and the image
+  banner only claim that priority when they are at the top, so they no longer
+  delay the real first image lower down. On the product page, a video or 3D
+  model shown first has its poster fetched first.
+- **Nothing jumps while the page finishes loading.** The slideshow no longer
+  shows its slides stacked before folding them, the testimonial arrows and the
+  cart page steppers take their place from the start, an expired countdown set
+  to hide never appears, and a product without recommendations no longer pulls
+  the footer up in front of the customer.
+- **The current page stands out without colour in the mobile menu** (it is
+  underlined, as on desktop), and so do a selected but sold-out variant and the
+  gallery thumbnail on screen (a thicker outline).
+- **French editor labels**: no English words left to type or read ("oui" and
+  "non" now draw the check and the dash in the comparison table, "Thème par
+  KIOSK", "droit d'auteur", "tenue" for a look).
+
 ## 1.10.0 - 2026-10-27
 
 ### Added

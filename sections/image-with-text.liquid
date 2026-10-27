@@ -6,6 +6,16 @@
   <div class="fl-imgtext__inner">
     <div class="fl-imgtext__grid{% if section.settings.layout == 'text_first' %} fl-imgtext__grid--flip{% endif %}">
       <div class="fl-imgtext__media fl-imgtext__media--{{ section.settings.image_ratio }}">
+        {%- liquid
+          # First section of the page: this image is the largest paint, fetched
+          # first. Lower down it waits (lazy) and leaves the bandwidth to the LCP.
+          assign img_load = 'lazy'
+          assign img_priority = 'auto'
+          if section.index == 1
+            assign img_load = 'eager'
+            assign img_priority = 'high'
+          endif
+        -%}
         {%- if section.settings.image -%}
           {{
             section.settings.image
@@ -15,7 +25,8 @@
               sizes: '(max-width: 749px) 100vw, 50vw',
               class: 'fl-imgtext__img',
               alt: section.settings.image.alt,
-              loading: 'lazy'
+              loading: img_load,
+              fetchpriority: img_priority
           }}
         {%- else -%}
           {{ 'lifestyle-2' | placeholder_svg_tag: 'fl-imgtext__img fl-imgtext__img--placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}

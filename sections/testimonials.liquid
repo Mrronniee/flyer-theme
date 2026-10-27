@@ -46,7 +46,12 @@
           aria-label="{{ 'accessibility.carousel' | t }}"
         {% endif %}
       >
-        {%- if carousel -%}
+        {%- comment -%}
+          The arrows are rendered only when there is something to scroll to,
+          and shown from the first paint (`js` class on <html>): appearing
+          with the script, they pushed the list down.
+        {%- endcomment -%}
+        {%- if carousel and count > 1 -%}
           <div class="fl-testimonials__controls">
             <button
               type="button"
@@ -284,7 +289,7 @@
     margin-block-end: 24px;
   }
 
-  .fl-testimonials__body.is-enhanced .fl-testimonials__controls {
+  .js .fl-testimonials__controls {
     display: flex;
   }
 

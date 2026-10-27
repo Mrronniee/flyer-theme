@@ -100,6 +100,19 @@
             >
               {%- if section.settings.show_image -%}
                 <div class="fl-featblog__media">
+                  {%- liquid
+                    # First section of the page: the first row holds the largest paint and is
+                    # fetched first (high priority for its first image only). Lower down
+                    # everything waits (lazy) and leaves the bandwidth to the LCP.
+                    assign img_load = 'lazy'
+                    assign img_priority = 'auto'
+                    if section.index == 1 and forloop.index <= cols
+                      assign img_load = 'eager'
+                      if forloop.first
+                        assign img_priority = 'high'
+                      endif
+                    endif
+                  -%}
                   {%- if article.image -%}
                     {{
                       article.image
@@ -108,7 +121,8 @@
                         widths: '360, 540, 720, 1080',
                         sizes: card_sizes,
                         alt: article.image.alt,
-                        loading: 'lazy',
+                        loading: img_load,
+                        fetchpriority: img_priority,
                         class: 'fl-featblog__img'
                     }}
                   {%- else -%}

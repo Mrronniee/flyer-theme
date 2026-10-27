@@ -77,6 +77,19 @@
               {%- if col != blank -%}
                 <a class="fl-collist__link" href="{{ col.url }}">
                   <span class="fl-collist__media">
+                    {%- liquid
+                      # First section of the page: the first row holds the largest paint and is
+                      # fetched first (high priority for its first image only). Lower down
+                      # everything waits (lazy) and leaves the bandwidth to the LCP.
+                      assign img_load = 'lazy'
+                      assign img_priority = 'auto'
+                      if section.index == 1 and forloop.index <= cols_desktop
+                        assign img_load = 'eager'
+                        if forloop.first
+                          assign img_priority = 'high'
+                        endif
+                      endif
+                    -%}
                     {%- if col.featured_image -%}
                       {{
                         col.featured_image
@@ -85,7 +98,8 @@
                           widths: '300, 450, 600, 900, 1200',
                           sizes: img_sizes,
                           alt: col.featured_image.alt,
-                          loading: 'lazy',
+                          loading: img_load,
+                          fetchpriority: img_priority,
                           class: 'fl-collist__img'
                       }}
                     {%- elsif col.products.first.featured_image -%}
@@ -96,7 +110,8 @@
                           widths: '300, 450, 600, 900, 1200',
                           sizes: img_sizes,
                           alt: col.title,
-                          loading: 'lazy',
+                          loading: img_load,
+                          fetchpriority: img_priority,
                           class: 'fl-collist__img'
                       }}
                     {%- else -%}

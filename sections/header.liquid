@@ -929,6 +929,15 @@
     color: var(--color-ink);
   }
 
+  /* The page in view is underlined, as on desktop: the shift from muted to
+     ink alone is under 3:1 and would mark it by colour only (WCAG 1.4.1). */
+  .fl-header__drawer-link[aria-current='page'],
+  .fl-header__drawer-sublink[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
   .fl-header__drawer-sublink--nested {
     padding-left: 56px;
     font-size: 0.875em;

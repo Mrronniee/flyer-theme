@@ -51,6 +51,19 @@
           <div class="fl-multicol__col" {{ block.shopify_attributes }}>
             {%- if block.settings.show_image -%}
               <div class="fl-multicol__media">
+                {%- liquid
+                  # First section of the page: the first row holds the largest paint and is
+                  # fetched first (high priority for its first image only). Lower down
+                  # everything waits (lazy) and leaves the bandwidth to the LCP.
+                  assign img_load = 'lazy'
+                  assign img_priority = 'auto'
+                  if section.index == 1 and forloop.index <= cols
+                    assign img_load = 'eager'
+                    if forloop.first
+                      assign img_priority = 'high'
+                    endif
+                  endif
+                -%}
                 {%- if block.settings.image -%}
                   {{
                     block.settings.image
@@ -59,7 +72,8 @@
                       widths: '300, 450, 600, 900',
                       sizes: img_sizes,
                       alt: block.settings.image.alt,
-                      loading: 'lazy',
+                      loading: img_load,
+                      fetchpriority: img_priority,
                       class: 'fl-multicol__img'
                   }}
                 {%- else -%}

@@ -61,6 +61,19 @@
         {{ block.shopify_attributes }}
       >
         <div class="fl-multirow__media fl-media fl-multirow__media--{{ section.settings.image_height }}">
+          {%- liquid
+            # First section of the page: the first row holds the largest paint and is
+            # fetched first (high priority for its first image only). Lower down
+            # everything waits (lazy) and leaves the bandwidth to the LCP.
+            assign img_load = 'lazy'
+            assign img_priority = 'auto'
+            if section.index == 1 and forloop.index <= 1
+              assign img_load = 'eager'
+              if forloop.first
+                assign img_priority = 'high'
+              endif
+            endif
+          -%}
           {%- if block.settings.image -%}
             {{
               block.settings.image
@@ -69,7 +82,8 @@
                 widths: '300, 500, 700, 900, 1200, 1600',
                 sizes: media_sizes,
                 alt: block.settings.image.alt,
-                loading: 'lazy',
+                loading: img_load,
+                fetchpriority: img_priority,
                 class: 'fl-multirow__img'
             }}
           {%- else -%}

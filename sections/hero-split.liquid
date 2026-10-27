@@ -36,6 +36,16 @@
 >
   <div class="fl-hero__media fl-media">
     {%- if section.settings.image -%}
+      {%- liquid
+        # Only the first section of the page holds the largest paint: lower
+        # down, a high priority would compete with the real LCP image.
+        assign hero_load = 'lazy'
+        assign hero_priority = 'auto'
+        if section.index == 1
+          assign hero_load = 'eager'
+          assign hero_priority = 'high'
+        endif
+      -%}
       {{
         section.settings.image
         | image_url: width: 2400
@@ -44,8 +54,8 @@
           sizes: '(max-width: 989px) 100vw, 60vw',
           class: 'fl-hero__img',
           alt: section.settings.image.alt,
-          loading: 'eager',
-          fetchpriority: 'high'
+          loading: hero_load,
+          fetchpriority: hero_priority
       }}
     {%- else -%}
       {{ 'lifestyle-1' | placeholder_svg_tag: 'fl-hero__img fl-hero__img--placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}

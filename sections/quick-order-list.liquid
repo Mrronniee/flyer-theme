@@ -344,8 +344,9 @@
     color: var(--color-muted);
   }
 
-  /* Bulk add only exists once the custom element has upgraded; until then the
-     per row buttons are the working path. */
+  /* Bulk add exists only with JS; without it the per row buttons are the
+     working path. The swap follows the `js` class set on <html> in the head,
+     so the table does not jump when the custom element upgrades. */
   .fl-qol__foot {
     display: none;
     flex-wrap: wrap;
@@ -354,11 +355,11 @@
     margin-block-start: 24px;
   }
 
-  .fl-qol__app.is-enhanced .fl-qol__foot {
+  .js .fl-qol__app .fl-qol__foot {
     display: flex;
   }
 
-  .fl-qol__app.is-enhanced .fl-qol__add {
+  .js .fl-qol__app .fl-qol__add {
     display: none;
   }
 

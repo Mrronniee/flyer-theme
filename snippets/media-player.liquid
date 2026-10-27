@@ -1,0 +1,42 @@
+{% doc %}
+  Player for a product media that is not an image: Shopify-hosted video,
+  YouTube or Vimeo video, or 3D model. Shared by the product page and the
+  featured product section.
+  - The hosted video shows its native controls, so the viewer reaches the
+    captions track the merchant uploaded with it.
+  - YouTube and Vimeo players keep their own controls (captions included) and
+    accept the pause message the gallery sends when another media is shown
+    (enablejsapi for YouTube; Vimeo listens by default).
+  - When the media is the first one on screen at load (priority), its poster is
+    the largest paint: it is preloaded with a high fetch priority.
+
+  @param {object} media - a product media whose media_type is not 'image'
+  @param {boolean} [priority] - true for the first media of the first section
+
+  @example
+  {% render 'media-player', media: media, priority: true %}
+{% enddoc %}
+
+{%- liquid
+  case media.media_type
+    when 'video'
+      assign player = media | video_tag: image_size: '1200x', controls: true, playsinline: true, preload: 'metadata'
+    when 'external_video'
+      if media.host == 'youtube'
+        assign player = media | external_video_url: enablejsapi: 1 | external_video_tag: loading: 'lazy'
+      else
+        assign player = media | external_video_url | external_video_tag: loading: 'lazy'
+      endif
+    else
+      assign player = media | media_tag: image_size: '1200x'
+  endcase
+
+  assign poster = ''
+  if priority and player contains 'poster="'
+    assign poster = player | split: 'poster="' | last | split: '"' | first
+  endif
+-%}
+{%- if poster != blank -%}
+  <link rel="preload" as="image" href="{{ poster }}" fetchpriority="high">
+{%- endif -%}
+{{ player }}

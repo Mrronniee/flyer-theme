@@ -507,7 +507,7 @@
     color: var(--color-muted);
   }
 
-  .fl-cart-page.is-enhanced .fl-cart-page__qty-btn {
+  .js .fl-cart-page:not(.is-static) .fl-cart-page__qty-btn {
     display: inline-flex;
   }
 
@@ -522,7 +522,7 @@
     appearance: textfield;
   }
 
-  .fl-cart-page.is-enhanced .fl-cart-page__qty-input {
+  .js .fl-cart-page:not(.is-static) .fl-cart-page__qty-input {
     width: 40px;
     padding: 0;
   }
@@ -608,7 +608,7 @@
     width: 100%;
   }
 
-  .fl-cart-page.is-enhanced .fl-cart-page__update {
+  .js .fl-cart-page:not(.is-static) .fl-cart-page__update {
     display: none;
   }
 
@@ -704,7 +704,13 @@
       this.timer = null;
       this.busy = false;
       this.again = false;
-      if (!this.querySelector('form') || !this.dataset.sectionId || !window.fetch) return;
+      // The layout with steppers and without the Update button is set from
+      // the first paint (`js` class on <html>), so it does not jump when this
+      // runs; when the script cannot take over, the static form comes back.
+      if (!this.querySelector('form') || !this.dataset.sectionId || !window.fetch) {
+        this.classList.add('is-static');
+        return;
+      }
       this.classList.add('is-enhanced');
       this.onClick = this.handleClick.bind(this);
       this.onChange = this.handleChange.bind(this);
