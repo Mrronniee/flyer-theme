@@ -1,0 +1,577 @@
+{
+  "points": [
+    {
+      "id": "connu-48a6540c",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "README.txt:1",
+      "commit": "aa07db9",
+      "raison": "README.txt:1 « FLYER 1.10.0 », égal à config/settings_schema.json:5 et au premier titre du CHANGELOG (1.10.0)."
+    },
+    {
+      "id": "connu-db6a1422",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "templates/gift_card.liquid:146",
+      "commit": "d0d4115",
+      "raison": "QR tiré de gift_card.qr_identifier (gift_card.liquid:143-148) ; champs destinataire properties[Recipient email/name/Message/Send on] et __shopify_send_gift_card_to_recipient dans sections/product.liquid:279-355 et featured-product.liquid."
+    },
+    {
+      "id": "connu-9b7ab27d",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "snippets/search-overlay.liquid:206",
+      "commit": "d0d4115",
+      "raison": "outline: none retiré du champ de recherche ; aucun outline: none ni outline-width: 1px restant dans le thème (grep vide) ; l'anneau global de 2 px s'applique."
+    },
+    {
+      "id": "connu-5226ca70",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/featured-collection.liquid:86",
+      "commit": "d0d4115",
+      "raison": "les 4 premières cartes en loading eager et priority quand la section ouvre la page (section.index == 1), lazy ensuite."
+    },
+    {
+      "id": "connu-c00e1308",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "assets/critical.css:17",
+      "commit": "d0d4115",
+      "raison": "overflow-wrap: anywhere sur body (critical.css:17), iframe max-width 100% (:44-46), .fl-rte :is(img, video, iframe, table) borné."
+    },
+    {
+      "id": "connu-9ed73c8d",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/cart.liquid:317",
+      "commit": "d0d4115",
+      "raison": "{%- if additional_checkout_buttons -%} {{ content_for_additional_checkout_buttons }} sous le bouton de paiement."
+    },
+    {
+      "id": "connu-dbc5f20b",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/cart-drawer.liquid:204",
+      "commit": "d0d4115",
+      "raison": "prix soldé précédé de products.card.sale_price en texte caché : cart-drawer.liquid:204, cart.liquid:149 et :242."
+    },
+    {
+      "id": "connu-d5749488",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/search.liquid:82",
+      "commit": "d0d4115",
+      "raison": "barre de filtres et de tri partagée (snippets/facets-toolbar.liquid) rendue avec search.filters et search.sort_options, termes gardés."
+    },
+    {
+      "id": "connu-4dd333db",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/related-products.liquid:56",
+      "commit": "d0d4115",
+      "raison": "branche {% else %} qui rend au serveur un squelette de 4 cartes de même forme (place réservée)."
+    },
+    {
+      "id": "connu-2536d9ef",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/announcement-bar.liquid:413",
+      "commit": "897f922",
+      "raison": "annonce par défaut « Welcome to our store » (1.8.17), défauts de trust-badges neutres ; en 1.10.0 les réponses de FAQ et les témoignages par défaut ne promettent plus rien (faq.liquid, testimonials.liquid, templates/index.json)."
+    },
+    {
+      "id": "connu-8c2d8ed0",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/product.liquid:415",
+      "commit": "d0d4115",
+      "raison": "onglet repliable rendu seulement si titre ou contenu non vide ; titre vide remplacé par products.product.details traduit (product.liquid:399-410)."
+    },
+    {
+      "id": "connu-35eb07b8",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "layout/theme.liquid:41",
+      "commit": "d0d4115",
+      "raison": "<link rel=\"icon\"> sans type écrit en dur."
+    },
+    {
+      "id": "connu-57f841a5",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/footer.liquid:37",
+      "commit": "d0d4115",
+      "raison": "colonne de menu rendue seulement si block.settings.menu.links.size > 0."
+    },
+    {
+      "id": "connu-e35854f3",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/footer-group.json:14",
+      "commit": "d0d4115",
+      "raison": "blocs du pied sans heading ni text enregistrés ; replis traduits general.footer.* dans footer.liquid:39-41, 65-67, 118-120."
+    },
+    {
+      "id": "complement-275ee056",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "snippets/product-card.liquid:36",
+      "commit": "897f922",
+      "raison": "widths des cartes portées à 360-1200 et image_url width 1200 (produit et image de survol) : la grande carte éditoriale (sizes 50vw, image étirée sur deux rangées) n'avait que 900 px au plus. À confirmer par la mesure (C16)."
+    },
+    {
+      "id": "code-fonctions-commerce-sur-leur-page",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/product.liquid:391",
+      "commit": "897f922",
+      "raison": "retrait en magasin : snippets/pickup-availability.liquid (store_availabilities, pick_up_enabled) rendu sous les boutons d'achat et rafraîchi au changement de variante ; Follow on Shop : shop | login_button: action: 'follow' derrière le réglage show_follow_on_shop (footer.liquid:213)."
+    },
+    {
+      "id": "code-editeur-du-theme-store",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/product.liquid:1213",
+      "commit": "897f922",
+      "raison": "bloc custom_liquid (réglage \"type\": \"liquid\") ajouté à la fiche produit."
+    },
+    {
+      "id": "code-snippets-rendus-avec-un-en-tete-doc-et-leurs-param",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "snippets/facets-toolbar.liquid:13",
+      "commit": "897f922",
+      "raison": "{% doc %} avec @param dans facets-toolbar, css-variables et rte-tables (17/17)."
+    },
+    {
+      "id": "code-anglais-des-locales",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "locales/en.default.json:94",
+      "commit": "897f922",
+      "raison": "apostrophes typographiques ’ dans 404.subtext, contact.form.success, customer.account.no_orders, customer.recover_password.success ; “Theme by KIOSK” dans en.default.schema.json:334."
+    },
+    {
+      "id": "code-un-lien-vers-un-nouvel-onglet-l-annonce",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "snippets/social-icons.liquid:57",
+      "commit": "897f922",
+      "raison": "aria-label des 10 liens sociaux complété par accessibility.new_tab (« (opens in a new tab) ») ; le lien vidéo du collage ouvre dans le même onglet (collage.liquid:271, sans target)."
+    },
+    {
+      "id": "code-chaque-carrousel-porte-aria-roledescription",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/slideshow.liquid:53",
+      "commit": "897f922",
+      "raison": "region aria-roledescription traduite (carousel/carrousel), diapositives role=group aria-roledescription slide et « 1 of 3 » ; même roledescription sur testimonials."
+    },
+    {
+      "id": "code-recherche-predictive-en-motif-combobox",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "snippets/search-overlay.liquid:96",
+      "commit": "897f922",
+      "raison": "champ role=combobox aria-autocomplete=list aria-expanded aria-controls, résultats role=listbox, options role=option, flèches et aria-activedescendant, Entrée suit l'option active."
+    },
+    {
+      "id": "code-aucun-repli-traduit-masque-par-le-default-du-reglage",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/product.liquid:1190",
+      "commit": "897f922",
+      "raison": "default « Details » retiré du titre de l'onglet repliable : le repli products.product.details traduit s'affiche."
+    },
+    {
+      "id": "code-pluriels-laisses-a-shopify",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:1220",
+      "commit": "897f922",
+      "raison": "Intl.PluralRules(document.documentElement.lang) dans header.liquid et search-overlay.liquid au lieu de === 1."
+    },
+    {
+      "id": "code-liens-par-routes-sans-chemin-ni-handle-ecrit",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:261",
+      "commit": "897f922",
+      "raison": "plus de /pages/wishlist écrit : réglage wishlist_page, sinon pages['wishlist'].url testé, sinon pas de cœur."
+    },
+    {
+      "id": "code-aucun-handle-de-boutique-ecrit-en-dur",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:261",
+      "commit": "897f922",
+      "raison": "même correction : pages['wishlist'] testé au lieu d'un chemin écrit."
+    },
+    {
+      "id": "code-rotation-automatique-de-5-s-au-moins",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/announcement-bar.liquid:395",
+      "commit": "897f922",
+      "raison": "rotate_interval et autorotate_speed (slideshow.liquid:734) : min 5 s."
+    },
+    {
+      "id": "code-declenchement-des-apparitions",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "snippets/reveal.liquid:46",
+      "commit": "897f922",
+      "raison": "rootMargin « 0px 0px 15% 0px » ; ce qui est déjà dans l'écran n'est jamais masqué (reveal.liquid:68)."
+    },
+    {
+      "id": "code-lignes-de-titre-masquees-sans-jambage-coupe",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/hero-split.liquid:192",
+      "commit": "897f922",
+      "raison": ".fl-hero__ln : padding-block 0.12em 0.14em compensé par une marge négative : jambages et accents dans le masque."
+    },
+    {
+      "id": "code-pas-de-loading-lazy-en-dur-sur-la-grande-image-d-une-section",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/collections.liquid:35",
+      "commit": "897f922",
+      "raison": "collections.liquid : 3 premières images eager, la 1re en fetchpriority high ; email-signup-banner.liquid:65 : eager et high quand section.index == 1."
+    },
+    {
+      "id": "code-images-responsives-sizes-sur-les-images-eager-4-a-6-largeurs",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/video.liquid:79",
+      "commit": "897f922",
+      "raison": "6 largeurs (750 à 3840) dans video.liquid (2 images) et email-signup-banner.liquid."
+    },
+    {
+      "id": "code-echec-d-une-requete-montre-au-visiteur",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/cart-drawer.liquid:1241",
+      "commit": "897f922",
+      "raison": "note non enregistrée : response.ok lu et cart.note_error montré et annoncé (cart-drawer.liquid saveNote, cart.liquid:785)."
+    },
+    {
+      "id": "code-image-lcp-du-premier-ecran-ni-lazy-ni-sans-fetchpriority-ni",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/email-signup-banner.liquid:65",
+      "commit": "897f922",
+      "raison": "première grande image en eager + fetchpriority high quand la section ouvre la page (email-signup-banner) ou pour la 1re collection (collections.liquid:35)."
+    },
+    {
+      "id": "code-chaque-reglage-du-theme-agit",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/product.liquid:48",
+      "commit": "897f922",
+      "raison": "galerie de la fiche en .fl-media (bordure, rayon, ombre des réglages Médias) ; --color-shadow-rgb, jamais lue, retirée de css-variables.liquid."
+    },
+    {
+      "id": "code-aide-de-l-editeur-cachee-en-boutique-section-vide-expliquee",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/announcement-bar.liquid:98",
+      "commit": "897f922",
+      "raison": "message general.editor.empty_section sous request.design_mode dans announcement-bar, apps, multirow, rich-text, slideshow, trust-badges, custom-liquid ; cartes de remplacement réservées à l'éditeur (collage, collection-list, featured-blog, featured-collection, featured-product)."
+    },
+    {
+      "id": "code-aucune-balise-rendue-quand-son-reglage-est-vide",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/collapsible-content.liquid:97",
+      "commit": "897f922",
+      "raison": "balises gardées par != blank : collapsible-content (titre, contenu), countdown.liquid:72, faq.liquid (question, réponse), size-guide.liquid:76."
+    },
+    {
+      "id": "code-recherche-predictive-un-message-quand-la-requete-echoue",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "snippets/search-overlay.liquid:675",
+      "commit": "897f922",
+      "raison": "catch hors AbortError : setStatus(search.suggestions_error) dans la région role=status."
+    },
+    {
+      "id": "code-langue-repli-traduit-masque-francais-en-base-anglaise-libell",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/featured-collection.liquid:175",
+      "commit": "897f922",
+      "raison": "defaults retirés : heading de featured-collection (et templates/index.json), comparison, size-guide, row heading de collapsible-content (repli page.title puis products.product.details)."
+    },
+    {
+      "id": "code-evenements-de-l-editeur-geres",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "layout/theme.liquid:81",
+      "commit": "897f922",
+      "raison": "écouteur global shopify:block:select (sous request.design_mode) : ouvre le <details> du bloc et le fait défiler dans son rail."
+    },
+    {
+      "id": "code-valeurs-par-defaut-qui-n-engagent-pas-le-marchand",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/faq.liquid:294",
+      "commit": "897f922",
+      "raison": "réponses de FAQ et témoignages par défaut neutres (sans délai, retour, moyen de paiement ni nom signé) dans faq.liquid, testimonials.liquid et templates/index.json."
+    },
+    {
+      "id": "code-deux-preloads-au-plus-dans-le-head",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "layout/theme.liquid:31",
+      "commit": "897f922",
+      "raison": "critical.css sans preload: true : deux preloads (polices) au plus."
+    },
+    {
+      "id": "code-rotations-automatiques-en-pause-onglet-cache",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/slideshow.liquid:606",
+      "commit": "897f922",
+      "raison": "visibilitychange : arrêt onglet caché, reprise au retour (slideshow, announcement-bar.liquid:327)."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-un-seul-h1@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/hero-split.liquid:66",
+      "commit": "aa07db9",
+      "raison": "le héros (section ajoutable) posait un h1 en dur ; réglage heading_tag, h2 par défaut, h1 sur templates/index.json."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-alt-redondant@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "locales/fr.json:269",
+      "raison": "les alt viennent de image.alt du marchand ou valent '' ; ceux des locales (Carte cadeau, QR code de cette carte cadeau, Add to Apple Wallet) ne commencent pas par image de / picture of."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-mouvement-reduit-etats@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "assets/critical.css:190",
+      "commit": "aa07db9",
+      "raison": "survols en transform (cartes, collections, blog, collage, liste de collections, lookbook, vidéo) annulés sous prefers-reduced-motion."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-titres-masques@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/hero-split.liquid:192",
+      "raison": "seules les lignes du héros sont masquées ; padding-block 0.12em/0.14em autour de l'interligne 0.95 (corrigé dans ce lot, code-lignes-de-titre-masquees) ; aucun line-clamp sur un titre. La mesure avec une autre police reste à faire (C16)."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-reperes-de-page@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/footer.liquid:237",
+      "commit": "aa07db9",
+      "raison": "menu des politiques dans un <nav aria-label=general.footer.policies> ; <main> unique (theme.liquid:58), header et footer de premier niveau."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-texte-sur-image-claire@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/image-banner.liquid:289",
+      "commit": "aa07db9",
+      "raison": "voile réglable de la bannière à 20 % par défaut (≈ 1,6:1 sur image blanche) : défaut porté à 55 %, comme le plancher sans image (4,75:1). Autres sections : texte sur carte opaque ou à côté de l'image."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-focus-sous-en-tete@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/header.liquid:472",
+      "raison": "scroll-padding-top: var(--sticky-offset) sur :root quand l'en-tête est collant."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-bouton-cache-focalisable@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/cart.liquid:611",
+      "raison": "le bouton Update de repli passe en display:none dès .is-enhanced ; les boutons sans JS des filtres et variantes sont dans des <noscript>."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-selecteur-langue-sans-envoi@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "snippets/localization-form.liquid:55",
+      "raison": "formulaire natif envoyé par un bouton submit, aucun écouteur change."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-champs-16px-ios@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "assets/critical.css:59",
+      "commit": "aa07db9",
+      "raison": "champs en font: inherit (16 px par défaut) mais le réglage de taille descend à 14 px : plancher font-size max(16px, 1em) sous 749 px."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-attributs-html-valides@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:332",
+      "commit": "aa07db9",
+      "raison": "crossorigin anonymous seulement (theme.liquid:17) ; l'attribut non standard scroll-lock devient data-scroll-lock (header.liquid:332, quick-view-dialog.liquid:11, critical.css:27)."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-focus-apres-mise-a-jour@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/cart-drawer.liquid:1277",
+      "commit": "aa07db9",
+      "raison": "au tiroir, après le retrait d'une ligne le focus allait au bouton fermer : il va à la ligne suivante, ou au lien du panier vide. La page panier le faisait déjà ; collections sans AJAX."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-glisser-alternative@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/testimonials.liquid:260",
+      "raison": "sans objet : aucun pointerdown, pointermove, touchstart, touchmove ni mousedown dans le thème (grep vide) ; rails en défilement natif scroll-snap, avec boutons précédent/suivant."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-couleur-seule@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/product.liquid:636",
+      "raison": "pastille choisie en aplat inversé, indisponible en tirets, épuisée barrée, valeur écrite dans la légende ; liens soulignés ; aria-current sur la page et la vignette actives."
+    },
+    {
+      "id": "cas-theme-a11y-auditor-videos-sous-titres@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/video.liquid:99",
+      "raison": "video_tag avec controls et lecteurs YouTube/Vimeo sans paramètre qui retire les sous-titres ; aucune piste retirée."
+    },
+    {
+      "id": "cas-theme-bilingue-checker-menu-une-ligne@1.9.3-fd80480-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:1204",
+      "commit": "aa07db9",
+      "raison": "menu en flex-wrap: wrap sans nowrap : une ligne (nowrap), et repli en burger mesuré (ResizeObserver, fitMenu) quand le menu déborde, à toute largeur."
+    },
+    {
+      "id": "cas-theme-bilingue-checker-francais-sans-anglicismes@1.9.3-fd80480-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "locales/fr.json:54",
+      "raison": "aucune valeur de fr.json ni fr.schema.json avec desktop, overlay, header, footer, hover, scroll, upsell, placeholder… ; contrôle « aucun mot anglais dans les locales francaises » OK."
+    },
+    {
+      "id": "cas-theme-bilingue-checker-prepositions-devant-un-pays@1.9.3-fd80480-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "locales/fr.json:54",
+      "raison": "aucune phrase n'insère un nom de pays (« Pays/région » en étiquette) ; le retrait en magasin, ajouté dans ce lot, s'écrit « Retrait disponible : {{ location }} », sans préposition."
+    },
+    {
+      "id": "cas-theme-parcours-tester-survol-au-toucher@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "assets/critical.css:684",
+      "commit": "aa07db9",
+      "raison": "aucun @media (hover: hover) : survols annulés sous (hover: none) (critical.css:190) et seconde image de carte cachée au toucher (critical.css:684)."
+    },
+    {
+      "id": "cas-theme-parcours-tester-apparitions-au-defilement@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "snippets/reveal.liquid:68",
+      "raison": "masquage posé par JS seulement, jamais sur ce qui est déjà dans l'écran (corrigé dans ce lot, code-declenchement-des-apparitions), rien sans JS ni en mouvement réduit."
+    },
+    {
+      "id": "cas-theme-parcours-tester-glisser-au-doigt@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/collection-list.liquid:270",
+      "raison": "sans objet : aucun écouteur de glisser dans le thème (grep pointerdown/touchmove vide), défilement natif."
+    },
+    {
+      "id": "cas-theme-parcours-tester-donnees-structurees-rendues@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "snippets/meta-tags.liquid:174",
+      "commit": "aa07db9",
+      "raison": "fil d'Ariane d'un produit sans collection : positions 1 puis 3 (forloop.index) ; compteur ajouté. Product par structured_data de Shopify, FAQ émise seulement si chaque question a texte et réponse."
+    },
+    {
+      "id": "cas-theme-parcours-tester-echec-reseau@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/related-products.liquid:23",
+      "commit": "aa07db9",
+      "raison": "échec des recommandations : message products.related.error en role=status au lieu d'une section vidée en silence ; ajout, quantité, note et recherche montrent déjà l'échec."
+    },
+    {
+      "id": "cas-theme-parcours-tester-contenu-mobile-bureau@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "sections/collection.liquid:491",
+      "commit": "aa07db9",
+      "raison": "nombre de produits masqué sous 749 px et absent ailleurs : il passe sous le tri."
+    },
+    {
+      "id": "cas-theme-parcours-tester-valeur-option-indisponible@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/product.liquid:636",
+      "raison": "sans objet pour « option activée » : FLYER n'a ni réglage variant_hide_unavailable ni liste déroulante (grep vide) ; option coupée : valeur marquée is-unavailable/is-soldout, annoncée, et bouton d'ajout désactivé."
+    },
+    {
+      "id": "cas-theme-parcours-tester-pieges-a-focus-superposes@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/cart-drawer.liquid:957",
+      "raison": "recherche piégée par keydown seul, menu mobile en <dialog> natif (header.liquid:328), piège du tiroir gardé par isRestoringFocus, aperçu rapide fermé avant le tiroir, pas de popup newsletter."
+    },
+    {
+      "id": "cas-theme-parcours-tester-touche-entree-formulaires@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "corrige",
+      "ou": "assets/facets-toolbar.js:28",
+      "commit": "aa07db9",
+      "raison": "filtre de prix appliqué seulement par Entrée ou Appliquer : appliqué aussi quand le focus quitte ses deux champs. Quantité et note : Entrée intercepté, jamais vers la commande."
+    },
+    {
+      "id": "cas-theme-parcours-tester-liens-gardent-la-langue@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "templates/index.json:191",
+      "raison": "aucun href ni réglage url en « /… » (contrôle « reglages url sans chemin ecrit » OK) ; shopify://collections/all et routes.*."
+    },
+    {
+      "id": "cas-theme-parcours-tester-bandeau-fixe-sans-recouvrement@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "assets/critical.css:870",
+      "raison": "sans objet : aucun élément du thème fixé en bas (position: fixed seulement pour le voile, le tiroir, le menu et la recherche, plein écran ou latéraux)."
+    },
+    {
+      "id": "cas-theme-parcours-tester-calques-fermes@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "assets/critical.css:870",
+      "raison": "voile en pointer-events: none fermé, tiroir en visibility hidden, recherche [hidden], menu et aperçu en <dialog>, méga-menu en <details> au clic, fermé au clic extérieur et sur Échap."
+    },
+    {
+      "id": "cas-theme-perf-auditor-cls-contenu-tardif@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/related-products.liquid:56",
+      "raison": "squelette de recommandations de même forme, annonces empilées dans une même cellule, vidéos en aspect-ratio, apparitions en opacité/transform."
+    },
+    {
+      "id": "cas-theme-perf-auditor-image-lcp-prioritaire@1.9.0-971390d-20261017",
+      "version": "1.10.0",
+      "etat": "pas_un_defaut",
+      "ou": "sections/hero-split.liquid:48",
+      "raison": "héros en eager + fetchpriority high sans apparition, 1re image de fiche en priority high (product.liquid:70), bannière et 1re diapositive de même."
+    }
+  ]
+}
