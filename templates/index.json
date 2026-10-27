@@ -3,7 +3,6 @@
     "featured": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Featured collection",
         "products_to_show": 8,
         "cols_desktop": "4",
         "show_view_all": true,
@@ -100,27 +99,24 @@
         "testimonials-1": {
           "type": "testimonial",
           "settings": {
-            "quote": "The quality is exactly what I hoped for. Delivered in three days, beautifully packed.",
-            "author": "Camille R.",
-            "detail": "Verified buyer, Lyon",
+            "quote": "Add a review that a customer shared with you, in their own words.",
+            "author": "Customer name",
             "rating": 5
           }
         },
         "testimonials-2": {
           "type": "testimonial",
           "settings": {
-            "quote": "I ordered the wrong size and the exchange took one email. That kind of service keeps me coming back.",
-            "author": "Thomas B.",
-            "detail": "Verified buyer, Brussels",
+            "quote": "Add a review that a customer shared with you, in their own words.",
+            "author": "Customer name",
             "rating": 5
           }
         },
         "testimonials-3": {
           "type": "testimonial",
           "settings": {
-            "quote": "Six months of daily wear and it still looks new. Worth every cent.",
-            "author": "Ana M.",
-            "detail": "Verified buyer, Lisbon",
+            "quote": "Add a review that a customer shared with you, in their own words.",
+            "author": "Customer name",
             "rating": 4
           }
         }
@@ -139,14 +135,14 @@
           "type": "question",
           "settings": {
             "question": "How long does shipping take?",
-            "answer": "<p>Orders ship within 1–2 business days. Standard delivery takes 3–5 business days; express delivery arrives in 1–2. You’ll receive a tracking link by email as soon as your parcel leaves us.</p>"
+            "answer": "<p>Explain when orders leave and how long delivery takes, and how customers can track their parcel.</p>"
           }
         },
         "faq-2": {
           "type": "question",
           "settings": {
             "question": "What is your return policy?",
-            "answer": "<p>You have 30 days from delivery to return any unworn item in its original packaging. Start a return from your account page and we’ll email you a prepaid label. Refunds are issued within 5 days of receiving the parcel.</p>"
+            "answer": "<p>Describe your return conditions and how customers can start a return.</p>"
           }
         },
         "faq-3": {
@@ -160,14 +156,14 @@
           "type": "question",
           "settings": {
             "question": "Which payment methods do you accept?",
-            "answer": "<p>We accept Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay and Shop Pay. All payments are encrypted and processed securely at checkout.</p>"
+            "answer": "<p>List the payment methods your store accepts at checkout.</p>"
           }
         },
         "faq-5": {
           "type": "question",
           "settings": {
             "question": "How can I contact you?",
-            "answer": "<p>Write to us through the contact page or reply to any of our emails. We answer every message within one business day, Monday to Friday.</p>"
+            "answer": "<p>Tell customers how to reach you and when they can expect a reply.</p>"
           }
         }
       },

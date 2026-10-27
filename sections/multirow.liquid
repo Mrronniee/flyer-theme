@@ -99,6 +99,10 @@
           {%- endif -%}
         </div>
       </div>
+    {%- else -%}
+      {%- if request.design_mode -%}
+        <p class="fl-editor-empty">{{ 'general.editor.empty_section' | t }}</p>
+      {%- endif -%}
     {%- endfor -%}
   </div>
 </section>

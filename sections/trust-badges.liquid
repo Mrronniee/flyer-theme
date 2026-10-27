@@ -93,6 +93,8 @@
           </li>
         {%- endfor -%}
       </ul>
+    {%- elsif request.design_mode -%}
+      <p class="fl-editor-empty">{{ 'general.editor.empty_section' | t }}</p>
     {%- endif -%}
   </div>
 </section>

@@ -1,24 +1,26 @@
-{%- comment -%}
+{% doc %}
   Filters and sorting toolbar, shared by the collection page and the search
   results page: both expose the same filters, sort_options, sort_by and
   default_sort_by, so the markup, the CSS (section collection) and the
   fl-collection-filters element are written once.
 
   The behaviour comes from assets/facets-toolbar.js, loaded right here. It used
-  to sit in the collection section's {% javascript %} block, which Shopify only
+  to sit in the collection section's javascript tag, which Shopify only
   loads on the pages that render that section: on the search page the element
   was never defined, and a facet or a sort changed nothing (1.8.17). Loaded from
   the snippet, the script follows the toolbar wherever it is rendered.
 
-  Parameters
-    results        collection or search object (filters, sort_options, sort_by)
-    form_id        unique id, used by every field's label
-    action         where the form submits (collection.url, routes.search_url)
-    count_text     already translated count line shown beside the sort select
-    clear_url      "Clear all" destination, sort kept
-    wrapper_class  class of the <fl-collection-filters> element
-    terms          search terms; only then are q and options[prefix] carried
-{%- endcomment -%}
+  @param {object} results - collection or search object (filters, sort_options, sort_by)
+  @param {string} form_id - unique id, used by every field's label
+  @param {string} action - where the form submits (collection.url, routes.search_url)
+  @param {string} [count_text] - already translated count line shown beside the sort select
+  @param {string} clear_url - "Clear all" destination, sort kept
+  @param {string} wrapper_class - class of the <fl-collection-filters> element
+  @param {string} [terms] - search terms; only then are q and options[prefix] carried
+
+  @example
+  {% render 'facets-toolbar', results: collection, form_id: 'Facets', action: collection.url, count_text: count, clear_url: clear, wrapper_class: 'fl-collection__toolbar' %}
+{% enddoc %}
 
 {%- liquid
   assign sort_by = results.sort_by | default: results.default_sort_by

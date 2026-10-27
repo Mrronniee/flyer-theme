@@ -29,6 +29,18 @@
     {%- else -%}
     <ul class="fl-collections__grid" role="list">
       {%- for collection in collections -%}
+        {%- liquid
+          # The first row opens the page: eager, the very first image at high
+          # priority (the largest paint); the rest of the list stays lazy.
+          assign img_loading = 'lazy'
+          assign img_priority = 'auto'
+          if forloop.index <= 3
+            assign img_loading = 'eager'
+          endif
+          if forloop.first
+            assign img_priority = 'high'
+          endif
+        -%}
         <li class="fl-collections__item">
           <a class="{{ card_classes }}" href="{{ collection.url }}">
             <span class="fl-collections__media">
@@ -36,13 +48,13 @@
                 {{
                   collection.featured_image
                   | image_url: width: 900
-                  | image_tag: widths: '300, 450, 600, 900', sizes: '(max-width: 749px) 50vw, 33vw', alt: collection.featured_image.alt, loading: 'lazy'
+                  | image_tag: widths: '300, 450, 600, 900', sizes: '(max-width: 749px) 50vw, 33vw', alt: collection.featured_image.alt, loading: img_loading, fetchpriority: img_priority
                 }}
               {%- elsif collection.products.first.featured_image -%}
                 {{
                   collection.products.first.featured_image
                   | image_url: width: 900
-                  | image_tag: widths: '300, 450, 600, 900', sizes: '(max-width: 749px) 50vw, 33vw', alt: collection.title, loading: 'lazy'
+                  | image_tag: widths: '300, 450, 600, 900', sizes: '(max-width: 749px) 50vw, 33vw', alt: collection.title, loading: img_loading, fetchpriority: img_priority
                 }}
               {%- else -%}
                 {{ 'collection-1' | placeholder_svg_tag: 'fl-collections__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}

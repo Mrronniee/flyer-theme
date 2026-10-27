@@ -251,15 +251,19 @@
         </details>
       {%- endif -%}
 
-      {%- if settings.wishlist_enabled -%}
-        {%- liquid
-          # routes.root_url is "/" or a locale/market prefix ("/en"): the
-          # fallback page must follow it, like every other storefront URL.
+      {%- liquid
+        # The wishlist page set in the theme settings, else the store's page
+        # with the "wishlist" handle when it exists (its url carries the
+        # language prefix). No page: no heart, rather than a link to a 404.
+        assign wishlist_url = ''
+        if settings.wishlist_enabled
           assign wishlist_url = settings.wishlist_page
-          if wishlist_url == blank
-            assign wishlist_url = routes.root_url | append: '/pages/wishlist' | replace: '//', '/'
+          if wishlist_url == blank and pages['wishlist'] != empty
+            assign wishlist_url = pages['wishlist'].url
           endif
-        -%}
+        endif
+      -%}
+      {%- if wishlist_url != blank -%}
         <a class="fl-header__icon-btn fl-header__wishlist" href="{{ wishlist_url }}">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
             <path d="M10 17s-6.5-4.1-6.5-8.6A3.4 3.4 0 0 1 10 6.3a3.4 3.4 0 0 1 6.5 2.1C16.5 12.9 10 17 10 17Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
@@ -1210,7 +1214,14 @@
         el.textContent = count;
         el.classList.toggle('is-empty', count === 0);
       });
-      const template = count === 1 ? this.dataset.cartLabelOne : this.dataset.cartLabelOther;
+      // The plural form of the page language (French "one" covers 0 and 1).
+      let plural = 'other';
+      try {
+        plural = new Intl.PluralRules(document.documentElement.lang || 'en').select(count);
+      } catch (err) {
+        plural = 'other';
+      }
+      const template = plural === 'one' ? this.dataset.cartLabelOne : this.dataset.cartLabelOther;
       if (!template) return;
       const label = template.replace('%COUNT%', count);
       if (this.cartLink) this.cartLink.setAttribute('aria-label', label);

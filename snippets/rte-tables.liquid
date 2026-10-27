@@ -1,4 +1,4 @@
-{% comment %}
+{% doc %}
   Tables typed into a page, an article or a product description.
 
   A wide table scrolls inside its column rather than widening the page
@@ -11,7 +11,10 @@
   The region is only announced and focusable while the table really overflows:
   below that it is an ordinary table, and no empty tab stop is added. Without
   JavaScript the table still scrolls on its own, so nothing is hidden.
-{% endcomment %}
+
+  @example
+  {% render 'rte-tables' %}
+{% enddoc %}
 <script>
   (function () {
     'use strict';

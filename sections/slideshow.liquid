@@ -50,6 +50,7 @@
   <fl-slideshow
     class="fl-slideshow fl-slideshow--{{ section.settings.slide_height }} color-{{ section.settings.color_scheme }}{% if section.settings.layout == 'full_bleed' %} full-width{% else %} fl-slideshow--boxed{% endif %}"
     role="region"
+    aria-roledescription="{{ 'accessibility.carousel_role' | t }}"
     aria-label="{{ 'accessibility.carousel' | t }}"
     data-autoplay="{{ section.settings.autorotate }}"
     data-speed="{{ section.settings.autorotate_speed }}"
@@ -112,6 +113,9 @@
           -%}
           <div
             class="fl-slideshow__slide{% if forloop.first %} is-active{% endif %}"
+            role="group"
+            aria-roledescription="{{ 'accessibility.slide_role' | t }}"
+            aria-label="{{ 'accessibility.slide_of' | t: index: forloop.index, count: forloop.length }}"
             data-slide
             {{ block.shopify_attributes }}
           >
@@ -234,6 +238,8 @@
       {%- endif -%}
     </div>
   </fl-slideshow>
+{%- elsif request.design_mode -%}
+  <p class="fl-editor-empty">{{ 'general.editor.empty_section' | t }}</p>
 {%- endif -%}
 
 {% stylesheet %}
@@ -589,12 +595,23 @@
             document.addEventListener('shopify:block:deselect', this.onBlockDeselect);
           }
 
+          // A hidden tab rotates for nobody: stop, then resume on return.
+          this.onVisibility = () => {
+            if (document.hidden) {
+              this.stopTimer();
+            } else if (!this.contains(document.activeElement)) {
+              this.start();
+            }
+          };
+          document.addEventListener('visibilitychange', this.onVisibility);
+
           this.start();
           this.syncToggle();
         }
 
         disconnectedCallback() {
           this.stopTimer();
+          if (this.onVisibility) document.removeEventListener('visibilitychange', this.onVisibility);
           if (this.motion && this.onMotionChange) {
             this.motion.removeEventListener('change', this.onMotionChange);
           }
@@ -625,6 +642,7 @@
         start() {
           if (!this.autoplay) return;
           if (this.paused) return;
+          if (document.hidden) return;
           if (this.motion.matches) return;
           this.stopTimer();
           if (this.track) this.track.setAttribute('aria-live', 'off');
@@ -713,7 +731,7 @@
     {
       "type": "range",
       "id": "autorotate_speed",
-      "min": 3,
+      "min": 5,
       "max": 9,
       "step": 1,
       "unit": "s",

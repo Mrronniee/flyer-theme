@@ -24,7 +24,11 @@
     "carousel": "Carrousel",
     "pause_slideshow": "Mettre le diaporama en pause",
     "play_slideshow": "Lire le diaporama",
-    "play_video": "Lire la vidéo"
+    "play_video": "Lire la vidéo",
+    "new_tab": "(s’ouvre dans un nouvel onglet)",
+    "carousel_role": "carrousel",
+    "slide_role": "diapositive",
+    "slide_of": "{{ index }} sur {{ count }}"
   },
   "general": {
     "pagination": {
@@ -79,6 +83,10 @@
     "colon": " :",
     "forms": {
       "required_note": "* Champs obligatoires"
+    },
+    "editor": {
+      "empty_section": "Cette section est vide. Ajoutez-y du contenu dans l’éditeur de thème.",
+      "empty_block": "Ce bloc est vide. Ajoutez-y du contenu dans l’éditeur de thème."
     }
   },
   "404": {
@@ -124,7 +132,14 @@
       "view_details": "Voir tous les détails",
       "taxes_included": "Taxes incluses.",
       "added_to_cart": "Ajouté au panier",
-      "adding": "Ajout en cours…"
+      "adding": "Ajout en cours…",
+      "pickup": {
+        "available_at": "Retrait disponible à {{ location }}",
+        "unavailable_at": "Retrait actuellement indisponible à {{ location }}",
+        "other_locations": "Voir la disponibilité dans les autres magasins",
+        "available": "Retrait disponible",
+        "unavailable": "Retrait actuellement indisponible"
+      }
     },
     "related": {
       "heading": "Vous aimerez aussi"
@@ -186,7 +201,8 @@
     "item_count": {
       "one": "{{ count }} article",
       "other": "{{ count }} articles"
-    }
+    },
+    "note_error": "Votre note de commande n’a pas pu être enregistrée. Veuillez réessayer."
   },
   "search": {
     "title": "Recherche",
@@ -203,7 +219,8 @@
     "products": "Produits",
     "pages": "Pages",
     "articles": "Articles",
-    "view_all": "Voir tous les résultats"
+    "view_all": "Voir tous les résultats",
+    "suggestions_error": "Les suggestions sont indisponibles pour le moment. Appuyez sur Entrée pour voir tous les résultats."
   },
   "blog": {
     "read_more": "Lire la suite",

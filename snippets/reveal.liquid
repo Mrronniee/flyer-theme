@@ -43,7 +43,7 @@
             observer.unobserve(entry.target);
           });
         },
-        { rootMargin: '0px 0px -8% 0px', threshold: 0 }
+        { rootMargin: '0px 0px 15% 0px', threshold: 0 }
       );
       return observer;
     }
@@ -63,6 +63,9 @@
         if (el.dataset[BOUND_KEY] === 'true') return;
         el.dataset[BOUND_KEY] = 'true';
         if (skip) return;
+        // Already on screen (first screen, anchor jump): shown as it is, never
+        // hidden to wait for a scroll.
+        if (el.getBoundingClientRect().top < window.innerHeight) return;
         el.classList.add(HIDDEN_CLASS);
         getObserver().observe(el);
       });

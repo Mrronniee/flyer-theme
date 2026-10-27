@@ -1,4 +1,4 @@
-{% comment %}
+{% doc %}
   Emits every design token.
 
   Colour schemes work like Dawn's: each scheme becomes a `.color-<id>` class
@@ -8,7 +8,10 @@
 
   Surface / line / muted / control-border are derived from each scheme's own
   background and text so a merchant only picks the colours that matter.
-{% endcomment %}
+
+  @example
+  {% render 'css-variables' %}
+{% enddoc %}
 
 {% style %}
   {{ settings.type_body_font | font_face: font_display: 'swap' }}
@@ -48,13 +51,12 @@
       --color-on-accent: {{ scheme.settings.button_label }};
       --color-outline-label: {{ scheme.settings.secondary_button_label }};
       --color-outline-label-rgb: {{ scheme.settings.secondary_button_label.red }}, {{ scheme.settings.secondary_button_label.green }}, {{ scheme.settings.secondary_button_label.blue }};
-      --color-shadow-rgb: {{ scheme.settings.shadow.red }}, {{ scheme.settings.shadow.green }}, {{ scheme.settings.shadow.blue }};
     }
   {% endfor %}
 
   {% comment %}
     Shadows are emitted per scheme, not in :root. A custom property is
-    substituted where it is DECLARED, so composing rgba(var(--color-shadow-rgb))
+    substituted where it is DECLARED, so composing the shadow colour once
     at :root baked the first scheme's shadow colour into every other scheme.
   {% endcomment %}
   {% for scheme in settings.color_schemes %}

@@ -35,6 +35,11 @@
   image-with-text / multicolumn: the colour scheme paints a band across the
   whole screen instead of stopping at the content column.
 {%- endcomment -%}
+{%- comment -%}
+  Without products the section is an editor preview only (placeholder cards):
+  shoppers get nothing rather than "Example product" cards.
+{%- endcomment -%}
+{%- if col.products.size > 0 or request.design_mode -%}
 <section
   class="fl-featured full-width color-{{ section.settings.color_scheme }}"
   {% render 'reveal' %}
@@ -109,6 +114,7 @@
     {%- endif -%}
   </div>
 </section>
+{%- endif -%}
 
 {% stylesheet %}
   /* Same constrained inner as the other content sections; --content-width is
@@ -168,7 +174,6 @@
       "type": "text",
       "id": "heading",
       "label": "t:labels.heading",
-      "default": "Featured collection",
       "info": "t:info.leave_blank_to_use_the_collection_name"
     },
     {

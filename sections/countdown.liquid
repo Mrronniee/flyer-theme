@@ -69,9 +69,11 @@
         </div>
       </div>
 
-      <p class="fl-countdown__expired" data-expired hidden>
-        {{- section.settings.expired_text | escape -}}
-      </p>
+      {%- if section.settings.expired_text != blank -%}
+        <p class="fl-countdown__expired" data-expired hidden>
+          {{- section.settings.expired_text | escape -}}
+        </p>
+      {%- endif -%}
 
       {%- if end_date != blank -%}
         <noscript>

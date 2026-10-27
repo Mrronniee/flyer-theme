@@ -180,6 +180,11 @@
   /* E4 « ligne à ligne » : chaque ligne monte depuis son propre masque. */
   .fl-hero__ln {
     display: block;
+    /* The mask is wider than the 0.95 line box: room for the descenders
+       (g, j, p, q, y) and a capital accent (É), taken back by the negative
+       margin so the lines keep their tight rhythm. */
+    margin-block: -0.12em -0.14em;
+    padding-block: 0.12em 0.14em;
     overflow: hidden;
   }
 

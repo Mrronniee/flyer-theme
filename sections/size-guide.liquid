@@ -73,7 +73,11 @@
               {%- for block in section.blocks -%}
                 {%- assign vals = block.settings.values | split: ',' -%}
                 <tr {{ block.shopify_attributes }}>
-                  <th scope="row">{{ block.settings.label | escape }}</th>
+                  {%- if block.settings.label != blank -%}
+                    <th scope="row">{{ block.settings.label | escape }}</th>
+                  {%- else -%}
+                    <td></td>
+                  {%- endif -%}
                   {%- for col in cols -%}
                     {%- liquid
                       assign cell = vals[forloop.index0] | default: '' | strip
@@ -256,8 +260,7 @@
     {
       "type": "text",
       "id": "heading",
-      "label": "t:labels.heading",
-      "default": "Size guide"
+      "label": "t:labels.heading"
     },
     {
       "type": "richtext",

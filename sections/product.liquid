@@ -36,6 +36,7 @@
   data-text-unavailable="{{ 'products.product.unavailable' | t }}"
   data-text-regular="{{ 'products.card.regular_price' | t }}"
   data-text-sale="{{ 'products.card.sale_price' | t }}"
+  data-section-id="{{ section.id }}"
 >
   <div class="fl-product__grid">
     {%- comment -%} Gallery {%- endcomment -%}
@@ -44,7 +45,7 @@
         {%- if product.media.size > 0 -%}
           {%- for media in product.media -%}
             <div
-              class="fl-gallery__media"
+              class="fl-gallery__media fl-media"
               data-media-item
               data-media-id="{{ media.id }}"
               {% unless forloop.first %}
@@ -74,7 +75,7 @@
             </div>
           {%- endfor -%}
         {%- else -%}
-          <div class="fl-gallery__media" data-media-item>
+          <div class="fl-gallery__media fl-media" data-media-item>
             {{ 'product-1' | placeholder_svg_tag: 'fl-gallery__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
           </div>
         {%- endif -%}
@@ -381,6 +382,14 @@
                   {{ form | payment_terms }}
                 {%- endif -%}
               {% endform %}
+              {%- comment -%}
+                In-store pickup of the selected variant (locations with local
+                pickup only). Refreshed on variant change by <fl-product>
+                through the Section Rendering API.
+              {%- endcomment -%}
+              <div class="fl-pickup" data-pickup>
+                {% render 'pickup-availability', variant: current_variant %}
+              </div>
             </div>
 
           {%- when 'description' -%}
@@ -419,6 +428,15 @@
           {%- when 'text' -%}
             {%- if block.settings.text != blank -%}
               <p class="fl-product__text" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+
+          {%- when 'custom_liquid' -%}
+            {%- if block.settings.custom_liquid != blank -%}
+              <div class="fl-product__block fl-product__liquid" {{ block.shopify_attributes }}>
+                {{ block.settings.custom_liquid }}
+              </div>
+            {%- elsif request.design_mode -%}
+              <p class="fl-editor-empty" {{ block.shopify_attributes }}>{{ 'general.editor.empty_block' | t }}</p>
             {%- endif -%}
         {%- endcase -%}
       {%- endfor -%}
@@ -481,11 +499,8 @@
     gap: 12px;
   }
 
-  .fl-gallery__media {
-    overflow: hidden;
-    border-radius: var(--radius-card);
-    background: var(--color-surface);
-  }
+  /* Border, radius and shadow come from the theme settings (Media), through
+     .fl-media in critical.css. */
 
   .fl-gallery__media img,
   .fl-gallery__media video,
@@ -944,6 +959,7 @@
           if (!variant) return;
           if (this.variantInput) this.variantInput.value = variant.id;
           if (variant.featured_media && variant.featured_media.id) this.showMedia(variant.featured_media.id);
+          this.updatePickup(variant);
           if (window.history && window.history.replaceState) {
             const url = new URL(window.location.href);
             url.searchParams.set('variant', variant.id);
@@ -1010,6 +1026,29 @@
           }
           html += '</span>';
           this.priceTarget.innerHTML = html;
+        }
+
+        /* --- In-store pickup of the selected variant --- */
+        async updatePickup(variant) {
+          const target = this.querySelector('[data-pickup]');
+          if (!target || !this.dataset.sectionId) return;
+          if (this._pickupController) this._pickupController.abort();
+          this._pickupController = new AbortController();
+          const url = new URL(window.location.pathname, window.location.origin);
+          url.searchParams.set('variant', variant.id);
+          url.searchParams.set('section_id', this.dataset.sectionId);
+          try {
+            const response = await fetch(url.toString(), { signal: this._pickupController.signal });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            const html = new DOMParser().parseFromString(await response.text(), 'text/html');
+            const fresh = html.querySelector('[data-pickup]');
+            target.innerHTML = fresh ? fresh.innerHTML : '';
+          } catch (error) {
+            if (error && error.name === 'AbortError') return;
+            // Read-only information: a stale line for another variant would
+            // mislead, so it is removed rather than left in place.
+            target.innerHTML = '';
+          }
         }
 
         updateButton(variant) {
@@ -1148,7 +1187,7 @@
           "type": "text",
           "id": "heading",
           "label": "t:labels.heading",
-          "default": "Details"
+          "info": "t:info.leave_empty_to_show_the_translated_heading"
         },
         {
           "type": "richtext",
@@ -1167,6 +1206,18 @@
           "id": "text",
           "label": "t:labels.text",
           "default": "Share details about your product."
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "t:names.custom_liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "t:labels.custom_liquid",
+          "info": "t:info.add_app_snippets_or_other_liquid_code"
         }
       ]
     }

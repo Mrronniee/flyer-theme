@@ -89,7 +89,8 @@
     "use_h1_only_when_this_is_the": "Choisissez H1 seulement si c’est le titre principal de la page.",
     "use_h1_when_this_is_the_main": "Choisissez H1 si c’est la bannière principale de la page.",
     "used_by_the_framed_layouts": "Utilisé par les mises en page encadrées.",
-    "used_when_there_is_more_than_one": "Utilisé lorsqu’il y a plus d’une annonce."
+    "used_when_there_is_more_than_one": "Utilisé lorsqu’il y a plus d’une annonce.",
+    "follow_on_shop": "Permet aux clients de suivre votre boutique dans l’application « Shop ». Nécessite Shop Pay."
   },
   "labels": {
     "1": "1",
@@ -385,7 +386,8 @@
     "white": "Blanc",
     "wishlist_page": "Page de la liste d’envies",
     "x_twitter_url": "Adresse X (Twitter)",
-    "youtube_url": "Adresse YouTube"
+    "youtube_url": "Adresse YouTube",
+    "show_follow_on_shop": "Afficher « Suivre sur Shop »"
   },
   "names": {
     "404_page": "Page 404",

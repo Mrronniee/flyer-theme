@@ -33,6 +33,11 @@
   endunless
 -%}
 
+{%- comment -%}
+  Without a product the section is an editor preview only: shoppers get
+  nothing rather than an "Example product" with a made-up price.
+{%- endcomment -%}
+{%- if feat_product != blank or request.design_mode -%}
 <fl-featured-product
   class="fl-featprod full-width color-{{ section.settings.color_scheme }}"
   {% render 'reveal' %}
@@ -463,6 +468,7 @@
     {%- endif -%}
   </div>
 </fl-featured-product>
+{%- endif -%}
 
 {% stylesheet %}
   .fl-featprod {

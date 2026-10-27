@@ -65,6 +65,10 @@
         {%- for block in section.blocks -%}
           {%- liquid
             assign col = block.settings.collection
+            # A block with no collection picked is an editor preview only.
+            if col == blank and request.design_mode == false
+              continue
+            endif
             assign placeholder_index = forloop.index0 | modulo: 4 | plus: 1
             assign placeholder_name = 'collection-' | append: placeholder_index
           -%}
@@ -123,7 +127,7 @@
             </div>
           </li>
         {%- endfor -%}
-      {%- else -%}
+      {%- elsif request.design_mode -%}
         {%- for i in (1..3) -%}
           {%- assign placeholder_name = 'collection-' | append: i -%}
           <li class="fl-collist__item">

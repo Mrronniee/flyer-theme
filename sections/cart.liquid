@@ -24,6 +24,7 @@
   data-change-url="{{ routes.cart_change_url }}"
   data-cart-url="{{ routes.cart_url }}"
   data-error-text="{{ 'cart.item_error' | t }}"
+  data-note-error-text="{{ 'cart.note_error' | t }}"
 >
   {%- comment -%}
     With JS, a quantity change updates the cart in place: this wrapper is
@@ -775,7 +776,14 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({ note: event.target.value })
-        }).catch(() => {});
+        })
+          .then((response) => {
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+          })
+          .catch(() => {
+            // Said aloud and on screen, so the note is not lost unnoticed.
+            this.showError(this.dataset.noteErrorText);
+          });
         return;
       }
       const input = event.target.closest('[data-qty-input]');

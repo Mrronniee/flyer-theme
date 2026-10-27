@@ -24,7 +24,11 @@
     "carousel": "Carousel",
     "pause_slideshow": "Pause slideshow",
     "play_slideshow": "Play slideshow",
-    "play_video": "Play video"
+    "play_video": "Play video",
+    "new_tab": "(opens in a new tab)",
+    "carousel_role": "carousel",
+    "slide_role": "slide",
+    "slide_of": "{{ index }} of {{ count }}"
   },
   "general": {
     "pagination": {
@@ -79,11 +83,15 @@
     "colon": ":",
     "forms": {
       "required_note": "* Required fields"
+    },
+    "editor": {
+      "empty_section": "This section is empty. Add content to it in the theme editor.",
+      "empty_block": "This block is empty. Add content to it in the theme editor."
     }
   },
   "404": {
     "title": "Page not found",
-    "subtext": "The page you were looking for doesn't exist.",
+    "subtext": "The page you were looking for doesn’t exist.",
     "back_to_shopping": "Continue shopping"
   },
   "products": {
@@ -124,7 +132,14 @@
       "view_details": "View full details",
       "taxes_included": "Taxes included.",
       "added_to_cart": "Added to cart",
-      "adding": "Adding…"
+      "adding": "Adding…",
+      "pickup": {
+        "available_at": "Pickup available at {{ location }}",
+        "unavailable_at": "Pickup currently unavailable at {{ location }}",
+        "other_locations": "Check availability at other stores",
+        "available": "Pickup available",
+        "unavailable": "Pickup currently unavailable"
+      }
     },
     "related": {
       "heading": "You may also like"
@@ -186,7 +201,8 @@
     "item_count": {
       "one": "{{ count }} item",
       "other": "{{ count }} items"
-    }
+    },
+    "note_error": "Your order note couldn’t be saved. Please try again."
   },
   "search": {
     "title": "Search",
@@ -203,7 +219,8 @@
     "products": "Products",
     "pages": "Pages",
     "articles": "Articles",
-    "view_all": "View all results"
+    "view_all": "View all results",
+    "suggestions_error": "Suggestions are unavailable right now. Press Enter to see all results."
   },
   "blog": {
     "read_more": "Read more",
@@ -233,7 +250,7 @@
       "phone": "Phone (optional)",
       "message": "Message",
       "submit": "Send message",
-      "success": "Thanks for reaching out. We'll get back to you soon.",
+      "success": "Thanks for reaching out. We’ll get back to you soon.",
       "error": "Please correct the errors below."
     }
   },
@@ -260,7 +277,7 @@
       "details": "Account details",
       "addresses": "Addresses",
       "log_out": "Log out",
-      "no_orders": "You haven't placed any orders yet.",
+      "no_orders": "You haven’t placed any orders yet.",
       "order_number": "Order",
       "date": "Date",
       "payment_status": "Payment status",
@@ -284,7 +301,7 @@
       "subtext": "We will send you an email to reset your password.",
       "submit": "Submit",
       "cancel": "Cancel",
-      "success": "We've sent you an email with a link to update your password."
+      "success": "We’ve sent you an email with a link to update your password."
     },
     "register": {
       "title": "Create account",

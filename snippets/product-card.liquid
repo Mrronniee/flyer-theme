@@ -33,7 +33,7 @@
   assign mobile_inset = settings.min_page_margin | plus: 6
   assign default_sizes = '(max-width: 749px) calc(50vw - ' | append: mobile_inset | append: 'px), (max-width: 989px) 33vw, 25vw'
   assign img_sizes = sizes | default: default_sizes
-  assign img_widths = '360, 540, 720, 900'
+  assign img_widths = '360, 540, 720, 900, 1200'
 
   # Caller-controlled priority. Lazy everywhere by default; the first row of a
   # grid can opt into eager, and only a grid that really holds the page's
@@ -85,19 +85,19 @@
       {%- if img_priority -%}
         {{
           product.featured_media
-          | image_url: width: 900
+          | image_url: width: 1200
           | image_tag: widths: img_widths, sizes: img_sizes, alt: product.featured_media.alt, loading: 'eager', fetchpriority: 'high'
         }}
       {%- elsif img_loading == 'eager' -%}
         {{
           product.featured_media
-          | image_url: width: 900
+          | image_url: width: 1200
           | image_tag: widths: img_widths, sizes: img_sizes, alt: product.featured_media.alt, loading: 'eager'
         }}
       {%- else -%}
         {{
           product.featured_media
-          | image_url: width: 900
+          | image_url: width: 1200
           | image_tag: widths: img_widths, sizes: img_sizes, alt: product.featured_media.alt, loading: 'lazy'
         }}
       {%- endif -%}
@@ -115,7 +115,7 @@
         <source media="(hover: none)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
         {{-
           product.media[1].preview_image
-          | image_url: width: 900
+          | image_url: width: 1200
           | image_tag: widths: img_widths, sizes: img_sizes, alt: '', loading: 'lazy', class: 'fl-card__img--alt', aria-hidden: 'true'
         -}}
       </picture>

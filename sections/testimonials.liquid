@@ -42,6 +42,7 @@
         class="fl-testimonials__body{% if carousel %} fl-testimonials__body--carousel{% endif %}"
         {% if carousel %}
           role="region"
+          aria-roledescription="{{ 'accessibility.carousel_role' | t }}"
           aria-label="{{ 'accessibility.carousel' | t }}"
         {% endif %}
       >
@@ -462,20 +463,19 @@
           "type": "textarea",
           "id": "quote",
           "label": "t:labels.quote",
-          "default": "The quality is exactly what I hoped for. Delivered in three days, beautifully packed."
+          "default": "Add a review that a customer shared with you, in their own words."
         },
         {
           "type": "text",
           "id": "author",
           "label": "t:labels.author",
-          "default": "Camille R."
+          "default": "Customer name"
         },
         {
           "type": "text",
           "id": "detail",
           "label": "t:labels.detail",
-          "info": "t:info.for_example_verified_buyer_lyon",
-          "default": "Verified buyer, Lyon"
+          "info": "t:info.for_example_verified_buyer_lyon"
         },
         {
           "type": "range",
@@ -502,27 +502,24 @@
         {
           "type": "testimonial",
           "settings": {
-            "quote": "The quality is exactly what I hoped for. Delivered in three days, beautifully packed.",
-            "author": "Camille R.",
-            "detail": "Verified buyer, Lyon",
+            "quote": "Add a review that a customer shared with you, in their own words.",
+            "author": "Customer name",
             "rating": 5
           }
         },
         {
           "type": "testimonial",
           "settings": {
-            "quote": "I ordered the wrong size and the exchange took one email. That kind of service keeps me coming back.",
-            "author": "Thomas B.",
-            "detail": "Verified buyer, Brussels",
+            "quote": "Add a review that a customer shared with you, in their own words.",
+            "author": "Customer name",
             "rating": 5
           }
         },
         {
           "type": "testimonial",
           "settings": {
-            "quote": "Six months of daily wear and it still looks new. Worth every cent.",
-            "author": "Ana M.",
-            "detail": "Verified buyer, Lisbon",
+            "quote": "Add a review that a customer shared with you, in their own words.",
+            "author": "Customer name",
             "rating": 4
           }
         }

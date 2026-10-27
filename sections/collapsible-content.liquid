@@ -82,6 +82,11 @@
             if row_heading == blank
               assign row_heading = block.settings.page.title
             endif
+            # Never a <summary> without a name: the translated word stands in
+            # for a row that has content but no heading.
+            if row_heading == blank
+              assign row_heading = 'products.product.details' | t
+            endif
 
             assign row_body = block.settings.row_content
             if block.settings.page != blank
@@ -101,16 +106,20 @@
                 {% endif %}
               >
                 <summary class="fl-collapsible__summary" id="Summary-{{ section.id }}-{{ block.id }}">
-                  <{{ row_tag }} class="fl-collapsible__row-heading">{{ row_heading | escape }}</{{ row_tag }}>
+                  {%- if row_heading != blank -%}
+                    <{{ row_tag }} class="fl-collapsible__row-heading">{{ row_heading | escape }}</{{ row_tag }}>
+                  {%- endif -%}
                   <span class="fl-collapsible__icon" aria-hidden="true"></span>
                 </summary>
-                <div
-                  class="fl-collapsible__content fl-rte"
-                  role="region"
-                  aria-labelledby="Summary-{{ section.id }}-{{ block.id }}"
-                >
-                  {{ row_body }}
-                </div>
+                {%- if row_body != blank -%}
+                  <div
+                    class="fl-collapsible__content fl-rte"
+                    role="region"
+                    aria-labelledby="Summary-{{ section.id }}-{{ block.id }}"
+                  >
+                    {{ row_body }}
+                  </div>
+                {%- endif -%}
               </details>
             </div>
           {%- endif -%}
@@ -423,7 +432,7 @@
           "type": "text",
           "id": "heading",
           "label": "t:labels.heading",
-          "default": "Frequently asked question"
+          "info": "t:info.leave_empty_to_show_the_translated_heading"
         },
         {
           "type": "richtext",

@@ -9,7 +9,11 @@
   style="padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;"
 >
   <div class="fl-custom-liquid__inner">
-    {{ section.settings.custom_liquid }}
+    {%- if section.settings.custom_liquid != blank -%}
+      {{ section.settings.custom_liquid }}
+    {%- elsif request.design_mode -%}
+      <p class="fl-editor-empty">{{ 'general.editor.empty_section' | t }}</p>
+    {%- endif -%}
   </div>
 </div>
 

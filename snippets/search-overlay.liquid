@@ -53,6 +53,7 @@
     data-label-products="{{ 'search.products' | t }}"
     data-label-pages="{{ 'search.pages' | t }}"
     data-label-articles="{{ 'search.articles' | t }}"
+    data-label-error="{{ 'search.suggestions_error' | t }}"
     {% if settings.predictive_search_show_vendor %}
       data-show-vendor="true"
     {% endif %}
@@ -92,6 +93,9 @@
               data-search-input
               placeholder="{{ 'search.placeholder' | t }}"
               {% if predictive %}
+                role="combobox"
+                aria-autocomplete="list"
+                aria-expanded="false"
                 aria-controls="FlSearchResults"
               {% endif %}
               autocomplete="off"
@@ -123,7 +127,13 @@
 
         {%- if predictive -%}
           <p class="fl-search__status" data-search-status role="status" aria-live="polite"></p>
-          <div class="fl-search__groups" id="FlSearchResults" data-search-results></div>
+          <div
+            class="fl-search__groups"
+            id="FlSearchResults"
+            role="listbox"
+            aria-label="{{ 'search.suggestions' | t }}"
+            data-search-results
+          ></div>
           <a class="fl-search__viewall" data-search-viewall href="{{ routes.search_url }}" hidden>
             {{- 'search.view_all' | t -}}
           </a>
@@ -367,6 +377,14 @@
     white-space: nowrap;
   }
 
+  /* The suggestion picked with the arrow keys (aria-activedescendant): focus
+     stays in the field, so the ring is drawn here. */
+  .fl-search__link.is-active,
+  .fl-search__product.is-active {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
   .fl-search__product:hover .fl-search__product-title {
     text-decoration: underline;
     text-underline-offset: 0.2em;
@@ -447,8 +465,10 @@
         suggestions: this.dataset.labelSuggestions || 'Suggestions',
         products: this.dataset.labelProducts || 'Products',
         pages: this.dataset.labelPages || 'Pages',
-        articles: this.dataset.labelArticles || 'Articles'
+        articles: this.dataset.labelArticles || 'Articles',
+        error: this.dataset.labelError || ''
       };
+      this.activeIndex = -1;
 
       this._onDocClick = (event) => {
         const opener = event.target && event.target.closest ? event.target.closest('[data-search-open]') : null;
@@ -487,6 +507,23 @@
       };
 
       if (this.input && this.predictive) {
+        // Combobox: focus stays in the field, the arrows move the active
+        // suggestion (aria-activedescendant) and Enter follows it.
+        this.input.addEventListener('keydown', (event) => {
+          const options = this.options();
+          if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            if (!options.length) return;
+            event.preventDefault();
+            if (event.key === 'ArrowDown') {
+              this.setActive((this.activeIndex + 1) % options.length);
+            } else {
+              this.setActive(this.activeIndex <= 0 ? options.length - 1 : this.activeIndex - 1);
+            }
+          } else if (event.key === 'Enter' && this.activeIndex > -1 && options[this.activeIndex]) {
+            event.preventDefault();
+            options[this.activeIndex].click();
+          }
+        });
         this.input.addEventListener('input', () => {
           clearTimeout(this.debounceId);
           this.debounceId = setTimeout(() => this.search(this.input.value.trim()), 250);
@@ -574,6 +611,34 @@
       if (this.results) this.results.innerHTML = '';
       this.setStatus('');
       if (this.viewAll) this.viewAll.hidden = true;
+      this.setExpanded(false);
+    }
+
+    options() {
+      return this.results ? Array.from(this.results.querySelectorAll('[role="option"]')) : [];
+    }
+
+    setExpanded(expanded) {
+      if (!this.input) return;
+      this.input.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      if (!expanded) this.setActive(-1);
+    }
+
+    setActive(index) {
+      const options = this.options();
+      this.activeIndex = index;
+      options.forEach((option, i) => {
+        const active = i === index;
+        option.setAttribute('aria-selected', active ? 'true' : 'false');
+        option.classList.toggle('is-active', active);
+        if (active) option.scrollIntoView({ block: 'nearest' });
+      });
+      if (!this.input) return;
+      if (index > -1 && options[index]) {
+        this.input.setAttribute('aria-activedescendant', options[index].id);
+      } else {
+        this.input.removeAttribute('aria-activedescendant');
+      }
     }
 
     async search(query) {
@@ -604,7 +669,10 @@
         this.render(found.queries || [], found.products || [], found.pages || [], found.articles || [], query);
       } catch (err) {
         if (err && err.name === 'AbortError') return;
+        // Said in the status region (role=status) and the field stays usable:
+        // Enter still submits the full search.
         this.renderEmpty();
+        this.setStatus(this.labels.error);
       }
     }
 
@@ -616,6 +684,7 @@
       if (total === 0) {
         this.setStatus(this.labels.empty.replace('%TERMS%', query));
         if (this.viewAll) this.viewAll.hidden = true;
+        this.setExpanded(false);
         return;
       }
 
@@ -625,8 +694,19 @@
       if (pages.length) frag.appendChild(this.buildTextGroup('pages', this.labels.pages, pages));
       if (articles.length) frag.appendChild(this.buildTextGroup('articles', this.labels.articles, articles));
       this.results.appendChild(frag);
+      this.options().forEach((option, i) => {
+        option.id = 'FlSearchOption-' + i;
+      });
+      this.setExpanded(true);
 
-      const resultsLabel = total === 1 ? this.labels.resultsOne : this.labels.results;
+      // The plural form of the page language (French "one" covers 0 and 1).
+      let plural = 'other';
+      try {
+        plural = new Intl.PluralRules(document.documentElement.lang || 'en').select(total);
+      } catch (err) {
+        plural = 'other';
+      }
+      const resultsLabel = plural === 'one' ? this.labels.resultsOne : this.labels.results;
       this.setStatus(resultsLabel.replace('%COUNT%', total).replace('%TERMS%', query));
       if (this.viewAll) {
         this.viewAll.href = this.searchUrl + '?q=' + encodeURIComponent(query);
@@ -641,9 +721,11 @@
       title.className = 'fl-eyebrow fl-search__group-title';
       title.id = 'FlSearchGroup-' + key;
       title.textContent = label;
+      wrap.setAttribute('role', 'group');
+      wrap.setAttribute('aria-labelledby', title.id);
       const list = document.createElement('ul');
       list.className = 'fl-search__list' + (modifier ? ' fl-search__list--' + modifier : '');
-      list.setAttribute('aria-labelledby', title.id);
+      list.setAttribute('role', 'presentation');
       wrap.appendChild(title);
       wrap.appendChild(list);
       return { wrap: wrap, list: list };
@@ -654,8 +736,12 @@
       items.forEach((item) => {
         const text = item.text || item.title || '';
         const li = document.createElement('li');
+        li.setAttribute('role', 'presentation');
         const link = document.createElement('a');
         link.className = 'fl-search__link';
+        link.setAttribute('role', 'option');
+        link.setAttribute('aria-selected', 'false');
+        link.tabIndex = -1;
         link.href = item.url || this.searchUrl + '?q=' + encodeURIComponent(text);
         link.textContent = text;
         link.addEventListener('click', () => this.close());
@@ -669,8 +755,12 @@
       const group = this.buildGroup('products', this.labels.products, 'products');
       products.forEach((product) => {
         const li = document.createElement('li');
+        li.setAttribute('role', 'presentation');
         const link = document.createElement('a');
         link.className = 'fl-search__product';
+        link.setAttribute('role', 'option');
+        link.setAttribute('aria-selected', 'false');
+        link.tabIndex = -1;
         link.href = product.url || '#';
         link.addEventListener('click', () => this.close());
 

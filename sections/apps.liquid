@@ -12,6 +12,10 @@
   <div class="fl-apps__inner{% unless section.settings.include_margins %} fl-apps__inner--flush{% endunless %}">
     {%- for block in section.blocks -%}
       {% render block %}
+    {%- else -%}
+      {%- if request.design_mode -%}
+        <p class="fl-editor-empty">{{ 'general.editor.empty_section' | t }}</p>
+      {%- endif -%}
     {%- endfor -%}
   </div>
 </section>

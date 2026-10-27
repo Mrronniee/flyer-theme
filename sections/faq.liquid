@@ -51,7 +51,11 @@
 
     <div class="fl-faq__list">
       {%- for block in section.blocks -%}
-        {%- if block.settings.question != blank or block.settings.answer != blank -%}
+        {%- comment -%}
+          A question is what names the row: without it the <summary> would be
+          an unnamed control, so an answer alone is not rendered.
+        {%- endcomment -%}
+        {%- if block.settings.question != blank -%}
           <details
             class="fl-faq__item"
             name="faq-{{ section.id }}"
@@ -61,16 +65,20 @@
             {{ block.shopify_attributes }}
           >
             <summary class="fl-faq__summary" id="FaqSummary-{{ section.id }}-{{ block.id }}">
-              <{{ row_tag }} class="fl-faq__question">{{ block.settings.question | escape }}</{{ row_tag }}>
+              {%- if block.settings.question != blank -%}
+                <{{ row_tag }} class="fl-faq__question">{{ block.settings.question | escape }}</{{ row_tag }}>
+              {%- endif -%}
               <span class="fl-faq__chevron" aria-hidden="true"></span>
             </summary>
-            <div
-              class="fl-faq__answer fl-rte"
-              role="region"
-              aria-labelledby="FaqSummary-{{ section.id }}-{{ block.id }}"
-            >
-              {{ block.settings.answer }}
-            </div>
+            {%- if block.settings.answer != blank -%}
+              <div
+                class="fl-faq__answer fl-rte"
+                role="region"
+                aria-labelledby="FaqSummary-{{ section.id }}-{{ block.id }}"
+              >
+                {{ block.settings.answer }}
+              </div>
+            {%- endif -%}
           </details>
         {%- endif -%}
       {%- endfor -%}
@@ -283,7 +291,7 @@
           "type": "richtext",
           "id": "answer",
           "label": "t:labels.answer",
-          "default": "<p>Orders ship within 1–2 business days. Standard delivery takes 3–5 business days; express delivery arrives in 1–2.</p>"
+          "default": "<p>Explain when orders leave and how long delivery takes, and how customers can track their parcel.</p>"
         }
       ]
     }
@@ -296,14 +304,14 @@
           "type": "question",
           "settings": {
             "question": "How long does shipping take?",
-            "answer": "<p>Orders ship within 1–2 business days. Standard delivery takes 3–5 business days; express delivery arrives in 1–2. You’ll receive a tracking link by email as soon as your parcel leaves us.</p>"
+            "answer": "<p>Explain when orders leave and how long delivery takes, and how customers can track their parcel.</p>"
           }
         },
         {
           "type": "question",
           "settings": {
             "question": "What is your return policy?",
-            "answer": "<p>You have 30 days from delivery to return any unworn item in its original packaging. Start a return from your account page and we’ll email you a prepaid label. Refunds are issued within 5 days of receiving the parcel.</p>"
+            "answer": "<p>Describe your return conditions and how customers can start a return.</p>"
           }
         },
         {
@@ -317,14 +325,14 @@
           "type": "question",
           "settings": {
             "question": "Which payment methods do you accept?",
-            "answer": "<p>We accept Visa, Mastercard, American Express, PayPal, Apple Pay, Google Pay and Shop Pay. All payments are encrypted and processed securely at checkout.</p>"
+            "answer": "<p>List the payment methods your store accepts at checkout.</p>"
           }
         },
         {
           "type": "question",
           "settings": {
             "question": "How can I contact you?",
-            "answer": "<p>Write to us through the contact page or reply to any of our emails. We answer every message within one business day, Monday to Friday.</p>"
+            "answer": "<p>Tell customers how to reach you and when they can expect a reply.</p>"
           }
         }
       ]

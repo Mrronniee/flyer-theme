@@ -24,7 +24,11 @@
       {{ settings.type_heading_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
     {% endunless %}
 
-    {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+    {%- comment -%}
+      No preload hint on the stylesheet: it is render-blocking in the <head>
+      anyway, and two preloads at most (the fonts) keep the LCP image ahead.
+    {%- endcomment -%}
+    {{ 'critical.css' | asset_url | stylesheet_tag }}
 
     {% if settings.wishlist_enabled %}
       <script src="{{ 'wishlist.js' | asset_url }}" defer></script>
@@ -66,5 +70,24 @@
     {% endif %}
     {% render 'autofocus-fallback' %}
     {% render 'rte-tables' %}
+
+    {%- if request.design_mode -%}
+      <script>
+        // Theme editor: the block the merchant picks is shown, whatever the
+        // section. A FAQ answer or a collapsible row opens (closed <details>),
+        // and a rail that scrolls sideways (collections, lookbook,
+        // testimonials) brings the block into view. The slideshow and the
+        // announcement bar move to their own slide in their own handler.
+        document.addEventListener('shopify:block:select', function (event) {
+          var block = event.target;
+          if (!block || !block.getElementsByTagName) return;
+          if (block.tagName === 'DETAILS') block.open = true;
+          Array.prototype.forEach.call(block.getElementsByTagName('details'), function (details) {
+            details.open = true;
+          });
+          if (block.scrollIntoView) block.scrollIntoView({ block: 'nearest', inline: 'center' });
+        });
+      </script>
+    {%- endif -%}
   </body>
 </html>

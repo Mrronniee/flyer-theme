@@ -197,11 +197,21 @@
           render 'social-icons', class: 'fl-footer__social'
         endcapture
         assign social_html = social_html | strip
+        # Follow on Shop: Shopify only renders the button when the store
+        # uses Shop Pay and the feature is on.
+        assign show_follow = false
+        if section.settings.show_follow_on_shop and shop.features.follow_on_shop?
+          assign show_follow = true
+        endif
       -%}
 
-      {%- if social_html != blank or show_country or show_language -%}
+      {%- if social_html != blank or show_follow or show_country or show_language -%}
         <div class="fl-footer__utility">
           {{ social_html }}
+
+          {%- if show_follow -%}
+            <div class="fl-footer__follow">{{ shop | login_button: action: 'follow' }}</div>
+          {%- endif -%}
 
           {%- if show_country or show_language -%}
             <div class="fl-footer__localization">
@@ -491,6 +501,13 @@
       "id": "show_language_selector",
       "label": "t:labels.show_language_selector",
       "info": "t:info.only_shown_when_the_store_has_multiple_2",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_follow_on_shop",
+      "label": "t:labels.show_follow_on_shop",
+      "info": "t:info.follow_on_shop",
       "default": false
     },
     {

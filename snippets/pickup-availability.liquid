@@ -1,0 +1,92 @@
+{% doc %}
+  In-store pickup of one variant: the first location that offers local
+  pickup, its readiness time, and the other locations in a disclosure.
+  Renders nothing when no location has local pickup turned on.
+
+  @param {object} variant - the variant whose pickup is shown
+
+  @example
+  {% render 'pickup-availability', variant: current_variant %}
+{% enddoc %}
+
+{%- liquid
+  assign pickups = variant.store_availabilities | where: 'pick_up_enabled', true
+-%}
+{%- if pickups.size > 0 -%}
+  {%- assign first = pickups.first -%}
+  <div class="fl-pickup__inner">
+    <p class="fl-pickup__status">
+      {%- if first.available -%}
+        {{ 'products.product.pickup.available_at' | t: location: first.location.name }}
+      {%- else -%}
+        {{ 'products.product.pickup.unavailable_at' | t: location: first.location.name }}
+      {%- endif -%}
+    </p>
+    {%- if first.available and first.pick_up_time != blank -%}
+      <p class="fl-pickup__time">{{ first.pick_up_time }}</p>
+    {%- endif -%}
+    {%- if pickups.size > 1 -%}
+      <details class="fl-pickup__more">
+        <summary class="fl-pickup__summary">{{ 'products.product.pickup.other_locations' | t }}</summary>
+        <ul class="fl-pickup__list" role="list">
+          {%- for availability in pickups -%}
+            <li class="fl-pickup__location">
+              <span class="fl-pickup__name">{{ availability.location.name }}</span>
+              <span class="fl-pickup__state">
+                {%- if availability.available -%}
+                  {{ 'products.product.pickup.available' | t }}
+                {%- else -%}
+                  {{ 'products.product.pickup.unavailable' | t }}
+                {%- endif -%}
+              </span>
+              {%- if availability.available and availability.pick_up_time != blank -%}
+                <span class="fl-pickup__state">{{ availability.pick_up_time }}</span>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </details>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .fl-pickup:empty {
+    display: none;
+  }
+
+  .fl-pickup__inner {
+    display: grid;
+    gap: 4px;
+    margin-block-start: 16px;
+    font-size: 0.875rem;
+  }
+
+  .fl-pickup__status,
+  .fl-pickup__time {
+    margin: 0;
+  }
+
+  .fl-pickup__time,
+  .fl-pickup__state {
+    color: var(--color-muted);
+  }
+
+  .fl-pickup__summary {
+    min-height: 24px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .fl-pickup__list {
+    display: grid;
+    gap: 8px;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .fl-pickup__location {
+    display: grid;
+  }
+{% endstylesheet %}

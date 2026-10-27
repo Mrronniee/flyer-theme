@@ -49,6 +49,11 @@
   assign card_sizes = '(max-width: 749px) 100vw, (max-width: 989px) 50vw, ' | append: sizes_desktop
 -%}
 
+{%- comment -%}
+  Without articles the section is an editor preview only (placeholder cards):
+  shoppers get nothing rather than "Blog post" cards.
+{%- endcomment -%}
+{%- if feat_blog.articles_count > 0 or request.design_mode -%}
 <section
   class="fl-featblog full-width color-{{ section.settings.color_scheme }}"
   {% render 'reveal' %}
@@ -168,6 +173,7 @@
     </ul>
   </div>
 </section>
+{%- endif -%}
 
 {% stylesheet %}
   .fl-featblog {

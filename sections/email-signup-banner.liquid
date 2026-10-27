@@ -59,14 +59,24 @@
     {%- if show_image -%}
       <div class="fl-esb__media">
         {%- if image != blank -%}
+          {%- liquid
+            # Opening the page, the banner image is the largest paint.
+            assign img_loading = 'lazy'
+            assign img_priority = 'auto'
+            if section.index == 1
+              assign img_loading = 'eager'
+              assign img_priority = 'high'
+            endif
+          -%}
           {{
             image
             | image_url: width: 3840
             | image_tag:
-              widths: '375, 750, 1100, 1500, 1920, 2560, 3840',
+              widths: '750, 1100, 1500, 1920, 2560, 3840',
               sizes: '100vw',
               class: 'fl-esb__img',
-              loading: 'lazy'
+              loading: img_loading,
+              fetchpriority: img_priority
           }}
         {%- else -%}
           {{ 'lifestyle-1' | placeholder_svg_tag: 'fl-esb__ph' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}

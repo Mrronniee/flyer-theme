@@ -94,6 +94,8 @@
       {%- endif -%}
     </div>
   </fl-announcement-bar>
+{%- elsif request.design_mode -%}
+  <p class="fl-editor-empty">{{ 'general.editor.empty_section' | t }}</p>
 {%- endif -%}
 
 {% stylesheet %}
@@ -313,12 +315,24 @@
             document.addEventListener('shopify:block:deselect', this.onBlockDeselect);
           }
 
+          // A hidden tab rotates for nobody: pause, then resume on return.
+          this.onVisibility = () => {
+            if (document.hidden) {
+              if (this.timer) clearInterval(this.timer);
+              this.timer = null;
+            } else if (!this.contains(document.activeElement)) {
+              this.play();
+            }
+          };
+          document.addEventListener('visibilitychange', this.onVisibility);
+
           this.play();
           this.syncToggle();
         }
 
         disconnectedCallback() {
           if (this.timer) clearInterval(this.timer);
+          if (this.onVisibility) document.removeEventListener('visibilitychange', this.onVisibility);
           if (this.reducedMotion && this.onMotionChange) {
             this.reducedMotion.removeEventListener('change', this.onMotionChange);
           }
@@ -339,6 +353,7 @@
 
         play() {
           if (this.userPaused) return;
+          if (document.hidden) return;
           if (this.reducedMotion.matches) return;
           if (this.timer) clearInterval(this.timer);
           if (this.rotator) this.rotator.setAttribute('aria-live', 'off');
@@ -377,7 +392,7 @@
     {
       "type": "range",
       "id": "rotate_interval",
-      "min": 3,
+      "min": 5,
       "max": 10,
       "step": 1,
       "unit": "s",

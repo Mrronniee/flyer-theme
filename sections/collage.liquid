@@ -62,6 +62,12 @@
       >
         {%- for block in section.blocks -%}
           {%- liquid
+            # A product tile with no product picked is an editor preview only:
+            # shoppers would get an "Example product" card.
+            if block.type == 'product' and block.settings.product == blank and request.design_mode == false
+              continue
+            endif
+
             assign is_large = false
             if forloop.index == large_index
               assign is_large = true
@@ -157,7 +163,7 @@
                       }}
                     {%- endif -%}
                   </div>
-                {%- else -%}
+                {%- elsif request.design_mode -%}
                   <article class="fl-card fl-collage__tile">
                     <div class="fl-card__media">
                       {{ 'product-1' | placeholder_svg_tag: 'fl-card__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
@@ -255,13 +261,13 @@
                     {%- if video_id != blank -%}
                       {%- comment -%}
                         A real link, so the video still opens (on YouTube or
-                        Vimeo) when JavaScript never runs.
+                        Vimeo) when JavaScript never runs. Same tab: with
+                        JavaScript the video plays here, and a new tab would
+                        have to be announced for a case that rarely happens.
                       {%- endcomment -%}
                       <a
                         class="fl-collage__play"
                         href="{{ video_href }}"
-                        target="_blank"
-                        rel="noopener"
                         data-video-play
                       >
                         <span class="fl-collage__play-icon" aria-hidden="true">

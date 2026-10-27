@@ -89,7 +89,8 @@
     "use_h1_only_when_this_is_the": "Use H1 only when this is the main heading of the page.",
     "use_h1_when_this_is_the_main": "Use H1 when this is the main banner of the page.",
     "used_by_the_framed_layouts": "Used by the framed layouts.",
-    "used_when_there_is_more_than_one": "Used when there is more than one announcement."
+    "used_when_there_is_more_than_one": "Used when there is more than one announcement.",
+    "follow_on_shop": "Lets customers follow your store on the Shop app. Requires Shop Pay."
   },
   "labels": {
     "1": "1",
@@ -330,7 +331,7 @@
     "show_second_image_on_hover": "Show second image on hover",
     "show_sku": "Show SKU",
     "show_star_rating": "Show star rating",
-    "show_theme_by_kiosk_credit": "Show \"Theme by KIOSK\" credit",
+    "show_theme_by_kiosk_credit": "Show “Theme by KIOSK” credit",
     "show_unit_labels": "Show unit labels",
     "show_vendor": "Show vendor",
     "show_view_all_button": "Show “View all” button",
@@ -385,7 +386,8 @@
     "white": "White",
     "wishlist_page": "Wishlist page",
     "x_twitter_url": "X (Twitter) URL",
-    "youtube_url": "YouTube URL"
+    "youtube_url": "YouTube URL",
+    "show_follow_on_shop": "Show Follow on Shop"
   },
   "names": {
     "404_page": "404 page",
