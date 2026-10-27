@@ -480,9 +480,16 @@
     color: var(--color-muted);
   }
 
+  /* Phones: the product count drops under the sort list instead of being
+     hidden — it exists nowhere else on the page. */
   @media (max-width: 749px) {
+    .fl-toolbar__end {
+      flex-wrap: wrap;
+    }
+
     .fl-toolbar__count {
-      display: none;
+      flex-basis: 100%;
+      order: 1;
     }
   }
 {% endstylesheet %}

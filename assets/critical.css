@@ -24,7 +24,7 @@ main {
   min-width: 0;
 }
 
-html:has(dialog[scroll-lock][open], details[scroll-lock][open]) {
+html:has(dialog[data-scroll-lock][open], details[data-scroll-lock][open]) {
   overflow: hidden;
 }
 
@@ -49,6 +49,15 @@ input,
 textarea,
 select {
   font: inherit;
+}
+/* Phones: never under 16px in a field, whatever the base font size setting
+   (it goes down to 14px): below that, Safari on iOS zooms the page on focus. */
+@media (max-width: 749px) {
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
 }
 
 p {
@@ -172,6 +181,25 @@ a {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Hover states that move or zoom: none on a touch screen, where a tap would
+   leave the card lifted or zoomed, and none under reduced motion, where the
+   step would still jump. Here, after the section styles, so these win. */
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .fl-card--lift:hover,
+  .fl-collections__link:hover .fl-collections__media img,
+  .fl-blog__item:hover .fl-blog__media img,
+  .fl-collage__tile--link:hover .fl-collage__img,
+  .fl-collage__play:hover .fl-collage__play-icon,
+  .fl-collist__card:hover .fl-collist__img,
+  .fl-featblog__card:hover .fl-featblog__img,
+  .fl-lookbook__item:hover .fl-lookbook__img {
+    transform: none;
+  }
+  .fl-video__poster:hover .fl-video__play {
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -651,6 +679,12 @@ h6 {
 .fl-card--flip:hover .fl-card__img--alt,
 .fl-card--flip:focus-within .fl-card__img--alt {
   opacity: 1;
+}
+/* A tap is not a hover: the second view stays hidden on a touch screen. */
+@media (hover: none) {
+  .fl-card--flip:hover .fl-card__img--alt {
+    opacity: 0;
+  }
 }
 /* Corner comes from the Badges theme setting; the four rules below are toggled
    by the position class written on the card. */

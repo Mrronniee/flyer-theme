@@ -59,7 +59,12 @@
     {%- endif -%}
 
     {%- if section.settings.heading != blank -%}
-      <h1 class="fl-hero__title{{ title_size_class }}">
+      {%- comment -%}
+        h2 by default: the section can be added to any page, which already
+        has its own h1. The home page sets it to h1 (templates/index.json).
+      {%- endcomment -%}
+      {%- assign heading_tag = section.settings.heading_tag | default: 'h2' -%}
+      <{{ heading_tag }} class="fl-hero__title{{ title_size_class }}">
         {%- for line in heading_lines -%}
           {%- assign line_text = line | strip -%}
           {%- if line_text != blank -%}
@@ -71,7 +76,7 @@
             <span class="fl-hero__ln"><span>{{ line_text }}</span></span>{{ ' ' }}
           {%- endif -%}
         {%- endfor -%}
-      </h1>
+      </{{ heading_tag }}>
     {%- endif -%}
 
     {%- if section.settings.text != blank -%}
@@ -438,6 +443,23 @@
       "label": "t:labels.heading",
       "info": "t:info.each_line_of_this_field_becomes_one",
       "default": "Clean lines,\nmade to last."
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "t:labels.heading_level",
+      "info": "t:info.use_h1_when_this_is_the_main",
+      "options": [
+        {
+          "value": "h1",
+          "label": "t:labels.h1"
+        },
+        {
+          "value": "h2",
+          "label": "t:labels.h2"
+        }
+      ],
+      "default": "h2"
     },
     {
       "type": "richtext",

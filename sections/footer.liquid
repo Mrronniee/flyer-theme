@@ -234,13 +234,15 @@
             <a class="fl-footer__credit" href="https://kioskthemes.com/?utm_source=flyer&utm_medium=theme-credit" rel="noopener">{{ 'general.footer.theme_credit' | t }}</a>
           {%- endif -%}
           {%- if show_legal -%}
-            <ul class="fl-footer__legal-menu" role="list">
-              {%- for link in legal_menu.links -%}
-                <li>
-                  <a class="fl-footer__link fl-footer__link--legal" href="{{ link.url }}">{{ link.title | escape }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
+            <nav aria-label="{{ 'general.footer.policies' | t }}">
+              <ul class="fl-footer__legal-menu" role="list">
+                {%- for link in legal_menu.links -%}
+                  <li>
+                    <a class="fl-footer__link fl-footer__link--legal" href="{{ link.url }}">{{ link.title | escape }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </nav>
           {%- endif -%}
         </div>
 

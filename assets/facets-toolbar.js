@@ -23,6 +23,17 @@ class FlCollectionFilters extends HTMLElement {
 
     if (this.form) this.form.addEventListener('change', this.onFormChange);
 
+    // The price filter also applies when focus leaves its two fields, not
+    // only with Enter or Apply; moving from "From" to "To" does not count.
+    this.onFocusOut = (event) => {
+      const row = event.target && event.target.closest ? event.target.closest('.fl-facet__price-row') : null;
+      if (!row) return;
+      if (event.relatedTarget && row.contains(event.relatedTarget)) return;
+      const changed = Array.from(row.querySelectorAll('input')).some((input) => input.value !== input.defaultValue);
+      if (changed) this.submitForm();
+    };
+    this.addEventListener('focusout', this.onFocusOut);
+
     this.facets.forEach((facet) => {
       facet.addEventListener('toggle', () => {
         if (!facet.open) return;
@@ -41,6 +52,7 @@ class FlCollectionFilters extends HTMLElement {
 
   disconnectedCallback() {
     document.removeEventListener('click', this.onDocClick);
+    if (this.onFocusOut) this.removeEventListener('focusout', this.onFocusOut);
     if (this.mq && this.mq.removeEventListener) this.mq.removeEventListener('change', this.onMqChange);
   }
 

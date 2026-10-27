@@ -163,11 +163,18 @@
           "name": {{ 'general.breadcrumbs.home' | t | json }},
           "item": {{ request.origin | json }}
         }
+        {%- comment -%}
+          A product reached without a collection leaves an empty first crumb:
+          the positions are counted, not taken from the loop, so they still
+          run 1, 2, 3 with no gap.
+        {%- endcomment -%}
+        {%- assign crumb_position = 1 -%}
         {%- for name in crumb_names -%}
           {%- if name == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign crumb_position = crumb_position | plus: 1 -%}
           , {
             "@type": "ListItem",
-            "position": {{ forloop.index | plus: 1 }},
+            "position": {{ crumb_position }},
             "name": {{ name | json }},
             "item": {{ request.origin | append: crumb_urls[forloop.index0] | json }}
           }

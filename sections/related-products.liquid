@@ -20,6 +20,7 @@
 
 <fl-related
   class="fl-related"
+  data-error-text="{{ 'products.related.error' | t }}"
   {% if product %}
     data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent={{ section.settings.intent | default: 'related' }}"
   {% endif %}
@@ -92,6 +93,12 @@
 {% stylesheet %}
   .fl-related {
     display: block;
+  }
+
+  .fl-related__error {
+    width: var(--content-width);
+    margin: 24px auto;
+    color: var(--color-muted);
   }
 
   /* Shown only once <fl-related> is defined, which takes the section's own
@@ -212,7 +219,14 @@
                 this.innerHTML = fresh ? fresh.innerHTML : '';
               })
               .catch(() => {
+                // Optional content: the reserved space is released and a
+                // short status line says the suggestions could not load.
                 this.innerHTML = '';
+                const status = document.createElement('p');
+                status.className = 'fl-related__error';
+                status.setAttribute('role', 'status');
+                status.textContent = this.dataset.errorText || '';
+                if (status.textContent) this.appendChild(status);
               });
           };
           if ('IntersectionObserver' in window) {

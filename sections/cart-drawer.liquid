@@ -1271,6 +1271,10 @@
       if (!fresh || !current) return;
       const active = document.activeElement;
       const hadFocus = this.contains(active);
+      // Position of the line that held focus, to land on its neighbour when
+      // that line goes away.
+      const lineBefore = hadFocus && active.closest ? active.closest('.fl-cart__item') : null;
+      const lineIndex = lineBefore ? Array.from(current.querySelectorAll('.fl-cart__item')).indexOf(lineBefore) : -1;
       let focusSelector = null;
       if (hadFocus && active.hasAttribute('data-key')) {
         const kinds = ['data-cart-minus', 'data-cart-plus', 'data-cart-qty', 'data-cart-remove'];
@@ -1289,9 +1293,21 @@
         target.focus();
         return;
       }
-      // The control that had focus is gone (line removed, cart emptied):
-      // re-arm the trap on the first focusable control rather than leaving
-      // focus on <body>, where the next Tab would walk out of the drawer.
+      // The line that had focus is gone: focus goes to the line that took its
+      // place (or the last one), and to the empty-cart link once the cart is
+      // empty; otherwise the trap is re-armed on the first focusable control
+      // rather than leaving focus on <body>.
+      if (lineIndex > -1) {
+        const lines = this.querySelectorAll('.fl-cart__item');
+        const next = lines.length ? lines[Math.min(lineIndex, lines.length - 1)] : null;
+        target = next
+          ? next.querySelector('[data-cart-qty], [data-cart-remove], a[href]')
+          : this.querySelector('.fl-cart__empty a, .fl-cart__empty button');
+        if (target) {
+          target.focus();
+          return;
+        }
+      }
       this.focusPanel();
     }
 

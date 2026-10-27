@@ -1,5 +1,54 @@
 # Changelog
 
+## 1.10.0 - 2026-10-27
+
+### Added
+- **In-store pickup on the product page.** When a location offers local
+  pickup, the product page says whether the selected variant can be picked up
+  there and when it is usually ready, with the other stores in a list. It
+  follows the variant the customer picks.
+- **Follow on Shop in the footer.** A footer setting shows Shopify's Follow on
+  Shop button (stores using Shop Pay). Off by default.
+- **Custom Liquid block on the product page**, for an app snippet or a few
+  lines of code between the other product blocks.
+- **Heading level of the split hero.** H2 by default, so the section can be
+  added to any page without a second H1; the home page sets it to H1.
+
+### Fixed
+- **Search suggestions work with the keyboard and a screen reader.** The
+  search field is a combobox: the arrow keys move through the suggestions,
+  Enter opens the one highlighted, and the result count follows the plural
+  rules of the store language. A failed request now says so.
+- **Empty sections explain themselves in the theme editor** (announcement bar,
+  apps, rich text, multirow, slideshow, trust badges, custom Liquid), and
+  "Example product" or "Blog post" cards are only shown in the editor, never
+  to customers.
+- **The block picked in the theme editor is shown**: a FAQ answer or a
+  collapsible row opens, and a sideways rail scrolls to it.
+- **Media settings reach the product gallery** (border, corner radius, shadow).
+- **Slideshows and the announcement bar** change slides every 5 seconds at
+  the fastest and stop while the browser tab is hidden. The slideshow is
+  announced as a carousel, each slide as "1 of 3".
+- **Hover effects stay put on touch screens and with reduced motion**: a tap
+  no longer leaves a card lifted, zoomed or showing its second image.
+- **The header menu stays on one line.** When it does not fit, the menu
+  button takes over, at any width.
+- **Cart drawer:** after removing a line, focus moves to the next line (or the
+  empty-cart link), and a note that could not be saved is reported, in the
+  drawer and on the cart page.
+- **Collection filters:** the price filter also applies when you leave its
+  fields, and the product count is shown on phones too.
+- **Faster first image** on the collection list page and with an email
+  sign-up banner at the top of the page; card images up to 1200 px wide for
+  the large editorial card; five or six image widths at most.
+- **Default content no longer makes promises for the merchant**: FAQ answers,
+  testimonials and section headings are neutral examples to replace, and the
+  image banner overlay starts at 55% so text stays readable on a light image.
+- Headings left empty fall back to a translated word, FAQ and collapsible rows
+  without a question or text are not rendered, the policies menu is a named
+  navigation, social links say they open a new tab, and the breadcrumb data
+  numbers its steps without a gap.
+
 ## 1.9.3 - 2026-10-17
 
 ### Fixed

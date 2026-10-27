@@ -329,7 +329,7 @@
     class="fl-header__drawer fl-drawer"
     id="FlMenuDrawer"
     data-menu-drawer
-    scroll-lock
+    data-scroll-lock
     aria-label="{{ 'accessibility.main_menu' | t }}"
   >
     <div class="fl-header__drawer-inner">
@@ -511,9 +511,11 @@
     min-width: 0;
   }
 
+  /* One line, never two: when the menu does not fit (a long menu, French
+     labels, 1024px), <fl-header> switches to the burger (.is-collapsed). */
   .fl-header__menu {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 4px 24px;
     margin: 0;
     padding: 0;
@@ -533,7 +535,16 @@
     padding: 10px 2px;
     color: var(--color-ink);
     font-size: 0.9375em;
+    white-space: nowrap;
     text-decoration: none;
+  }
+
+  fl-header.is-collapsed .fl-header__nav {
+    display: none;
+  }
+
+  fl-header.is-collapsed .fl-header__burger {
+    display: inline-flex;
   }
 
   .fl-header__link::after {
@@ -1081,6 +1092,13 @@
 {% javascript %}
   class FlHeader extends HTMLElement {
     connectedCallback() {
+      this.nav = this.querySelector('.fl-header__nav');
+      this.menu = this.nav ? this.nav.querySelector('.fl-header__menu') : null;
+      if (this.nav && this.menu && 'ResizeObserver' in window) {
+        this._resizeObserver = new ResizeObserver(() => this.fitMenu());
+        this._resizeObserver.observe(this);
+        this.fitMenu();
+      }
       this.drawer = this.querySelector('[data-menu-drawer]');
       this.burger = this.querySelector('[data-menu-open]');
       this.cartLink = this.querySelector('[data-cart-link]');
@@ -1174,10 +1192,19 @@
     }
 
     disconnectedCallback() {
+      if (this._resizeObserver) this._resizeObserver.disconnect();
       document.removeEventListener('click', this._onDocClick);
       document.removeEventListener('fl:cart:change', this._onCartChange);
       window.removeEventListener('pageshow', this._onPageShow);
       if (this.account) this.account.removeEventListener('open', this._onAccountOpen, true);
+    }
+
+    // The burger takes over when the menu would overflow its line: measured
+    // with the menu shown (class off), in the same frame, so nothing flickers.
+    fitMenu() {
+      this.classList.remove('is-collapsed');
+      if (getComputedStyle(this.nav).display === 'none') return;
+      if (this.menu.scrollWidth > this.nav.clientWidth + 1) this.classList.add('is-collapsed');
     }
 
     resyncCount() {

@@ -47,7 +47,8 @@
       "about_text": "Share store details, announcements, or brand content with your customers.",
       "newsletter_heading": "Newsletter",
       "newsletter_text": "Subscribe for new arrivals and exclusive offers.",
-      "theme_credit": "Theme by KIOSK"
+      "theme_credit": "Theme by KIOSK",
+      "policies": "Policies"
     },
     "localization": {
       "country_label": "Country/region",
@@ -142,7 +143,8 @@
       }
     },
     "related": {
-      "heading": "You may also like"
+      "heading": "You may also like",
+      "error": "Suggestions couldn’t be loaded."
     },
     "quick_order": {
       "add_all": "Add all to cart",

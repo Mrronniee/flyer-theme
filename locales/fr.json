@@ -47,7 +47,8 @@
       "about_text": "Présentez votre boutique, vos annonces ou votre univers de marque à vos clients.",
       "newsletter_heading": "Infolettre",
       "newsletter_text": "Inscrivez-vous pour recevoir les nouveautés et les offres exclusives.",
-      "theme_credit": "Thème par KIOSK"
+      "theme_credit": "Thème par KIOSK",
+      "policies": "Politiques"
     },
     "localization": {
       "country_label": "Pays/région",
@@ -134,15 +135,16 @@
       "added_to_cart": "Ajouté au panier",
       "adding": "Ajout en cours…",
       "pickup": {
-        "available_at": "Retrait disponible à {{ location }}",
-        "unavailable_at": "Retrait actuellement indisponible à {{ location }}",
+        "available_at": "Retrait disponible : {{ location }}",
+        "unavailable_at": "Retrait actuellement indisponible : {{ location }}",
         "other_locations": "Voir la disponibilité dans les autres magasins",
         "available": "Retrait disponible",
         "unavailable": "Retrait actuellement indisponible"
       }
     },
     "related": {
-      "heading": "Vous aimerez aussi"
+      "heading": "Vous aimerez aussi",
+      "error": "Les suggestions n’ont pas pu être chargées."
     },
     "quick_order": {
       "add_all": "Tout ajouter au panier",

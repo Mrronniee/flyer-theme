@@ -185,6 +185,7 @@
         "height": "viewport",
         "eyebrow": "New season",
         "heading": "Clean lines,\nmade to last.",
+        "heading_tag": "h1",
         "text": "<p>Everyday pieces cut from honest fabrics, made in small batches.</p>",
         "button_label": "Shop the collection",
         "button_link": "shopify://collections/all",
