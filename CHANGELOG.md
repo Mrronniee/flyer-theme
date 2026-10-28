@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.10.2 - 2026-10-28
+
+### Fixed
+- **The focus ring shows on the video play button** of the video section, and
+  on the play button of a video tile in the collage: it was drawn outside the
+  button and cut off by the frame; it is now drawn inside, with a light inner
+  ring so it reads on any poster.
+- **Inactive slideshow dots are easier to see**: they now stand at 3:1 against
+  the background instead of 2.2:1.
+- **The "Sold out" button stays readable**: a disabled button now shows muted
+  text on a light surface instead of fading the whole button.
+- **Form labels are at least 24 px tall**, so the "Quantity" label (a click
+  target for its field) meets the touch target size.
+- **Filter groups are named for screen readers**: each filter's options
+  (availability, price, type…) form a group named after the filter.
+
 ## 1.10.1 - 2026-10-27
 
 ### Fixed

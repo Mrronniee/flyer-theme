@@ -1,4 +1,4 @@
-FLYER 1.10.1 - free Shopify theme by KIOSK
+FLYER 1.10.2 - free Shopify theme by KIOSK
 https://kioskthemes.com
 
 Languages: English and French (switches with your store language).

@@ -90,14 +90,14 @@
               -%}
               <details class="fl-facet" data-facet>
                 <summary class="fl-facet__toggle">
-                  <span class="fl-facet__name">{{ filter.label | escape }}</span>
+                  <span class="fl-facet__name" id="{{ form_id }}-{{ filter.param_name | handleize }}-name">{{ filter.label | escape }}</span>
                   {%- if price_active -%}
                     <span class="fl-facet__badge" aria-hidden="true">1</span>
                     <span class="visually-hidden">{{ 'collections.filters.selected' | t: count: 1 }}</span>
                   {%- endif -%}
                   <svg class="fl-caret" aria-hidden="true" focusable="false" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </summary>
-                <div class="fl-facet__panel">
+                <div class="fl-facet__panel" role="group" aria-labelledby="{{ form_id }}-{{ filter.param_name | handleize }}-name">
                   <p class="fl-facet__note">{{ 'collections.filters.highest_price_html' | t: price: max_price }}</p>
                   <div class="fl-facet__price-row">
                     <div class="fl-facet__price-field">
@@ -143,14 +143,14 @@
             {%- else -%}
               <details class="fl-facet" data-facet>
                 <summary class="fl-facet__toggle">
-                  <span class="fl-facet__name">{{ filter.label | escape }}</span>
+                  <span class="fl-facet__name" id="{{ form_id }}-{{ filter.param_name | handleize }}-name">{{ filter.label | escape }}</span>
                   {%- if filter.active_values.size > 0 -%}
                     <span class="fl-facet__badge" aria-hidden="true">{{ filter.active_values.size }}</span>
                     <span class="visually-hidden">{{ 'collections.filters.selected' | t: count: filter.active_values.size }}</span>
                   {%- endif -%}
                   <svg class="fl-caret" aria-hidden="true" focusable="false" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </summary>
-                <div class="fl-facet__panel">
+                <div class="fl-facet__panel" role="group" aria-labelledby="{{ form_id }}-{{ filter.param_name | handleize }}-name">
                   <ul class="fl-facet__list" role="list">
                     {%- for value in filter.values -%}
                       {%- assign value_id = form_id | append: '-' | append: filter.param_name | handleize | append: '-' | append: forloop.index -%}

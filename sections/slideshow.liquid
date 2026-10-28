@@ -449,7 +449,9 @@
     height: 8px;
     background-color: currentcolor;
     border-radius: 50%;
-    opacity: 0.35;
+    /* 0.6 of the ink keeps an inactive dot above 3:1 on its background
+       (0.35 gave 2.2:1); the active dot stays bigger and full ink. */
+    opacity: 0.6;
     transition:
       opacity 0.2s ease,
       transform 0.2s ease;

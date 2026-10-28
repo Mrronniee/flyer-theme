@@ -235,9 +235,15 @@ a {
 .fl-btn:hover {
   opacity: 0.85;
 }
+/* Disabled ("Sold out"): muted ink on the surface colour instead of an
+   opacity that dropped the label to 1.7:1. */
 .fl-btn:disabled,
 .fl-btn[aria-disabled='true'] {
-  opacity: 0.45;
+  color: var(--color-muted);
+  background: var(--color-surface);
+  border-color: var(--color-line);
+  box-shadow: none;
+  opacity: 1;
   cursor: not-allowed;
 }
 .fl-btn--secondary {
@@ -325,6 +331,8 @@ a {
 }
 .fl-label {
   display: block;
+  /* A label is a click target for its field: 24px tall at least (WCAG 2.5.8). */
+  min-height: 24px;
   margin-bottom: 6px;
   font-size: 0.875em;
   color: var(--color-muted);
