@@ -22,12 +22,20 @@
 
   if cols == '3'
     assign sizes_desktop = '33vw'
+    assign sizes_pct = 33
   else
     assign sizes_desktop = '25vw'
+    assign sizes_pct = 25
   endif
   # Phones: two columns inside the page margins, 12px apart (critical.css).
   assign mobile_inset = settings.min_page_margin | plus: 6
   assign card_sizes = '(max-width: 749px) calc(50vw - ' | append: mobile_inset | append: 'px), (max-width: 989px) 33vw, ' | append: sizes_desktop
+  # Wider than the page width, a contained slot stops growing: cap its size
+  # so a 1440px screen does not fetch images for a 50vw it never gets.
+  assign card_sizes_cap = settings.max_page_width | times: sizes_pct | divided_by: 100
+  assign card_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: card_sizes_cap | append: 'px, ' | append: card_sizes
+  assign editorial_cap = settings.max_page_width | divided_by: 2
+  assign editorial_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: editorial_cap | append: 'px, (max-width: 749px) 100vw, (max-width: 989px) 66vw, 50vw'
 -%}
 
 {%- comment -%}
@@ -73,7 +81,7 @@
           {%- endcomment -%}
           {%- assign this_sizes = card_sizes -%}
           {%- if section.settings.layout == 'editorial' and forloop.first -%}
-            {%- assign this_sizes = '(max-width: 749px) 100vw, (max-width: 989px) 66vw, 50vw' -%}
+            {%- assign this_sizes = editorial_sizes -%}
           {%- endif -%}
           {%- comment -%}
             Only when this section OPENS the page do its first four cards hold
@@ -83,8 +91,15 @@
             (1.8.17). Anywhere else the whole grid stays lazy, as does
             everything after the first row.
           {%- endcomment -%}
-          {%- if section.index == 1 and forloop.index <= 4 -%}
+          {%- comment -%}
+            A phone shows two cards per row: only those two are fetched at
+            high priority; the 3rd and 4th (first row on desktop, below the
+            first screen on a phone) stay eager without stealing priority.
+          {%- endcomment -%}
+          {%- if section.index == 1 and forloop.index <= 2 -%}
             {% render 'product-card', product: product, sizes: this_sizes, loading: 'eager', priority: true %}
+          {%- elsif section.index == 1 and forloop.index <= 4 -%}
+            {% render 'product-card', product: product, sizes: this_sizes, loading: 'eager' %}
           {%- else -%}
             {% render 'product-card', product: product, sizes: this_sizes %}
           {%- endif -%}

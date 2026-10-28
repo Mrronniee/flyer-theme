@@ -10,6 +10,10 @@
     assign card_classes = card_classes | append: ' fl-collections__link--card color-'
     assign card_classes = card_classes | append: settings.collection_card_color_scheme
   endif
+  # Wider than the page width, the slot stops growing: cap the size so a
+  # wide screen does not fetch images for a width it never gets.
+  assign coll_sizes_cap = settings.max_page_width | times: 33 | divided_by: 100
+  assign coll_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: coll_sizes_cap | append: 'px, (max-width: 749px) 50vw, 33vw'
 -%}
 
 <div
@@ -48,13 +52,13 @@
                 {{
                   collection.featured_image
                   | image_url: width: 900
-                  | image_tag: widths: '300, 450, 600, 900', sizes: '(max-width: 749px) 50vw, 33vw', alt: collection.featured_image.alt, loading: img_loading, fetchpriority: img_priority
+                  | image_tag: widths: '300, 450, 600, 900', sizes: coll_sizes, alt: collection.featured_image.alt, loading: img_loading, fetchpriority: img_priority
                 }}
               {%- elsif collection.products.first.featured_image -%}
                 {{
                   collection.products.first.featured_image
                   | image_url: width: 900
-                  | image_tag: widths: '300, 450, 600, 900', sizes: '(max-width: 749px) 50vw, 33vw', alt: collection.title, loading: img_loading, fetchpriority: img_priority
+                  | image_tag: widths: '300, 450, 600, 900', sizes: coll_sizes, alt: collection.title, loading: img_loading, fetchpriority: img_priority
                 }}
               {%- else -%}
                 {{ 'collection-1' | placeholder_svg_tag: 'fl-collections__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}

@@ -21,6 +21,11 @@
       assign sizes_desktop = '33vw'
   endcase
   assign img_sizes = '(max-width: 749px) 100vw, (max-width: 989px) 50vw, ' | append: sizes_desktop
+  # Wider than the page width, a contained slot stops growing: cap its size
+  # so a 1440px screen does not fetch images for a 50vw it never gets.
+  assign img_pct = sizes_desktop | remove: 'vw' | plus: 0
+  assign img_sizes_cap = settings.max_page_width | times: img_pct | divided_by: 100
+  assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, ' | append: img_sizes
 
   comment
     Column headings sit under the section heading. With no section heading

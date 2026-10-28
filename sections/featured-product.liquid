@@ -31,6 +31,10 @@
       endif
     endfor
   endunless
+  # Wider than the page width, the slot stops growing: cap the size so a
+  # wide screen does not fetch images for a width it never gets.
+  assign media_sizes_cap = settings.max_page_width | times: 50 | divided_by: 100
+  assign media_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: media_sizes_cap | append: 'px, (max-width: 989px) 100vw, 50vw'
 -%}
 
 {%- comment -%}
@@ -111,13 +115,19 @@
                       | image_url: width: 1400
                       | image_tag:
                         widths: '400, 600, 800, 1000, 1400',
-                        sizes: '(max-width: 989px) 100vw, 50vw',
+                        sizes: media_sizes,
                         alt: media_alt,
                         loading: load,
                         fetchpriority: priority
                     }}
                   {%- else -%}
-                    {%- render 'media-player', media: media, priority: media_first -%}
+                    {%- liquid
+                      assign media_hidden = true
+                      if forloop.first
+                        assign media_hidden = false
+                      endif
+                      render 'media-player', media: media, priority: media_first, hidden: media_hidden
+                    -%}
                   {%- endif -%}
                 </div>
               {%- endfor -%}
@@ -841,6 +851,11 @@
           this.querySelectorAll('[data-media-item]').forEach((item) => {
             if (item !== target && !item.hidden) this.pauseMedia(item);
             item.hidden = item !== target;
+          });
+          // A video on a hidden slide waits for its poster (media-player).
+          target.querySelectorAll('video[data-poster]').forEach((video) => {
+            video.poster = video.dataset.poster;
+            video.removeAttribute('data-poster');
           });
           if (!this.thumbs) return;
           this.thumbs.forEach((button) => {

@@ -12,6 +12,10 @@
     assign card_classes = card_classes | append: ' fl-blog__item--card color-'
     assign card_classes = card_classes | append: settings.blog_card_color_scheme
   endif
+  # Wider than the page width, the slot stops growing: cap the size so a
+  # wide screen does not fetch images for a width it never gets.
+  assign article_sizes_cap = settings.max_page_width | times: 33 | divided_by: 100
+  assign article_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: article_sizes_cap | append: 'px, (max-width: 749px) 100vw, (max-width: 989px) 50vw, 33vw'
 -%}
 
 <div class="fl-blog">
@@ -42,7 +46,7 @@
                   | image_url: width: 1080
                   | image_tag:
                     widths: '360, 540, 720, 1080',
-                    sizes: '(max-width: 749px) 100vw, (max-width: 989px) 50vw, 33vw',
+                    sizes: article_sizes,
                     alt: article.image.alt,
                     loading: img_loading
                 }}

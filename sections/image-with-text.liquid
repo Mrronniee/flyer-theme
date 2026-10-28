@@ -15,6 +15,9 @@
             assign img_load = 'eager'
             assign img_priority = 'high'
           endif
+          # Half of the page width at most: wider screens do not widen the slot.
+          assign img_sizes_cap = settings.max_page_width | divided_by: 2
+          assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, (max-width: 749px) 100vw, 50vw'
         -%}
         {%- if section.settings.image -%}
           {{
@@ -22,7 +25,7 @@
             | image_url: width: 1600
             | image_tag:
               widths: '400, 600, 800, 1000, 1200, 1600',
-              sizes: '(max-width: 749px) 100vw, 50vw',
+              sizes: img_sizes,
               class: 'fl-imgtext__img',
               alt: section.settings.image.alt,
               loading: img_load,

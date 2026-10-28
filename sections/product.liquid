@@ -24,6 +24,10 @@
       endif
     endfor
   endunless
+  # Wider than the page width, the slot stops growing: cap the size so a
+  # wide screen does not fetch images for a width it never gets.
+  assign gallery_sizes_cap = settings.max_page_width | times: 55 | divided_by: 100
+  assign gallery_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: gallery_sizes_cap | append: 'px, (max-width: 989px) 100vw, 55vw'
 -%}
 
 <fl-product
@@ -67,10 +71,16 @@
                 {{
                   media.preview_image
                   | image_url: width: 1600
-                  | image_tag: widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(max-width: 989px) 100vw, 55vw', alt: media_alt, loading: load, fetchpriority: priority
+                  | image_tag: widths: '400, 600, 800, 1000, 1200, 1600', sizes: gallery_sizes, alt: media_alt, loading: load, fetchpriority: priority
                 }}
               {%- else -%}
-                {%- render 'media-player', media: media, priority: forloop.first -%}
+                {%- liquid
+                  assign media_hidden = true
+                  if forloop.first
+                    assign media_hidden = false
+                  endif
+                  render 'media-player', media: media, priority: forloop.first, hidden: media_hidden
+                -%}
               {%- endif -%}
             </div>
           {%- endfor -%}
@@ -907,6 +917,11 @@
           this.querySelectorAll('[data-media-item]').forEach((item) => {
             if (item !== target && !item.hidden) this.pauseMedia(item);
             item.hidden = item !== target;
+          });
+          // A video on a hidden slide waits for its poster (media-player).
+          target.querySelectorAll('video[data-poster]').forEach((video) => {
+            video.poster = video.dataset.poster;
+            video.removeAttribute('data-poster');
           });
           if (!this.thumbs) return;
           this.thumbs.forEach((button) => {

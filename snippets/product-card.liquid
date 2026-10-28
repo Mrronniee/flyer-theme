@@ -32,6 +32,8 @@
   # .fl-product-grid), so a card is half the screen minus margin + 6px.
   assign mobile_inset = settings.min_page_margin | plus: 6
   assign default_sizes = '(max-width: 749px) calc(50vw - ' | append: mobile_inset | append: 'px), (max-width: 989px) 33vw, 25vw'
+  assign default_sizes_cap = settings.max_page_width | divided_by: 4
+  assign default_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: default_sizes_cap | append: 'px, ' | append: default_sizes
   assign img_sizes = sizes | default: default_sizes
   assign img_widths = '360, 540, 720, 900, 1200'
 
@@ -62,7 +64,15 @@
     when 'vertical-lift'
       assign card_classes = card_classes | append: ' fl-card--lift'
     when 'second-image'
-      if product.media.size > 1
+      # The second view is the next PHOTO: a video or 3D thumbnail (16:9,
+      # cropped into the card ratio) came out blurred at the card's size.
+      for card_media in product.media
+        if card_media.media_type == 'image' and card_media.id != product.featured_media.id
+          assign alt_image = card_media.preview_image
+          break
+        endif
+      endfor
+      if alt_image
         assign card_classes = card_classes | append: ' fl-card--flip'
       endif
   endcase
@@ -104,7 +114,7 @@
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag: 'fl-card__placeholder' | replace: '<svg ', '<svg aria-hidden="true" focusable="false" ' }}
     {%- endif -%}
-    {%- if settings.animations_hover_elements == 'second-image' and product.media.size > 1 -%}
+    {%- if alt_image -%}
       {%- comment -%}
         Second view, shown flat on hover (no fade). A touch screen has no
         hover, so the <source> for (hover: none) hands it a 1 x 1 transparent
@@ -114,7 +124,7 @@
       <picture>
         <source media="(hover: none)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
         {{-
-          product.media[1].preview_image
+          alt_image
           | image_url: width: 1200
           | image_tag: widths: img_widths, sizes: img_sizes, alt: '', loading: 'lazy', class: 'fl-card__img--alt', aria-hidden: 'true'
         -}}

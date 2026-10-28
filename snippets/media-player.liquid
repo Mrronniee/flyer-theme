@@ -9,9 +9,13 @@
     (enablejsapi for YouTube; Vimeo listens by default).
   - When the media is the first one on screen at load (priority), its poster is
     the largest paint: it is preloaded with a high fetch priority.
+  - A hosted video on a hidden slide (hidden) keeps its poster in data-poster:
+    a browser fetches a poster even for a video it never shows (228 KB on a
+    product page). The gallery sets it when the slide is shown.
 
   @param {object} media - a product media whose media_type is not 'image'
   @param {boolean} [priority] - true for the first media of the first section
+  @param {boolean} [hidden] - true when the media starts on a hidden slide
 
   @example
   {% render 'media-player', media: media, priority: true %}
@@ -30,6 +34,10 @@
     else
       assign player = media | media_tag: image_size: '1200x'
   endcase
+
+  if hidden and media.media_type == 'video'
+    assign player = player | replace: ' poster="', ' data-poster="'
+  endif
 
   assign poster = ''
   if priority and player contains 'poster="'

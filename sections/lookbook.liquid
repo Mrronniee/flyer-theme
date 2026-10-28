@@ -14,6 +14,10 @@
   # margins, so it is narrower than 78vw.
   assign look_inset = settings.min_page_margin | times: 2
   assign img_sizes = '(max-width: 749px) calc((100vw - ' | append: look_inset | append: 'px) * 0.78), (max-width: 989px) 50vw, 25vw'
+  # Wider than the page width, a contained slot stops growing: cap its size
+  # so a 1440px screen does not fetch images for a 50vw it never gets.
+  assign img_sizes_cap = settings.max_page_width | times: 25 | divided_by: 100
+  assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, ' | append: img_sizes
 -%}
 
 {%- comment -%}

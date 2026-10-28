@@ -17,6 +17,18 @@
     else
       assign media_sizes = '(max-width: 749px) 100vw, 50vw'
   endcase
+  case img_width
+    when 'small'
+      assign media_pct = 33
+    when 'large'
+      assign media_pct = 67
+    else
+      assign media_pct = 50
+  endcase
+  # Wider than the page width, a contained slot stops growing: cap its size
+  # so a 1440px screen does not fetch images for a 50vw it never gets.
+  assign media_sizes_cap = settings.max_page_width | times: media_pct | divided_by: 100
+  assign media_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: media_sizes_cap | append: 'px, ' | append: media_sizes
 
   case section.settings.desktop_content_position
     when 'top'

@@ -24,10 +24,16 @@
   endif
   if section.settings.cols_desktop == '3'
     assign sizes_desktop = '33vw'
+    assign sizes_pct = 33
   else
     assign sizes_desktop = '25vw'
+    assign sizes_pct = 25
   endif
   assign card_sizes = '(max-width: 749px) ' | append: sizes_mobile | append: ', (max-width: 989px) 33vw, ' | append: sizes_desktop
+  # Wider than the page width, a contained slot stops growing: cap its size
+  # so a 1440px screen does not fetch images for a 50vw it never gets.
+  assign card_sizes_cap = settings.max_page_width | times: sizes_pct | divided_by: 100
+  assign card_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: card_sizes_cap | append: 'px, ' | append: card_sizes
 -%}
 
 <div
@@ -75,7 +81,17 @@
           The first row sits above the fold and holds the LCP image, so those
           cards load eagerly; everything below stays lazy.
         {%- endcomment -%}
+        {%- comment -%}
+          Liquid cannot know the screen width: the first row counts the fewer
+          columns of desktop and phone, so a phone (2 columns) does not fetch
+          the 3rd and 4th cards eagerly, at high priority, below its first
+          screen.
+        {%- endcomment -%}
         {%- assign eager_count = section.settings.cols_desktop | times: 1 -%}
+        {%- assign cols_mobile_count = section.settings.cols_mobile | times: 1 -%}
+        {%- if cols_mobile_count < eager_count -%}
+          {%- assign eager_count = cols_mobile_count -%}
+        {%- endif -%}
         {%- for product in collection.products -%}
           {%- if forloop.index <= eager_count -%}
             {% render 'product-card',

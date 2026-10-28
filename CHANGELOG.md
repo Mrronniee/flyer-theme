@@ -20,6 +20,18 @@
   exists), the cart drawer, the cart page and the quick order list show their
   translated "Something went wrong" message instead of Shopify's English
   developer text. Stock refusals still explain how many items are available.
+- **Lighter product pages with a video**: a video that is not the first media
+  no longer downloads its poster image until it is shown.
+- **Phones fetch only the cards they show first** on collection pages and in
+  the featured collection: the third and fourth cards of the desktop row no
+  longer load at high priority below a phone's first screen.
+- **Sharper hover image on product cards**: the second view is now the next
+  photo of the product, never a video thumbnail cropped into the card.
+- **Right-sized images on wide screens**: image sizes stop growing past the
+  page width (product gallery, featured product, image with text, collapsible
+  content, product cards, collection list, collections, blog, multicolumn,
+  multirow, lookbook, featured blog), so a large screen no longer downloads
+  wider files than it displays.
 
 ## 1.10.1 - 2026-10-27
 
