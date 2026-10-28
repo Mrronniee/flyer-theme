@@ -287,7 +287,11 @@
       display: flex;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
-      padding-block-end: 8px;
+      /* Room for the cards' focus ring, which this scrolling row would
+         otherwise clip; the negative margin keeps the cards aligned. */
+      margin-inline: -4px;
+      padding: 4px 4px 8px;
+      scroll-padding-inline: 4px;
     }
 
     .fl-collist__grid--swipe .fl-collist__item {

@@ -217,11 +217,17 @@
   }
 
   /* The button fills .fl-video__stage, whose overflow: hidden clipped the
-     global ring drawn 2px outside it. Drawn inside instead, with a ring in
-     the background colour so it shows on a dark or a light poster. */
+     global ring drawn 2px outside it. Drawn inside instead, over a band in
+     the background colour: the inset shadow is painted under the button's
+     children, so the image is clipped back to let that band show, and the
+     ring reads on a dark or a light poster. */
   .fl-video__poster:focus-visible {
     outline-offset: -4px;
     box-shadow: inset 0 0 0 6px var(--color-bg);
+  }
+
+  .fl-video__poster:focus-visible > :is(.fl-video__img, .fl-video__ph) {
+    clip-path: inset(6px);
   }
 
   .fl-video__img {
@@ -274,6 +280,12 @@
     width: 100%;
     height: 100%;
     border: 0;
+  }
+
+  /* The player fills the stage, which clips: load() gives it the focus, so
+     the ring is drawn inside it. */
+  .fl-video__stage :is(iframe, video):focus-visible {
+    outline-offset: -4px;
   }
 {% endstylesheet %}
 

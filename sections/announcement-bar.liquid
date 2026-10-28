@@ -105,8 +105,11 @@
     border-bottom: 1px solid var(--color-line);
   }
 
+  /* The bar is the top of the page and the header is painted over its
+     bottom edge: the ring is drawn inside the link and the buttons. */
   .fl-announce :focus-visible {
     outline-color: currentcolor;
+    outline-offset: -4px;
   }
 
   .fl-announce__inner {

@@ -327,6 +327,15 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+
+    /* A link the merchant put in the text stays reachable with Tab: once it
+       has the focus, the text is shown whole so the link and its ring are
+       not clipped. */
+    .fl-hero__text:focus-within {
+      display: block;
+      -webkit-line-clamp: unset;
+      overflow: visible;
+    }
   }
 
   /* Landscape phones: two lines of title and the buttons, nothing else. */

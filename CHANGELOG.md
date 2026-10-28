@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.10.3 - 2026-10-28
+
+### Fixed
+- **The focus ring is no longer cut off** where a frame, a scrolling area or
+  the page edge used to clip it: the video player once it starts, the
+  announcement bar's link and buttons, the menu drawer's links, the quick
+  order list's fields, the cards of the collection list in swipe mode, the
+  product media players (video, 3D model, embed) and the collage's video.
+- **The video play button's focus ring reads on any poster**: the poster
+  image now steps back from the edge while the button has the focus, so the
+  light band under the ring shows.
+- **A link in the hero text stays visible with the keyboard** on short
+  screens (landscape phones): the trimmed text opens in full while the link
+  has the focus.
+
 ## 1.10.2 - 2026-10-28
 
 ### Fixed

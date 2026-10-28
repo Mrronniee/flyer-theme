@@ -424,6 +424,12 @@ a {
   box-shadow: var(--media-shadow);
 }
 
+/* A player that fills a clipping media frame takes the focus itself (video
+   controls, a 3D model, an embed): its ring is drawn inside it. */
+.fl-media :is(video, iframe, model-viewer):focus-visible {
+  outline-offset: -4px;
+}
+
 /* Content containers > border / radius / shadow */
 .fl-box {
   border: var(--box-border-width, 0) solid

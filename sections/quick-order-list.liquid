@@ -228,6 +228,9 @@
   .fl-qol__scroll {
     position: relative;
     overflow-x: auto;
+    /* Room for the focus ring of the fields and links at the table's edges,
+       which this scrolling area would otherwise clip. */
+    padding-inline: 4px;
   }
 
   .fl-qol__table {
