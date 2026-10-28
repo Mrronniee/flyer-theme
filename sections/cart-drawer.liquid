@@ -1155,8 +1155,14 @@
           let message = this.dataset.errorText;
           try {
             const data = await response.json();
-            if (data && data.description) message = data.description;
-            else if (data && typeof data.errors === 'string') message = data.errors;
+            // Only a 422 refusal (stock, purchase limit) carries a sentence
+            // for the customer, in the storefront language. Any other
+            // description is a developer message ("no valid id or line
+            // parameter"), in English: keep the translated fallback.
+            if (response.status === 422 && data) {
+              if (data.description && data.description !== data.message) message = data.description;
+              else if (typeof data.errors === 'string') message = data.errors;
+            }
           } catch (error) {
             // keep the generic fallback message
           }
@@ -1209,8 +1215,14 @@
           message = this.dataset.errorText;
           try {
             const data = await response.json();
-            if (data && data.description) message = data.description;
-            else if (data && typeof data.errors === 'string') message = data.errors;
+            // Only a 422 refusal (stock, purchase limit) carries a sentence
+            // for the customer, in the storefront language. Any other
+            // description is a developer message ("no valid id or line
+            // parameter"), in English: keep the translated fallback.
+            if (response.status === 422 && data) {
+              if (data.description && data.description !== data.message) message = data.description;
+              else if (typeof data.errors === 'string') message = data.errors;
+            }
           } catch (error) {
             // keep the generic fallback message
           }

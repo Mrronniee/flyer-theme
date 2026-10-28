@@ -873,7 +873,12 @@
             html = data.sections ? data.sections[this.dataset.sectionId] : null;
           } else {
             if (!error) {
-              error = (data && data.description) || this.dataset.errorText;
+              // Only a 422 refusal (stock) has a customer sentence; any other
+              // description is a developer message in English.
+              error =
+                response.status === 422 && data && data.description && data.description !== data.message
+                  ? data.description
+                  : this.dataset.errorText;
               errorKey = key;
             }
             html = null;

@@ -15,6 +15,11 @@
   target for its field) meets the touch target size.
 - **Filter groups are named for screen readers**: each filter's options
   (availability, price, type…) form a group named after the filter.
+- **No technical message in the cart**: when the store refuses a cart change
+  for a reason that is not meant for customers (a line that no longer
+  exists), the cart drawer, the cart page and the quick order list show their
+  translated "Something went wrong" message instead of Shopify's English
+  developer text. Stock refusals still explain how many items are available.
 
 ## 1.10.1 - 2026-10-27
 

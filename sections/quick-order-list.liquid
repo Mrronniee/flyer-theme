@@ -470,7 +470,11 @@
               let message = this.dataset.errorText;
               try {
                 const data = await response.json();
-                if (data && data.description) message = data.description;
+                // Only a 422 refusal (stock) has a customer sentence; any
+                // other description is a developer message in English.
+                if (response.status === 422 && data && data.description && data.description !== data.message) {
+                  message = data.description;
+                }
               } catch (error) {
                 // keep the generic fallback message
               }
