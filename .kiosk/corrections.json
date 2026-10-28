@@ -603,6 +603,102 @@
       "ou": "sections/image-with-text.liquid:14",
       "commit": "5b79ada",
       "raison": "eager et fetchpriority high si section.index == 1 dans image-with-text, featured-product, poster de video, multirow, multicolumn, lookbook, collection-list (1re rangée, high sur la 1re image), et aussi featured-blog et collapsible-content ; premier média vidéo ou 3D de la fiche : poster préchargé en fetchpriority high (snippets/media-player.liquid)."
+    },
+    {
+      "id": "complement-09beb346",
+      "version": "1.10.3",
+      "etat": "corrige",
+      "ou": "sections/video.liquid:287",
+      "commit": "2f0ee04",
+      "raison": "Le lecteur inséré par load() (video/iframe, tabindex 0 et focus) remplit .fl-video__stage, qui rogne : .fl-video__stage :is(iframe, video):focus-visible { outline-offset: -4px } trace l'anneau dedans."
+    },
+    {
+      "id": "complement-7fff4cd7",
+      "version": "1.10.3",
+      "etat": "corrige",
+      "ou": "sections/announcement-bar.liquid:110",
+      "commit": "2f0ee04",
+      "raison": "outline-offset: -4px ajouté à .fl-announce :focus-visible : l'anneau du lien pleine barre et des boutons précédent/suivant/pause est tracé à l'intérieur, plus hors page ni sous l'en-tête."
+    },
+    {
+      "id": "complement-96db8a6d",
+      "version": "1.10.3",
+      "etat": "corrige",
+      "ou": "sections/video.liquid:229",
+      "commit": "2f0ee04",
+      "raison": ".fl-video__poster:focus-visible > :is(.fl-video__img, .fl-video__ph) { clip-path: inset(6px) } : l'image (enfant direct du bouton, l.83-95) recule de 6 px au focus, la bande inset 0 0 0 6px var(--color-bg) peinte sous elle devient visible sous l'anneau rentré à -4px."
+    },
+    {
+      "id": "complement-6fba1fbc",
+      "version": "1.10.3",
+      "etat": "corrige",
+      "ou": "sections/hero-split.liquid:334",
+      "commit": "2f0ee04",
+      "raison": "Dans @media (max-height:620px) and (min-width:560px) : .fl-hero__text:focus-within { display:block; -webkit-line-clamp:unset; overflow:visible } ; la même règle couvre la media query à 460 px (même sélecteur, line-clamp 1)."
+    },
+    {
+      "id": "complement-f32c7b1b",
+      "version": "1.10.3",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:948",
+      "commit": "2f0ee04",
+      "raison": ".fl-header__drawer-link:focus-visible, .fl-header__drawer-sublink:focus-visible { outline-offset: -2px } (les <summary> portent .fl-header__drawer-link, sous-liens imbriqués compris) : l'anneau reste dans .fl-header__drawer-body, qui rogne en largeur."
+    },
+    {
+      "id": "complement-9c45ee5d",
+      "version": "1.10.3",
+      "etat": "corrige",
+      "ou": "sections/quick-order-list.liquid:228",
+      "commit": "2f0ee04",
+      "raison": ".fl-qol__scroll reçoit padding-inline: 4px : le champ de quantité, le bouton sans JS et le titre sans image ne touchent plus les bords de la zone défilante."
+    },
+    {
+      "id": "complement-a05d0198",
+      "version": "1.10.3",
+      "etat": "corrige",
+      "ou": "sections/collection-list.liquid:285",
+      "commit": "2f0ee04",
+      "raison": ".fl-collist__grid--swipe : padding 4px 4px 8px, margin-inline -4px (alignement gardé ; marge de page minimale 12 px, config/settings_schema.json:192) et scroll-padding-inline 4px pour que l'aimantation ne recolle pas la carte au bord."
+    },
+    {
+      "id": "complement-90d9171d",
+      "version": "1.10.3",
+      "etat": "corrige",
+      "ou": "assets/critical.css:429",
+      "commit": "2f0ee04",
+      "raison": ".fl-media :is(video, iframe, model-viewer):focus-visible { outline-offset: -4px } (fiche produit et produit vedette, seuls fichiers à lecteur dans .fl-media) et .fl-collage__frame:focus-visible { outline-offset: -4px } (sections/collage.liquid:461) : appliqué sans attendre la mesure au rendu, sans effet hors de ces lecteurs."
+    },
+    {
+      "id": "code-puces-a-3-1-anneau-de-focus-non-rogne-cases-en-serie-groupee",
+      "version": "1.10.3",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:933",
+      "commit": "2f0ee04",
+      "raison": "Les deux anneaux relevés (tiroir l.364 et lecteur vidéo l.270) sont rentrés en 1.10.3 ; la puce pâle de l.927 : l'état aria-current était déjà souligné par une règle voisine (contrôle qui juge chaque règle seule), couleur et soulignement réunis dans une règle sans changer le rendu. verifier-theme.py complet au commit 2f0ee04 : code 0, 0 ALERTE, la ligne n'est plus relevée."
+    },
+    {
+      "id": "audit-theme-bilingue-checker-resume@1.10.1-2d6b043-20261027",
+      "version": "1.10.3",
+      "etat": "pas_un_defaut",
+      "ou": "snippets/product-card.liquid:157",
+      "commit": "2f0ee04",
+      "raison": "Le thème rend product.title tel que la boutique le donne (l.157, 166, 174) ; « Carte cadeau KIOSK » n'existe dans aucun fichier du thème (grep sur .liquid et .json, 0). Remesuré le 28/10/2026 sur /en/collections/all (preview 195174072646, schema 1.10.1, HTTP 200) : le titre français est toujours là, 6 occurrences dans le HTML. C'est le titre source du produit de test gid Product/15784370372934 (handle carte-cadeau-kiosk) : à écrire en anglais dans l'admin de la boutique, le français en traduction, ce que cette session ne peut pas faire."
+    },
+    {
+      "id": "audit-theme-bilingue-checker-bibliotheque@1.10.1-2d6b043-20261027",
+      "version": "1.10.3",
+      "etat": "pas_un_defaut",
+      "ou": "snippets/product-card.liquid:157",
+      "commit": "2f0ee04",
+      "raison": "Le thème rend product.title tel que la boutique le donne (l.157, 166, 174) ; « Carte cadeau KIOSK » n'existe dans aucun fichier du thème (grep sur .liquid et .json, 0). Remesuré le 28/10/2026 sur /en/collections/all (preview 195174072646, schema 1.10.1, HTTP 200) : le titre français est toujours là, 6 occurrences dans le HTML. C'est le titre source du produit de test gid Product/15784370372934 (handle carte-cadeau-kiosk) : à écrire en anglais dans l'admin de la boutique, le français en traduction, ce que cette session ne peut pas faire."
+    },
+    {
+      "id": "audit-theme-editeur-checker-bibliotheque@1.10.1-2d6b043-20261027",
+      "version": "1.10.3",
+      "etat": "pas_un_defaut",
+      "ou": ".kiosk/audits.json (theme-editeur-checker, couverture.bibliotheque)",
+      "commit": "2f0ee04",
+      "raison": "Le verdict 1.10.1 compte 0 ALERTE : « 9 ALERTE évitées, 0 retenue » disait que les 9 presets candidats (apps, contact, custom-liquid, disclosures, featured-collection, page-content, related-products, video, wishlist) ont une branche de repli (placeholder_svg_tag / request.design_mode) et ne sont pas des défauts. Mesure réécrite en « 9 candidats écartés, aucun retenu : 0 ALERTE », mêmes version, commit et reprise ; registre-audits.alertes_de rend désormais ([], [])."
     }
   ]
 }
