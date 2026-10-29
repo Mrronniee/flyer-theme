@@ -699,6 +699,190 @@
       "ou": ".kiosk/audits.json (theme-editeur-checker, couverture.bibliotheque)",
       "commit": "2f0ee04",
       "raison": "Le verdict 1.10.1 compte 0 ALERTE : « 9 ALERTE évitées, 0 retenue » disait que les 9 presets candidats (apps, contact, custom-liquid, disclosures, featured-collection, page-content, related-products, video, wishlist) ont une branche de repli (placeholder_svg_tag / request.design_mode) et ne sont pas des défauts. Mesure réécrite en « 9 candidats écartés, aucun retenu : 0 ALERTE », mêmes version, commit et reprise ; registre-audits.alertes_de rend désormais ([], [])."
+    },
+    {
+      "id": "mesure-5c085c01@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "snippets/focus-into-view.liquid:53",
+      "commit": "61857f8",
+      "raison": "Cause mesurée (a11y.cjs sur la démo, 29/10) : au Tab, le navigateur ne fait défiler que le minimum (curseur du textarea, case radio de 1 px, bord de la zone .fl-qol__scroll) et laisse l'élément à moitié hors de l'écran ou de sa zone (pointsHorsEcran, coupePar). Nouveau snippet global : au focusin clavier, chaque zone qui défile et la page amènent l'élément entier (l'étiquette pour une case masquée), scroll-padding respecté ; scroll-padding-inline 4px sur .fl-qol__scroll. Prouvé par a11y.cjs avec le script injecté : products/field-jacket et pages/flyer-contact en EN/FR à 200 % et 400 % : 0 arrêt masqué sur 260 (avant : #Option-…-2-1 visible 0,67, pointsHorsEcran 3)."
+    },
+    {
+      "id": "mesure-e0f954b7@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "snippets/focus-into-view.liquid:53",
+      "commit": "61857f8",
+      "raison": "Cause mesurée (a11y.cjs sur la démo, 29/10) : au Tab, le navigateur ne fait défiler que le minimum (curseur du textarea, case radio de 1 px, bord de la zone .fl-qol__scroll) et laisse l'élément à moitié hors de l'écran ou de sa zone (pointsHorsEcran, coupePar). Nouveau snippet global : au focusin clavier, chaque zone qui défile et la page amènent l'élément entier (l'étiquette pour une case masquée), scroll-padding respecté ; scroll-padding-inline 4px sur .fl-qol__scroll. Prouvé par a11y.cjs avec le script injecté : pages/flyer-contact EN/FR 200 % et 400 % : 0 arrêt masqué (avant : #FlContactBody visible 0,33, pointsHorsEcran 6)."
+    },
+    {
+      "id": "mesure-8c18c227@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "snippets/focus-into-view.liquid:53 ; sections/quick-order-list.liquid:235",
+      "commit": "61857f8",
+      "raison": "Cause mesurée (a11y.cjs sur la démo, 29/10) : au Tab, le navigateur ne fait défiler que le minimum (curseur du textarea, case radio de 1 px, bord de la zone .fl-qol__scroll) et laisse l'élément à moitié hors de l'écran ou de sa zone (pointsHorsEcran, coupePar). Nouveau snippet global : au focusin clavier, chaque zone qui défile et la page amènent l'élément entier (l'étiquette pour une case masquée), scroll-padding respecté ; scroll-padding-inline 4px sur .fl-qol__scroll. Prouvé par a11y.cjs avec le script injecté : pages/flyer-all-sections EN/FR à 320 : arretsMasques 0, 32 a.fl-qol__title entièrement visibles (avant : 15 par langue, visible 0,33 coupePar div.fl-qol__scroll ou 0,67)."
+    },
+    {
+      "id": "mesure-aecb6df6@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "defaut_outil",
+      "ou": "sections/header.liquid:482",
+      "commit": "61857f8",
+      "raison": "Le lien « Account » est routes.account_login_url, l'adresse que Shopify donne aux nouveaux comptes clients : /customer_authentication/redirect?locale=en&region_country=FR. Elle porte la langue (locale=en) et Shopify sert la connexion en anglais ; le thème ne choisit pas ce chemin. parcours.cjs liensLangue (RX_HORS, l. 1596) écarte /account mais pas /customer_authentication : à ajouter côté outils."
+    },
+    {
+      "id": "mesure-38f46271@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "sections/cart.liquid:914",
+      "commit": "61857f8",
+      "raison": "Hors ligne, le fetch de /cart/change.js lève une exception : le champ gardait la quantité tapée (3 contre 2 dans /cart.js). Désormais restore() remet chaque champ à sa quantité rendue (defaultValue) et l'événement online relit le panier (resync, l. 729)."
+    },
+    {
+      "id": "mesure-7d53f554@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "sections/cart.liquid:972",
+      "commit": "61857f8",
+      "raison": "showError écrivait d'abord le message visible sous la ligne, puis la région role=status 60 ms plus tard ; au 2e échec (même texte), le message visible était noté sans annonce. La région annoncée est maintenant écrite d'abord, et le message de la ligne juste après, dans le même tour."
+    },
+    {
+      "id": "mesure-9a2d2abb@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "locales/en.default.json:225 ; locales/fr.json:225",
+      "commit": "61857f8",
+      "raison": "Le message d'échec existait déjà (role=status, snippets/search-overlay.liquid:675), mais « Suggestions are unavailable right now » / « indisponibles » ne disait pas l'échec. Nouveau libellé : « Suggestions couldn’t load… » / « Les suggestions n’ont pas pu se charger… »."
+    },
+    {
+      "id": "mesure-39da909e@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:1284",
+      "commit": "61857f8",
+      "raison": "fitMenu ne se relançait que quand <fl-header> changeait de taille : des entrées ajoutées au menu (ou la police web arrivée en retard) le faisaient déborder sans repli. Le ResizeObserver suit aussi le menu, fitMenu repasse après document.fonts.ready et compare aussi nav.scrollWidth. Sonde sur la démo, menu porté à 8 entrées FR à 1440 : servi = non replié, nav 960/872 ; avec le correctif injecté = replié en burger."
+    },
+    {
+      "id": "mesure-bda35457@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "pas_un_defaut",
+      "ou": "sections/cart-drawer.liquid:139",
+      "commit": "61857f8",
+      "raison": "Le tiroir affiche la marque (cart_show_vendor, l. 139) et la note (details à sommaire visible, l. 358). Remesuré par parcours.cjs (cas, FR 1440, remise=ESSAI10, simple=products/amino-acid-cleansing-gel) sur le même code servi : tiroir_infos.note true, texte « FILVANA Amino Acid Cleansing Gel… Note de commande », 0 absolu. En plus, la 1.10.4 relit le panier à l'ouverture depuis l'en-tête (l. 876)."
+    },
+    {
+      "id": "mesure-6cc8fbc2@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "pas_un_defaut",
+      "ou": "sections/cart-drawer.liquid:324",
+      "commit": "61857f8",
+      "raison": "Les remises de commande sont rendues au tiroir (l. 324-339). Remesuré par parcours.cjs (cas, FR 1440, remise=ESSAI10) sur le même code servi : tiroir.visible true, par_titre true, par_montant true (« Réduction : ESSAI10 −€2,40 EUR »), 0 absolu."
+    },
+    {
+      "id": "mesure-58641222@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:192",
+      "commit": "61857f8",
+      "raison": "La loupe était un <a href=/search> qui ouvre la recherche : c'est maintenant un <button aria-haspopup=dialog aria-controls=FlSearchOverlay>, et un lien vers la page de recherche le remplace sans JavaScript (noscript, .fl-header__js-only masqué)."
+    },
+    {
+      "id": "mesure-14acfacb@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "sections/header.liquid:328",
+      "commit": "61857f8",
+      "raison": "Avec le tiroir, l'icône du panier est maintenant un <button data-cart-open aria-haspopup=dialog> ; sans JavaScript, sur la page panier ou avec le réglage « page panier », elle reste un lien vers /cart."
+    },
+    {
+      "id": "mesure-51d96e7a@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "sections/cart-drawer.liquid:1065",
+      "commit": "61857f8",
+      "raison": "Le tiroir s'ouvrait sous le menu mobile ou l'aperçu rapide (dialogues modaux, qui rendent le reste inerte) ou sous la recherche (piège à focus) : le focus restait figé. À l'ouverture, closeOtherLayers() ferme d'abord les dialog[open] et la recherche : un seul calque à la fois."
+    },
+    {
+      "id": "mesure-295aec17@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "sections/cart-drawer.liquid:1065",
+      "commit": "61857f8",
+      "raison": "Même cause que les superposés figés : la recherche restait ouverte sous le tiroir. Elle se ferme maintenant à l'ouverture du tiroir (closeOtherLayers), le tiroir rend ensuite le focus à son déclencheur."
+    },
+    {
+      "id": "mesure-d6305481@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "defaut_outil",
+      "ou": "assets/facets-toolbar.js:134",
+      "commit": "61857f8",
+      "raison": "Échap ferme bien le tiroir des filtres (handleKeydown l. 126-138). Sonde sur la démo à 390, /en/collections/all : clic sur « Filters », open true ; Échap, open false, focus sur le sommaire. L'outil juge ouvert un <details> fermé dont le sommaire reste à l'écran : interactions.cjs ki.estOuvert (l. 918) appelle ouvert() (l. 661), qui ne regarde que le rendu de la racine details.fl-toolbar__drawer. Même la fermeture par clic est notée « non fermée » (fermeture.rechargement true)."
+    },
+    {
+      "id": "mesure-872a4ab0@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "sections/search.liquid:150",
+      "commit": "61857f8",
+      "raison": "Les 4 premières cartes de la recherche étaient eager + fetchpriority=high ; sur téléphone (2 colonnes) les 3e et 4e sont sous le premier écran (haut 1010 px). Seules les 2 premières gardent la priorité haute ; les 3e et 4e restent eager sans elle, comme la collection mise en avant. Changement Liquid : à remesurer sur la démo 1.10.4."
+    },
+    {
+      "id": "mesure-d0ee6e94@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "sections/wishlist.liquid:55",
+      "commit": "61857f8",
+      "raison": "Les cartes (ou l'état vide) arrivent après la première peinture et poussaient le pied de page (source : footer, dy 143 px). La section occupe d'emblée le premier écran (min-height 100svh). perf.cjs --sonde-seule sur la démo, CSS injecté avant la peinture : CLS de chargement 0,1082 → 0 à 412, 0 → 0,0001 à 1350, 0,0003 → 0 à 1440."
+    },
+    {
+      "id": "mesure-74cc371b@1.10.3-c7e51d7-202610290742",
+      "version": "1.10.4",
+      "etat": "corrige",
+      "ou": "snippets/first-screen-images.liquid:33",
+      "commit": "61857f8",
+      "raison": "Sur ce gabarit, le blog mis en avant n'ouvre pas la page (section.index > 1) mais tient l'image LCP : Liquid ne voit pas les sections du dessus. Nouveau snippet global : à la fin du body, chaque image lazy affichée dans le premier écran passe en eager (pas les vues de survol ni les diapositives en attente). perf.cjs --sonde-seule, script injecté : image LCP [featured_blog] loading eager à 412, 1350 et 1440."
+    },
+    {
+      "id": "audit-theme-a11y-auditor-resume@1.10.1-2d6b043-20261027",
+      "version": "1.10.2",
+      "etat": "corrige",
+      "ou": "sections/video.liquid:224 ; sections/slideshow.liquid:454 ; assets/critical.css:240 ; assets/critical.css:335 ; snippets/facets-toolbar.liquid:100",
+      "commit": "9568a4d",
+      "raison": "Corrigés en 1.10.2 (commit 9568a4d), relus dans le code : anneau du poster vidéo dessiné dedans (offset -4px, liseré 6px) ; puce inactive à opacity .6 ; bouton désactivé en encre atténuée sur la surface, opacity 1 ; .fl-label min-height 24px ; panneaux de facette role=group nommés par aria-labelledby."
+    },
+    {
+      "id": "audit-theme-parcours-tester-resume@1.10.1-2d6b043-20261028",
+      "version": "1.10.2",
+      "etat": "corrige",
+      "ou": "sections/cart-drawer.liquid:1180",
+      "commit": "e5797af",
+      "raison": "Corrigé en 1.10.2 (commit e5797af) : la description de Shopify n'est reprise que pour un refus 422 qui porte une phrase client, sinon le message traduit (tiroir, page panier, commande rapide)."
+    },
+    {
+      "id": "audit-theme-parcours-tester-ajout-rapide@1.10.1-2d6b043-20261028",
+      "version": "1.10.4",
+      "etat": "pas_un_defaut",
+      "ou": "snippets/quick-add.liquid:22",
+      "commit": "61857f8",
+      "raison": "Point non mesuré à cause de la boutique (429 « Just a moment » sur /cart/add.js et /cart.js, 4 tentatives), pas un défaut relevé. Le code : formulaire data-quick-add vers routes.cart_add_url, intercepté par le tiroir (handleDocSubmit) ; à remesurer par la reprise."
+    },
+    {
+      "id": "audit-theme-perf-auditor-pieges-kiosk@1.10.1-2d6b043-20261028",
+      "version": "1.10.2",
+      "etat": "corrige",
+      "ou": "sections/collection.liquid:90",
+      "commit": "f0f3379",
+      "raison": "Corrigé en 1.10.2 (commit f0f3379) : eager_count = le plus petit de cols_desktop et cols_mobile, donc 2 cartes prioritaires sur téléphone."
+    },
+    {
+      "id": "audit-theme-perf-auditor-resume@1.10.1-2d6b043-20261028",
+      "version": "1.10.2",
+      "etat": "corrige",
+      "ou": "snippets/media-player.liquid:39 ; sections/collection.liquid:90 ; snippets/product-card.liquid:117 ; sections/image-with-text.liquid:19",
+      "commit": "f0f3379",
+      "raison": "Les 4 ALERTE corrigées en 1.10.2 (commit f0f3379), relues : poster des vidéos cachées en data-poster ; eager limité aux colonnes du téléphone ; seconde vue de carte = photo suivante, jamais une vignette vidéo ; sizes plafonnés à la largeur de page."
     }
   ]
 }
