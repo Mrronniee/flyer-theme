@@ -1,5 +1,34 @@
 # Changelog
 
+## 1.10.4 - 2026-10-29
+
+### Fixed
+- **A control reached with the keyboard is shown in full**: a text area, a
+  product option or a link at the edge of the quick order list no longer
+  stays half outside the screen or outside its scrolling table on a zoomed
+  or narrow screen.
+- **Search and cart icons are buttons**: they open the search dialog and the
+  cart drawer and are announced as buttons; without JavaScript they stay
+  links to the search and cart pages.
+- **One layer at a time**: opening the cart drawer closes the menu drawer,
+  the quick view or the search dialog first, so the keyboard reaches the
+  cart.
+- **The cart drawer re-reads the cart as it opens** from the header, so it
+  shows the same lines, note and discounts as the cart page after a change
+  made elsewhere.
+- **A long menu folds into the burger** as soon as it no longer fits on one
+  line, even when menu items are added or the web font arrives late.
+- **Cart page offline**: a quantity change that cannot reach the store puts
+  the field back to the real quantity, the message is read aloud as it
+  appears, and the cart is re-read when the network is back.
+- **Search suggestions say when they could not load** (a wording that names
+  the failure, in English and French).
+- **Search results on phones**: only the first two product images load at
+  high priority; the third and fourth wait their turn.
+- **Images in the first screen load at once**, even in a section placed
+  below a short text section (featured blog, multicolumn…).
+- **The wishlist page no longer shifts** when its cards arrive.
+
 ## 1.10.3 - 2026-10-28
 
 ### Fixed

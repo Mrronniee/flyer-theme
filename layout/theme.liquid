@@ -68,6 +68,7 @@
     </main>
 
     {% sections 'footer-group' %}
+    {% render 'first-screen-images' %}
 
     {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
       {% section 'cart-drawer' %}
@@ -78,6 +79,7 @@
     {% endif %}
     {% render 'autofocus-fallback' %}
     {% render 'rte-tables' %}
+    {% render 'focus-into-view' %}
 
     {%- if request.design_mode -%}
       <script>

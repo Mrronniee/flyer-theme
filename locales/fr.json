@@ -222,7 +222,7 @@
     "pages": "Pages",
     "articles": "Articles",
     "view_all": "Voir tous les résultats",
-    "suggestions_error": "Les suggestions sont indisponibles pour le moment. Appuyez sur Entrée pour voir tous les résultats."
+    "suggestions_error": "Les suggestions n’ont pas pu se charger. Appuyez sur Entrée pour voir tous les résultats."
   },
   "blog": {
     "read_more": "Lire la suite",

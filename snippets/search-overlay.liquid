@@ -13,9 +13,9 @@
   opens the overlay (delegated click listener). Focus is trapped while
   open; ESC, the close button, or the scrim close it.
 
-  No-JS fallback: [data-search-open] triggers are real links to
-  routes.search_url (the delegated handler preventDefaults them), and the
-  input lives in a GET form pointing to the search page.
+  No-JS fallback: the header's [data-search-open] trigger is a button that
+  is hidden without JS, where a real link to routes.search_url stands in;
+  the input lives in a GET form pointing to the search page.
 
   @example
   {% render 'search-overlay' %}

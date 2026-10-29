@@ -870,6 +870,10 @@
       if (opener) {
         event.preventDefault();
         this.open(opener);
+        // The cart may have changed since the page was rendered (another tab,
+        // a discount code, an app): the panel re-reads it as it opens, so it
+        // shows the same lines, note and discounts as the cart page.
+        this.refresh().catch(() => {});
         return;
       }
       if (!this.contains(event.target)) return;
@@ -1036,6 +1040,7 @@
       if (quickView && quickView.opener) trigger = quickView.opener;
       if (trigger) this.openerEl = trigger;
       const wasOpen = this.classList.contains('is-open');
+      if (!wasOpen) this.closeOtherLayers();
       // Already open with focus on one of its controls (quantity change, note
       // field): leave the caret where the shopper put it. Focus resting on the
       // bare panel is NOT "inside" for this purpose — it has to be moved on to
@@ -1050,6 +1055,19 @@
         document.documentElement.setAttribute('data-fl-cart-lock', '');
       }
       this.focusPanel();
+    }
+
+    // One layer at a time: the menu drawer and the quick view are modal
+    // dialogs, which make the rest of the page — this drawer included — inert,
+    // and the search dialog traps the focus. Left open under the cart, they
+    // kept the keyboard out of it; they close as it opens, and give the focus
+    // back to their own opener, which this drawer then returns to.
+    closeOtherLayers() {
+      document.querySelectorAll('dialog[open]').forEach((dialog) => {
+        if (!this.contains(dialog) && typeof dialog.close === 'function') dialog.close();
+      });
+      const search = document.querySelector('fl-search');
+      if (search && typeof search.close === 'function') search.close();
     }
 
     close() {

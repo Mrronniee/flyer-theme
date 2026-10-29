@@ -724,6 +724,10 @@
         if (event.persisted) this.resync();
       };
       window.addEventListener('pageshow', this.onPageShow);
+      // A change refused while offline: show the real cart as soon as the
+      // network is back.
+      this.onOnline = () => this.resync();
+      window.addEventListener('online', this.onOnline);
       const nav = window.performance && performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
       if (nav && nav.type === 'back_forward') this.resync();
     }
@@ -734,6 +738,16 @@
       this.removeEventListener('change', this.onChange);
       this.removeEventListener('submit', this.onSubmit);
       window.removeEventListener('pageshow', this.onPageShow);
+      window.removeEventListener('online', this.onOnline);
+    }
+
+    // Puts each field of the given lines back to its rendered quantity.
+    restore(updates) {
+      Object.keys(updates).forEach((key) => {
+        const line = this.querySelector('[data-line-key="' + CSS.escape(key) + '"]');
+        const input = line && line.querySelector('[data-qty-input]');
+        if (input) input.value = input.defaultValue;
+      });
     }
 
     async resync() {
@@ -893,7 +907,11 @@
           if (fresh.ok) html = await fresh.text();
         }
       } catch (e) {
+        // No network: nothing reached the cart, so the fields go back to the
+        // quantities last rendered, and the cart is re-read once the network
+        // is back (see `online`).
         error = this.dataset.errorText;
+        if (!html) this.restore(updates);
       }
       if (html) this.render(html, focus, noteValue);
       if (error) {
@@ -948,21 +966,22 @@
     // is gone) and read by the live region, which stays outside the
     // re-rendered markup. Under the line, the reason is on screen next to the
     // control that was used, even on a phone where the summary is far below.
+    // The live region is written first and the line's message right after,
+    // in the same tick, so the reason is said aloud as it appears, even when
+    // the same message is shown twice in a row.
     showError(message, key) {
       const status = this.querySelector('[data-cart-page-status]');
       const live = this.querySelector('[data-cart-page-live]');
-      if (status) {
-        status.textContent = message || '';
-        const line = message && key ? this.querySelector('[data-line-key="' + CSS.escape(key) + '"]') : null;
+      if (live) live.textContent = '';
+      if (status) status.textContent = '';
+      if (!message) return;
+      window.setTimeout(() => {
+        if (live) live.textContent = message;
+        if (!status || !status.isConnected) return;
+        status.textContent = message;
+        const line = key ? this.querySelector('[data-line-key="' + CSS.escape(key) + '"]') : null;
         if (line) line.appendChild(status);
-      }
-      if (!live) return;
-      live.textContent = '';
-      if (message) {
-        window.setTimeout(() => {
-          live.textContent = message;
-        }, 60);
-      }
+      }, 60);
     }
   }
 

@@ -138,14 +138,19 @@
               <ul class="fl-product-grid fl-searchpage__grid" role="list">
                 {%- comment -%}
                   First row eager: it holds the LCP image on the results page.
+                  Only the phone's 2 columns load at high priority, as in the
+                  featured collection: the 3rd and 4th cards (first row on
+                  desktop, below a phone's first screen) stay eager without it.
                 {%- endcomment -%}
                 {%- assign product_rank = 0 -%}
                 {%- for result in search.results -%}
                   {%- if result.object_type == 'product' -%}
                     {%- assign product_rank = product_rank | plus: 1 -%}
                     <li class="fl-searchpage__cell">
-                      {%- if product_rank <= 4 -%}
+                      {%- if product_rank <= 2 -%}
                         {% render 'product-card', product: result, heading_level: 'h2', loading: 'eager', priority: true %}
+                      {%- elsif product_rank <= 4 -%}
+                        {% render 'product-card', product: result, heading_level: 'h2', loading: 'eager' %}
                       {%- else -%}
                         {% render 'product-card', product: result, heading_level: 'h2' %}
                       {%- endif -%}

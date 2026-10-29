@@ -75,7 +75,8 @@
     {%- endcomment -%}
     <noscript>
       <style>
-        shopify-account.fl-header__account {
+        shopify-account.fl-header__account,
+        .fl-header__js-only {
           display: none;
         }
 
@@ -180,13 +181,14 @@
     <div class="fl-header__icons">
       {%- if section.settings.show_search -%}
         {%- comment -%}
-          Real link so search stays reachable without JS; <fl-search>'s
-          delegated [data-search-open] handler preventDefaults it and opens
-          the overlay instead (same pattern as data-cart-open).
+          A button: it opens the search dialog without leaving the page, so it
+          is announced as a button, not a link. Without JS the dialog cannot
+          open: the button is hidden and a real link to the search page
+          stands in (noscript below and the style block above).
         {%- endcomment -%}
-        <a
-          class="fl-header__icon-btn"
-          href="{{ routes.search_url }}"
+        <button
+          type="button"
+          class="fl-header__icon-btn fl-header__js-only"
           data-search-open
           aria-haspopup="dialog"
           aria-expanded="false"
@@ -197,7 +199,16 @@
             <path d="m13.5 13.5 3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
           <span class="visually-hidden">{{ 'accessibility.search' | t }}</span>
-        </a>
+        </button>
+        <noscript>
+          <a class="fl-header__icon-btn" href="{{ routes.search_url }}">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+              <circle cx="9" cy="9" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="m13.5 13.5 3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span class="visually-hidden">{{ 'accessibility.search' | t }}</span>
+          </a>
+        </noscript>
       {%- endif -%}
 
       {%- liquid
@@ -302,25 +313,66 @@
         </noscript>
       {%- endif -%}
 
-      <a
-        class="fl-header__icon-btn fl-header__cart"
-        href="{{ routes.cart_url }}"
-        aria-label="{{ 'accessibility.cart_count' | t: count: cart.item_count }}"
-        {% if settings.cart_type == 'drawer' %}
+      {%- comment -%}
+        With the cart drawer, the cart icon is a button that opens it (a link
+        would be announced as one and leave the page); without JS a real link
+        to the cart page stands in. With the cart page setting, and on the cart
+        page itself (no drawer there), it stays a link.
+      {%- endcomment -%}
+      {%- if settings.cart_type == 'drawer' and template.name != 'cart' -%}
+        <button
+          type="button"
+          class="fl-header__icon-btn fl-header__cart fl-header__js-only"
+          aria-label="{{ 'accessibility.cart_count' | t: count: cart.item_count }}"
+          aria-haspopup="dialog"
           data-cart-open
-        {% endif %}
-        data-cart-link
-      >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
-          <path d="M4 6.5h12l-.8 9.25a1.5 1.5 0 0 1-1.5 1.37H6.3a1.5 1.5 0 0 1-1.5-1.37Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-          <path d="M7.25 8.5V5.75a2.75 2.75 0 0 1 5.5 0V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        <span
-          class="fl-header__cart-count{% if cart.item_count == 0 %} is-empty{% endif %}"
-          data-cart-count
-          aria-hidden="true"
-        >{{ cart.item_count }}</span>
-      </a>
+          data-cart-link
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+            <path d="M4 6.5h12l-.8 9.25a1.5 1.5 0 0 1-1.5 1.37H6.3a1.5 1.5 0 0 1-1.5-1.37Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M7.25 8.5V5.75a2.75 2.75 0 0 1 5.5 0V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span
+            class="fl-header__cart-count{% if cart.item_count == 0 %} is-empty{% endif %}"
+            data-cart-count
+            aria-hidden="true"
+          >{{ cart.item_count }}</span>
+        </button>
+        <noscript>
+          <a
+            class="fl-header__icon-btn fl-header__cart"
+            href="{{ routes.cart_url }}"
+            aria-label="{{ 'accessibility.cart_count' | t: count: cart.item_count }}"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+              <path d="M4 6.5h12l-.8 9.25a1.5 1.5 0 0 1-1.5 1.37H6.3a1.5 1.5 0 0 1-1.5-1.37Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M7.25 8.5V5.75a2.75 2.75 0 0 1 5.5 0V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span
+              class="fl-header__cart-count{% if cart.item_count == 0 %} is-empty{% endif %}"
+              data-cart-count
+              aria-hidden="true"
+            >{{ cart.item_count }}</span>
+          </a>
+        </noscript>
+      {%- else -%}
+        <a
+          class="fl-header__icon-btn fl-header__cart"
+          href="{{ routes.cart_url }}"
+          aria-label="{{ 'accessibility.cart_count' | t: count: cart.item_count }}"
+          data-cart-link
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+            <path d="M4 6.5h12l-.8 9.25a1.5 1.5 0 0 1-1.5 1.37H6.3a1.5 1.5 0 0 1-1.5-1.37Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M7.25 8.5V5.75a2.75 2.75 0 0 1 5.5 0V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span
+            class="fl-header__cart-count{% if cart.item_count == 0 %} is-empty{% endif %}"
+            data-cart-count
+            aria-hidden="true"
+          >{{ cart.item_count }}</span>
+        </a>
+      {%- endif -%}
       <span class="visually-hidden" role="status" aria-live="polite" data-cart-live></span>
     </div>
   </div>
@@ -1118,7 +1170,11 @@
       if (this.nav && this.menu && 'ResizeObserver' in window) {
         this._resizeObserver = new ResizeObserver(() => this.fitMenu());
         this._resizeObserver.observe(this);
+        // The menu widens when the web font replaces the fallback (French
+        // labels, measured 29/10/2026: 12px over at 1440): measure it again.
+        this._resizeObserver.observe(this.menu);
         this.fitMenu();
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.fitMenu());
       }
       this.drawer = this.querySelector('[data-menu-drawer]');
       this.burger = this.querySelector('[data-menu-open]');
@@ -1225,7 +1281,8 @@
     fitMenu() {
       this.classList.remove('is-collapsed');
       if (getComputedStyle(this.nav).display === 'none') return;
-      if (this.menu.scrollWidth > this.nav.clientWidth + 1) this.classList.add('is-collapsed');
+      const needed = Math.max(this.menu.scrollWidth, this.nav.scrollWidth);
+      if (needed > this.nav.clientWidth + 1) this.classList.add('is-collapsed');
     }
 
     resyncCount() {

@@ -222,7 +222,7 @@
     "pages": "Pages",
     "articles": "Articles",
     "view_all": "View all results",
-    "suggestions_error": "Suggestions are unavailable right now. Press Enter to see all results."
+    "suggestions_error": "Suggestions couldn’t load. Press Enter to see all results."
   },
   "blog": {
     "read_more": "Read more",

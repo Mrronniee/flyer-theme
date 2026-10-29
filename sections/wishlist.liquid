@@ -46,6 +46,15 @@
 </fl-wishlist>
 
 {% stylesheet %}
+  /* The cards (or the empty state) arrive after the page has painted: the
+     section fills the first screen from the start, so the footer is not
+     pushed down under the visitor's eyes when they land (layout shift,
+     measured at 0.11 on a phone). */
+  .fl-wishlist {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
   .fl-wishlist__inner {
     width: var(--content-width);
     margin-inline: auto;

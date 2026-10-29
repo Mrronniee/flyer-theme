@@ -1,0 +1,36 @@
+{% doc %}
+  Loads at once the images that the first screen shows.
+
+  Each section decides in Liquid how its images load: eager when it opens the
+  page (section.index 1), lazy lower down. Liquid cannot see the sections
+  above, though: below a short text section, a featured blog or a multicolumn
+  can stand in the first screen and hold its largest image while it still
+  waits as lazy (measured 29/10/2026: the featured blog's first image, LCP of
+  the page at 412, 1350 and 1920 px). Here, once the page is parsed, every
+  lazy image shown inside the first screen switches to eager; an image kept
+  out of sight (a card's hover view, a slide waiting its turn) stays lazy. The
+  priority hints the sections set are left as they are.
+
+  Without JavaScript, each image keeps the loading its section gave it.
+
+  @example
+  {% render 'first-screen-images' %}
+{% enddoc %}
+<script>
+  (function () {
+    'use strict';
+    var fold = window.innerHeight || document.documentElement.clientHeight;
+    var edge = window.innerWidth || document.documentElement.clientWidth;
+    var images = document.querySelectorAll('[id^="shopify-section"] img[loading="lazy"]');
+    for (var i = 0; i < images.length; i++) {
+      var img = images[i];
+      var box = img.getBoundingClientRect();
+      if (!box.width || !box.height || box.top >= fold || box.bottom <= 0 || box.left >= edge || box.right <= 0) continue;
+      // A picture waiting for its turn (a card's hover view, a slide behind
+      // the current one) is not on screen yet.
+      var style = getComputedStyle(img);
+      if (style.opacity === '0' || style.visibility === 'hidden') continue;
+      img.loading = 'eager';
+    }
+  })();
+</script>

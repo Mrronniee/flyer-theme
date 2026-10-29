@@ -1,0 +1,72 @@
+{% doc %}
+  Brings a control reached with the keyboard fully into view.
+
+  When the focus moves, the browser only scrolls as far as it needs to show
+  part of the element: a text area shows the line of its caret, a link at the
+  edge of a table that scrolls sideways (quick order list) or an option of the
+  product form on a zoomed screen can stay half outside the window or half
+  outside its scrolling area (WCAG 2.4.12, measured 29/10/2026 at 200 %,
+  400 % and 320 px). Here, as soon as an element takes the keyboard focus,
+  each scrolling area around it and the page itself scroll just far enough to
+  show the whole element, when it can fit. The page's scroll-padding (the
+  sticky header) is honoured. An element larger than its window is left where
+  the browser put it. A visually hidden radio or checkbox (the product
+  options) is shown through its label, which is what the eye follows.
+
+  Without JavaScript the browser's own scrolling applies.
+
+  @example
+  {% render 'focus-into-view' %}
+{% enddoc %}
+<script>
+  (function () {
+    'use strict';
+
+    function clipped(el) {
+      var rect = el.getBoundingClientRect();
+      if (!rect.width && !rect.height) return false;
+      var root = document.documentElement;
+      var top = parseFloat(getComputedStyle(root).scrollPaddingTop) || 0;
+      var viewH = root.clientHeight;
+      var viewW = root.clientWidth;
+      if (rect.height > viewH - top || rect.width > viewW) return false;
+      if (rect.top < top || rect.bottom > viewH || rect.left < 0 || rect.right > viewW) return true;
+      for (var node = el.parentElement; node && node !== document.body; node = node.parentElement) {
+        var style = getComputedStyle(node);
+        if (style.overflowX === 'visible' && style.overflowY === 'visible') continue;
+        if (node.scrollWidth <= node.clientWidth && node.scrollHeight <= node.clientHeight) continue;
+        var box = node.getBoundingClientRect();
+        var left = box.left + node.clientLeft;
+        var boxTop = box.top + node.clientTop;
+        if (rect.width > node.clientWidth || rect.height > node.clientHeight) return false;
+        if (rect.left < left || rect.right > left + node.clientWidth || rect.top < boxTop || rect.bottom > boxTop + node.clientHeight) return true;
+      }
+      return false;
+    }
+
+    function reveal(target) {
+      if (clipped(target)) target.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+    }
+
+    // Runs during the focus event, before the browser's own scrolling: once
+    // the element is in view, the browser has nothing left to move.
+    document.addEventListener('focusin', function (event) {
+      var el = event.target;
+      if (!el || el === document.body || !el.getBoundingClientRect) return;
+      try {
+        if (!el.matches(':focus-visible')) return;
+      } catch (e) {
+        return;
+      }
+      var shown = el;
+      var box = el.getBoundingClientRect();
+      if (box.width <= 2 && box.height <= 2 && el.labels && el.labels.length) shown = el.labels[0];
+      reveal(shown);
+      // The browser may still scroll after this event (to the hidden input
+      // itself, or to a text area's caret): check again once it has.
+      requestAnimationFrame(function () {
+        if (document.activeElement === el) reveal(shown);
+      });
+    });
+  })();
+</script>
