@@ -45,7 +45,10 @@
       var area = onScreen(images[i]);
       if (!area) continue;
       shown.push(images[i]);
-      if (area > largestArea && images[i].getAttribute('fetchpriority') !== 'low') {
+      // Equal sizes (a row of cards, measured to a fraction of a pixel
+      // apart): the first one keeps it, as the browser keeps the first
+      // painted as the largest paint.
+      if (area > largestArea * 1.02 && images[i].getAttribute('fetchpriority') !== 'low') {
         largest = images[i];
         largestArea = area;
       }
