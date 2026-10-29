@@ -14,7 +14,10 @@
   gets it, before its request starts: it is the page's largest paint, and it
   was otherwise fetched at the same rank as every other image (measured
   29/10/2026, FLYER 1.10.4: the featured blog behind the page title, at 412,
-  1350 and 1920 px). Every other hint the sections set is left as it is.
+  1350 and 1920 px). A row of equal cards shares it (four at most): which of
+  them the browser counts as the largest paint depends on each file's own
+  resolution, unknown before it loads (measured at 1350 and 1440: the second
+  card of the row). Every other hint the sections set is left as it is.
 
   Without JavaScript, each image keeps the loading its section gave it.
 
@@ -39,27 +42,27 @@
     }
     var images = document.querySelectorAll('[id^="shopify-section"] img[loading="lazy"]');
     var shown = [];
-    var largest = null;
+    var areas = [];
     var largestArea = 0;
     for (var i = 0; i < images.length; i++) {
       var area = onScreen(images[i]);
       if (!area) continue;
       shown.push(images[i]);
-      // Equal sizes (a row of cards, measured to a fraction of a pixel
-      // apart): the first one keeps it, as the browser keeps the first
-      // painted as the largest paint.
-      if (area > largestArea * 1.02 && images[i].getAttribute('fetchpriority') !== 'low') {
-        largest = images[i];
-        largestArea = area;
-      }
+      areas.push(area);
+      if (area > largestArea && images[i].getAttribute('fetchpriority') !== 'low') largestArea = area;
     }
     var ranked = false;
     var high = document.querySelectorAll('[id^="shopify-section"] img[fetchpriority="high"]');
     for (var j = 0; j < high.length; j++) {
       if (onScreen(high[j])) ranked = true;
     }
-    if (largest && !ranked) largest.setAttribute('fetchpriority', 'high');
+    var given = 0;
     for (var k = 0; k < shown.length; k++) {
+      // Equal sizes are measured a fraction of a pixel apart: 2 % of slack.
+      if (!ranked && largestArea && given < 4 && areas[k] >= largestArea * 0.98 && shown[k].getAttribute('fetchpriority') !== 'low') {
+        shown[k].setAttribute('fetchpriority', 'high');
+        given++;
+      }
       shown[k].loading = 'eager';
     }
   })();
