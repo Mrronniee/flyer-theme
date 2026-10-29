@@ -1,0 +1,48 @@
+{
+ "slug": "flyer",
+ "version": "1.10.4",
+ "commit": "827f7a2",
+ "demo": "195174072646",
+ "essai": true,
+ "date": "2026-10-29T23:16:43",
+ "pages": [
+  "accueil",
+  "collections/all",
+  "collections",
+  "products/field-jacket",
+  "cart",
+  "blogs/journal",
+  "blogs/journal/the-two-minute-morning",
+  "pages/flyer-contact",
+  "pages/flyer-wishlist",
+  "pages/flyer-all-sections"
+ ],
+ "pages_perf": [
+  "accueil",
+  "collections/all",
+  "collections",
+  "products/field-jacket",
+  "cart",
+  "search?q=*&type=product",
+  "blogs/journal",
+  "blogs/journal/the-two-minute-morning",
+  "pages/flyer-contact",
+  "pages/flyer-wishlist",
+  "pages/flyer-all-sections"
+ ],
+ "ecrans_perf": [
+  "mobile",
+  "bureau",
+  "large"
+ ],
+ "complet": true,
+ "incomplets": [],
+ "reference": null,
+ "regressions": [],
+ "absolus": [],
+ "variantes": {
+  "mesurees": 122,
+  "non_reproductibles": 0,
+  "refusees": 0
+ }
+}

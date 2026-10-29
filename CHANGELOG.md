@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.10.5 - 2026-10-29
+
+### Fixed
+- **The cart drawer subtotal matches the cart right after a change**: the
+  drawer is rendered in the same answer as the quantity change or the add
+  to cart (also from the quick order list), so it no longer shows the
+  subtotal of the previous quantity.
+- **Every saved favourite shows on the wishlist page**: a card that fails to
+  load at first is asked for again, and a product removed from the store
+  leaves the wishlist, so the list always empties once each heart is
+  unticked.
+- **The largest image of the first screen loads first**: below a short
+  section such as the page title, the first row of images (a featured blog
+  for instance) is fetched with high priority.
+
 ## 1.10.4 - 2026-10-29
 
 ### Fixed
