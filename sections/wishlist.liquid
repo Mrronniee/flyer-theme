@@ -146,6 +146,13 @@
       const handles = this.read();
       this.grid.setAttribute('aria-busy', 'true');
       const results = await Promise.all(handles.map((handle) => this.fetchCard(handle)));
+      // A product deleted or unpublished since it was saved (404) has no card
+      // the shopper could untick: drop it from the list, or the list would
+      // count a favourite nobody can see or remove.
+      const gone = handles.filter((handle, i) => results[i] === false);
+      if (gone.length && window.flWishlist) {
+        window.flWishlist.write(this.read().filter((handle) => !gone.includes(handle)));
+      }
       results.forEach((card, i) => {
         if (!card) return;
         const item = document.createElement('div');
@@ -160,17 +167,28 @@
       if (window.flWishlist) window.flWishlist.sync();
     }
 
+    // The card, false when the product no longer exists (404), null when it
+    // could not be read. A refused or failed read (429 when several cards are
+    // asked at once, a dropped connection) is tried again before giving up:
+    // otherwise a saved favourite went missing from the page while still
+    // stored, with no heart left to remove it.
     async fetchCard(handle) {
-      try {
-        const url = this.root + 'products/' + encodeURIComponent(handle) + '?section_id=wishlist-item';
-        const res = await fetch(url);
-        if (!res.ok) return null;
-        const html = await res.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return doc.querySelector('.fl-card');
-      } catch (e) {
-        return null;
+      const url = this.root + 'products/' + encodeURIComponent(handle) + '?section_id=wishlist-item';
+      for (let attempt = 0; attempt < 3; attempt++) {
+        if (attempt) await new Promise((resolve) => setTimeout(resolve, 600 * attempt));
+        try {
+          const res = await fetch(url);
+          if (res.status === 404) return false;
+          if (!res.ok) continue;
+          const html = await res.text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const card = doc.querySelector('.fl-card');
+          if (card) return card;
+        } catch (e) {
+          // network error: try again
+        }
       }
+      return null;
     }
 
     // A heart unticked on this page (or in the header count) removes its card.

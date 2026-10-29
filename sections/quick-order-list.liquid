@@ -466,10 +466,19 @@
           }
 
           try {
+            // With a cart drawer on the page, its HTML comes back in this
+            // answer, rendered from the cart this add just wrote: a separate
+            // read sent right after could still see the old cart.
+            const drawer = document.querySelector('fl-cart-drawer');
+            const payload = { items: items };
+            if (drawer && drawer.sectionId) {
+              payload.sections = drawer.sectionId;
+              payload.sections_url = window.location.pathname;
+            }
             const response = await fetch(this.dataset.addUrl + '.js', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-              body: JSON.stringify({ items: items })
+              body: JSON.stringify(payload)
             });
             if (!response.ok) {
               let message = this.dataset.errorText;
@@ -490,7 +499,7 @@
               input.value = '0';
             });
             this.setStatus(this.dataset.addedText);
-            await this.notify();
+            await this.notify(await response.json().catch(() => null));
           } catch (error) {
             this.setStatus(this.dataset.errorText);
           } finally {
@@ -502,15 +511,16 @@
           }
         }
 
-        async notify() {
-          // The cart drawer owns the cart re-render: refresh() pulls
-          // ?sections=cart-drawer, swaps [data-cart-inner] and dispatches
+        async notify(answer) {
+          // The cart drawer owns the cart re-render: refresh() takes the
+          // drawer rendered in the add answer (else pulls
+          // ?sections=cart-drawer), swaps [data-cart-inner] and dispatches
           // 'fl:cart:change' itself. Reuse it instead of leaving the drawer on
           // the state it was rendered with at page load.
           const drawer = document.querySelector('fl-cart-drawer');
           if (drawer && typeof drawer.refresh === 'function') {
             try {
-              await drawer.refresh();
+              await drawer.refresh({ answer: answer });
               return;
             } catch (error) {
               // fall through: the header count can still be updated on its own

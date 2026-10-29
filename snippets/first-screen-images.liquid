@@ -8,8 +8,13 @@
   waits as lazy (measured 29/10/2026: the featured blog's first image, LCP of
   the page at 412, 1350 and 1920 px). Here, once the page is parsed, every
   lazy image shown inside the first screen switches to eager; an image kept
-  out of sight (a card's hover view, a slide waiting its turn) stays lazy. The
-  priority hints the sections set are left as they are.
+  out of sight (a card's hover view, a slide waiting its turn) stays lazy.
+  When no image of the first screen already has fetchpriority="high" (the
+  section opening the page sets it), the largest of the images switched here
+  gets it, before its request starts: it is the page's largest paint, and it
+  was otherwise fetched at the same rank as every other image (measured
+  29/10/2026, FLYER 1.10.4: the featured blog behind the page title, at 412,
+  1350 and 1920 px). Every other hint the sections set is left as it is.
 
   Without JavaScript, each image keeps the loading its section gave it.
 
@@ -21,16 +26,38 @@
     'use strict';
     var fold = window.innerHeight || document.documentElement.clientHeight;
     var edge = window.innerWidth || document.documentElement.clientWidth;
-    var images = document.querySelectorAll('[id^="shopify-section"] img[loading="lazy"]');
-    for (var i = 0; i < images.length; i++) {
-      var img = images[i];
+    function onScreen(img) {
       var box = img.getBoundingClientRect();
-      if (!box.width || !box.height || box.top >= fold || box.bottom <= 0 || box.left >= edge || box.right <= 0) continue;
+      if (!box.width || !box.height || box.top >= fold || box.bottom <= 0 || box.left >= edge || box.right <= 0) return 0;
       // A picture waiting for its turn (a card's hover view, a slide behind
       // the current one) is not on screen yet.
       var style = getComputedStyle(img);
-      if (style.opacity === '0' || style.visibility === 'hidden') continue;
-      img.loading = 'eager';
+      if (style.opacity === '0' || style.visibility === 'hidden') return 0;
+      var w = Math.min(box.right, edge) - Math.max(box.left, 0);
+      var h = Math.min(box.bottom, fold) - Math.max(box.top, 0);
+      return w * h;
+    }
+    var images = document.querySelectorAll('[id^="shopify-section"] img[loading="lazy"]');
+    var shown = [];
+    var largest = null;
+    var largestArea = 0;
+    for (var i = 0; i < images.length; i++) {
+      var area = onScreen(images[i]);
+      if (!area) continue;
+      shown.push(images[i]);
+      if (area > largestArea && images[i].getAttribute('fetchpriority') !== 'low') {
+        largest = images[i];
+        largestArea = area;
+      }
+    }
+    var ranked = false;
+    var high = document.querySelectorAll('[id^="shopify-section"] img[fetchpriority="high"]');
+    for (var j = 0; j < high.length; j++) {
+      if (onScreen(high[j])) ranked = true;
+    }
+    if (largest && !ranked) largest.setAttribute('fetchpriority', 'high');
+    for (var k = 0; k < shown.length; k++) {
+      shown[k].loading = 'eager';
     }
   })();
 </script>

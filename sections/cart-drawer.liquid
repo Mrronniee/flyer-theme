@@ -1162,6 +1162,9 @@
       // the resolved fallback so script-triggered submits and browsers without
       // SubmitEvent.submitter still post the id.
       if (button && button.name) body.append(button.name, button.value);
+      // Rendered from the cart this add just wrote (see changeLine()).
+      body.append('sections', this.sectionId);
+      body.append('sections_url', window.location.pathname);
       let added = false;
       try {
         const response = await fetch(this.dataset.addUrl, {
@@ -1197,7 +1200,7 @@
           return;
         }
         this.clearError();
-        await this.refresh();
+        await this.refresh({ answer: await response.json().catch(() => null) });
         added = true;
         this.open(button);
         // Announced AFTER refresh(): renderContents() replaces the drawer's
@@ -1224,11 +1227,17 @@
         const response = await fetch(this.dataset.changeUrl + '.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ id: key, quantity: quantity })
+          // The drawer's HTML comes back in the same answer, rendered from
+          // the cart this request just wrote: a separate ?sections= read sent
+          // right after could still see the cart as it was (subtotal of the
+          // old quantity next to a /cart.js already updated).
+          body: JSON.stringify({ id: key, quantity: quantity, sections: this.sectionId, sections_url: window.location.pathname })
         });
         let message = null;
+        let rendered = null;
         if (response.ok) {
           this.clearError();
+          rendered = await response.json().catch(() => null);
         } else {
           message = this.dataset.errorText;
           try {
@@ -1245,7 +1254,7 @@
             // keep the generic fallback message
           }
         }
-        await this.refresh({ failed: Boolean(message) });
+        await this.refresh({ failed: Boolean(message), answer: rendered });
         // After refresh(): renderContents() replaces the status region, and a
         // message written before it was lost.
         if (message) this.showError(message);
@@ -1274,15 +1283,21 @@
 
     async refresh(options) {
       const failed = Boolean(options && options.failed);
+      // answer: the JSON of /cart/add.js or /cart/change.js, which carries the
+      // drawer already rendered (sections) when the request asked for it.
+      const answer = options && options.answer;
+      const given = answer && answer.sections && answer.sections[this.sectionId] ? answer.sections : null;
       const sectionUrl = this.dataset.rootUrl + '?sections=' + this.sectionId;
       const cartUrl = this.dataset.cartUrl + '.js';
       const results = await Promise.all([
         // no-store: after Back, Chrome would otherwise answer both from its
         // HTTP cache with the cart as it was when the page was left.
-        fetch(sectionUrl, { cache: 'no-store' }).then((response) => response.json()),
-        fetch(cartUrl, { cache: 'no-store', headers: { Accept: 'application/json' } }).then((response) =>
-          response.json()
-        )
+        given || fetch(sectionUrl, { cache: 'no-store' }).then((response) => response.json()),
+        typeof (answer && answer.item_count) === 'number'
+          ? answer
+          : fetch(cartUrl, { cache: 'no-store', headers: { Accept: 'application/json' } }).then((response) =>
+              response.json()
+            )
       ]);
       const sections = results[0];
       const cart = results[1];
