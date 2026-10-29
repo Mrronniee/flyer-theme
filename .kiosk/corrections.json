@@ -883,6 +883,38 @@
       "ou": "snippets/media-player.liquid:39 ; sections/collection.liquid:90 ; snippets/product-card.liquid:117 ; sections/image-with-text.liquid:19",
       "commit": "f0f3379",
       "raison": "Les 4 ALERTE corrigées en 1.10.2 (commit f0f3379), relues : poster des vidéos cachées en data-poster ; eager limité aux colonnes du téléphone ; seconde vue de carte = photo suivante, jamais une vignette vidéo ; sizes plafonnés à la largeur de page."
+    },
+    {
+      "id": "mesure-f10986b2@1.10.4-983654a-202610291905",
+      "version": "1.10.5",
+      "etat": "corrige",
+      "ou": "sections/cart-drawer.liquid:1234",
+      "commit": "90d1c8a",
+      "raison": "Le tiroir relisait sa section par un ?sections= séparé, envoyé juste après /cart/change.js, qui pouvait encore voir l'ancien panier (Subtotal €145,00 contre /cart.js 29000). changeLine() et addToCart() demandent maintenant la section dans la réponse même (sections + sections_url) et refresh() l'utilise ; même cause corrigée dans sections/quick-order-list.liquid. Mesure entière du thème d'essai au commit 827f7a2 : aucune ligne sous-total-faux."
+    },
+    {
+      "id": "mesure-6d75b270@1.10.4-983654a-202610291905",
+      "version": "1.10.5",
+      "etat": "corrige",
+      "ou": "sections/wishlist.liquid:181",
+      "commit": "90d1c8a",
+      "raison": "fetchCard() rendait null au premier refus ou à la première coupure (Promise.all des cartes) : un favori stocké restait sans carte. La carte est redemandée deux fois (600 ms, 1200 ms) ; un 404 rend false. Mesure entière au commit 827f7a2 : aucune ligne favoris-cartes-fausses."
+    },
+    {
+      "id": "mesure-dc8ab657@1.10.4-983654a-202610291905",
+      "version": "1.10.5",
+      "etat": "corrige",
+      "ou": "sections/wishlist.liquid:152",
+      "commit": "90d1c8a",
+      "raison": "Même cause : un favori sans carte n'avait pas de cœur pour le retirer, le stockage gardait 1. Carte redemandée en cas d'échec, et un produit disparu (404) sort de fl:wishlist par flWishlist.write(). Mesure entière au commit 827f7a2 : aucune ligne favoris-liste-non-videe."
+    },
+    {
+      "id": "mesure-132418aa@1.10.4-983654a-202610291905",
+      "version": "1.10.5",
+      "etat": "corrige",
+      "ou": "snippets/first-screen-images.liquid:63",
+      "commit": "827f7a2",
+      "raison": "featured-blog ne met fetchpriority=high qu'en section.index 1 ; sur flyer-all-sections il vient en 2 derrière le titre de page, et first-screen-images ne touchait que loading. Le snippet (layout/theme.liquid, toutes les pages) donne fetchpriority=high aux images du premier écran égales à la plus grande (2 %, quatre au plus) quand aucune n'en a déjà, avant le passage en eager. Mesure entière au commit 827f7a2 : aucune ligne T6, à 412, 1350 et 1440."
     }
   ]
 }
