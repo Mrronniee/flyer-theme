@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.10.10 - 2026-10-30
+
+### Fixed
+- **An empty lookbook no longer breaks the page**: removing every look from
+  the Lookbook section used to leave an error message where the section
+  should be, because the image width was divided by the number of looks. The
+  section now hides its strip and keeps the page intact.
+
 ## 1.10.9 - 2026-10-30
 
 ### Fixed

@@ -22,6 +22,12 @@
   if look_cols > 4
     assign look_cols = 4
   endif
+  # Shopify has no min_blocks, so a merchant can remove every look. With no
+  # look at all the column count below would be 0 and the division would
+  # render "divided by 0" in the page instead of the section.
+  if look_cols < 1
+    assign look_cols = 1
+  endif
   assign page_margins = settings.min_page_margin | times: 2
   assign content_px = settings.max_page_width | minus: page_margins
   assign look_gaps = look_cols | minus: 1 | times: 24
