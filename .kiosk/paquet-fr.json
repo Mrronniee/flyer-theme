@@ -1,10 +1,10 @@
 {
  "slug": "flyer",
- "version": "1.10.5",
- "commit": "2543eba",
+ "version": "1.10.9",
+ "commit": "47428d7",
  "zip": "FLYER-Kiosk-FR.zip",
- "empreinte": "821fbf67b81f450b06d1e8d16bcfd62ea2af695f63aa8e16a6ddd175679746c6",
- "sha256_cloud": "42b48a6ebbfbbb155cc105736fcf48c3bbed7255ca6cf06bc197937ba3e729fa",
+ "empreinte": "c1e4e2ef7d5a54c2be4832e1570bc016afad339c7809bdbf4933eaff15c2e767",
+ "sha256_cloud": "1842dc1334db1b423ec9e5026352b8f36b67eb9d5e3a717034268d83a9dfe9f6",
  "format": "paquets/flyer.json",
  "fabrique_le": "2026-10-30",
  "langue": "fr"
