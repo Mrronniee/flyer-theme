@@ -19,7 +19,12 @@
   assign img_sizes = '(max-width: 749px) 50vw, (max-width: 989px) 33vw, ' | append: desktop_vw | append: 'vw'
   # Wider than the page width, a contained slot stops growing: cap its size
   # so a 1440px screen does not fetch images for a 50vw it never gets.
-  assign img_sizes_cap = settings.max_page_width | times: desktop_vw | divided_by: 100
+  # The page content stops at the page width minus its two margins
+  # (critical.css, --content-width): the cap follows that, not the raw page
+  # width, or a wide screen fetches the margins it never shows.
+  assign page_margins = settings.min_page_margin | times: 2
+  assign content_px = settings.max_page_width | minus: page_margins
+  assign img_sizes_cap = content_px | times: desktop_vw | divided_by: 100
   assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, ' | append: img_sizes
 
   assign swipe_basis = '46%'

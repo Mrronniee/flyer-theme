@@ -35,7 +35,12 @@
   if section.settings.full_width
     assign poster_sizes = '100vw'
   else
-    assign inner_px = settings.max_page_width | minus: 48
+    # The page content stops at the page width minus its two margins
+    # (critical.css, --content-width): the cap follows that, not the raw page
+    # width, or a wide screen fetches the margins it never shows.
+    assign page_margins = settings.min_page_margin | times: 2
+    assign content_px = settings.max_page_width | minus: page_margins
+    assign inner_px = content_px
     assign poster_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: inner_px | append: 'px, 100vw'
   endif
 

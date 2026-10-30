@@ -33,7 +33,12 @@
   endunless
   # Wider than the page width, the slot stops growing: cap the size so a
   # wide screen does not fetch images for a width it never gets.
-  assign media_sizes_cap = settings.max_page_width | times: 50 | divided_by: 100
+  # The page content stops at the page width minus its two margins
+  # (critical.css, --content-width): the cap follows that, not the raw page
+  # width, or a wide screen fetches the margins it never shows.
+  assign page_margins = settings.min_page_margin | times: 2
+  assign content_px = settings.max_page_width | minus: page_margins
+  assign media_sizes_cap = content_px | times: 50 | divided_by: 100
   assign media_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: media_sizes_cap | append: 'px, (max-width: 989px) 100vw, 50vw'
 -%}
 
@@ -852,10 +857,15 @@
             if (item !== target && !item.hidden) this.pauseMedia(item);
             item.hidden = item !== target;
           });
-          // A video on a hidden slide waits for its poster (media-player).
+          // A video on a hidden slide waits for its poster and for the
+          // fallback image inside it (media-player).
           target.querySelectorAll('video[data-poster]').forEach((video) => {
             video.poster = video.dataset.poster;
             video.removeAttribute('data-poster');
+          });
+          target.querySelectorAll('video > img[data-src]').forEach((image) => {
+            image.src = image.dataset.src;
+            image.removeAttribute('data-src');
           });
           if (!this.thumbs) return;
           this.thumbs.forEach((button) => {

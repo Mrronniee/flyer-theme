@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.10.7 - 2026-10-30
+
+### Fixed
+- **A product video no longer costs 228 KB before it is even shown**: the
+  image a browser falls back to inside a video it cannot play is held back,
+  like the poster already was, until the gallery shows that slide.
+- **Images match the width they are shown at**: every section now sizes them
+  on the page content — the page width less its margins, the grid gaps and
+  the column count — instead of a plain fraction of the screen, and a product
+  card can be served a file as small as 180px wide. A phone no longer
+  downloads a 360px file for a 176px card, and a wide screen stops fetching
+  the margins it never shows.
+
 ## 1.10.6 - 2026-10-30
 
 ### Fixed

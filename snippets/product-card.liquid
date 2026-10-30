@@ -31,11 +31,27 @@
   # Phones: two columns inside the page margins, 12px apart (critical.css,
   # .fl-product-grid), so a card is half the screen minus margin + 6px.
   assign mobile_inset = settings.min_page_margin | plus: 6
-  assign default_sizes = '(max-width: 749px) calc(50vw - ' | append: mobile_inset | append: 'px), (max-width: 989px) 33vw, 25vw'
-  assign default_sizes_cap = settings.max_page_width | divided_by: 4
+  # Above 750px the grid keeps the merchant's horizontal spacing
+  # (critical.css, .fl-product-grid, --grid-gap-x): three columns up to
+  # 989px, four above. A column is the content width less the two page
+  # margins and the gaps, divided by the column count — not a plain fraction
+  # of the viewport, which over-announced by 27 to 30px at the default
+  # spacing and fetched a step too wide.
+  assign page_margins = settings.min_page_margin | times: 2
+  assign tablet_gaps = settings.spacing_grid_horizontal | times: 2
+  assign desktop_gaps = settings.spacing_grid_horizontal | times: 3
+  assign tablet_inset = page_margins | plus: tablet_gaps | divided_by: 3
+  assign desktop_inset = page_margins | plus: desktop_gaps | divided_by: 4
+  assign default_sizes = '(max-width: 749px) calc(50vw - ' | append: mobile_inset | append: 'px), (max-width: 989px) calc(33.33vw - ' | append: tablet_inset | append: 'px), calc(25vw - ' | append: desktop_inset | append: 'px)'
+  assign content_px = settings.max_page_width | minus: page_margins
+  assign default_sizes_cap = content_px | minus: desktop_gaps | divided_by: 4
   assign default_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: default_sizes_cap | append: 'px, ' | append: default_sizes
   assign img_sizes = sizes | default: default_sizes
-  assign img_widths = '360, 540, 720, 900, 1200'
+  # Steps below 360w: a card is 176px wide on a phone and 293px on a wide
+  # screen, so the smallest file was two to three times the pixels needed.
+  # Six widths at most (verifier-theme.py, responsive images): 180 and 300
+  # take the places of 540 and 720, which no card width ever landed on.
+  assign img_widths = '180, 300, 360, 600, 900, 1200'
 
   # Caller-controlled priority. Lazy everywhere by default; the first row of a
   # grid can opt into eager, and only a grid that really holds the page's

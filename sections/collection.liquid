@@ -24,15 +24,22 @@
   endif
   if section.settings.cols_desktop == '3'
     assign sizes_desktop = '33vw'
-    assign sizes_pct = 33
+    assign cols_count = 3
   else
     assign sizes_desktop = '25vw'
-    assign sizes_pct = 25
+    assign cols_count = 4
   endif
   assign card_sizes = '(max-width: 749px) ' | append: sizes_mobile | append: ', (max-width: 989px) 33vw, ' | append: sizes_desktop
   # Wider than the page width, a contained slot stops growing: cap its size
   # so a 1440px screen does not fetch images for a 50vw it never gets.
-  assign card_sizes_cap = settings.max_page_width | times: sizes_pct | divided_by: 100
+  # The page content stops at the page width minus its two margins
+  # (critical.css, --content-width) and a card is that less the grid gaps,
+  # divided by the column count: the cap follows that, not a fraction of the
+  # raw page width, or a wide screen fetches what it never shows.
+  assign page_margins = settings.min_page_margin | times: 2
+  assign content_px = settings.max_page_width | minus: page_margins
+  assign desktop_gaps = cols_count | minus: 1 | times: settings.spacing_grid_horizontal
+  assign card_sizes_cap = content_px | minus: desktop_gaps | divided_by: cols_count
   assign card_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: card_sizes_cap | append: 'px, ' | append: card_sizes
 -%}
 

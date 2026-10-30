@@ -25,9 +25,16 @@
     endfor
   endunless
   # Wider than the page width, the slot stops growing: cap the size so a
-  # wide screen does not fetch images for a width it never gets.
-  assign gallery_sizes_cap = settings.max_page_width | times: 55 | divided_by: 100
-  assign gallery_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: gallery_sizes_cap | append: 'px, (max-width: 989px) 100vw, 55vw'
+  # wide screen does not fetch images for a width it never gets. The gallery
+  # is the 55fr column of a 55/45 grid with a 64px gap, inside the page
+  # margins (CSS below): 55% of the raw page width announced 704px for a
+  # column that measures 642px, and 100vw announced 412px on a phone for a
+  # slot of 364px.
+  assign page_margins = settings.min_page_margin | times: 2
+  assign content_px = settings.max_page_width | minus: page_margins
+  assign gallery_sizes_cap = content_px | minus: 64 | times: 55 | divided_by: 100
+  assign gallery_inset = page_margins | plus: 64 | times: 55 | divided_by: 100
+  assign gallery_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: gallery_sizes_cap | append: 'px, (max-width: 989px) calc(100vw - ' | append: page_margins | append: 'px), calc(55vw - ' | append: gallery_inset | append: 'px)'
 -%}
 
 <fl-product
@@ -71,7 +78,7 @@
                 {{
                   media.preview_image
                   | image_url: width: 1600
-                  | image_tag: widths: '400, 600, 800, 1000, 1200, 1600', sizes: gallery_sizes, alt: media_alt, loading: load, fetchpriority: priority
+                  | image_tag: widths: '400, 600, 700, 800, 1200, 1600', sizes: gallery_sizes, alt: media_alt, loading: load, fetchpriority: priority
                 }}
               {%- else -%}
                 {%- liquid
@@ -918,10 +925,15 @@
             if (item !== target && !item.hidden) this.pauseMedia(item);
             item.hidden = item !== target;
           });
-          // A video on a hidden slide waits for its poster (media-player).
+          // A video on a hidden slide waits for its poster and for the
+          // fallback image inside it (media-player).
           target.querySelectorAll('video[data-poster]').forEach((video) => {
             video.poster = video.dataset.poster;
             video.removeAttribute('data-poster');
+          });
+          target.querySelectorAll('video > img[data-src]').forEach((image) => {
+            image.src = image.dataset.src;
+            image.removeAttribute('data-src');
           });
           if (!this.thumbs) return;
           this.thumbs.forEach((button) => {

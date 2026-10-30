@@ -9,9 +9,11 @@
     (enablejsapi for YouTube; Vimeo listens by default).
   - When the media is the first one on screen at load (priority), its poster is
     the largest paint: it is preloaded with a high fetch priority.
-  - A hosted video on a hidden slide (hidden) keeps its poster in data-poster:
-    a browser fetches a poster even for a video it never shows (228 KB on a
-    product page). The gallery sets it when the slide is shown.
+  - A hosted video on a hidden slide (hidden) keeps its poster in data-poster
+    AND the fallback image video_tag puts inside the <video> in data-src:
+    a browser fetches both even for a video it never shows (228 KB on a
+    product page, measured again on 1.10.5 once only the poster was held
+    back). The gallery sets them when the slide is shown.
 
   @param {object} media - a product media whose media_type is not 'image'
   @param {boolean} [priority] - true for the first media of the first section
@@ -37,6 +39,16 @@
 
   if hidden and media.media_type == 'video'
     assign player = player | replace: ' poster="', ' data-poster="'
+    # video_tag also writes a fallback <img src> inside the <video>, for a
+    # browser that cannot play it. The replace above does not reach it, and
+    # it is the one that transferred the 228 KB: hold its src back too. The
+    # slide is display:none until the gallery shows it, so nothing is shown
+    # in the meantime either way.
+    assign player_parts = player | split: '<img '
+    if player_parts.size == 2
+      assign player_fallback = player_parts[1] | replace_first: ' src="', ' data-src="'
+      assign player = player_parts[0] | append: '<img ' | append: player_fallback
+    endif
   endif
 
   assign poster = ''

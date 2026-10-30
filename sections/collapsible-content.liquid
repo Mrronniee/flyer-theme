@@ -71,7 +71,12 @@
             assign img_priority = 'high'
           endif
           # Half of the page width at most: wider screens do not widen the slot.
-          assign img_sizes_cap = settings.max_page_width | divided_by: 2
+          # The page content stops at the page width minus its two margins
+          # (critical.css, --content-width): the cap follows that, not the raw page
+          # width, or a wide screen fetches the margins it never shows.
+          assign page_margins = settings.min_page_margin | times: 2
+          assign content_px = settings.max_page_width | minus: page_margins
+          assign img_sizes_cap = content_px | divided_by: 2
           assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, (max-width: 749px) 100vw, 50vw'
         -%}
         <div class="fl-collapsible__media fl-media">

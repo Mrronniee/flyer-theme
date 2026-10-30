@@ -15,9 +15,24 @@
             assign img_load = 'eager'
             assign img_priority = 'high'
           endif
-          # Half of the page width at most: wider screens do not widen the slot.
-          assign img_sizes_cap = settings.max_page_width | divided_by: 2
-          assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, (max-width: 749px) 100vw, 50vw'
+          # Half of the content width at most, gap deducted: the slot is one of
+          # two equal columns inside the page margins, with a gap of
+          # clamp(32px, 5vw, 72px). Half of the raw page width announced 640px
+          # for a column that measures 582px, which fetched the 800w file
+          # instead of the 600w one.
+          assign page_margins = settings.min_page_margin | times: 2
+          assign content_px = settings.max_page_width | minus: page_margins
+          assign grid_gap = settings.max_page_width | times: 5 | divided_by: 100
+          if grid_gap > 72
+            assign grid_gap = 72
+          elsif grid_gap < 32
+            assign grid_gap = 32
+          endif
+          assign img_sizes_cap = content_px | minus: grid_gap | divided_by: 2
+          # Between 750px and the page width the gap is 5vw, so a column is
+          # 47.5vw less one page margin; past 1440px the gap is capped at 72px.
+          assign wide_inset = settings.min_page_margin | plus: 36
+          assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, (min-width: 1440px) calc(50vw - ' | append: wide_inset | append: 'px), (min-width: 750px) calc(47.5vw - ' | append: settings.min_page_margin | append: 'px), calc(100vw - ' | append: page_margins | append: 'px)'
         -%}
         {%- if section.settings.image -%}
           {{
