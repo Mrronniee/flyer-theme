@@ -484,9 +484,11 @@
               let message = this.dataset.errorText;
               try {
                 const data = await response.json();
-                // Only a 422 refusal (stock) has a customer sentence; any
-                // other description is a developer message in English.
-                if (response.status === 422 && data && data.description && data.description !== data.message) {
+                // A 422 refusal (stock) has a customer sentence, which
+                // Shopify repeats in both `message` and `description`. A
+                // developer message comes as "Cart Error" plus a technical
+                // description, in English: keep the translated fallback.
+                if (response.status === 422 && data && data.description && data.message !== 'Cart Error') {
                   message = data.description;
                 }
               } catch (error) {

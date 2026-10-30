@@ -887,10 +887,12 @@
             html = data.sections ? data.sections[this.dataset.sectionId] : null;
           } else {
             if (!error) {
-              // Only a 422 refusal (stock) has a customer sentence; any other
-              // description is a developer message in English.
+              // A 422 refusal (stock) has a customer sentence, which Shopify
+              // repeats in both `message` and `description`. A developer
+              // message comes as "Cart Error" plus a technical description, in
+              // English: keep the translated fallback for that one.
               error =
-                response.status === 422 && data && data.description && data.description !== data.message
+                response.status === 422 && data && data.description && data.message !== 'Cart Error'
                   ? data.description
                   : this.dataset.errorText;
               errorKey = key;

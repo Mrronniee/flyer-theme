@@ -1176,12 +1176,14 @@
           let message = this.dataset.errorText;
           try {
             const data = await response.json();
-            // Only a 422 refusal (stock, purchase limit) carries a sentence
-            // for the customer, in the storefront language. Any other
-            // description is a developer message ("no valid id or line
-            // parameter"), in English: keep the translated fallback.
+            // A 422 refusal (stock, purchase limit) carries a sentence for
+            // the customer, in the storefront language, and Shopify repeats it
+            // in both `message` and `description`. A developer message comes in
+            // another envelope instead ("Cart Error" plus a technical
+            // description such as "no valid id or line parameter"), in English:
+            // keep the translated fallback for that one.
             if (response.status === 422 && data) {
-              if (data.description && data.description !== data.message) message = data.description;
+              if (data.description && data.message !== 'Cart Error') message = data.description;
               else if (typeof data.errors === 'string') message = data.errors;
             }
           } catch (error) {
@@ -1242,12 +1244,14 @@
           message = this.dataset.errorText;
           try {
             const data = await response.json();
-            // Only a 422 refusal (stock, purchase limit) carries a sentence
-            // for the customer, in the storefront language. Any other
-            // description is a developer message ("no valid id or line
-            // parameter"), in English: keep the translated fallback.
+            // A 422 refusal (stock, purchase limit) carries a sentence for
+            // the customer, in the storefront language, and Shopify repeats it
+            // in both `message` and `description`. A developer message comes in
+            // another envelope instead ("Cart Error" plus a technical
+            // description such as "no valid id or line parameter"), in English:
+            // keep the translated fallback for that one.
             if (response.status === 422 && data) {
-              if (data.description && data.description !== data.message) message = data.description;
+              if (data.description && data.message !== 'Cart Error') message = data.description;
               else if (typeof data.errors === 'string') message = data.errors;
             }
           } catch (error) {

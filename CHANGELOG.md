@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.10.6 - 2026-10-30
+
+### Fixed
+- **The cart says why a quantity came back down**: when the store refuses
+  part of a quantity because of the stock, its own sentence ("Only 3 items
+  were added to your cart due to availability.") is shown again in the cart
+  drawer, on the cart page and in the quick order list, instead of the
+  general "Something went wrong" message.
+
 ## 1.10.5 - 2026-10-29
 
 ### Fixed
