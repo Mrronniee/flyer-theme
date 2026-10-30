@@ -915,6 +915,14 @@
       "ou": "snippets/first-screen-images.liquid:63",
       "commit": "827f7a2",
       "raison": "featured-blog ne met fetchpriority=high qu'en section.index 1 ; sur flyer-all-sections il vient en 2 derrière le titre de page, et first-screen-images ne touchait que loading. Le snippet (layout/theme.liquid, toutes les pages) donne fetchpriority=high aux images du premier écran égales à la plus grande (2 %, quatre au plus) quand aucune n'en a déjà, avant le passage en eager. Mesure entière au commit 827f7a2 : aucune ligne T6, à 412, 1350 et 1440."
+    },
+    {
+      "id": "audit-theme-editeur-checker-bibliotheque@1.10.5-d062e8a-20261030",
+      "version": "1.10.9",
+      "etat": "pas_un_defaut",
+      "ou": ".kiosk/audits.json (theme-editeur-checker, couverture.bibliotheque)",
+      "commit": "9961707",
+      "raison": "Le verdict 1.10.5 compte 0 BLOQUANT et 0 ALERTE : la mesure du point bibliotheque disait seulement ce que la competence aurait coute sans elle (14 candidats « preset sans reglage ni bloc » requalifies), ce que registre-audits.alertes_de lisait comme une mention restee ouverte. Remesure du 30/10/2026 par la meme lecture que l'audit (competence shopify-liquid-themes, references/schema-and-settings.md:192-220, section « Presets » : seul name obligatoire, settings et blocks optionnels) : les 14 presets sans reglage ni bloc sont sections/apps.liquid:82, contact.liquid:286, countdown.liquid:394, custom-liquid.liquid:74, disclosures.liquid:216, featured-blog.liquid:450, featured-collection.liquid:282, hero-split.liquid:520, newsletter.liquid:181, page-content.liquid:126, quick-order-list.liquid:610, related-products.liquid:348, video.liquid:441, wishlist.liquid:308 ; ajoutes nus, les 14 rendent du contenu — defaults de schema (countdown 11 defaults dont heading « Sale ends soon », hero-split 9, newsletter 6), placeholder_svg_tag (6 sections), formulaire (contact, disclosures, newsletter), request.design_mode (apps.liquid:16), ou titre traduit toujours rendu (related-products.liquid:36 repli products.related.heading, wishlist.liquid:36 wishlist.title). Aucun defaut de code : mesure reecrite, memes version, commit et bloc reprise, 0 ALERTE en chiffres ; registre-audits.alertes_de rend desormais ([], []) sur ce verdict. Controle complet verifier-theme.py sur 9961707 : 213 OK, 0 ALERTE, 0 ECHEC, code de sortie 0."
     }
   ]
 }
