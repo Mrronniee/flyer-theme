@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.10.9 - 2026-10-30
+
+### Fixed
+- **Collage tiles ask for their own width**: a tile is now sized on the grid
+  it sits in — three columns, or four in the centred layout, inside the page
+  margins — and the large tile on the two columns it really spans. The
+  centred layout used to ask for a third more than it shows.
+- **The split hero on a short screen**: in landscape on a laptop the picture
+  takes half the screen, and it now says so instead of asking for a file
+  twice as wide.
+
 ## 1.10.8 - 2026-10-30
 
 ### Fixed

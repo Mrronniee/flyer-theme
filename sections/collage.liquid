@@ -34,12 +34,32 @@
     assign tile_heading = 'h2'
   endif
 
-  assign mobile_small = '(max-width: 749px) 100vw, '
-  if section.settings.mobile_layout == 'collage'
-    assign mobile_small = '(max-width: 749px) 50vw, '
+  # The tiles sit in an inner at the content width — the page width less its
+  # two margins (critical.css, --content-width) — in a grid of three columns,
+  # four for the centred layout, spaced by the merchant's horizontal spacing
+  # (CSS below). A tile is that width less the gaps, divided by the column
+  # count, and the large tile spans two columns plus one gap. The bare 33vw,
+  # 66vw, 50vw and 100vw announced slots wider than the real ones, and the
+  # centred layout announced a third more than its four columns ever show.
+  assign page_margins = settings.min_page_margin | times: 2
+  assign content_px = settings.max_page_width | minus: page_margins
+  assign collage_cols = 3
+  if grid_layout == 'center'
+    assign collage_cols = 4
   endif
-  assign small_sizes = mobile_small | append: '33vw'
-  assign large_sizes = '(max-width: 749px) 100vw, 66vw'
+  assign collage_gaps = collage_cols | minus: 1 | times: settings.spacing_grid_horizontal
+  assign collage_inset = collage_gaps | plus: page_margins
+  assign small_cap = content_px | minus: collage_gaps | divided_by: collage_cols
+  # Computed from the content width, not doubled from small_cap: Liquid
+  # divides whole numbers, and the truncation would show up twice.
+  assign large_cap = content_px | minus: collage_gaps | times: 2 | divided_by: collage_cols | plus: settings.spacing_grid_horizontal
+  assign mobile_small = '(max-width: 749px) calc(100vw - ' | append: page_margins | append: 'px), '
+  if section.settings.mobile_layout == 'collage'
+    assign mobile_inset = settings.spacing_grid_horizontal | plus: page_margins
+    assign mobile_small = '(max-width: 749px) calc((100vw - ' | append: mobile_inset | append: 'px) / 2), '
+  endif
+  assign small_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: small_cap | append: 'px, ' | append: mobile_small | append: 'calc((100vw - ' | append: collage_inset | append: 'px) / ' | append: collage_cols | append: ')'
+  assign large_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: large_cap | append: 'px, (max-width: 749px) calc(100vw - ' | append: page_margins | append: 'px), calc((100vw - ' | append: collage_inset | append: 'px) / ' | append: collage_cols | append: ' * 2 + ' | append: settings.spacing_grid_horizontal | append: 'px)'
 
   assign video_label = 'accessibility.play_video' | t
 -%}

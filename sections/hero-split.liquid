@@ -45,13 +45,20 @@
           assign hero_load = 'eager'
           assign hero_priority = 'high'
         endif
+        # The section is full width, so there is no page margin to deduct.
+        # Above 989px the grid is 3fr 2fr, hence 60vw. On a short screen the
+        # CSS below switches to 1fr 1fr from 560px up (side by side, the title
+        # and the buttons stay above the fold), and the picture then fills half
+        # the screen: that condition comes first, or a laptop in landscape
+        # fetches a file twice the width it shows.
+        assign hero_sizes = '(max-height: 620px) and (min-width: 560px) 50vw, (max-width: 989px) 100vw, 60vw'
       -%}
       {{
         section.settings.image
         | image_url: width: 2400
         | image_tag:
           widths: '600, 900, 1200, 1600, 2000, 2400',
-          sizes: '(max-width: 989px) 100vw, 60vw',
+          sizes: hero_sizes,
           class: 'fl-hero__img',
           alt: section.settings.image.alt,
           loading: hero_load,
