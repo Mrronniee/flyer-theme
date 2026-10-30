@@ -38,8 +38,12 @@
   # width, or a wide screen fetches the margins it never shows.
   assign page_margins = settings.min_page_margin | times: 2
   assign content_px = settings.max_page_width | minus: page_margins
-  assign media_sizes_cap = content_px | times: 50 | divided_by: 100
-  assign media_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: media_sizes_cap | append: 'px, (max-width: 989px) 100vw, 50vw'
+  # Two equal columns 64px apart from 990px up, one below (CSS further down):
+  # the media slot is the content width less that gap, halved — not a bare
+  # 50vw, and not 100vw below 990px, where the slot is the content width.
+  assign media_sizes_cap = content_px | minus: 64 | divided_by: 2
+  assign media_inset = page_margins | plus: 64
+  assign media_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: media_sizes_cap | append: 'px, (max-width: 989px) calc(100vw - ' | append: page_margins | append: 'px), calc((100vw - ' | append: media_inset | append: 'px) / 2)'
 -%}
 
 {%- comment -%}

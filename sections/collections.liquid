@@ -17,8 +17,16 @@
   # width, or a wide screen fetches the margins it never shows.
   assign page_margins = settings.min_page_margin | times: 2
   assign content_px = settings.max_page_width | minus: page_margins
-  assign coll_sizes_cap = content_px | times: 33 | divided_by: 100
-  assign coll_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: coll_sizes_cap | append: 'px, (max-width: 749px) 50vw, 33vw'
+  # A card is the content width less the grid gaps, divided by the column
+  # count — 20px between columns from 750px up, 12px on a phone (CSS below).
+  # A plain fraction of the viewport announced a card wider than it is.
+  assign coll_cols = section.settings.columns_desktop | plus: 0
+  assign coll_cols_mobile = section.settings.columns_mobile | plus: 0
+  assign coll_gaps = coll_cols | minus: 1 | times: 20
+  assign coll_inset = coll_gaps | plus: page_margins
+  assign coll_inset_mobile = coll_cols_mobile | minus: 1 | times: 12 | plus: page_margins
+  assign coll_sizes_cap = content_px | minus: coll_gaps | divided_by: coll_cols
+  assign coll_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: coll_sizes_cap | append: 'px, (max-width: 749px) calc((100vw - ' | append: coll_inset_mobile | append: 'px) / ' | append: coll_cols_mobile | append: '), calc((100vw - ' | append: coll_inset | append: 'px) / ' | append: coll_cols | append: ')'
 -%}
 
 <div

@@ -13,16 +13,21 @@
   # Phones: each look is 78% of the scroller, which sits inside the page
   # margins, so it is narrower than 78vw.
   assign look_inset = settings.min_page_margin | times: 2
-  assign img_sizes = '(max-width: 749px) calc((100vw - ' | append: look_inset | append: 'px) * 0.78), (max-width: 989px) 50vw, 25vw'
-  # Wider than the page width, a contained slot stops growing: cap its size
-  # so a 1440px screen does not fetch images for a 50vw it never gets.
-  # The page content stops at the page width minus its two margins
-  # (critical.css, --content-width): the cap follows that, not the raw page
-  # width, or a wide screen fetches the margins it never shows.
+  # Above 749px the track is min(count, 4) columns 24px apart (CSS below) —
+  # there is no tablet variant, so the old 50vw step between 750px and 989px
+  # described no layout at all. A look is the content width (the page width
+  # less its two margins, critical.css --content-width) less those gaps,
+  # divided by the column count.
+  assign look_cols = count
+  if look_cols > 4
+    assign look_cols = 4
+  endif
   assign page_margins = settings.min_page_margin | times: 2
   assign content_px = settings.max_page_width | minus: page_margins
-  assign img_sizes_cap = content_px | times: 25 | divided_by: 100
-  assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, ' | append: img_sizes
+  assign look_gaps = look_cols | minus: 1 | times: 24
+  assign look_inset_wide = look_gaps | plus: page_margins
+  assign img_sizes_cap = content_px | minus: look_gaps | divided_by: look_cols
+  assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, (max-width: 749px) calc((100vw - ' | append: look_inset | append: 'px) * 0.78), calc((100vw - ' | append: look_inset_wide | append: 'px) / ' | append: look_cols | append: ')'
 -%}
 
 {%- comment -%}

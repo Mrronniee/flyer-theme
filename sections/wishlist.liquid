@@ -5,6 +5,26 @@
   Rendering API (/products/<handle>?section_id=wishlist-item).
 {% endcomment %}
 
+{%- liquid
+  # The cards are fetched one by one through the Section Rendering API, so
+  # wishlist-item cannot know how many columns this grid has: product-card
+  # would fall back to its own four-column default, and a merchant who picks
+  # two or three columns would get a size announcement smaller than the card.
+  # This section knows the count, so it computes the sizes and hands them to
+  # each card as it arrives (JS below). The grid keeps the theme defaults
+  # outside the merchant's setting: three columns from 750px to 989px, two
+  # on a phone 12px apart (critical.css, .fl-product-grid).
+  assign wish_cols = section.settings.cols_desktop | plus: 0
+  assign page_margins = settings.min_page_margin | times: 2
+  assign content_px = settings.max_page_width | minus: page_margins
+  assign wish_gaps = wish_cols | minus: 1 | times: settings.spacing_grid_horizontal
+  assign wish_cap = content_px | minus: wish_gaps | divided_by: wish_cols
+  assign wish_inset = wish_gaps | plus: page_margins
+  assign wish_inset_tablet = settings.spacing_grid_horizontal | times: 2 | plus: page_margins
+  assign wish_inset_mobile = page_margins | plus: 12
+  assign wish_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: wish_cap | append: 'px, (max-width: 749px) calc((100vw - ' | append: wish_inset_mobile | append: 'px) / 2), (max-width: 989px) calc((100vw - ' | append: wish_inset_tablet | append: 'px) / 3), calc((100vw - ' | append: wish_inset | append: 'px) / ' | append: wish_cols | append: ')'
+-%}
+
 <fl-wishlist
   class="fl-wishlist full-width color-{{ section.settings.color_scheme }}"
   {% render 'reveal' %}
@@ -30,6 +50,7 @@
     <div
       class="fl-product-grid fl-wishlist__grid"
       data-wishlist-grid
+      data-card-sizes="{{ wish_sizes | escape }}"
       style="--grid-cols: {{ section.settings.cols_desktop }}"
     ></div>
     <p
@@ -183,7 +204,14 @@
           const html = await res.text();
           const doc = new DOMParser().parseFromString(html, 'text/html');
           const card = doc.querySelector('.fl-card');
-          if (card) return card;
+          if (card) {
+            // Still detached from the page, so nothing has been fetched yet:
+            // the sizes of THIS grid replace product-card's default before
+            // the browser picks a file.
+            const sizes = this.grid ? this.grid.dataset.cardSizes : '';
+            if (sizes) card.querySelectorAll('img[sizes]').forEach((img) => { img.sizes = sizes; });
+            return card;
+          }
         } catch (e) {
           // network error: try again
         }

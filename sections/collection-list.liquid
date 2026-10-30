@@ -15,24 +15,26 @@
     assign cols_tablet = 3
   endif
 
-  assign desktop_vw = 100 | divided_by: cols_desktop
-  assign img_sizes = '(max-width: 749px) 50vw, (max-width: 989px) 33vw, ' | append: desktop_vw | append: 'vw'
-  # Wider than the page width, a contained slot stops growing: cap its size
-  # so a 1440px screen does not fetch images for a 50vw it never gets.
-  # The page content stops at the page width minus its two margins
-  # (critical.css, --content-width): the cap follows that, not the raw page
-  # width, or a wide screen fetches the margins it never shows.
+  # A card is the content width — the page width less its two margins
+  # (critical.css, --content-width) — less the grid gaps, which follow the
+  # merchant's horizontal spacing above 749px and are 12px on a phone (CSS
+  # below), divided by the column count. A plain 100/cols fraction of the
+  # viewport announced a card wider than it is and fetched a step too wide.
+  assign cols_mobile_int = cols_mobile | plus: 0
   assign page_margins = settings.min_page_margin | times: 2
   assign content_px = settings.max_page_width | minus: page_margins
-  assign img_sizes_cap = content_px | times: desktop_vw | divided_by: 100
-  assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, ' | append: img_sizes
+  assign img_gaps = cols_desktop | minus: 1 | times: settings.spacing_grid_horizontal
+  assign img_inset = img_gaps | plus: page_margins
+  assign img_inset_tablet = cols_tablet | minus: 1 | times: settings.spacing_grid_horizontal | plus: page_margins
+  assign img_inset_mobile = cols_mobile_int | minus: 1 | times: 12 | plus: page_margins
+  assign img_sizes_cap = content_px | minus: img_gaps | divided_by: cols_desktop
+  assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, (max-width: 749px) calc((100vw - ' | append: img_inset_mobile | append: 'px) / ' | append: cols_mobile_int | append: '), (max-width: 989px) calc((100vw - ' | append: img_inset_tablet | append: 'px) / ' | append: cols_tablet | append: '), calc((100vw - ' | append: img_inset | append: 'px) / ' | append: cols_desktop | append: ')'
 
   assign swipe_basis = '46%'
   if cols_mobile == '1'
     assign swipe_basis = '78%'
   endif
 
-  assign cols_mobile_int = cols_mobile | plus: 0
   assign swipe = false
   if section.settings.swipe_on_mobile and section.blocks.size > cols_mobile_int
     assign swipe = true

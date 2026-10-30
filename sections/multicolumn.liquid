@@ -12,25 +12,19 @@
     assign centered = true
   endif
 
-  case cols
-    when '2'
-      assign sizes_desktop = '50vw'
-    when '4'
-      assign sizes_desktop = '25vw'
-    else
-      assign sizes_desktop = '33vw'
-  endcase
-  assign img_sizes = '(max-width: 749px) 100vw, (max-width: 989px) 50vw, ' | append: sizes_desktop
-  # Wider than the page width, a contained slot stops growing: cap its size
-  # so a 1440px screen does not fetch images for a 50vw it never gets.
-  assign img_pct = sizes_desktop | remove: 'vw' | plus: 0
-  # The page content stops at the page width minus its two margins
-  # (critical.css, --content-width): the cap follows that, not the raw page
-  # width, or a wide screen fetches the margins it never shows.
+  # A column is the content width — the page width less its two margins
+  # (critical.css, --content-width) — less the 24px gaps of the grid (CSS
+  # below), divided by the column count: two columns from 750px to 989px,
+  # one below, the merchant's count above. A plain fraction of the viewport
+  # announced a slot wider than it is, and fetched a step too wide.
+  assign cols_count = cols | plus: 0
   assign page_margins = settings.min_page_margin | times: 2
   assign content_px = settings.max_page_width | minus: page_margins
-  assign img_sizes_cap = content_px | times: img_pct | divided_by: 100
-  assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, ' | append: img_sizes
+  assign img_gaps = cols_count | minus: 1 | times: 24
+  assign img_inset = img_gaps | plus: page_margins
+  assign img_inset_tablet = page_margins | plus: 24
+  assign img_sizes_cap = content_px | minus: img_gaps | divided_by: cols_count
+  assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, (max-width: 749px) calc(100vw - ' | append: page_margins | append: 'px), (max-width: 989px) calc((100vw - ' | append: img_inset_tablet | append: 'px) / 2), calc((100vw - ' | append: img_inset | append: 'px) / ' | append: cols_count | append: ')'
 
   comment
     Column headings sit under the section heading. With no section heading

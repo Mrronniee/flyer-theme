@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.10.8 - 2026-10-30
+
+### Fixed
+- **Every section asks for the image width it really shows**: the size each
+  section announces is now its own slot — the page width less its margins,
+  the gaps of its grid and its column count — in all twelve sections that
+  show merchant images, not only at the widest screens. A phone, a tablet
+  and a laptop each get a file cut for their own layout.
+- **Wishlist cards are sized by the wishlist**: the cards arrive one by one,
+  so they used to be sized as if the grid always had four columns; the page
+  now hands them its own column count, and a two or three column wishlist
+  stops being served images too small for its cards.
+
 ## 1.10.7 - 2026-10-30
 
 ### Fixed

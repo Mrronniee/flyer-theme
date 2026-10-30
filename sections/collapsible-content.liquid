@@ -76,8 +76,13 @@
           # width, or a wide screen fetches the margins it never shows.
           assign page_margins = settings.min_page_margin | times: 2
           assign content_px = settings.max_page_width | minus: page_margins
-          assign img_sizes_cap = content_px | divided_by: 2
-          assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, (max-width: 749px) 100vw, 50vw'
+          # Two equal columns 48px apart from 750px up, one below (CSS
+          # further down): the image slot is the content width less that gap,
+          # halved — not a bare 50vw, which ignored both the gap and the
+          # page margins.
+          assign img_sizes_cap = content_px | minus: 48 | divided_by: 2
+          assign img_inset = page_margins | plus: 48
+          assign img_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: img_sizes_cap | append: 'px, (max-width: 749px) calc(100vw - ' | append: page_margins | append: 'px), calc((100vw - ' | append: img_inset | append: 'px) / 2)'
         -%}
         <div class="fl-collapsible__media fl-media">
           {{

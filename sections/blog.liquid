@@ -19,8 +19,13 @@
   # width, or a wide screen fetches the margins it never shows.
   assign page_margins = settings.min_page_margin | times: 2
   assign content_px = settings.max_page_width | minus: page_margins
-  assign article_sizes_cap = content_px | times: 33 | divided_by: 100
-  assign article_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: article_sizes_cap | append: 'px, (max-width: 749px) 100vw, (max-width: 989px) 50vw, 33vw'
+  # The grid is fixed (CSS below): three columns 28px apart above 989px, two
+  # 24px apart down to 750px, one on a phone. A card is the content width less
+  # those gaps, divided by the column count, not a fraction of the viewport.
+  assign article_sizes_cap = content_px | minus: 56 | divided_by: 3
+  assign article_inset = page_margins | plus: 56
+  assign article_inset_tablet = page_margins | plus: 24
+  assign article_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: article_sizes_cap | append: 'px, (max-width: 749px) calc(100vw - ' | append: page_margins | append: 'px), (max-width: 989px) calc((100vw - ' | append: article_inset_tablet | append: 'px) / 2), calc((100vw - ' | append: article_inset | append: 'px) / 3)'
 -%}
 
 <div class="fl-blog">

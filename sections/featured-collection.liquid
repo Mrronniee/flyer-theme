@@ -21,15 +21,13 @@
   endif
 
   if cols == '3'
-    assign sizes_desktop = '33vw'
     assign cols_count = 3
   else
-    assign sizes_desktop = '25vw'
     assign cols_count = 4
   endif
   # Phones: two columns inside the page margins, 12px apart (critical.css).
   assign mobile_inset = settings.min_page_margin | plus: 6
-  assign card_sizes = '(max-width: 749px) calc(50vw - ' | append: mobile_inset | append: 'px), (max-width: 989px) 33vw, ' | append: sizes_desktop
+  assign card_sizes_mobile = 'calc(50vw - ' | append: mobile_inset | append: 'px)'
   # Wider than the page width, a contained slot stops growing: cap its size
   # so a 1440px screen does not fetch images for a 50vw it never gets.
   # The page content stops at the page width minus its two margins
@@ -39,10 +37,16 @@
   assign page_margins = settings.min_page_margin | times: 2
   assign content_px = settings.max_page_width | minus: page_margins
   assign desktop_gaps = cols_count | minus: 1 | times: settings.spacing_grid_horizontal
+  assign tablet_gaps = settings.spacing_grid_horizontal | times: 2
   assign card_sizes_cap = content_px | minus: desktop_gaps | divided_by: cols_count
-  assign card_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: card_sizes_cap | append: 'px, ' | append: card_sizes
-  assign editorial_cap = content_px | divided_by: 2
-  assign editorial_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: editorial_cap | append: 'px, (max-width: 749px) 100vw, (max-width: 989px) 66vw, 50vw'
+  assign card_inset = desktop_gaps | plus: page_margins
+  assign card_inset_tablet = tablet_gaps | plus: page_margins
+  assign card_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: card_sizes_cap | append: 'px, (max-width: 749px) ' | append: card_sizes_mobile | append: ', (max-width: 989px) calc((100vw - ' | append: card_inset_tablet | append: 'px) / 3), calc((100vw - ' | append: card_inset | append: 'px) / ' | append: cols_count | append: ')'
+  # The editorial layout gives its first card two columns and the gap between
+  # them (CSS below, .fl-product-grid--editorial): two card widths plus one
+  # gap, not a bare half of the page.
+  assign editorial_cap = card_sizes_cap | times: 2 | plus: settings.spacing_grid_horizontal
+  assign editorial_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: editorial_cap | append: 'px, (max-width: 749px) calc(100vw - ' | append: page_margins | append: 'px), (max-width: 989px) calc((100vw - ' | append: card_inset_tablet | append: 'px) / 3 * 2 + ' | append: settings.spacing_grid_horizontal | append: 'px), calc((100vw - ' | append: card_inset | append: 'px) / ' | append: cols_count | append: ' * 2 + ' | append: settings.spacing_grid_horizontal | append: 'px)'
 -%}
 
 {%- comment -%}

@@ -36,27 +36,19 @@
     assign boxed = true
   endif
 
-  case cols
-    when 1
-      assign sizes_desktop = '100vw'
-    when 2
-      assign sizes_desktop = '50vw'
-    when 3
-      assign sizes_desktop = '33vw'
-    else
-      assign sizes_desktop = '25vw'
-  endcase
-  assign card_sizes = '(max-width: 749px) 100vw, (max-width: 989px) 50vw, ' | append: sizes_desktop
-  # Wider than the page width, a contained slot stops growing: cap its size
-  # so a 1440px screen does not fetch images for a 50vw it never gets.
-  assign card_pct = sizes_desktop | remove: 'vw' | plus: 0
-  # The page content stops at the page width minus its two margins
-  # (critical.css, --content-width): the cap follows that, not the raw page
-  # width, or a wide screen fetches the margins it never shows.
+  # A card is the content width — the page width less its two margins
+  # (critical.css, --content-width) — less the grid gaps, which follow the
+  # merchant's horizontal spacing (--grid-gap-x), divided by the column
+  # count: cols_tablet from 750px to 989px, one column below, cols above.
+  # A plain fraction of the viewport announced a card wider than it is.
   assign page_margins = settings.min_page_margin | times: 2
   assign content_px = settings.max_page_width | minus: page_margins
-  assign card_sizes_cap = content_px | times: card_pct | divided_by: 100
-  assign card_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: card_sizes_cap | append: 'px, ' | append: card_sizes
+  assign card_gaps = cols | minus: 1 | times: settings.spacing_grid_horizontal
+  assign card_gaps_tablet = cols_tablet | minus: 1 | times: settings.spacing_grid_horizontal
+  assign card_inset = card_gaps | plus: page_margins
+  assign card_inset_tablet = card_gaps_tablet | plus: page_margins
+  assign card_sizes_cap = content_px | minus: card_gaps | divided_by: cols
+  assign card_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: card_sizes_cap | append: 'px, (max-width: 749px) calc(100vw - ' | append: page_margins | append: 'px), (max-width: 989px) calc((100vw - ' | append: card_inset_tablet | append: 'px) / ' | append: cols_tablet | append: '), calc((100vw - ' | append: card_inset | append: 'px) / ' | append: cols | append: ')'
 -%}
 
 {%- comment -%}

@@ -11,29 +11,29 @@
 
   case img_width
     when 'small'
-      assign media_sizes = '(max-width: 749px) 100vw, 33vw'
-    when 'large'
-      assign media_sizes = '(max-width: 749px) 100vw, 67vw'
-    else
-      assign media_sizes = '(max-width: 749px) 100vw, 50vw'
-  endcase
-  case img_width
-    when 'small'
       assign media_pct = 33
+      assign media_share = '0.33'
     when 'large'
       assign media_pct = 67
+      assign media_share = '0.67'
     else
       assign media_pct = 50
+      assign media_share = '0.5'
   endcase
-  # Wider than the page width, a contained slot stops growing: cap its size
-  # so a 1440px screen does not fetch images for a 50vw it never gets.
-  # The page content stops at the page width minus its two margins
-  # (critical.css, --content-width): the cap follows that, not the raw page
-  # width, or a wide screen fetches the margins it never shows.
+  # Above 749px the row is two columns with a gap of clamp(24px, 3vw, 48px)
+  # (CSS below), inside the page margins (critical.css, --content-width): the
+  # media takes its share of what is left, not of the whole viewport. Below
+  # 750px it is a single column, so the content width itself.
   assign page_margins = settings.min_page_margin | times: 2
   assign content_px = settings.max_page_width | minus: page_margins
-  assign media_sizes_cap = content_px | times: media_pct | divided_by: 100
-  assign media_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: media_sizes_cap | append: 'px, ' | append: media_sizes
+  assign row_gap = settings.max_page_width | times: 3 | divided_by: 100
+  if row_gap > 48
+    assign row_gap = 48
+  elsif row_gap < 24
+    assign row_gap = 24
+  endif
+  assign media_sizes_cap = content_px | minus: row_gap | times: media_pct | divided_by: 100
+  assign media_sizes = '(min-width: ' | append: settings.max_page_width | append: 'px) ' | append: media_sizes_cap | append: 'px, (max-width: 749px) calc(100vw - ' | append: page_margins | append: 'px), calc((100vw - ' | append: page_margins | append: 'px - 3vw) * ' | append: media_share | append: ')'
 
   case section.settings.desktop_content_position
     when 'top'
