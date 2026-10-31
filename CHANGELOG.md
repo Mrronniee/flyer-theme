@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.10.11 - 2026-10-31
+
+### Fixed
+- **Valid markup on the product video**: the video player no longer writes a
+  value where the markup allows only the attribute itself, so the product
+  page is valid HTML. Nothing changes for the viewer.
+
 ## 1.10.10 - 2026-10-31
 
 ### Fixed

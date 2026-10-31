@@ -28,6 +28,11 @@
   case media.media_type
     when 'video'
       assign player = media | video_tag: image_size: '1200x', controls: true, playsinline: true, preload: 'metadata'
+      # video_tag turns controls into controls="controls" but copies the
+      # playsinline value straight through, so the true above lands in the
+      # HTML. playsinline is a boolean attribute: its only valid values are
+      # the empty string and its own name.
+      assign player = player | replace: ' playsinline="true"', ' playsinline="playsinline"'
     when 'external_video'
       if media.host == 'youtube'
         assign player = media | external_video_url: enablejsapi: 1 | external_video_tag: loading: 'lazy'
