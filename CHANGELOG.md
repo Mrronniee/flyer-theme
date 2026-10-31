@@ -1,12 +1,16 @@
 # Changelog
 
-## 1.10.10 - 2026-10-30
+## 1.10.10 - 2026-10-31
 
 ### Fixed
 - **An empty lookbook no longer breaks the page**: removing every look from
   the Lookbook section used to leave an error message where the section
   should be, because the image width was divided by the number of looks. The
   section now hides its strip and keeps the page intact.
+- **Valid markup around a held-back video image**: the fallback image inside
+  a video that starts on a hidden slide keeps a transparent placeholder while
+  its real file waits, so the page stays valid HTML and still fetches nothing
+  for a video it does not show.
 
 ## 1.10.9 - 2026-10-30
 
